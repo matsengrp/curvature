@@ -54,3 +54,42 @@ def tree_reduce(t, f_internal, f_leaf):
 
 def to_newick(t):
     return tree_reduce(t, lambda a, b: '('+a+','+b+')', str)+";"
+
+
+def duplicate_zero_edge(t):
+    """
+    Return a tree that is the same as the input except with the edge to zero
+    doubled up.
+    """
+    m = t.copy()
+    m.allow_multiple_edges(True)
+    [internal_root] = t.neighbors(0)
+    m.add_edge(0, internal_root)
+    return m
+
+
+def rooted_is_isomorphic(t1, t2):
+    """
+    Are the two trees isomporphic if we give special status to the root?
+    """
+    return duplicate_zero_edge(t1).is_isomorphic(duplicate_zero_edge(t2))
+
+
+def classify_shapes(criterion, treel):
+    """
+    Given a criterion for isomporphism and a tree list, return an array such
+    that the ith entry is the first appearance of that tree's equivalence class
+    under the criterion.
+    """
+    found = []
+    map_to_class = []
+    for ti in range(len(treel)):
+        # Begin search.
+        for tj in found:
+            if criterion(treel[ti], treel[tj]):
+                map_to_class.append(tj)
+                break  # We are done searching.
+        else:  # Else statement for the for loop (!).
+            found.append(ti)
+            map_to_class.append(ti)  # Isomorphic to self
+    return map_to_class
