@@ -170,7 +170,8 @@ def pair_equivalence_graph(trees, classif, certs):
     g = Graph()
     g.add_vertices(pairs)
     equivs = []
-    for ((a1, a2), (b1, b2)) in pair_pairs:
+
+    def test_equivalence((a1, a2), (b1, b2)):
         if classif[a1] == classif[b1]:
             # a1 and b1 are in the same class. Furthermore, trees[a1] (resp.
             # trees[b1]) is obtained by applying cert[a1] (resp. cert[b1]) to
@@ -192,6 +193,12 @@ def pair_equivalence_graph(trees, classif, certs):
                 print trans.keys()
                 print ""
                 # It is! So the pair is isomorphic.
-                g.add_edge((a1, a2), (b1, b2))
-                equivs.append([(a1, a2), (b1, b2), trans])
+                return True
+        return False
+
+    for ((a1, a2), (b1, b2)) in pair_pairs:
+        if (test_equivalence((a1, a2), (b1, b2)) or
+           test_equivalence((a1, a2), (b2, b1))):
+            g.add_edge((a1, a2), (b1, b2))
+
     return (g, equivs)
