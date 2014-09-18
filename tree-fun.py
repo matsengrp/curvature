@@ -2,6 +2,10 @@ from sage.all import Graph, matrix
 from itertools import combinations
 
 
+def plot_tree(t):
+    return t.plot(layout='tree', tree_root=0, tree_orientation="down")
+
+
 def _enumerate_rooted_trees(n_leaves, start_internal):
     """
     Tree enumeration with internal nodes starting at some value.
@@ -90,10 +94,14 @@ def multiedge_leaf_edges(t):
     """
     Make a tree such that graph isomorphism is equivalent to leaf-labeled
     (labeled by the leaf vertex numbers) isomorphism.
+    We assume that the tree was made by enumerate_rooted_trees, so that the
+    leaf indices are all smaller than any internal node.
     """
     m = t.copy()
     m.allow_multiple_edges(True)
     for (u, v, _) in leaf_edges(m):
+        # min(u, v) is the leaf number; we add the (leaf number + 1) edges to a
+        # leaf edge so that it gets distinguished from other leaf edges.
         for _ in range(min(u, v) + 1):
             m.add_edge(u, v)
     return m
@@ -122,19 +130,27 @@ def classify_shapes(criterion, treel):
     found = []
     map_to_class = []
     certs = []
-    for ti in range(len(treel)):
+    identity = {i: i for i in range(treel[0].order())}
+    for test_i in range(len(treel)):
         # Begin search.
-        for tj in found:
-            (is_same, cert) = criterion(treel[ti], treel[tj])
+        for found_i in found:
+            (is_same, cert) = criterion(treel[found_i], treel[test_i])
             if is_same:
-                map_to_class.append(tj)
+                map_to_class.append(found_i)  # This maps test_i to found_i.
                 certs.append(cert)
                 break  # We are done searching.
         else:  # Else statement for the for loop (!).
-            found.append(ti)
-            map_to_class.append(ti)  # Isomorphic to self
-            certs.append(None)
+            found.append(test_i)
+            map_to_class.append(test_i)  # Isomorphic to self, of course.
+            certs.append(identity)
     return (map_to_class, certs)
+
+
+def compose_dicts(d1, d2):
+    """
+    First apply d2 then d1.
+    """
+    return {k: d1[v] for k, v in d2.items()}
 
 
 def pair_equivalence_graph(trees, classif, certs):
@@ -147,21 +163,35 @@ def pair_equivalence_graph(trees, classif, certs):
     # h = Graph(); h.add_vertices([3,4]); h.add_edge(3,4)
     # g.is_isomorphic(h, certify=True)
     # (True, {0: 3, 1: 4})
-    pairs = combinations(range(len(trees)), 2)
+    pairs = list(combinations(range(len(trees)), 2))
     # Surprisingly, we have to define this iterator before we put the pairs
     # into the graph.
     pair_pairs = combinations(pairs, 2)
     g = Graph()
     g.add_vertices(pairs)
-    for ((o1, o2), (n1, n2)) in pair_pairs:
-        print [to_newick(trees[i]) for i in [o1, o2, n1, n2]]
-        relabeled_t = trees[o2].relabel(certs[n1], inplace=False)
-        if llt_is_isomorphic(relabeled_t, trees[n2]):
-            # Relabeled tree is equivalent!
-            # We also know that n1 is equivalent to o1 by definition of
-            # classif, etc, so we know that the pair is equivalent by
-            # certs[n1].
-            g.add_edge((o1, o2), (n1, n2))
-            print "EQUIV\n"
-        print "not equiv\n"
-    return g
+    equivs = []
+    for ((a1, a2), (b1, b2)) in pair_pairs:
+        if classif[a1] == classif[b1]:
+            # a1 and b1 are in the same class. Furthermore, trees[a1] (resp.
+            # trees[b1]) is obtained by applying cert[a1] (resp. cert[b1]) to
+            # trees[classif[a1]].
+            # That is, trees[a1] is obtained by applying cert[a1] o
+            # cert[b1]^{-1} to trees[b1].
+            certs_b1_inv = {v: k for k, v in certs[b1].items()}
+            # trans = compose_dicts(certs[a1], certs_b1_inv)
+            trans = {k: certs[a1][v] for k, v in certs_b1_inv.items()}
+            assert(llt_is_isomorphic(trees[a1],
+                   trees[b1].relabel(trans, inplace=False)))
+            trans_b2 = trees[b2].relabel(trans, inplace=False)
+            if llt_is_isomorphic(trees[a2], trans_b2):
+                print to_newick(trees[a1])
+                print to_newick(trees[b1])
+                print to_newick(trees[a2])
+                print to_newick(trees[b2])
+                print trans.values()
+                print trans.keys()
+                print ""
+                # It is! So the pair is isomorphic.
+                g.add_edge((a1, a2), (b1, b2))
+                equivs.append([(a1, a2), (b1, b2), trans])
+    return (g, equivs)
