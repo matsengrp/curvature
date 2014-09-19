@@ -40,9 +40,18 @@ def enumerate_rooted_trees(n_leaves):
     return _enumerate_rooted_trees(n_leaves, n_leaves + 1)
 
 
+def indexed_tree_list(to):
+    """
+    Return a list of trees up to `to-1` such that the ith element in the list
+    is a list of trees with i leaves.
+    """
+    return [[]] + [enumerate_rooted_trees(i) for i in range(1, to)]
+
+
 def tree_reduce(t, f_internal, f_leaf):
     """
-    Assume that t is rooted at 0 and recur down through the rest of the tree.
+    Assume that t is rooted at 0 and recur down through the rest of the tree
+    using the supplied functions.
     """
     # Imagine arrow pointing from src to dst. That is where the subtree starts.
     def aux(src, dst):
@@ -101,7 +110,8 @@ def multiedge_leaf_edges(t):
     m.allow_multiple_edges(True)
     for (u, v, _) in leaf_edges(m):
         # min(u, v) is the leaf number; we add the (leaf number + 1) edges to a
-        # leaf edge so that it gets distinguished from other leaf edges.
+        # leaf edge so that it gets distinguished from other leaf edges. Thus
+        # edge 0 will be doubled, edge 1 will be tripled, etc.
         for _ in range(min(u, v) + 1):
             m.add_edge(u, v)
     return m
@@ -121,20 +131,21 @@ def llt_isomorphism_matrix(l):
     return matrix(n, n, lambda i, j: int(llt_is_isomorphic(l[i], l[j])))
 
 
-def classify_shapes(criterion, treel):
+def equivalence_classes(criterion, things):
     """
-    Given a criterion for isomporphism and a tree list, return an array such
-    that the ith entry is the first appearance of that tree's equivalence class
-    under the criterion.
+    Given a criterion for isomporphism (returning a boolean and a certificate)
+    and a list of things, return an array such that the ith entry is the first
+    appearance of the ith thing's equivalence class under the criterion, as
+    well as the certificates that show the isomorphism.
     """
     found = []
     map_to_class = []
     certs = []
-    identity = {i: i for i in range(treel[0].order())}
-    for test_i in range(len(treel)):
+    identity = {i: i for i in range(things[0].order())}
+    for test_i in range(len(things)):
         # Begin search.
         for found_i in found:
-            (is_same, cert) = criterion(treel[found_i], treel[test_i])
+            (is_same, cert) = criterion(things[found_i], things[test_i])
             if is_same:
                 map_to_class.append(found_i)  # This maps test_i to found_i.
                 certs.append(cert)
@@ -146,16 +157,19 @@ def classify_shapes(criterion, treel):
     return (map_to_class, certs)
 
 
-def compose_dicts(d1, d2):
-    """
-    First apply d2 then d1.
-    """
-    return {k: d1[v] for k, v in d2.items()}
-
-
 def pair_equivalence_graph(trees, classif, certs):
     """
-    Which pairs are equivalent under leaf-labeled isomorphism?
+    Fix whether we are talking about rooted or unrooted (labeled) bifurcating
+    phylogenetic trees. Let $T_n$ be the set of trees on $n$ taxa. Let $S_n =
+    T_n \odot T_n$, the set of unordered pairs of $n$-taxon trees. The
+    permutation group $\Sigma_n$ acts on $T_n$ and $S_n$ by permuting leaf
+    labels. Let $\bar T_n$ and $\bar S_n$ be the resulting sets of equivalence
+    classes.
+
+    We would like to find representatives and sizes of each equivalence class
+    in $S_n$. This represents all of the, say, SPR "problems": relabeling of
+    both trees doesn't matter, and SPRs can easily be reversed to solve the
+    "backwards" problem.
     """
     # In this function we need the observation that the "certificate" returned
     # in g.is_isomorphic(h) maps from g's vertices to h's:
@@ -169,36 +183,35 @@ def pair_equivalence_graph(trees, classif, certs):
     pair_pairs = combinations(pairs, 2)
     g = Graph()
     g.add_vertices(pairs)
-    equivs = []
 
     def test_equivalence((a1, a2), (b1, b2)):
         if classif[a1] == classif[b1]:
             # a1 and b1 are in the same class. Furthermore, trees[a1] (resp.
-            # trees[b1]) is obtained by applying cert[a1] (resp. cert[b1]) to
+            # trees[b1]) is obtained by applying certs[a1] (resp. certs[b1]) to
             # trees[classif[a1]].
-            # That is, trees[a1] is obtained by applying cert[a1] o
-            # cert[b1]^{-1} to trees[b1].
+            # That is, trees[a1] is obtained by applying certs[a1] o
+            # certs[b1]^{-1} to trees[b1].
             certs_b1_inv = {v: k for k, v in certs[b1].items()}
-            # trans = compose_dicts(certs[a1], certs_b1_inv)
+            # Make trans, which first applies certs[b1]^{-1} then certs[a1]
             trans = {k: certs[a1][v] for k, v in certs_b1_inv.items()}
+            # Make sure that trans changes trees[b1] to trees[a1] as it should.
             assert(llt_is_isomorphic(trees[a1],
                    trees[b1].relabel(trans, inplace=False)))
             trans_b2 = trees[b2].relabel(trans, inplace=False)
             if llt_is_isomorphic(trees[a2], trans_b2):
-                print to_newick(trees[a1])
-                print to_newick(trees[b1])
-                print to_newick(trees[a2])
-                print to_newick(trees[b2])
-                print trans.values()
-                print trans.keys()
-                print ""
-                # It is! So the pair is isomorphic.
                 return True
         return False
 
+    # We have to try both flips of the indices because we are investigating the
+    # symmetric product.
     for ((a1, a2), (b1, b2)) in pair_pairs:
         if (test_equivalence((a1, a2), (b1, b2)) or
            test_equivalence((a1, a2), (b2, b1))):
             g.add_edge((a1, a2), (b1, b2))
 
-    return (g, equivs)
+    return g
+
+
+def rooted_pair_equivalence_graph(trees):
+    (classif, certs) = equivalence_classes(rooted_is_isomorphic, trees)
+    return pair_equivalence_graph(trees, classif, certs)
