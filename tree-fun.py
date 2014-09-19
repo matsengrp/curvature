@@ -215,3 +215,21 @@ def pair_equivalence_graph(trees, classif, certs):
 def rooted_pair_equivalence_graph(trees):
     (classif, certs) = equivalence_classes(rooted_is_isomorphic, trees)
     return pair_equivalence_graph(trees, classif, certs)
+
+
+def favorite_node(g):
+    """
+    We favor the center of g that has maximum degree.
+    """
+    centers = g.center()
+    center_degrees = [g.degree(c) for c in centers]
+    return centers[center_degrees.index(max(center_degrees))]
+
+
+def pair_representatives(trees, peg):
+    """
+    Get representative (favorite) nodes from each component of the supplied
+    pair equivalence graph.
+    """
+    return [(trees[i], trees[j]) for (i, j) in
+            [favorite_node(g) for g in peg.connected_components_subgraphs()]]
