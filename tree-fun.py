@@ -228,8 +228,7 @@ def favorite_node(g):
 
 def pair_representatives(trees, peg):
     """
-    Get representative (favorite) nodes from each component of the supplied
-    pair equivalence graph.
+    Get index of representative (favorite) nodes from each component of the
+    supplied pair equivalence graph.
     """
-    return [(trees[i], trees[j]) for (i, j) in
-            [favorite_node(g) for g in peg.connected_components_subgraphs()]]
+    return [favorite_node(g) for g in peg.connected_components_subgraphs()]
