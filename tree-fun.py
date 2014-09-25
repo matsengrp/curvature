@@ -1,9 +1,14 @@
 from sage.all import Graph, matrix
+from sage.plot.graphics import GraphicsArray
 from itertools import combinations
 
 
 def plot_tree(t):
     return t.plot(layout='tree', tree_root=0, tree_orientation="down")
+
+
+def plot_tree_list(l):
+    return GraphicsArray([plot_tree(t) for t in l])
 
 
 def _enumerate_rooted_trees(n_leaves, start_internal):
