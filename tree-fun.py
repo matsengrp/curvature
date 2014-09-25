@@ -1,4 +1,4 @@
-from sage.all import Graph, matrix
+from sage.all import Graph, matrix, SymmetricGroup
 from sage.plot.graphics import GraphicsArray
 from itertools import combinations
 
@@ -161,6 +161,26 @@ def equivalence_classes(criterion, things):
             certs.append(identity)
     return (map_to_class, certs)
 
+
+def leaf_autom_group(t):
+    """
+    The automorphism group of the leaf nodes of a tree rooted at 0, as a
+    subgroup of the symmetric group.
+    Like everything here, assumes that the first n nodes are leaves.
+    # list((to_newick(t), leaf_autom_group(t)) for t in t_list)
+    """
+    n = len(leaf_edges(t))-1
+    G = SymmetricGroup(n)
+    # Only take graph automorphisms that don't move 0.
+    Gp = t.automorphism_group(partition=[[0], range(1, t.order())])
+    return G.subgroup(
+        filter(
+            # Just take the movement of the leaves, not the internals.
+            lambda tup: all(i <= n for i in tup),
+            g.cycle_tuples()) for g in Gp.gens())
+
+
+# Begin pair_equivalence_graph material.
 
 def pair_equivalence_graph(trees, classif, certs):
     """
