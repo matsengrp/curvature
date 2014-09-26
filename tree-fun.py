@@ -1,6 +1,5 @@
 from sage.all import Graph, matrix, SymmetricGroup
 from sage.plot.graphics import GraphicsArray
-from itertools import combinations
 
 
 def plot_tree(t):
@@ -186,82 +185,3 @@ def leaf_autom_group(t):
             # Just take the movement of the leaves, not the internals.
             lambda tup: all(i <= n for i in tup),
             g.cycle_tuples()) for g in Gp.gens())
-
-
-# Begin pair_equivalence_graph material.
-
-def pair_equivalence_graph(trees, classif, certs):
-    """
-    Fix whether we are talking about rooted or unrooted (labeled) bifurcating
-    phylogenetic trees. Let $T_n$ be the set of trees on $n$ taxa. Let $S_n =
-    T_n \odot T_n$, the set of unordered pairs of $n$-taxon trees. The
-    permutation group $\Sigma_n$ acts on $T_n$ and $S_n$ by permuting leaf
-    labels. Let $\bar T_n$ and $\bar S_n$ be the resulting sets of equivalence
-    classes.
-
-    We would like to find representatives and sizes of each equivalence class
-    in $S_n$. This represents all of the, say, SPR "problems": relabeling of
-    both trees doesn't matter, and SPRs can easily be reversed to solve the
-    "backwards" problem.
-    """
-    # In this function we need the observation that the "certificate" returned
-    # in g.is_isomorphic(h) maps from g's vertices to h's:
-    # g = Graph(); g.add_vertices([0,1]); g.add_edge(0,1)
-    # h = Graph(); h.add_vertices([3,4]); h.add_edge(3,4)
-    # g.is_isomorphic(h, certify=True)
-    # (True, {0: 3, 1: 4})
-    pairs = list(combinations(range(len(trees)), 2))
-    # Surprisingly, we have to define this iterator before we put the pairs
-    # into the graph.
-    pair_pairs = combinations(pairs, 2)
-    g = Graph()
-    g.add_vertices(pairs)
-
-    def test_equivalence((a1, a2), (b1, b2)):
-        if classif[a1] == classif[b1]:
-            # a1 and b1 are in the same class. Furthermore, trees[a1] (resp.
-            # trees[b1]) is obtained by applying certs[a1] (resp. certs[b1]) to
-            # trees[classif[a1]].
-            # That is, trees[a1] is obtained by applying certs[a1] o
-            # certs[b1]^{-1} to trees[b1].
-            certs_b1_inv = {v: k for k, v in certs[b1].items()}
-            # Make trans, which first applies certs[b1]^{-1} then certs[a1]
-            trans = {k: certs[a1][v] for k, v in certs_b1_inv.items()}
-            # Make sure that trans changes trees[b1] to trees[a1] as it should.
-            assert(llt_is_isomorphic(trees[a1],
-                   trees[b1].relabel(trans, inplace=False)))
-            trans_b2 = trees[b2].relabel(trans, inplace=False)
-            if llt_is_isomorphic(trees[a2], trans_b2):
-                return True
-        return False
-
-    # We have to try both flips of the indices because we are investigating the
-    # symmetric product.
-    for ((a1, a2), (b1, b2)) in pair_pairs:
-        if (test_equivalence((a1, a2), (b1, b2)) or
-           test_equivalence((a1, a2), (b2, b1))):
-            g.add_edge((a1, a2), (b1, b2))
-
-    return g
-
-
-def rooted_pair_equivalence_graph(trees):
-    (classif, certs) = equivalence_classes(rooted_is_isomorphic, trees)
-    return pair_equivalence_graph(trees, classif, certs)
-
-
-def favorite_node(g):
-    """
-    We favor the center of g that has maximum degree.
-    """
-    centers = g.center()
-    center_degrees = [g.degree(c) for c in centers]
-    return centers[center_degrees.index(max(center_degrees))]
-
-
-def pair_representatives(trees, peg):
-    """
-    Get index of representative (favorite) nodes from each component of the
-    supplied pair equivalence graph.
-    """
-    return [favorite_node(g) for g in peg.connected_components_subgraphs()]
