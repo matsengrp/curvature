@@ -104,6 +104,14 @@ def leaf_edges(t):
             if t.degree(u) == 1 or t.degree(v) == 1]
 
 
+def n_leaves(t):
+    """
+    Note that this is the number of leaf edges, so the number of leaves of a
+    rooted tree is this number minus 1.
+    """
+    return len(leaf_edges(t))
+
+
 def multiedge_leaf_edges(t):
     """
     Make a tree such that graph isomorphism is equivalent to leaf-labeled
@@ -169,7 +177,7 @@ def leaf_autom_group(t):
     Like everything here, assumes that the first n nodes are leaves.
     # list((to_newick(t), leaf_autom_group(t)) for t in t_list)
     """
-    n = len(leaf_edges(t))-1
+    n = n_leaves(t)-1
     G = SymmetricGroup(n)
     # Only take graph automorphisms that don't move 0.
     Gp = t.automorphism_group(partition=[[0], range(1, t.order())])
