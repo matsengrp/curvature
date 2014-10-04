@@ -169,6 +169,11 @@ def equivalence_classes(criterion, things):
     return (map_to_class, certs)
 
 
+def equivalence_class_representatives(criterion, things):
+    (map_to_class, _) = equivalence_classes(criterion, things)
+    return list(things[i] for i in list(set(map_to_class)))
+
+
 def leaf_autom_group(t):
     """
     The automorphism group of the leaf nodes of a tree rooted at 0, as a
