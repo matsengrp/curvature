@@ -21,9 +21,10 @@ for n in (int(a) for a in sys.argv[1:]):
         t1_idx = int(row[0])
         t2_idx = int(row[1])
         if t1_idx == t2_idx:
-            row.append("-")
+            row.extend([0, "-"])
         else:
-            row.append(ric_unif_rw(adj_graph, source=t1_idx, target=t2_idx).ric)
+            calc = ric_unif_rw(adj_graph, source=t1_idx, target=t2_idx)
+            row.extend([calc.dist, calc.ric])
         return row
 
     with open(idx_fname, 'rb') as csvfile:
