@@ -1,6 +1,8 @@
 #!/usr/bin/env sage
 
 import time
+from multiprocessing import Pool
+from sys import stdout
 from sage.all import *
 load("tree-fun.py")
 load("gricci/code.py")
@@ -27,9 +29,19 @@ for n in (int(a) for a in sys.argv[1:]):
             row.extend([calc.dist, calc.ric])
         return row
 
+    def process_line_status(line):
+        stdout.write("*")
+        stdout.flush()
+        return process_line(line)
+
+    p = Pool(processes=8)
+
     with open(idx_fname, 'rb') as csvfile:
-        idx_reader = csv.reader(csvfile, delimiter='\t', quotechar="'")
-        results = list(process_line(line) for line in idx_reader)
+        lines = list(csv.reader(csvfile, delimiter='\t', quotechar="'"))
+        print "There are {} tangles to process.".format(len(lines))
+        print "|"+"-"*(len(lines)-2)+"|"
+        results = p.map(process_line_status, lines)
+        print ""
         with open("ricci"+str(n)+".mat", "w") as f_out:
             for r in results:
                 f_out.write("\t".join(str(e) for e in r)+"\n")
