@@ -71,7 +71,14 @@ def tree_reduce(t, f_internal, f_leaf):
 
 
 def to_newick(t):
-    return tree_reduce(t, lambda a, b: '('+a+','+b+')', str)+";"
+    # Carry along minimum leaf number to sort.
+    def sorted_join((a, a_str), (b, b_str)):
+        if a < b:
+            return (a, '('+a_str+','+b_str+')')
+        else:
+            return (b, '('+b_str+','+a_str+')')
+    _, nwk = tree_reduce(t, sorted_join, lambda x: (x, str(x)))
+    return nwk+";"
 
 
 def duplicate_zero_edge(t):
