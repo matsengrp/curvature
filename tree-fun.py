@@ -71,6 +71,10 @@ def tree_reduce(t, f_internal, f_leaf):
 
 
 def to_newick(t):
+    """
+    Returns a Newick string such that the order of the subtrees is increasing
+    in terms of the minimum of the leaf labels.
+    """
     # Carry along minimum leaf number to sort.
     def sorted_join((a, a_str), (b, b_str)):
         if a < b:
@@ -78,6 +82,20 @@ def to_newick(t):
         else:
             return (b, '('+b_str+','+a_str+')')
     _, nwk = tree_reduce(t, sorted_join, lambda x: (x, str(x)))
+    return nwk+";"
+
+
+def to_newick_shape(t):
+    """
+    Return a Newick string representation of the shape (i.e. non-leaf-labeled
+    but rooted graph) of tree t.
+    """
+    def sorted_join(a, b):
+        if a < b:
+            return ('('+a+','+b+')')
+        else:
+            return ('('+b+','+a+')')
+    nwk = tree_reduce(t, sorted_join, lambda _: "")
     return nwk+";"
 
 
