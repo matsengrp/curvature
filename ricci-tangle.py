@@ -45,7 +45,7 @@ def process_line_status(line):
     return process_line(line)
 
 
-p = Pool(processes=4)
+p = Pool(processes=8)
 
 with open(args.idx_path, 'rb') as csvfile:
     lines = list(csv.reader(csvfile, delimiter='\t', quotechar="'"))

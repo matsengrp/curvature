@@ -2,19 +2,34 @@
 set -e
 set -u
 
-n_leaves=5
-split_size=15
+test -z $1 && exit 1
+
+n_leaves=$1
+split_size=20
 slurm_config="-c 4 -n 1 -w gizmof[1-180]"
+slurm_config="-c 8 -n 1"
 
-out_path="results/ricci$n_leaves.mat"
-files=$(split -l $split_size tangles/tangle$n_leaves.idx --filter="echo \$FILE")
+# Prepare vars and split file.
+out_path="ricci$n_leaves.mat"
+splitargs="-l $split_size tangles/tangle$n_leaves.idx"
+files=$(split $splitargs --filter="echo \$FILE")
+# Apparently split doesn't actually split when given the --filter flag, so we run it again.
+split $splitargs
 
-
-for i in $files; do
+# Run!
+for i in $files
+do
     export SLURM_JOB_NAME=ricci-$i
-    cmd="srun $slurm_config ./ricci-tangle.py --matrix matrices/matrix_$n_leaves --out $out_path-$i $i"
+    cmd="./ricci-tangle.py --matrix matrices/matrix_$n_leaves --out $out_path-$i $i"
     echo $cmd
-    $cmd
+    echo "#!/bin/sh" > $i.sh
+    echo $cmd >> $i.sh
+    sbatch $slurm_config $i.sh
 done
 
-
+# Wait until done.
+while test 0 -ne $(squeue -u matsen -h | wc -l)
+do
+    squeue -u matsen
+    sleep 5
+done
