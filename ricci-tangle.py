@@ -15,29 +15,16 @@ load("../tangle-fun.py")
 parser = argparse.ArgumentParser(description='ricci curvature of tangles',
                                  prog='ricci-tangle.py')
 
-parser.add_argument('--size', dest='n',
-                    type=int, help='Number of leaves.')
-parser.add_argument('--n-batches', dest='n_batches',
-                    type=int, help='Number of batches.')
-parser.add_argument('--batch', dest='batch', default=None,
-                    type=int, help='Which batch, zero indexed.')
-
-arguments = parser.parse_args()
-n = arguments.n
-n_batches = arguments.n_batches
-batch = arguments.batch
-
-assert(n is not None)
-assert(n_batches is not None)
-assert(batch is not None)
-
-idx_fname = "tangles/tangle{}.idx".format(n)
-matrix_fname = "matrices/matrix_{}".format(n)
-assert(os.path.exists(idx_fname))
-assert(os.path.exists(matrix_fname))
-adj_graph = Graph(matrix_of_csv(matrix_fname))
-assert(batch >= 0)
-assert(batch < n_batches)
+parser.add_argument('idx_path',
+                    type=str, help='Path to .idx file.')
+parser.add_argument('--matrix', dest='matrix_path',
+                    type=str, help='Matrix path.')
+parser.add_argument('--out', dest='out_path',
+                    type=str, help='Output path.')
+args = parser.parse_args()
+assert(os.path.exists(args.idx_path))
+assert(os.path.exists(args.matrix_path))
+adj_graph = Graph(matrix_of_csv(args.matrix_path))
 
 
 def process_line(line):
@@ -58,27 +45,13 @@ def process_line_status(line):
     return process_line(line)
 
 
-def chunks(l, n_chunks):
-    """ Yield successive n-sized chunks from l.
-    http://stackoverflow.com/questions/312443/how-do-you-split-a-list-into-evenly-sized-chunks-in-python
-    """
-    for i in xrange(0, len(l), n_chunks):
-        yield l[i:i+n_chunks]
+p = Pool(processes=4)
 
-
-p = Pool(processes=8)
-
-with open(idx_fname, 'rb') as csvfile:
+with open(args.idx_path, 'rb') as csvfile:
     lines = list(csv.reader(csvfile, delimiter='\t', quotechar="'"))
-    batch_size = int(len(lines) / n_batches)+1
-    batch_start = range(0, len(lines), batch_size)[batch]
-    batch_end_plus_one = min((batch+1)*batch_size, len(lines))
-    print "Processing {} to {}.".format(batch_start, batch_end_plus_one)
-    lines = lines[batch_start:batch_end_plus_one]
     print "|"+"-"*(len(lines)-2)+"|"
     results = p.map(process_line_status, lines)
     print ""
-    out_fname = "ricci{}.{}-of-{}.mat".format(n, batch, n_batches)
-    with open(out_fname, "w") as f_out:
+    with open(args.out_path, 'w') as f_out:
         for r in results:
             f_out.write("\t".join(str(e) for e in r)+"\n")
