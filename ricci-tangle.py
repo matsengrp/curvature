@@ -24,7 +24,7 @@ parser.add_argument('--out', dest='out_path',
 args = parser.parse_args()
 assert(os.path.exists(args.idx_path))
 assert(os.path.exists(args.matrix_path))
-adj_graph = Graph(matrix_of_csv(args.matrix_path))
+adj_graph = Graph(matrix_of_csv(args.matrix_path), immutable=True)
 
 
 def process_line(line):
