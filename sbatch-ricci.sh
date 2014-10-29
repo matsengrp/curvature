@@ -33,3 +33,10 @@ do
     squeue -u matsen
     sleep 5
 done
+
+rm results/$out_path
+touch results/$out_path
+for i in $files
+do
+    cat $out_path-$i >> results/$out_path
+done
