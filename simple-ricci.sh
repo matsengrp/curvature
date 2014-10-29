@@ -9,4 +9,4 @@ n_leaves=$1
 idx_path="tangles/tangle$n_leaves.idx"
 out_path="results/ricci$n_leaves.mat"
 
-./ricci-tangle.py --matrix matrices/matrix_$n_leaves --out $out_path $idx_path
+./ricci-tangle.py --adjacency matrices/matrix_$n_leaves.sobj --out $out_path $idx_path

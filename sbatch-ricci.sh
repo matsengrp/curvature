@@ -5,9 +5,8 @@ set -u
 test -z $1 && exit 1
 
 n_leaves=$1
-split_size=20
-slurm_config="-c 4 -n 1 -w gizmof[1-180]"
-slurm_config="-c 8 -n 1"
+split_size=50
+slurm_config="-c 4 -n 1"
 
 # Prepare vars and split file.
 out_path="ricci$n_leaves.mat"
@@ -20,7 +19,7 @@ split $splitargs
 for i in $files
 do
     export SLURM_JOB_NAME=ricci-$i
-    cmd="./ricci-tangle.py --matrix matrices/matrix_$n_leaves --out $out_path-$i $i"
+    cmd="./ricci-tangle.py --adjacency matrices/matrix_$n_leaves.sobj --out $out_path-$i $i"
     echo $cmd
     echo "#!/bin/sh" > $i.sh
     echo $cmd >> $i.sh
@@ -30,7 +29,7 @@ done
 # Wait until done.
 while test 0 -ne $(squeue -u matsen -h | wc -l)
 do
-    squeue -u matsen
+    squeue -h -u matsen | wc -l
     sleep 5
 done
 

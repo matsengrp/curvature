@@ -17,14 +17,14 @@ parser = argparse.ArgumentParser(description='ricci curvature of tangles',
 
 parser.add_argument('idx_path',
                     type=str, help='Path to .idx file.')
-parser.add_argument('--matrix', dest='matrix_path',
-                    type=str, help='Matrix path.')
+parser.add_argument('--adjacency', dest='adjacency_path',
+                    type=str, help='Path to graph in SAGE object format.')
 parser.add_argument('--out', dest='out_path',
                     type=str, help='Output path.')
 args = parser.parse_args()
 assert(os.path.exists(args.idx_path))
-assert(os.path.exists(args.matrix_path))
-adj_graph = Graph(matrix_of_csv(args.matrix_path), immutable=True)
+assert(os.path.exists(args.adjacency_path))
+adj_graph = load(args.adjacency_path)
 
 
 def process_line(line):
@@ -45,7 +45,7 @@ def process_line_status(line):
     return process_line(line)
 
 
-p = Pool(processes=8)
+p = Pool(processes=4)
 
 with open(args.idx_path, 'rb') as csvfile:
     lines = list(csv.reader(csvfile, delimiter='\t', quotechar="'"))
