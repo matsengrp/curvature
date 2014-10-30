@@ -17,14 +17,14 @@ parser = argparse.ArgumentParser(description='ricci curvature of tangles',
 
 parser.add_argument('idx_path',
                     type=str, help='Path to .idx file.')
-parser.add_argument('--adjacency', dest='adjacency_path',
+parser.add_argument('--graph', dest='graph_path',
                     type=str, help='Path to graph in SAGE object format.')
 parser.add_argument('--out', dest='out_path',
                     type=str, help='Output path.')
 args = parser.parse_args()
 assert(os.path.exists(args.idx_path))
-assert(os.path.exists(args.adjacency_path))
-adj_graph = load(args.adjacency_path)
+assert(os.path.exists(args.graph_path))
+g = load(args.graph_path)
 
 
 def process_line(line):
@@ -34,7 +34,7 @@ def process_line(line):
     if t1_idx == t2_idx:
         row.extend([0, "-"])
     else:
-        calc = ric_unif_rw(adj_graph, source=t1_idx, target=t2_idx)
+        calc = ric_unif_rw(g, source=t1_idx, target=t2_idx)
         row.extend([calc.dist, calc.ric])
     return row
 

@@ -19,7 +19,7 @@ split $splitargs
 for i in $files
 do
     export SLURM_JOB_NAME=ricci-$i
-    cmd="./ricci-tangle.py --adjacency matrices/matrix_$n_leaves.sobj --out $out_path-$i $i"
+    cmd="./ricci-tangle.py --graph rspr/graph_$n_leaves.sobj --out $out_path-$i $i"
     echo $cmd
     echo "#!/bin/sh" > $i.sh
     echo $cmd >> $i.sh
