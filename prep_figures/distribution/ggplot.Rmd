@@ -1,28 +1,36 @@
 ---
 title: "Ricci static"
-output: pdf_document
+output: html_document
 ---
 
 ```{r, echo=FALSE}
 library(ggplot2)
+library(dplyr)
+library(magrittr)
+library(apTreeshape)
 
 source("process.R")
 
-make_plot <- function(d) {
+make_density <- function(d) {
   ggplot(d, aes(kappa, color=t1_nwk)) + 
     facet_wrap(~ dist, ncol=2, scales="free") + theme(aspect.ratio=0.62) +
     geom_density()
 }
 
+make_heat <- function(d) {
+  d[,c("dist", "t1_colless", "t2_colless", "kappa")] %>% 
+  group_by(dist, t1_colless, t2_colless) %>%
+  summarise(mean = mean(kappa), median = median(kappa)) %>%
+  ggplot(aes(t1_colless, t2_colless)) + 
+    facet_wrap(~ dist, ncol=2, scales="free") + theme(aspect.ratio=0.62) +
+    geom_tile(aes(fill=mean))
+}
+
 analyze <- function(path) {
   d <- get_results(path)
-  make_plot(d)
+  print(make_density(d))
+  print(make_heat(d))
 }
-```
-
-## 4 leaves
-```{r, echo=FALSE}
-analyze("../../results/ricci4.mat")
 ```
 
 ## 5 leaves
