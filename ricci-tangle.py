@@ -9,7 +9,6 @@ from sage.all import *
 load("tree-fun.py")
 load("gricci/code.py")
 load("gricci/nb-fun.py")
-load("../tangle-fun.py")
 
 
 parser = argparse.ArgumentParser(description='ricci curvature of tangles',
