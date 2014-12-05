@@ -12,7 +12,7 @@ library(apTreeshape)
 
 source("process.R")
 
-d <- get_results("../../results/ricci7.mat")
+d <- get_results("../../results-rspr/ricci7.mat")
 
 d %>%
   ggvis(x = ~kappa, y = ~dist_jitter) %>%

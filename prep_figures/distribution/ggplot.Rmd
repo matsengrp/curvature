@@ -12,16 +12,16 @@ library(apTreeshape)
 source("process.R")
 
 make_density <- function(d) {
-  ggplot(d, aes(kappa, color=t1_nwk)) + 
+  ggplot(d, aes(kappa, color=t1_nwk)) +
     facet_wrap(~ dist, ncol=2, scales="free") + theme(aspect.ratio=0.62) +
     geom_density()
 }
 
 make_heat <- function(d) {
-  d[,c("dist", "t1_colless", "t2_colless", "kappa")] %>% 
+  d[,c("dist", "t1_colless", "t2_colless", "kappa")] %>%
   group_by(dist, t1_colless, t2_colless) %>%
   summarise(mean = mean(kappa), median = median(kappa)) %>%
-  ggplot(aes(t1_colless, t2_colless)) + 
+  ggplot(aes(t1_colless, t2_colless)) +
     facet_wrap(~ dist, ncol=2, scales="free") + theme(aspect.ratio=0.62) +
     geom_tile(aes(fill=mean))
 }
@@ -35,15 +35,15 @@ analyze <- function(path) {
 
 ## 5 leaves
 ```{r, echo=FALSE, dpi=120}
-analyze("../../results/ricci5.mat")
+analyze("../../results-rspr/ricci5.mat")
 ```
 
 ## 6 leaves
 ```{r, echo=FALSE, dpi=170}
-analyze("../../results/ricci6.mat")
+analyze("../../results-rspr/ricci6.mat")
 ```
 
 ## 7 leaves
 ```{r, echo=FALSE, dpi=200}
-analyze("../../results/ricci7.mat")
+analyze("../../results-rspr/ricci7.mat")
 ```

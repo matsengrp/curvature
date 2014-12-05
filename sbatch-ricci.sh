@@ -33,9 +33,9 @@ do
     sleep 5
 done
 
-rm results/$out_path
-touch results/$out_path
+rm results-rspr/$out_path
+touch results-rspr/$out_path
 for i in $files
 do
-    cat $out_path-$i >> results/$out_path
+    cat $out_path-$i >> results-rspr/$out_path
 done
