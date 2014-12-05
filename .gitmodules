@@ -1,3 +1,6 @@
 [submodule "gricci"]
 	path = gricci
 	url = git@github.com:matsengrp/gricci.git
+[submodule "tangle"]
+	path = tangle
+	url = git@github.com:matsengrp/tangle.git
