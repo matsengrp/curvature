@@ -1,0 +1,27 @@
+---
+title: "Ricci and commute time"
+runtime: shiny
+output: html_document
+---
+
+```{r, echo=FALSE}
+
+library(ggvis)
+library(ape)
+library(apTreeshape)
+
+source("process.R")
+
+d <- get_results("../../results-rspr/commute6.mat")
+d$dist <- as.factor(d$dist)
+
+d %>%
+  ggvis(x = ~kappa, y = ~MCT) %>%
+  layer_points(size = 5, fill = ~dist) %>%
+  # A dummy layer so that we can use text in the tooltip.
+  layer_text(text := ~info, fontSize := 0) %>%
+  add_axis("x", grid = FALSE) %>%
+  add_axis("y", grid = FALSE) %>%
+  add_legend(c("fill"), properties=legend_props(legend=list(y=0))) %>%
+  add_tooltip(function(df) df$info)
+```
