@@ -10,6 +10,7 @@ library(magrittr)
 library(apTreeshape)
 
 source("process.R")
+d <- sample(d)  # Shuffle rows of d.
 
 make_density <- function(d) {
   ggplot(d, aes(kappa, color=t1_nwk)) +
