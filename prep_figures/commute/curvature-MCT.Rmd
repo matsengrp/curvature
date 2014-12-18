@@ -12,17 +12,14 @@ library(apTreeshape)
 
 source("process.R")
 
-# d <- get_results("../../results-rspr/commute-nodata/commute6.mat")
-# d$dist <- as.factor(d$dist)
-                   
 d5 <- get_results("../../results-rspr/commute-onesplit/123_45-1v5c.tsv")
 d6 <- get_results("../../results-rspr/commute-onesplit/123_456-1v5c.tsv")
-d <- d5
+d <- d5[d5$MAT < 1000,]
 
 d %>%
   ggvis(x = ~kappa, y = ~MAT) %>%
   #ggvis(x = ~kappa, y = ~MCT) %>%
-  layer_points() %>%
+  layer_text(text := ~num) %>%
   # A dummy layer so that we can use text in the tooltip.
   layer_text(text := ~info, fontSize := 0) %>%
   add_axis("x", grid = FALSE) %>%

@@ -16,12 +16,16 @@ grab_data <- function(fname) {
   df
 }
 
-d <- rbind(
-  grab_data("runs/run1-uniq_trees_T-col-CCC1_2D_3D_C4_5DD-CC1_C2_3DD_C4_5DD.tab"),
-  grab_data("runs/run1-uniq_trees_T-col-CCCC1_2D_3D_4D_5D-CCCC1_2D_3D_5D_4D.tab"),
-  grab_data("runs/run1-uniq_trees_T-col-CCCC1_2D_3D_4D_5D-CCC1_2D_3D_C4_5DD.tab"))
+data_of_num <- function(n) {
+  df <- grab_data(paste0("runs5/run1.",as.character(n),".tab"))
+  df$num <- as.factor(n)
+  df
+}
+
+d <- do.call(rbind, lapply(c(7,14,66,68,69), data_of_num))
 
 sub_d <- subset(d, t1 != t2)
+sub_d <- subset(d, t1 < t2)
 
-ggplot(sub_d, aes(x=time, y=dens, color=cmp)) + geom_line() + scale_x_continuous(limits=c(0,100))
+ggplot(sub_d, aes(x=time, y=dens, color=num)) + geom_line() + scale_x_continuous(limits=c(0,25))
 ```
