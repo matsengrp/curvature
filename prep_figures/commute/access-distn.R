@@ -18,7 +18,7 @@ data_of_num <- function(n) {
 }
 
 
-adjacency <- read.csv(sub_n_taxa("../../rspr/matrix_NTAXA"))
+adjacency <- read.csv(sub_n_taxa("../../rspr/matrix_NTAXA"), header=FALSE)
 degree = rowSums(adjacency)
 tangles <- read.table(
     sub_n_taxa("../../results-rspr/ricciNTAXA.mat"),
@@ -30,11 +30,14 @@ tangles$coset <- NULL
 tangles$num <- c(1:nrow(tangles))
 head(tangles)
 
-tail(d)
 d <- do.call(rbind, lapply(favorite_tangles, data_of_num))
 d <- merge(d, tangles, by="num")
+d$kappa <- sapply(d$kappa_str, function(s) eval(parse(text=s)))
 sub_d <- subset(d, t1 != t2)
 sub_d <- subset(d, t1 < t2)
-ggplot(sub_d, aes(x=time, y=count, color=num)) + geom_line() + scale_x_continuous(limits=c(0,25)) + facet_wrap(~ t1_deg)
+p <- ggplot(sub_d, aes(x=time, y=count, group=num, color=kappa)) + geom_line() + scale_x_continuous(limits=c(0,25)) 
+p + facet_wrap(~ t1_deg)
+
++ facet_grid(t1_deg ~ t2_deg)
 
 subset(sub_d, num==66)
