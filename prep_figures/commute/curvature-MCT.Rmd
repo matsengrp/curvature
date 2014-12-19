@@ -15,6 +15,7 @@ source("process.R")
 d5 <- get_results("../../results-rspr/commute-onesplit/123_45-1v5c.tsv")
 d6 <- get_results("../../results-rspr/commute-onesplit/123_456-1v5c.tsv")
 d <- d5[d5$MAT < 1000,]
+d <- d6[d6$MAT < 1000,]
 
 d %>%
   ggvis(x = ~kappa, y = ~MAT) %>%
