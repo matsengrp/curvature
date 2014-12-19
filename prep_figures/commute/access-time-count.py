@@ -53,7 +53,7 @@ with open(args.o, 'w') as fout:
                             # index.
                             transitions[prev][curr][idx - last_seen[prev]] += 1
                     last_seen[curr] = idx
-        print 'count\tfrom\tto'
+    print 'count\tfrom\tto'
     for a in interesting:
         for b in interesting:
             for time, freq in transitions[a][b].items():
