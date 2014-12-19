@@ -12,7 +12,7 @@ n_taxa <- 5; favorite_tangles <- c(7,14,66,68,69)
 n_taxa <- 6; favorite_tangles <- c(662,665,795)
 sub_n_taxa <- function(s) sub("NTAXA", as.character(n_taxa), s)
 data_of_num <- function(n) {
-  df <- grab_data(paste0(as.character(n_taxa),"-taxon-access-distn/",as.character(n),".tab"))
+  df <- grab_data(paste0(as.character(n_taxa),"-taxon-access-distn/equal/",as.character(n),".tab"))
   df$num <- as.factor(n)
   df
 }
@@ -35,9 +35,11 @@ d <- merge(d, tangles, by="num")
 d$kappa <- sapply(d$kappa_str, function(s) eval(parse(text=s)))
 sub_d <- subset(d, t1 != t2)
 sub_d <- subset(d, t1 < t2)
-p <- ggplot(sub_d, aes(x=time, y=count, group=num, color=kappa)) + geom_line() + scale_x_continuous(limits=c(0,25)) 
+p <- ggplot(sub_d, aes(x=time, y=count, group=num, color=kappa)) + geom_line() + scale_x_continuous(limits=c(0,15)) 
 p + facet_wrap(~ t1_deg)
 
-+ facet_grid(t1_deg ~ t2_deg)
+summary(d$dist)
+
+p + facet_grid(t1_deg ~ t2_deg)
 
 subset(sub_d, num==66)
