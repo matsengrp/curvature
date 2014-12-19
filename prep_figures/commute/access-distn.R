@@ -8,8 +8,12 @@ grab_data <- function(fname) {
   df
 }
 
-n_taxa <- 5; favorite_tangles <- c(7,14,66,68,69)
+all_equal_shape_5_taxon = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 51, 52, 53, 54, 61, 62, 63, 64, 65, 66, 67, 68, 69)
+original_5_taxon <- c(7,14,66,68,69)
+n_taxa <- 5; favorite_tangles <- all_equal_shape_5_taxon
+
 n_taxa <- 6; favorite_tangles <- c(662,665,795)
+
 sub_n_taxa <- function(s) sub("NTAXA", as.character(n_taxa), s)
 data_of_num <- function(n) {
   df <- grab_data(paste0(as.character(n_taxa),"-taxon-access-distn/equal/",as.character(n),".tab"))
@@ -28,17 +32,24 @@ tangles$t1_deg <- sapply(tangles$t1_idx, function(i) degree[i+1]) # tangleX.idx 
 tangles$t2_deg <- sapply(tangles$t2_idx, function(i) degree[i+1]) # tangleX.idx uses 0 indexing.
 tangles$coset <- NULL
 tangles$num <- c(1:nrow(tangles))
-head(tangles)
+tail(tangles)
 
 d <- do.call(rbind, lapply(favorite_tangles, data_of_num))
+d <- subset(d, t1 != t2)
+head(d)
 d <- merge(d, tangles, by="num")
 d$kappa <- sapply(d$kappa_str, function(s) eval(parse(text=s)))
-sub_d <- subset(d, t1 != t2)
 sub_d <- subset(d, t1 < t2)
-p <- ggplot(sub_d, aes(x=time, y=count, group=num, color=kappa)) + geom_line() + scale_x_continuous(limits=c(0,15)) 
-p + facet_wrap(~ t1_deg)
 
-summary(d$dist)
+# Plot in terms of kappa.
+p <- ggplot(sub_d, aes(x=time, y=dens, group=num, color=kappa)) + geom_line()
+p <- p + scale_x_continuous(limits=c(0,7))
+p + facet_grid(dist ~ t1_deg, scales="free")
+
+# Plot showing exponential part of drop.
+p <- ggplot(sub_d, aes(x=time, y=dens, group=num, color=factor(t1_deg))) + geom_line()
+p <- p + scale_x_continuous(limits=c(0,500)) + scale_y_log10()
+p + facet_grid(. ~ dist, scales="free")
 
 p + facet_grid(t1_deg ~ t2_deg)
 
