@@ -54,7 +54,7 @@ for a in interesting:
 with open(outpath, 'w') as fout:
     with open(trace, 'r') as fin:
         for l in fin:
-            (_, idx, curr) = l.split()
+            (_, idx, _, curr) = l.split()
             idx = int(idx)
             if curr in interesting:
                 for prev in interesting:
