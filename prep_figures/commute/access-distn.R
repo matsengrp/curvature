@@ -12,19 +12,24 @@ grab_data <- function(fname) {
   df
 }
 
-all_equal_shape_5_taxon <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 51, 52, 53, 54, 61, 62, 63, 64, 65, 66, 67, 68, 69)
 original_5_taxon <- c(7,14,66,68,69)
-n_taxa <- 5; favorite_tangles <- all_equal_shape_5_taxon
+all_equal_shape_5_taxon <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 51, 52, 53, 54, 61, 62, 63, 64, 65, 66, 67, 68, 69)
+all_5_taxon <- 1:69
+n_taxa <- 5; favorite_tangles <- all_5_taxon
 data <- "123_45-1v5c/"
-data <- "equal/"
+data <- "123_45-equal/"
 
 all_equal_shape_6_taxon <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 449, 450, 451, 452, 453, 454, 455, 456, 457, 458, 459, 460, 461, 462, 548, 549, 550, 551, 552, 553, 554, 555, 556, 557, 558, 559, 560, 561, 562, 563, 564, 565, 566, 567, 568, 569, 570, 571, 572, 573, 574, 575, 576, 577, 578, 579, 580, 581, 582, 583, 584, 585, 586, 662, 665, 691, 692, 693, 694, 695, 696, 697, 698, 699, 700, 701, 702, 703, 704, 705, 706, 707, 708, 709, 710, 711, 712, 713, 714, 715, 716, 717, 718, 719, 720, 721, 722, 723, 724, 725, 726, 727, 728, 729, 776, 777, 778, 779, 780, 781, 782, 794, 795, 796, 797, 798, 799, 800, 801, 802, 803, 804, 805, 806, 807)
 original_6_taxon <-  c(662,665,795)
-n_taxa <- 6; favorite_tangles <- all_equal_shape_6_taxon
+all_6_taxon <- 1:807
+n_taxa <- 6; favorite_tangles <- all_6_taxon
 data <- "equal/"
+data <- "123_456-equal/"
+data <- "123_456-1v5c/"
 
 sub_n_taxa <- function(s) sub("NTAXA", as.character(n_taxa), s)
 data_of_num <- function(n) {
+  cat(n)
   df <- grab_data(paste0(as.character(n_taxa),"-taxon-access-distn/",data,as.character(n),".tab"))
   df$num <- as.numeric(n)
   df
@@ -57,10 +62,12 @@ expectations <- d %>%
   summarise(expectation = sum(time*dens))
 expectations <- merge(expectations, tangles, by="num")
 
-p <- ggplot(expectations, aes(x=t1_deg, y=expectation, color=factor(t2_deg)))
-p <- p + geom_point(size=3.5)
-p
-
+p <- ggplot(expectations, aes(x=expectation))
+p <- p + geom_histogram(binwidth=1) + labs(title=paste(n_taxa, "taxon access times"))
+p <- p + facet_grid(t1_deg ~ t2_deg) + scale_x_continuous(labels = function (x) floor(x))
+p + theme(panel.grid.minor =   element_blank(),
+          panel.grid.major =   element_line(size=1.))
+ggsave(paste0(n_taxa,"-taxon-access-by-degree.svg"))
 
 # There are two entries for each (num, time) pair for the two directions,
 # assuming as we do that the trees are distinct.
