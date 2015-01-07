@@ -11,7 +11,7 @@ library(ape)
 library(apTreeshape)
 
 source("process.R")
-d <- get_results("../../results-rspr/ricci5.mat")
+d <- get_results("../../results-rspr/ricci7.mat")
 d <- sample(d)  # Shuffle rows of d.
 
 d %>%

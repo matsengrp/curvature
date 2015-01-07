@@ -2,6 +2,8 @@ library(dplyr)
 library(ggplot2)
 library(magrittr)
 
+theme_set(theme_bw(16))
+
 grab_data <- function(fname) {
   df <- read.table(fname, stringsAsFactors = FALSE)
   colnames(df) <- c("t1", "t2", "time", "count")
@@ -47,16 +49,47 @@ head(d)
 d <- merge(d, tangles, by="num")
 d$kappa <- sapply(d$kappa_str, function(s) eval(parse(text=s)))
 
-d %>% 
+
+# Calculate the expectation of the commute time,
+# (compare below where we are looking at the complete distribution).
+expectations <- d %>%
+  group_by(num) %>%
+  summarise(expectation = sum(time*dens))
+expectations <- merge(expectations, tangles, by="num")
+
+p <- ggplot(expectations, aes(x=t1_deg, y=expectation, color=factor(t2_deg)))
+p <- p + geom_point(size=3.5)
+p
+
+
+# There are two entries for each (num, time) pair for the two directions,
+# assuming as we do that the trees are distinct.
+# Here we average their densities.
+# Alternatively, we could look at the two times individually,
+# but they are the same in the limit of lots of samples.
+means <- d %>%
   group_by(num, time) %>%
-  summarise(min_count = min(count), max_count = max(count), mean_count = mean(count)) -> count_extremes
-d <- merge(d, count_extremes)
+  summarise(mean_count = mean(count))
+d <- merge(d, means)
+# Because we are looking at means, we only take one representative.
+d <- subset(d, t1 < t2)
+
 
 # Plot in terms of kappa.
-p <- ggplot(d, aes(x=time, y=mean_count, ymin=min_count, ymax=max_count, group=num, color=kappa, fill=kappa)) 
-p <- p + geom_ribbon() + geom_line()
-p <- p + scale_x_continuous(limits=c(0,7)) + scale_y_log10()
+p <- ggplot(d, aes(x=time, y=mean_count, group=num, color=kappa, fill=kappa))
+p <- p + geom_line()
+p <- p + scale_x_continuous(limits=c(0,4)) + scale_y_log10()
 p + facet_grid(dist ~ t1_deg, scales="free")
+
+# Plot showing exponential part of drop.
+p <- ggplot(d, aes(x=time, y=dens, group=num, color=t1_deg)) + geom_smooth()
+p <- p + scale_x_continuous(limits=c(0,500)) + scale_y_log10()
+p + facet_grid(. ~ dist, scales="free")
+
+p + facet_grid(t1_deg ~ dist)
+
+p + facet_grid(t1_deg ~ t2_deg)
+
 
 # Plot showing exponential part of drop.
 p <- ggplot(sub_d, aes(x=time, y=dens, group=num, color=factor(t1_deg))) + geom_line()
@@ -68,5 +101,3 @@ p + facet_grid(t1_deg ~ t2_deg)
 subset(sub_d, num==66)
 
 d <- subset(d, num==10)
-
-
