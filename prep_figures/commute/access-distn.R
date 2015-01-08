@@ -29,7 +29,7 @@ data <- "123_456-1v5c/"
 
 sub_n_taxa <- function(s) sub("NTAXA", as.character(n_taxa), s)
 data_of_num <- function(n) {
-  cat(n)
+  cat(paste0(n, ", "))
   df <- grab_data(paste0(as.character(n_taxa),"-taxon-access-distn/",data,as.character(n),".tab"))
   df$num <- as.numeric(n)
   df
@@ -62,8 +62,8 @@ expectations <- d %>%
   summarise(expectation = sum(time*dens))
 expectations <- merge(expectations, tangles, by="num")
 
-p <- ggplot(expectations, aes(x=expectation))
-p <- p + geom_histogram(binwidth=1) + labs(title=paste(n_taxa, "taxon access times"))
+p <- ggplot(expectations, aes(x=expectation, fill=factor(dist)))
+p <- p + geom_bar(binwidth=0.5) + labs(title=paste(n_taxa, "taxon access times"))
 p <- p + facet_grid(t1_deg ~ t2_deg) + scale_x_continuous(labels = function (x) floor(x))
 p + theme(panel.grid.minor =   element_blank(),
           panel.grid.major =   element_line(size=1.))
