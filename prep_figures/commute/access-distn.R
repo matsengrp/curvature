@@ -24,8 +24,8 @@ original_6_taxon <-  c(662,665,795)
 all_6_taxon <- 1:807
 n_taxa <- 6; favorite_tangles <- all_6_taxon
 data <- "equal/"
-data <- "123_456-equal/"
 data <- "123_456-1v5c/"
+data <- "123_456-equal/"
 
 sub_n_taxa <- function(s) sub("NTAXA", as.character(n_taxa), s)
 data_of_num <- function(n) {
@@ -34,7 +34,6 @@ data_of_num <- function(n) {
   df$num <- as.numeric(n)
   df
 }
-
 
 adjacency <- read.csv(sub_n_taxa("../../rspr/matrix_NTAXA"), header=FALSE)
 degree = rowSums(adjacency)
@@ -65,9 +64,9 @@ expectations <- merge(expectations, tangles, by="num")
 p <- ggplot(expectations, aes(x=expectation, fill=factor(dist)))
 p <- p + geom_bar(binwidth=0.5) + labs(title=paste(n_taxa, "taxon access times"))
 p <- p + facet_grid(t1_deg ~ t2_deg) + scale_x_continuous(labels = function (x) floor(x))
-p + theme(panel.grid.minor =   element_blank(),
-          panel.grid.major =   element_line(size=1.))
-ggsave(paste0(n_taxa,"-taxon-access-by-degree.svg"))
+p <- p + theme(panel.grid.minor =   element_blank(),
+               panel.grid.major =   element_line(size=1.))
+ggsave(paste0(n_taxa,"-taxon-access-by-degree.svg"), p)
 
 # There are two entries for each (num, time) pair for the two directions,
 # assuming as we do that the trees are distinct.
