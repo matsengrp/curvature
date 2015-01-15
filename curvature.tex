@@ -82,6 +82,30 @@
 
 \section{Introduction}
 
+\section{Curvature}
+
+Note that we have to write out simple random walk versus degree-informed.
+Can we just say that degree differences are small relative to $n$? Is that true?
+
+
+\begin{proposition}
+Fix a positive integer $k$ and let $R$ be a tree with $k$ leaves.
+Let $\{T_n \mid n > k\}$ be a sequence of phylogenetic trees all containing $R$, and let $\{S_n \mid n > k\}$ be the same sequence but with $R$ cut off and attached at a different location for each $T_n$.
+Then $\lim_{n \rightarrow \infty} \kappa(T_n, S_n) = 0$ on the SPR graph.
+\end{proposition}
+\begin{proof}
+First we show that $\kappa$ is bounded above by $(q_n+3(2k-1)(O(n)))/q_n$, where $q_n$ is the number of neighbors of $T_n$ (OK, this gets messy when $T_n$ and $S_n$ have different numbers of neighbors).
+Let $T'_n$ be any SPR move away from $T_n$ where the SPR move does not cut $R$ into two and doesn't exclusively move $R$.
+In the mass transport, we pair $T'_n$ with $S'_n$, which is the same move applied to $S_n$ (need to show this makes sense), such that $\dspr(T'_n, S'_n) = 1$.
+This works for every tree that doesn't have $R$ cut in two.
+The number of trees that \emph{do} have $R$ cut in two or moved by its root is $(2k-1)(O(n))$, and their distance is at most 3.
+
+A lower bound is also available because that we can't do better than distance 1 for all $(T'_n, S'_n)$ pairs.
+If we completely ignore the $(2k-1)(O(n))$ trees that cut $R$ in two, then we get a lower bound of $(q_n-(2k-1)(O(n)))/q_n$.
+
+The proposition follows because $q_n$ is quadratic in $n$.
+\end{proof}
+
 
 \section{$k$-tubes}
 
