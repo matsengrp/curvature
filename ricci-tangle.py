@@ -1,14 +1,12 @@
 #!/usr/bin/env sage
 
 import argparse
-import math
-import time
 import sys
 from multiprocessing import Pool
 from sage.all import *
-load("tree-fun.py")
+load("gricci/all-hail-sage/tree-fun.py")
 load("gricci/code.py")
-load("gricci/nb-fun.py")
+load("gricci/all-hail-sage/nb-fun.py")
 
 
 parser = argparse.ArgumentParser(description='ricci curvature of tangles',
