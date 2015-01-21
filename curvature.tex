@@ -52,6 +52,7 @@
 \newattribute{OmegaOf}{\Omega}
 \newattribute{ohOf}{\mathrm{o}}
 \newattribute{omegaOf}{\omega}
+\newattribute{lca}{\text{LCA}}
 %\newattribute{min}{\text{min}}
 %\newattribute{max}{\text{max}}
 
@@ -81,6 +82,33 @@
 
 
 \section{Introduction}
+
+\section{Rooted SPR Neighborhoods}
+
+\begin{lemma}
+Let $T$ and $S$ be phylogenetic trees such that $\dspr{T,S}=1$, that is $T$ can be transformed into $S$ by moving a subtree $R$ with $k$ leaves.
+The corresponding SPR operation moves $R$ from its position adjacent to subtree $U$ to a location adjacent to subtree $V$.
+If multiple SPR moves transform $T$ into $S$ (i.e. an NNI\todo{lemma}), then assume that $V$ is the aunt of $R$ in $T$.
+Let $L$ be the $\lca{U,V}$ in $T$.
+Let $a$ be the distance from $U$ to $L$ in $T$, and $b$ the distance from $V$ to $L$ in $T$.
+Let $i$ be the number of leaves in $U$, excluding any leaves of $R$, and $j$ be the number of leaves in $V$, excluding any leaves of $R$.
+Then the degree of $T$ and $S$ differs by:
+$$(2k-1)(a-b-1) + 2(i - j).$$
+
+\end{lemma}
+\begin{proof}
+
+Proof strategy:
+
+Gain $(2k-1)(a-2)$ moves from the $a$-path to $R$.
+
+Lose $(2k-1)(b-1)$ moves from the $b$-path to $R$.
+
+Gain $2(i-j)$ moves involving the parent of $R$ to $U$ and $V$.
+
+\end{proof}
+
+
 
 \section{Curvature}
 
