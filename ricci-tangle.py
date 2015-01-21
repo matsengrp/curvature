@@ -31,7 +31,7 @@ def process_line(line):
     if t1_idx == t2_idx:
         row.extend([0, "-"])
     else:
-        calc = ric_unif_rw(g, source=t1_idx, target=t2_idx)
+        calc = ricci('lazy_unif', g, source=t1_idx, target=t2_idx)
         row.extend([calc.dist, calc.ric])
     return row
 
