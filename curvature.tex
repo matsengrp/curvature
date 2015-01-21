@@ -88,24 +88,30 @@
 \begin{lemma}
 Let $T$ and $S$ be phylogenetic trees such that $\dspr{T,S}=1$, that is $T$ can be transformed into $S$ by moving a subtree $R$ with $k$ leaves.
 The corresponding SPR operation moves $R$ from its position adjacent to subtree $U$ to a location adjacent to subtree $V$.
-If multiple SPR moves transform $T$ into $S$ (i.e. an NNI\todo{lemma}), then assume that $V$ is the aunt of $R$ in $T$.
 Let $L$ be the $\lca{U,V}$ in $T$.
-Let $a$ be the distance from $U$ to $L$ in $T$, and $b$ the distance from $V$ to $L$ in $T$.
+Let $a$ be the number of intermediate nodes on the path from the parent of $R$ to $L$ in $T$ excluding endpoints.
+Similarly, let $b$ be the number of intermediate nodes on the path from $V$ to $L$ in $T$, excluding endpoints.
 Let $i$ be the number of leaves in $U$, excluding any leaves of $R$, and $j$ be the number of leaves in $V$, excluding any leaves of $R$.
 Then the degree of $T$ and $S$ differs by:
-$$(2k-1)(a-b-1) + 2(i - j).$$
+$$2(k(a-b) + i - j).$$
 
 \end{lemma}
 \begin{proof}
 
-Proof strategy:
+Observe that the set of permissible moves changes after the movement of $R$ in four different ways: 1) Subtrees on the path from $U$ to $L$ may now be moved within $R$ and its newly introduced parent, 2) Subtrees on the path from $V$ to $L$ may no longer be moved within $R$ and its parent, 3) $R$'s parent subtree may now be moved within $U$, and 4) $R$'s parent subtree may no longer be moved within $V$.
+Note that no additional moves are introduced are blocked by the SPR operation.
 
-Gain $(2k-1)(a-2)$ moves from the $a$-path to $R$.
+In the first case, there are $a$ subtrees that can now be moved to the $2k$ positions within $R$, including its newly introduced parent node, for a total gain of $2ka$ moves.
+Similarly, we lose $2kb$ moves in the second case.
 
-Lose $(2k-1)(b-1)$ moves from the $b$-path to $R$.
+In the third case, $R's$ parent subtree may now make $2(i-1)$ moves within $U$.
+Similarly, we lose $2(j-1)$ moves in the fourth case.
 
-Gain $2(i-j)$ moves involving the parent of $R$ to $U$ and $V$.
-
+The difference in SPR degree is thus:
+\begin{align*}
+&2ka - 2kb + 2(i-1) - 2(j-1) \\
+=\  &2(k(a-b) + i - j)
+\end{align*}
 \end{proof}
 
 
