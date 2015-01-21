@@ -18,6 +18,8 @@ parser.add_argument('--graph', dest='graph_path',
                     type=str, help='Path to graph in SAGE object format.')
 parser.add_argument('--out', dest='out_path',
                     type=str, help='Output path.')
+parser.add_argument('--walk', choices=['lazy_unif', 'unif_prior_mh'],
+                    default='lazy_unif', help='What random walk to use.')
 args = parser.parse_args()
 assert(os.path.exists(args.idx_path))
 assert(os.path.exists(args.graph_path))
@@ -31,7 +33,7 @@ def process_line(line):
     if t1_idx == t2_idx:
         row.extend([0, "-"])
     else:
-        calc = ricci('lazy_unif', g, source=t1_idx, target=t2_idx)
+        calc = ricci(args.walk, g, source=t1_idx, target=t2_idx)
         row.extend([calc.dist, calc.ric])
     return row
 
