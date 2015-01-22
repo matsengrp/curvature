@@ -9,7 +9,8 @@ get_results <- function(path) {
     d$row = 1:nrow(d)
     d <- subset(d, kappa_str != "-")
     d$kappa <- sapply(d$kappa_str, function(s) eval(parse(text=s)))
-    d$info= paste(d$t1_nwk, d$t2_nwk, paste("kappa:", d$kappa_str), sep="<br />")
+    d$info= paste(d$t1_nwk, d$t2_nwk, sep="<br />")
+    # d$info= paste(d$t1_nwk, d$t2_nwk, paste("kappa:", d$kappa_str), sep="<br />")
     d$dist_jitter = d$dist + runif(nrow(d), min = -0.35, max = 0.35)
 
     # Tree shape information.

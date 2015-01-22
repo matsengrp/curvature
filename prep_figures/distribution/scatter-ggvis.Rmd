@@ -11,8 +11,21 @@ library(ape)
 library(apTreeshape)
 
 source("process.R")
-d <- get_results("../../results-rspr/ricci4.mat")
-d <- sample(d)  # Shuffle rows of d.
+
+get_df <- function(n_taxa, walk) {
+  d <- get_results(paste0("../../results-rspr/", walk, "/ricci", n_taxa,".mat"))
+  d <- sample(d)  # Shuffle rows of d.
+  d$n_taxa <- n_taxa
+  d
+}
+
+n_taxa <- 6
+
+walk <- "unif_prior_mh"
+walk <- "lazy_unif"
+d <- get_df(n_taxa, walk)
+
+props <- axis_props(labels=list(fontSize=16), title=list(fontSize=24))
 
 d %>%
   ggvis(x = ~kappa, y = ~dist_jitter) %>%
@@ -20,11 +33,13 @@ d %>%
   layer_points(size = 12, fill = ~t1_nwk) %>%
 #  layer_points(size = ~mult, fill = ~t1_nwk, stroke = ~t2_idx) %>%
   # A dummy layer so that we can use text in the tooltip.
-  # layer_text(text := ~info, fontSize := 0) %>%
-  add_axis("x", grid = FALSE) %>%
-  add_axis("y", grid = FALSE, values = 1:3) %>%
-  add_legend(c("fill"), properties=legend_props(legend=list(y=0))) 
+  layer_text(text := ~info, fontSize := 0) %>%
+  add_axis("x", title = "κ", grid = FALSE, properties=props) %>%
+  add_axis("y", title = "distance", grid = FALSE, values=1:4, properties=props) %>%
+#  add_legend(c("fill"), properties=legend_props(legend=list(y=0))) %>%
   #add_legend(c("stroke"), properties=legend_props(legend=list(y=100))) %>%
   #add_legend(c("size"), properties=legend_props(legend=list(y=200))) %>%
-  #add_tooltip(function(df) df$info)
+  export_svg(paste0("ricci", n_taxa, "-", walk,".svg"))
+#  add_tooltip(function(df) df$info)
+#  function (x) x # null
 ```
