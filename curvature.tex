@@ -86,6 +86,7 @@
 \section{Rooted SPR Neighborhoods}
 
 \begin{lemma}
+\label{lem:degree_change}
 Let $T$ and $S$ be phylogenetic trees such that $\dspr{T,S}=1$, that is $T$ can be transformed into $S$ by moving a subtree $R$ with $k$ leaves.
 The corresponding SPR operation moves $R$ from its position adjacent to subtree $U$ to a location adjacent to subtree $V$.
 Let $L$ be the $\lca{U,V}$ in $T$.
@@ -99,7 +100,7 @@ $$2(k(a-b) + i - j).$$
 \begin{proof}
 
 Observe that the set of permissible moves changes after the movement of $R$ in four different ways: 1) Subtrees on the path from $U$ to $L$ may now be moved within $R$ and its newly introduced parent, 2) Subtrees on the path from $V$ to $L$ may no longer be moved within $R$ and its parent, 3) $R$'s parent subtree may now be moved within $U$, and 4) $R$'s parent subtree may no longer be moved within $V$.
-Note that no additional moves are introduced are blocked by the SPR operation.
+Note that no additional moves are introduced or blocked by the SPR operation.
 
 In the first case, there are $a$ subtrees that can now be moved to the $2k$ positions within $R$, including its newly introduced parent node, for a total gain of $2ka$ moves.
 Similarly, we lose $2kb$ moves in the second case.
@@ -114,9 +115,24 @@ The difference in SPR degree is thus:
 \end{align*}
 \end{proof}
 
+\begin{corollary}
+\label{cor:paired_neighbors}
+Let the degrees of $T$ and $S$ be $q$ and $p$ respectively.
+Then at least $o = q - 2kb - 2(j-1) = p - 2ka - 2(i-1)$ trees in the neighborhood of $T$ can be paired with $o$ trees in the neighborhood of $S$ such that:
+\begin{enumerate}
+\item $\dspr{T',S'} = 1$ for each $(T',S')$ pair, and
+\item each neighbor of $T$ and each neighbor of $S$ is paired to exactly one tree.
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+By the same arguments as in the proof of Lemma~\ref{lem:degree_change}, $o$ SPR moves can be applied to $T$ and $S$ with the same source and target nodes.
+For each such $(T',S')$ pair, we can move $R$ in either tree to obtain the other member of the pair.
+\end{proof}
+
 
 
 \section{Curvature}
+
 
 Note that we have to write out simple random walk versus degree-informed.
 Can we just say that degree differences are small relative to $n$? Is that true?
@@ -128,16 +144,28 @@ Let $\{T_n \mid n > k\}$ be a sequence of phylogenetic trees all containing $R$,
 Then $\lim_{n \rightarrow \infty} \kappa(T_n, S_n) = 0$ on the SPR graph.
 \end{proposition}
 \begin{proof}
-First we show that $\kappa$ is bounded above by $(q_n+3(2k-1)(O(n)))/q_n$, where $q_n$ is the number of neighbors of $T_n$ (OK, this gets messy when $T_n$ and $S_n$ have different numbers of neighbors).
-Let $T'_n$ be any SPR move away from $T_n$ where the SPR move does not cut $R$ into two and doesn't exclusively move $R$.
-In the mass transport, we pair $T'_n$ with $S'_n$, which is the same move applied to $S_n$ (need to show this makes sense), such that $\dspr(T'_n, S'_n) = 1$.
-This works for every tree that doesn't have $R$ cut in two.
-The number of trees that \emph{do} have $R$ cut in two or moved by its root is $(2k-1)(O(n))$, and their distance is at most 3.
+First we show that $\kappa$ is bounded above by $(q_n+3(2k-1)(\OhOf{n}))/q_n$, where $q_n$ is the number of neighbors of $T_n$ and $S_n$.
+Let $T'_n$ be any of the $o$ SPR moves from a pairing following Corollary~\ref{cor:paired_neighbors}.
+In the mass transport, we pair $T'_n$ with $S'_n$, which is the same move applied to $S_n$ such that $\dspr{T'_n, S'_n} = 1$.
+The number of trees unmatched by this pairing is $\OhOf{kn}$, and their distance is at most 3.
+Thus, $\kappa$ is bounded above by $(q_n + 2\OhOf{kn}) / q_n$.
 
-A lower bound is also available because that we can't do better than distance 1 for all $(T'_n, S'_n)$ pairs.
-If we completely ignore the $(2k-1)(O(n))$ trees that cut $R$ in two, then we get a lower bound of $(q_n-(2k-1)(O(n)))/q_n$.
+A lower bound is also available because we can't do better than distance 1 for all trees unless they move $R$.
+There are only $\OhOf{n}$ pairs with trees that move $R$.
+By ignoring these trees we get a lower bound of $(q_n -(\OhOf{n}))/q_n$.
 
 The proposition follows because $q_n$ is quadratic in $n$.
+
+Now, we prove the proposition when the number of neighbors differ.
+Let $q_n$ and $p_n$ be the number of neighbors of $T_n$ and $S_n$, respectively.
+Assume without loss of generality that $q_n < p_n$.
+By Lemma~\ref{lem:degree_change}, $p_n - q_n = 2(k(a-b) + i - j)$, where $a,b,i,j < n$.
+Thus, $p_n - q_n = \OhOf{kn}$.
+We again pair $T'_n$ with $S'_n$ such that $\dspr{T'_n, S'_n}=1$ but, as $p_n > q_n$ we can only account for at most $q_n / p_n$ of the mass directly and may have to move the $(p_n - q_n) / p_n$ remainder to trees at distance at most 3.
+Thus, $\kappa$ is bounded above by $(q_n + 3\OhOf{kn}) / p_n = (p_n + 2\OhOf{kn}) / p_n$.
+We again bound $\kappa$ from below with $(q_n - \OhOf{n}) / q_n$ by ignoring the mass in trees that may overlap.
+The proposition again follows because $q_n$ is quadratic in $n$.
+
 \end{proof}
 
 
