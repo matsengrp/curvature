@@ -3,6 +3,7 @@
 \usepackage{amsmath}
 \usepackage{ifthen}
 \usepackage{todonotes}
+\usepackage[notref,notcite]{showkeys} % show keys for eqs, etc.
 
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}[theorem]{Lemma}
@@ -61,7 +62,7 @@
 
 
 \begin{document}
-\title{Ricci curvature of the phylogenetic subtree-prune-regraft graph}
+\title{Ricci curvature of the rooted phylogenetic subtree-prune-regraft graph}
 \author[Whidden]{Christopher Whidden}
 \author[Matsen]{Frederick Matsen}
 \address{}
@@ -83,6 +84,12 @@
 
 \section{Introduction}
 
+This isn't quite the right graph to be looking at (rooted).
+
+We are talking about rooted.
+Parent and parent subtree.
+Define adjacency of subtrees.
+
 \section{Rooted SPR Neighborhoods}
 
 \begin{lemma}
@@ -90,35 +97,35 @@
 Let $T$ and $S$ be phylogenetic trees such that $\dspr{T,S}=1$, that is $T$ can be transformed into $S$ by moving a subtree $R$ with $k$ leaves.
 The corresponding SPR operation moves $R$ from its position adjacent to subtree $U$ to a location adjacent to subtree $V$.
 Let $L$ be the $\lca{U,V}$ in $T$.
-Let $a$ be the number of intermediate nodes on the path from the parent of $R$ to $L$ in $T$ excluding endpoints.
+Let $a$ be the number of intermediate nodes on the path from the parent of $R$ to $L$ in $T$, excluding endpoints.
 Similarly, let $b$ be the number of intermediate nodes on the path from $V$ to $L$ in $T$, excluding endpoints.
 Let $i$ be the number of leaves in $U$, excluding any leaves of $R$, and $j$ be the number of leaves in $V$, excluding any leaves of $R$.
-Then the degree of $T$ and $S$ differs by:
-$$2(k(a-b) + i - j).$$
+Then the degrees of $T$ and $S$ differ by:
+$$2\left(k(a-b) + i - j\right).$$
 
 \end{lemma}
 \begin{proof}
 
-Observe that the set of permissible moves changes after the movement of $R$ in four different ways: 1) Subtrees on the path from $U$ to $L$ may now be moved within $R$ and its newly introduced parent, 2) Subtrees on the path from $V$ to $L$ may no longer be moved within $R$ and its parent, 3) $R$'s parent subtree may now be moved within $U$, and 4) $R$'s parent subtree may no longer be moved within $V$.
-Note that no additional moves are introduced or blocked by the SPR operation.
+Observe that the set of permissible SPR moves changes after the movement of $R$ in four different ways:
+1) Subtrees including vertices on the path from $U$ to $L$ may now be moved into $R$ and its newly introduced parent node,
+2) Subtrees including vertices on the path from $V$ to $L$ may no longer be moved into $R$ and its parent node,
+3) $R$'s parent subtree may now be moved into $U$, and
+4) $R$'s parent subtree may no longer be moved into $V$.
+No additional moves are introduced or blocked by the original SPR operation on $R$.
 
-In the first case, there are $a$ subtrees that can now be moved to the $2k$ positions within $R$, including its newly introduced parent node, for a total gain of $2ka$ moves.
+Recall that a rooted tree with $k$ leaves has $2(k-1)$ internal edges (note that we are excluding any ``root edge'' in this number, so this tree has a degree two root).
+In the first case there are $a$ subtrees that can now be moved to the $2k$ positions into $R$ (including its newly introduced parent node and one of the newly subdivided root edge of $V$) for a total gain of $2ka$ distinct moves.
 Similarly, we lose $2kb$ moves in the second case.
-
-In the third case, $R's$ parent subtree may now make $2(i-1)$ moves within $U$.
+In the third case, $R's$ parent subtree may now make $2(i-1)$ moves into $U$.
 Similarly, we lose $2(j-1)$ moves in the fourth case.
 
-The difference in SPR degree is thus:
-\begin{align*}
-&2ka - 2kb + 2(i-1) - 2(j-1) \\
-=\  &2(k(a-b) + i - j)
-\end{align*}
+The difference in SPR degree is thus $2ka - 2kb + 2(i-1) - 2(j-1)$ as claimed.
 \end{proof}
 
 \begin{corollary}
 \label{cor:paired_neighbors}
-Let the degrees of $T$ and $S$ be $q$ and $p$ respectively.
-Then at least $o = q - 2kb - 2(j-1) = p - 2ka - 2(i-1)$ trees in the neighborhood of $T$ can be paired with $o$ trees in the neighborhood of $S$ such that:
+Continuing with the setting and notation in Lemma~\ref{lem:degree_change}, let the degrees of $T$ and $S$ nodes in the SPR graph be $q$ and $p$ respectively.
+Then at least $o := q - 2kb - 2(j-1) = p - 2ka - 2(i-1)$ trees in the neighborhood of $T$ can be paired with $o$ trees in the neighborhood of $S$ such that:
 \begin{enumerate}
 \item $\dspr{T',S'} = 1$ for each $(T',S')$ pair, and
 \item each neighbor of $T$ and each neighbor of $S$ is paired to exactly one tree.
@@ -132,38 +139,40 @@ For each such $(T',S')$ pair, we can move $R$ in either tree to obtain the other
 
 
 \section{Curvature}
-
-
 Note that we have to write out simple random walk versus degree-informed.
 Can we just say that degree differences are small relative to $n$? Is that true?
 
+For the purposes of this paper, $\kappa_n$ is curvature on the $n$-taxon rSPR graph and $W_{1,n}$ is the corresponding mass transport term.
 
 \begin{proposition}
 Fix a positive integer $k$ and let $R$ be a tree with $k$ leaves.
-Let $\{T_n \mid n > k\}$ be a sequence of phylogenetic trees all containing $R$, and let $\{S_n \mid n > k\}$ be the same sequence but with $R$ cut off and attached at a different location for each $T_n$.
-Then $\lim_{n \rightarrow \infty} \kappa(T_n, S_n) = 0$ on the SPR graph.
+Let $\{T_n \mid n > k\}$ be a sequence of phylogenetic trees all containing $R$, and let $\{S_n \mid n > k\}$ be the same sequence $T_n$ but with $R$ cut off and attached at a different location.
+Then $\lim_{n \rightarrow \infty} \kappa_n(T_n, S_n) = 0$ for \todo{TBA} random walk on the SPR graph.
 \end{proposition}
 \begin{proof}
-First we show that $\kappa$ is bounded above by $(q_n+3(2k-1)(\OhOf{n}))/q_n$, where $q_n$ is the number of neighbors of $T_n$ and $S_n$.
+Because $d(T_n, S_n) = 1$, we will prove the proposition by showing that the mass transport term $W_{1,n}$ sits between two bounds with limit 1 as $n$ goes to infinity.
+
+To start we demonstrate the proposition in the case that $T_n$ and $S_n$ have the same number of neighbors.
+First we show that $W_{1,n}$ is bounded above by $(q_n+3(2k-1)(\OhOf{n}))/q_n$, where $q_n$ is the number of neighbors of $T_n$ and $S_n$.
 Let $T'_n$ be any of the $o$ SPR moves from a pairing following Corollary~\ref{cor:paired_neighbors}.
-In the mass transport, we pair $T'_n$ with $S'_n$, which is the same move applied to $S_n$ such that $\dspr{T'_n, S'_n} = 1$.
+In the mass transport, we pair $T'_n$ with $S'_n$, which results from the same move applied to $S_n$ such that $\dspr{T'_n, S'_n} = 1$.
 The number of trees unmatched by this pairing is $\OhOf{kn}$, and their distance is at most 3.
-Thus, $\kappa$ is bounded above by $(q_n + 2\OhOf{kn}) / q_n$.
+Thus, $W_{1,n}$ is bounded above by $(q_n + 2\OhOf{kn}) / q_n$.
 
 A lower bound is also available because we can't do better than distance 1 for all trees unless they move $R$.
 There are only $\OhOf{n}$ pairs with trees that move $R$.
-By ignoring these trees we get a lower bound of $(q_n -(\OhOf{n}))/q_n$.
+By ignoring these trees we get a lower bound of $(q_n -(\OhOf{n}))/q_n$ for $W_{1,n}$.
 
-The proposition follows because $q_n$ is quadratic in $n$.
+The desired control of $W_{1,n}$ is thus obtained because $q_n$ is quadratic in $n$.
 
 Now, we prove the proposition when the number of neighbors differ.
 Let $q_n$ and $p_n$ be the number of neighbors of $T_n$ and $S_n$, respectively.
 Assume without loss of generality that $q_n < p_n$.
 By Lemma~\ref{lem:degree_change}, $p_n - q_n = 2(k(a-b) + i - j)$, where $a,b,i,j < n$.
 Thus, $p_n - q_n = \OhOf{kn}$.
-We again pair $T'_n$ with $S'_n$ such that $\dspr{T'_n, S'_n}=1$ but, as $p_n > q_n$ we can only account for at most $q_n / p_n$ of the mass directly and may have to move the $(p_n - q_n) / p_n$ remainder to trees at distance at most 3.
-Thus, $\kappa$ is bounded above by $(q_n + 3\OhOf{kn}) / p_n = (p_n + 2\OhOf{kn}) / p_n$.
-We again bound $\kappa$ from below with $(q_n - \OhOf{n}) / q_n$ by ignoring the mass in trees that may overlap.
+We again pair $T'_n$ with $S'_n$ such that $\dspr{T'_n, S'_n}=1$ but, as $p_n > q_n$ we can only account for at most $q_n / p_n$ of the mass directly and may have to move the $(p_n - q_n) / p_n$ remainder to trees a distance at most 3.
+Thus, $W_{1,n}$ is bounded above by $(q_n + 3\OhOf{kn}) / p_n = (p_n + 2\OhOf{kn}) / p_n$.
+We again bound $W_{1,n}$ from below with $(q_n - \OhOf{n}) / q_n$ by ignoring the mass in trees that may overlap.
 The proposition again follows because $q_n$ is quadratic in $n$.
 
 \end{proof}
