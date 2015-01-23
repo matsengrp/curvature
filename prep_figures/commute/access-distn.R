@@ -2,7 +2,7 @@ library(dplyr)
 library(ggplot2)
 library(magrittr)
 
-theme_set(theme_bw(16))
+theme_set(theme_bw(22))
 
 grab_data <- function(fname) {
   df <- read.table(fname, stringsAsFactors = FALSE)
@@ -38,7 +38,7 @@ data_of_num <- function(n) {
 adjacency <- read.csv(sub_n_taxa("../../rspr/matrix_NTAXA"), header=FALSE)
 degree = rowSums(adjacency)
 tangles <- read.table(
-    sub_n_taxa("../../results-rspr/ricciNTAXA.mat"),
+    sub_n_taxa("../../results-rspr/unif_prior_mh/ricciNTAXA.mat"),
     stringsAsFactors = FALSE)
 colnames(tangles) <- c("t1_idx", "t2_idx", "t1_nwk", "t2_nwk", "coset", "dist", "kappa_str")
 tangles$t1_deg <- sapply(tangles$t1_idx, function(i) degree[i+1]) # tangleX.idx uses 0 indexing.
@@ -66,6 +66,7 @@ p <- p + geom_bar(binwidth=0.5) + labs(title=paste(n_taxa, "taxon access times")
 p <- p + facet_grid(t1_deg ~ t2_deg) + scale_x_continuous(labels = function (x) floor(x))
 p <- p + theme(panel.grid.minor =   element_blank(),
                panel.grid.major =   element_line(size=1.))
+p <- p + scale_fill_discrete("distance")
 ggsave(paste0(n_taxa,"-taxon-access-by-degree.svg"), p)
 
 # There are two entries for each (num, time) pair for the two directions,
@@ -76,34 +77,29 @@ ggsave(paste0(n_taxa,"-taxon-access-by-degree.svg"), p)
 means <- d %>%
   group_by(num, time) %>%
   summarise(mean_count = mean(count))
+means$mean_dens <- means$mean_count / sum(means$mean_count)
 d <- merge(d, means)
 # Because we are looking at means, we only take one representative.
 d <- subset(d, t1 < t2)
 
+make_lims <- function(max_index, column) {
+  relevants <- d[d$time %in% 0:max_index, colnames(d) == column]
+  lims <- c(min(relevants), max(relevants))
+}
 
 # Plot in terms of kappa.
-p <- ggplot(d, aes(x=time, y=mean_count, group=num, color=kappa, fill=kappa))
+max_index <- 7
+p <- ggplot(d, aes(x=time, y=mean_dens, group=num, color=kappa, fill=kappa))
 p <- p + geom_line()
-p <- p + scale_x_continuous(limits=c(0,4)) + scale_y_log10()
-p + facet_grid(dist ~ t1_deg, scales="free")
+p <- p + scale_x_continuous(limits=c(0,max_index))
+p <- p + scale_y_continuous("density", breaks=c())
+# p <- p + scale_y_continuous("density", limits=make_lims(max_index, "mean_dens"), breaks=c())
+p <- p + facet_grid(dist ~ t1_deg)
+ggsave(paste0(as.character(n_taxa),"-taxon-access-time-kappa-short.svg"), p)
 
-# Plot showing exponential part of drop.
-p <- ggplot(d, aes(x=time, y=dens, group=num, color=t1_deg)) + geom_smooth()
-p <- p + scale_x_continuous(limits=c(0,500)) + scale_y_log10()
-p + facet_grid(. ~ dist, scales="free")
+# Plot showing long time info.
+p <- ggplot(d, aes(x=time, y=mean_dens, group=num, color=kappa)) + geom_line()
+p <- p + scale_x_continuous(limits=c(0,500)) + scale_y_continuous("density", breaks=c())
+p <- p + facet_grid(dist ~ t1_deg, scales="free")
+ggsave(paste0(as.character(n_taxa),"-taxon-access-time-kappa-long.svg"), p, width=9.5)
 
-p + facet_grid(t1_deg ~ dist)
-
-p + facet_grid(t1_deg ~ t2_deg)
-
-
-# Plot showing exponential part of drop.
-p <- ggplot(sub_d, aes(x=time, y=dens, group=num, color=factor(t1_deg))) + geom_line()
-p <- p + scale_x_continuous(limits=c(0,500)) + scale_y_log10()
-p + facet_grid(. ~ dist, scales="free")
-
-p + facet_grid(t1_deg ~ t2_deg)
-
-subset(sub_d, num==66)
-
-d <- subset(d, num==10)
