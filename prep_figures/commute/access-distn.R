@@ -88,10 +88,10 @@ make_lims <- function(max_index, column) {
 }
 
 # Plot in terms of kappa.
-max_index <- 7
+max_index <- 5
 p <- ggplot(d, aes(x=time, y=mean_dens, group=num, color=kappa, fill=kappa))
 p <- p + geom_line()
-p <- p + scale_x_continuous(limits=c(0,max_index))
+p <- p + scale_x_continuous(limits=c(1,max_index))
 p <- p + scale_y_continuous("density", breaks=c())
 # p <- p + scale_y_continuous("density", limits=make_lims(max_index, "mean_dens"), breaks=c())
 p <- p + facet_grid(dist ~ t1_deg)
@@ -99,7 +99,8 @@ ggsave(paste0(as.character(n_taxa),"-taxon-access-time-kappa-short.svg"), p)
 
 # Plot showing long time info.
 p <- ggplot(d, aes(x=time, y=mean_dens, group=num, color=kappa)) + geom_line()
-p <- p + scale_x_continuous(limits=c(0,500)) + scale_y_continuous("density", breaks=c())
+p <- p + scale_x_continuous(limits=c(1,2500)) + scale_y_continuous("density", breaks=c())
 p <- p + facet_grid(dist ~ t1_deg, scales="free")
-ggsave(paste0(as.character(n_taxa),"-taxon-access-time-kappa-long.svg"), p, width=9.5)
+p <- p + theme(axis.text.x=element_text(angle=-90))
+ggsave(paste0(as.character(n_taxa),"-taxon-access-time-kappa-long.png"), p, width=9.5)
 
