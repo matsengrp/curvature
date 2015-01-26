@@ -12,25 +12,18 @@ library(apTreeshape)
 
 source("process.R")
 
-get_df <- function(n_taxa, walk) {
-  d <- get_results(paste0("../../results-rspr/", walk, "/ricci", n_taxa,".mat"))
-  d <- sample(d)  # Shuffle rows of d.
-  d$n_taxa <- n_taxa
-  d
-}
-
-n_taxa <- 6
-
-walk <- "unif_prior_mh"
-walk <- "lazy_unif"
-d <- get_df(n_taxa, walk)
-
 props <- axis_props(labels=list(fontSize=16), title=list(fontSize=24))
+
+n_taxa <- 7
+# walk <- "lazy_unif"
+walk <- "unif_prior_mh"
+
+d <- get_results(paste0("../../results-rspr/", walk, "/ricci", n_taxa,".mat"))
 
 d %>%
   ggvis(x = ~kappa, y = ~dist_jitter) %>%
 #  layer_points(size = 5, fill = ~t1_nwk, stroke = ~t2_idx, strokeOpacity := 0) %>%
-  layer_points(size = 12, fill = ~t1_nwk) %>%
+  layer_points(size = 12, fill = ~avg_colless) %>%
 #  layer_points(size = ~mult, fill = ~t1_nwk, stroke = ~t2_idx) %>%
   # A dummy layer so that we can use text in the tooltip.
   layer_text(text := ~info, fontSize := 0) %>%
@@ -39,7 +32,6 @@ d %>%
 #  add_legend(c("fill"), properties=legend_props(legend=list(y=0))) %>%
   #add_legend(c("stroke"), properties=legend_props(legend=list(y=100))) %>%
   #add_legend(c("size"), properties=legend_props(legend=list(y=200))) %>%
-  export_svg(paste0("ricci", n_taxa, "-", walk,".svg"))
 #  add_tooltip(function(df) df$info)
-#  function (x) x # null
+  function (x) x # null
 ```
