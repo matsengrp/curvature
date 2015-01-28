@@ -1,14 +1,22 @@
 #!/bin/sh
-set -e
-set -u
 
-test -z $1 && exit 1
+if [ $# -ne 2 ]
+then
+  echo "usage: $0 walk n_leaves"
+  exit
+fi
 
-# walk=lurw
-walk=upmh
+walk=$1
+n_leaves=$2
+
+if [ $walk != "lurw" ] && [ $walk != "upmh" ]
+then
+  echo '`walk` must be either "lurw" or "upmh"'
+  exit
+fi
+
 mkdir -p results-rspr/$walk
 
-n_leaves=$1
 
 idx_path="tangle/rooted-symmetric/tangle$n_leaves.idx"
 out_path="results-rspr/$walk/ricci$n_leaves.mat"
