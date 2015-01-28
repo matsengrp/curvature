@@ -4,8 +4,8 @@ set -u
 
 test -z $1 && exit 1
 
-# walk=lazy_unif
-walk=unif_prior_mh
+# walk=lurw
+walk=upmh
 mkdir -p results-rspr/$walk
 
 n_leaves=$1
