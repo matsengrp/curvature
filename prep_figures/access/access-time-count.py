@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 '''
 Suggested use:
-./commute-time-detail.py --tp \
+./access-time-count.py --tp \
     "$(sed -n 60p ../../tangle/rooted-symmetric/tangle5.idx)" <mcmc-trace-files>
 '''
 
@@ -10,7 +10,7 @@ import collections
 import re
 
 parser = argparse.ArgumentParser(description='Find commute times',
-                                 prog='gen-tangles.py')
+                                 prog='access-time-count.py')
 
 parser.add_argument('tracefiles', nargs='+')
 parser.add_argument(
@@ -28,7 +28,7 @@ tp_str = re.sub(';[^;]*$', '', tp_str)
 # The states of interest to us.
 interesting = [s.rstrip(';') for s in tp_str.split()]
 (s1, s2) = interesting
-print "Searching for: " + str(interesting)
+print 'Searching for: ' + str(interesting)
 
 transitions = {}
 for a in interesting:
@@ -58,4 +58,4 @@ with open(args.o, 'w') as fout:
         for b in interesting:
             for time, freq in transitions[a][b].items():
                 fout.write('\t'.join([a, b, str(time), str(freq)])+'\n')
-            print "\t".join([str(sum(transitions[a][b].values())), a, b])
+            print '\t'.join([str(sum(transitions[a][b].values())), a, b])
