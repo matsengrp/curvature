@@ -4,3 +4,6 @@
 [submodule "tangle"]
 	path = tangle
 	url = git@github.com:matsengrp/tangle.git
+[submodule "spr_neighbors"]
+	path = spr_neighbors
+	url = https://github.com/cwhidden/spr_neighbors
