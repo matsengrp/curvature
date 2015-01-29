@@ -1,13 +1,12 @@
 #!/usr/bin/env sage
 
 import argparse
+import csv
+import os
 import sys
 from multiprocessing import Pool
-from sage.all import *
-load("gricci/all-hail-sage/tree-fun.py")
-load("gricci/code.py")
-load("gricci/all-hail-sage/nb-fun.py")
-
+from sage.all import load
+load(os.path.dirname(os.path.realpath(__file__))+'/load-deps.py')
 
 parser = argparse.ArgumentParser(description='ricci curvature of tangles',
                                  prog='ricci-tangle.py')

@@ -1,11 +1,13 @@
 # This loads all of the common dependencies.
 
-import glob
 import os
 
-from sage.all import load
+wd = os.path.dirname(os.path.realpath(__file__))
 
-for source in glob.glob(
-        os.path.dirname(os.path.realpath(__file__)) +
-        '/../gricci/all-hail-sage/*.py'):
+sources = [wd+'/../gricci/'+f for f in [
+    'all-hail-sage/nb-fun.py',
+    'all-hail-sage/tree-fun.py',
+    'code.py']]
+
+for source in sources:
     load(source)

@@ -9,8 +9,7 @@ from sage.all import *
 with gzip.open(in_fname, 'r') as f:
     def tuple_generator():
         for line in f:
-            line.rstrip('\n')
-            yield tuple(line.split(','))
+            yield tuple(map(int, line.rstrip().split(',')))
     adj_graph = Graph(tuple_generator())
     sage.structure.sage_object.save(
         adj_graph,

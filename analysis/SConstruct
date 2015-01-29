@@ -7,21 +7,44 @@ env = Environment(ENV=os.environ)
 min_leaves = 3
 max_leaves = 4
 graph_types = ['rspr', 'nni']
+random_walks = ['lurw', 'upmh']
 
+curvatures_dir = 'curvatures/'
 graphs_dir = 'graphs/'
 scripts_dir = '../scripts/'
 tangles_dir = '../tangle/rooted-symmetric/'
+
+
+# First make graphs.
 
 graphs = {t: {} for t in graph_types}
 
 for graph_type in graph_types:
     for n_leaves in range(min_leaves, max_leaves+1):
+        tree_path = tangles_dir+'tree'+str(n_leaves)+'.tre',
+
         adjacencies = Command(
             graphs_dir+graph_type+'/graph'+str(n_leaves)+'.csv.gz',
-            tangles_dir+'tree'+str(n_leaves)+'.tre',
+            tree_path,
             scripts_dir+'trees-to-adjacencies.sh ' +
             graph_type+' $SOURCE $TARGET')[0]
         graphs[graph_type][n_leaves] = Command(
-            (str(adjacencies)).split('.')[0]+'.sobj',
+            str(adjacencies).split('.')[0]+'.sobj',
             adjacencies,
             scripts_dir+'adjacencies-to-graph.py $SOURCE $TARGET')
+
+
+# Then make curvatures for those graphs.
+
+curvatures = {t: {} for t in graph_types}
+
+for graph_type in graph_types:
+    for walk in random_walks:
+        curr_dir = os.path.join(curvatures_dir, graph_type, walk, '')
+        for n_leaves in range(min_leaves, max_leaves+1):
+            curvatures[graph_type][n_leaves] = Command(
+                curr_dir+'ricci'+str(n_leaves)+'.tsv',
+                [graphs[graph_type][n_leaves],
+                    tangles_dir+'tangle'+str(n_leaves)+'.idx'],
+                scripts_dir+'ricci-tangle.py --walk '+walk +
+                ' --graph ${SOURCES[0]} --out $TARGET ${SOURCES[1]}')
