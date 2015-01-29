@@ -1,0 +1,23 @@
+import os
+from SCons.Script import Command, Environment
+
+# VariantDir('_build', src_dir='.')
+env = Environment(ENV=os.environ)
+
+min_leaves = 3
+max_leaves = 4
+graph_types = ['rspr', 'nni']
+
+graphs_dir = 'graphs/'
+scripts_dir = '../scripts/'
+tangles_dir = '../tangle/rooted-symmetric/'
+
+graphs = {t: {} for t in graph_types}
+
+for graph_type in graph_types:
+    for n_leaves in range(min_leaves, max_leaves+1):
+        graphs[graph_type][n_leaves] = Command(
+            graphs_dir+graph_type+'/graph'+str(n_leaves)+'.csv.gz',
+            tangles_dir+'tree'+str(n_leaves)+'.tre',
+            scripts_dir+'trees-to-adjacencies.sh ' +
+            graph_type+' $SOURCE $TARGET')
