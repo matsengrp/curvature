@@ -16,8 +16,12 @@ graphs = {t: {} for t in graph_types}
 
 for graph_type in graph_types:
     for n_leaves in range(min_leaves, max_leaves+1):
-        graphs[graph_type][n_leaves] = Command(
+        adjacencies = Command(
             graphs_dir+graph_type+'/graph'+str(n_leaves)+'.csv.gz',
             tangles_dir+'tree'+str(n_leaves)+'.tre',
             scripts_dir+'trees-to-adjacencies.sh ' +
-            graph_type+' $SOURCE $TARGET')
+            graph_type+' $SOURCE $TARGET')[0]
+        graphs[graph_type][n_leaves] = Command(
+            (str(adjacencies)).split('.')[0]+'.sobj',
+            adjacencies,
+            scripts_dir+'adjacencies-to-graph.py $SOURCE $TARGET')
