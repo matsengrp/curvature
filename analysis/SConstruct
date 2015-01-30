@@ -72,7 +72,7 @@ for graph_type in graph_types:
                 full_cmd = cmd+' $TARGET ${SOURCES[1]}'
             else:
                 full_cmd = \
-                    'multi-slurm.sh "'+cmd+'" DST SRC ${SOURCES[1]} $TARGET'
+                    'multi-slurm.sh "'+cmd+' DST SRC" ${SOURCES[1]} $TARGET'
             curvatures[graph_type][n_leaves] = env.Command(
                 curr_dir+'ricci'+str(n_leaves)+'.tsv',
                 [graphs[graph_type][n_leaves],
