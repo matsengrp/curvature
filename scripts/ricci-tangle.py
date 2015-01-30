@@ -30,11 +30,10 @@ def process_line(line):
     t1_idx = int(row[0])
     t2_idx = int(row[1])
     if t1_idx == t2_idx:
-        row.extend([0, "-"])
+        return [0, "-"]
     else:
         calc = ricci(args.walk, g, source=t1_idx, target=t2_idx)
-        row.extend([calc.dist, calc.ric])
-    return row
+        return [calc.dist, calc.ric]
 
 
 def process_line_status(line):
