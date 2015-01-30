@@ -1,11 +1,10 @@
 import os
 from SCons.Script import Command, Environment
 
-# VariantDir('_build', src_dir='.')
 env = Environment(ENV=os.environ)
 
 min_leaves = 4
-max_leaves = 4
+max_leaves = 6
 graph_types = ['rspr', 'nni']
 random_walks = ['lurw', 'upmh']
 

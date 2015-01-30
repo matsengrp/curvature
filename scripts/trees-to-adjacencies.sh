@@ -28,5 +28,5 @@ esac
 tmp=$(mktemp)
 
 cat $tree_list | $binary $flag > $tmp
-gzip $tmp
+gzip -n $tmp
 mv $tmp.gz $out_name
