@@ -33,7 +33,7 @@ def process_line(line):
         return [0, "-"]
     else:
         calc = ricci(args.walk, g, source=t1_idx, target=t2_idx)
-        return [calc.dist, calc.ric]
+        return [calc.dist, calc.ric, RR(calc.ric)]
 
 
 def process_line_status(line):
@@ -46,9 +46,9 @@ p = Pool(processes=4)
 
 with open(args.idx_path, 'rb') as csvfile:
     lines = list(csv.reader(csvfile, delimiter='\t', quotechar="'"))
-    print "|"+"-"*(len(lines)-2)+"|"
+    print "|"+"-"*(len(lines)-2)+"|\n"
     results = p.map(process_line_status, lines)
-    print ""
+    print "\nsucceeded on {}\n".format(args.idx_path)
     with open(args.out_path, 'w') as f_out:
         for r in results:
             f_out.write("\t".join(str(e) for e in r)+"\n")
