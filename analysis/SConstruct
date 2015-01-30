@@ -4,7 +4,7 @@ from SCons.Script import Command, Environment
 # VariantDir('_build', src_dir='.')
 env = Environment(ENV=os.environ)
 
-min_leaves = 3
+min_leaves = 4
 max_leaves = 4
 graph_types = ['rspr', 'nni']
 random_walks = ['lurw', 'upmh']
@@ -41,10 +41,11 @@ curvatures = {t: {} for t in graph_types}
 for graph_type in graph_types:
     for walk in random_walks:
         curr_dir = os.path.join(curvatures_dir, graph_type, walk, '')
+        cmd = scripts_dir+'ricci-tangle.py --walk '+walk + \
+            ' --graph ${SOURCES[0]} --out DST SRC'
         for n_leaves in range(min_leaves, max_leaves+1):
-            curvatures[graph_type][n_leaves] = Command(
+            curvatures[graph_type][n_leaves] = env.Command(
                 curr_dir+'ricci'+str(n_leaves)+'.tsv',
                 [graphs[graph_type][n_leaves],
                     tangles_dir+'tangle'+str(n_leaves)+'.idx'],
-                scripts_dir+'ricci-tangle.py --walk '+walk +
-                ' --graph ${SOURCES[0]} --out $TARGET ${SOURCES[1]}')
+                'multi-slurm.sh "'+cmd+'" ${SOURCES[1]} $TARGET')
