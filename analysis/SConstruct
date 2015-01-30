@@ -1,10 +1,13 @@
 import os
+import subprocess
 from SCons.Script import Command, Environment
 
 env = Environment(ENV=os.environ)
 
+no_slurm = bool(subprocess.call('which sbatch'.split()))
+
 min_leaves = 4
-max_leaves = 6
+max_leaves = 5
 graph_types = ['rspr', 'nni']
 random_walks = ['lurw', 'upmh']
 
@@ -63,10 +66,15 @@ for graph_type in graph_types:
     for walk in random_walks:
         curr_dir = os.path.join(curvatures_dir, graph_type, walk, '')
         cmd = scripts_dir+'ricci-tangle.py --walk '+walk + \
-            ' --graph ${SOURCES[0]} --out DST SRC'
+            ' --graph ${SOURCES[0]} --out'
         for n_leaves in range(min_leaves, max_leaves+1):
+            if no_slurm:
+                full_cmd = cmd+' $TARGET ${SOURCES[1]}'
+            else:
+                full_cmd = \
+                    'multi-slurm.sh "'+cmd+'" DST SRC ${SOURCES[1]} $TARGET'
             curvatures[graph_type][n_leaves] = env.Command(
                 curr_dir+'ricci'+str(n_leaves)+'.tsv',
                 [graphs[graph_type][n_leaves],
                     tangles_dir+'tangle'+str(n_leaves)+'.idx'],
-                'multi-slurm.sh "'+cmd+'" ${SOURCES[1]} $TARGET')
+                full_cmd)

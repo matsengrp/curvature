@@ -5,7 +5,7 @@ import csv
 import os
 import sys
 from multiprocessing import Pool
-from sage.all import load
+from sage.all import load, RR
 load(os.path.dirname(os.path.realpath(__file__))+'/load-deps.py')
 
 parser = argparse.ArgumentParser(description='ricci curvature of tangles',
@@ -30,7 +30,7 @@ def process_line(line):
     t1_idx = int(row[0])
     t2_idx = int(row[1])
     if t1_idx == t2_idx:
-        return [0, "-"]
+        return [0, '-', 'nan']
     else:
         calc = ricci(args.walk, g, source=t1_idx, target=t2_idx)
         return [calc.dist, calc.ric, RR(calc.ric)]
