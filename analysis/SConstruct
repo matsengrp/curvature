@@ -17,7 +17,8 @@ tangles_dir = '../tangle/rooted-symmetric/'
 # First make graphs.
 
 graphs = {t: {} for t in graph_types}
-degrees = {t: {} for t in graph_types}
+graph_degrees = {t: {} for t in graph_types}
+tangle_degrees = {t: {} for t in graph_types}
 
 for graph_type in graph_types:
     for n_leaves in range(min_leaves, max_leaves+1):
@@ -35,10 +36,17 @@ for graph_type in graph_types:
             adjacencies,
             scripts_dir+'adjacencies-to-graph.py $SOURCE $TARGET')
 
-        degrees[graph_type][n_leaves] = Command(
+        graph_degrees[graph_type][n_leaves] = Command(
             graph_fname.split('.')[0]+'.degrees.tsv',
             graph_fname,
             scripts_dir+'graph-degrees.py $SOURCE $TARGET')
+
+        tangle_degrees[graph_type][n_leaves] = Command(
+            graphs_dir+graph_type+'/tangle'+str(n_leaves)+'.degrees.tsv',
+            [tangles_dir+'tangle'+str(n_leaves)+'.idx',
+             graph_degrees[graph_type][n_leaves]],
+            scripts_dir+'tangle-degrees.py ${SOURCES[0]} ${SOURCES[1]} $TARGET'
+            )
 
 
 # Then make curvatures for those graphs.
