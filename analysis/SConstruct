@@ -7,7 +7,7 @@ env = Environment(ENV=os.environ)
 no_slurm = bool(subprocess.call('which sbatch'.split()))
 
 min_leaves = 4
-max_leaves = 5
+max_leaves = 6
 graph_types = ['rspr', 'nni']
 random_walks = ['lurw', 'upmh']
 
@@ -58,9 +58,7 @@ for graph_type in graph_types:
             scripts_dir+'tangle-infos.py ${SOURCES[0]} ${SOURCES[1]} $TARGET')
 
 
-# Then make curvatures for those graphs.
-
-curvatures = {t: {} for t in graph_types}
+# Then make curvatures and plots for those graphs.
 
 for graph_type in graph_types:
     for walk in random_walks:
@@ -73,8 +71,22 @@ for graph_type in graph_types:
             else:
                 full_cmd = \
                     'multi-slurm.sh "'+cmd+' DST SRC" ${SOURCES[1]} $TARGET'
-            curvatures[graph_type][n_leaves] = env.Command(
+            curvatures = env.Command(
                 curr_dir+'ricci'+str(n_leaves)+'.tsv',
                 [graphs[graph_type][n_leaves],
                     tangles_dir+'tangle'+str(n_leaves)+'.idx'],
                 full_cmd)
+            results = Command(
+                curr_dir+'results'+str(n_leaves)+'.p.gz',
+                [curvatures,
+                 tangle_newicks[graph_type][n_leaves],
+                 tangle_degrees[graph_type][n_leaves]],
+                scripts_dir+'merge-results.py $SOURCES $TARGET')
+            env.Command(
+                curr_dir+'hexbin'+str(n_leaves)+'.svg',
+                results,
+                scripts_dir+'plot.py --which hexbin $SOURCE $TARGET')
+            env.Command(
+                curr_dir+'scatter'+str(n_leaves)+'.svg',
+                results,
+                scripts_dir+'plot.py --which scatter $SOURCE $TARGET')
