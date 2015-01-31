@@ -76,7 +76,7 @@ for graph_type in graph_types:
                 [graphs[graph_type][n_leaves],
                     tangles_dir+'tangle'+str(n_leaves)+'.idx'],
                 full_cmd)
-            results = Command(
+            results = env.Command(
                 curr_dir+'results'+str(n_leaves)+'.p.gz',
                 [curvatures,
                  tangle_newicks[graph_type][n_leaves],
