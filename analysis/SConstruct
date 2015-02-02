@@ -87,6 +87,10 @@ for graph_type in graph_types:
                 results,
                 scripts_dir+'plot.py --which hexbin $SOURCE $TARGET')
             env.Command(
-                curr_dir+'scatter'+str(n_leaves)+'.svg',
+                curr_dir+'scatter'+str(n_leaves)+'.png',
                 results,
                 scripts_dir+'plot.py --which scatter $SOURCE $TARGET')
+            env.Command(
+                curr_dir+'scatter'+str(n_leaves)+'.html.gz',
+                results,
+                scripts_dir+'plot.py --d3 --which scatter $SOURCE $TARGET')
