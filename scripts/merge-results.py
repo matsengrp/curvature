@@ -20,4 +20,4 @@ all_data = pd.concat([
 
 all_data['avg_deg'] = (all_data['t1_deg'] + all_data['t2_deg'])/2
 
-pickle.dump(all_data, gzip.open(out_pickle_gz_path, 'wb'))
+pickle.dump(all_data, gzip.GzipFile(out_pickle_gz_path, 'wb', mtime=0.))

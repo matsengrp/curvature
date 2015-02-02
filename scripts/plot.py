@@ -27,7 +27,8 @@ assert(os.path.exists(args.results_path))
 
 df = pickle.load(gzip.open(args.results_path, 'rb'))
 df['dist_jitter'] = df['dist'] + np.random.normal(0, 0.1, size=len(df))
-df['info'] = df['t1_nwk']+'<br/>'+df['t2_nwk']+'<br/>'+str(df['avg_deg'])
+df['info'] = \
+    df['t1_nwk']+'<br/>'+df['t2_nwk']+'<br/>avg_deg: '+map(str, df['avg_deg'])
 
 if args.which == 'hexbin':
     p = df.plot(
@@ -60,7 +61,7 @@ if args.d3:
     plugins.connect(
         p.figure,
         plugins.PointHTMLTooltip(p.collections[0], list(df['info'])))
-    with gzip.open(args.plot_path, 'w') as f:
+    with gzip.GzipFile(args.plot_path, mode='wb', mtime=0.) as f:
         f.write(fig_to_html(p.figure))
 else:
     p.figure.savefig(args.plot_path)

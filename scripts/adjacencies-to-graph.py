@@ -6,7 +6,7 @@ from sage.all import *
 
 (in_fname, out_fname) = sys.argv[1:]
 
-with gzip.open(in_fname, 'r') as f:
+with gzip.GzipFile(in_fname, 'r', mtime=0.) as f:
     def tuple_generator():
         for line in f:
             yield tuple(map(int, line.rstrip().split(',')))
