@@ -19,5 +19,6 @@ all_data = pd.concat([
         ]], axis=1)
 
 all_data['avg_deg'] = (all_data['t1_deg'] + all_data['t2_deg'])/2
+all_data = all_data[all_data['kappa_Q'] != '-']
 
 pickle.dump(all_data, gzip.GzipFile(out_pickle_gz_path, 'wb', mtime=0.))
