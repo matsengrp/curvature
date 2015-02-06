@@ -59,6 +59,7 @@
 
 %---[ Distance measures, invocations, etc ]-------------------------------------
 \newattribute{dspr}{d_{\mathrm{SPR}}}
+\newattribute{degree}{deg}
 
 
 \begin{document}
@@ -91,6 +92,57 @@ Parent and parent subtree.
 Define adjacency of subtrees.
 
 \section{Rooted SPR Neighborhoods}
+
+Song (2003) proved the following:
+
+\begin{lemma}
+	\label{lem:degree_extremes}
+	Let $T$ be a rooted phylogenetic tree with $n$ leaves. Then
+	\begin{enumerate}
+		\item $\degree{T} = 3n^2 - 13n + 14$, if $T$ is a ladder tree\todo{notation? Song used $\lambda$-balanced},
+		\item $\degree{T} = 4(n-2)^2 - 2 \sum_{m=1}^{n-2} \floor{\log_2(m+1)}$, if $T$ is a balanced tree, and
+		\item  $3n^2 - 13n + 14 \le \degree{T} \le 4(n-2)^2 - 2 \sum_{m=1}^{n-2} \floor{\log_2(m+1)}$, otherwise.
+	\end{enumerate}
+\end{lemma}
+
+We now bound the relative and exact difference in SPR degree between two trees with $n$ leaves.
+
+\begin{lemma}
+	\label{lem:degree_max_delta}
+	Let $T$ and $S$ be rooted phylogenetic trees with $n \ge 3$ leaves, and assume without loss of generality that $\degree{T} \le \degree{S}$.
+	Then:
+	\begin{enumerate}
+		\item $\frac{\degree{T}}{\degree{S}} \ge \frac{3}{4}$, and
+		\item $\degree{S} - \degree{T} \le n^2 - 5n + 6$.
+	\end{enumerate}
+\end{lemma}
+\begin{proof}
+	We first prove (1).
+	Clearly $\degree{T} / \degree{S}$ is minimized when $T$ is of minimum degree and $S$ of maximum degree.
+	Then, by Lemma~\ref{lem:degree_extremes}, $\degree{T} = 3n^2 - 13n + 14$ and $\degree{S} = 4(n-2)^2 - 2 \sum_{m=1}^{n-2} \floor{\log_2(m+1)}$.
+	We thus have:
+	\begin{align}
+		\frac{\degree{T}}{\degree{S}} \ge\ &\frac{3n^2 - 13n + 14}{4(n-2)^2 - 2 \sum_{m=1}^{n-2} \floor{\log_2(m+1)}} \\
+		\ge\ &\frac{3n^2 - 13n + 12}{4(n-2)^2 - 2(n-2)} \\
+		\ge\ &\frac{3n^2 - 13n + 12}{4n^2 - 16n + 16 - 2(n-2)} \\
+		\ge\ &\frac{3n^2 - 13n + 12}{4n^2 - 18n + 20} \\
+		\ge\ &\frac{3n^2 - 13n + 12}{4n^2 - 17\frac{1}{3}n + 18} &\forall n \ge 3 \\
+		\ge\ &\frac{3}{4} &\forall n \ge 3
+	\end{align}
+
+
+	We now prove (2).
+	$\degree{S} - \degree{T}$  is maximized when $T$ and $S$ are of minimum and maximum degree.
+	We thus have:
+	\begin{align}
+		\degree{S} - \degree{T}
+		\le\ &(4(n-2)^2 - 2 \sum_{m=1}^{n-2} \floor{\log_2(m+1)})
+		- (3n^2 - 13n + 14) \\
+		\le\ &(4(n-2)^2 - 2(n-2)) - (3n^2 - 13n + 14) \\
+		\le\ &4n^2 - 16n + 16 - 2n +4 - 3n^2 + 13n - 14 \\
+		\le\ &n^2 - 5n + 6
+	\end{align}
+\end{proof}
 
 \begin{lemma}
 \label{lem:degree_change}
@@ -136,6 +188,47 @@ By the same arguments as in the proof of Lemma~\ref{lem:degree_change}, $o$ SPR 
 For each such $(T',S')$ pair, we can move $R$ in either tree to obtain the other member of the pair.
 \end{proof}
 
+We can now use Lemma~\ref{lem:degree_change} to improve on our bounds in Lemma~\ref{lem:degree_max_delta} for the case of two adjacent trees.
+
+\begin{lemma}
+	\label{lem:degree_max_delta_adjacent}
+	Let $T$ and $S$ be rooted phylogenetic trees with $n \ge 3$ leaves, such that $\degree{T} \le \degree{S}$ and $\dspr{T,S} = 1$.
+	Then:
+	\begin{enumerate}
+		\item $\degree{S} - \degree{T} \le 2\floor{\frac{n-2}{2}}\ceil{\frac{n-2}{2}} \le \frac{1}{2} (n-2)^2 $.
+		\item $\frac{\degree{T}}{\degree{S}} \ge \frac{5}{6}$, $\forall n \ge 4$, and
+		\item $\lim_{n\rightarrow\infty}\frac{\degree{T}}{\degree{S}} =  \frac{6}{7}$.
+	\end{enumerate}
+\end{lemma}
+\begin{proof}
+	We first prove (1).
+	By Lemma~\ref{lem:degree_change}, $\degree{S} - \degree{T} = 2(k(a-b) + i - j)$.
+	This value is maximized by minimizing $b$, namely by setting $b=0$.
+	The resulting equation $2(ka + i - j)$ is similarly maximized by setting $i=1$ and balancing the sides of the square $ka$ with as many leaves as possible.
+	There are two cases, depending on whether the subtree of $k$ leaves is moved to an ancestor or not. If not, then we set $j=1$ and balance the square with the remaining $n-b-i-j = n-2$ leaves
+	Thus, $\degree{S} - \degree{T} \le 2\floor{\frac{n-2}{2}}\ceil{\frac{n-2}{2}} \le \frac{1}{2} (n-2)^2 $.
+	Note that this corresponds to moving the bottom subtree of $\floor{\frac{n-2}{2}}$ or $\ceil{\frac{n-2}{2}}$ leaves in a ladder tree to the rootmost leaf of the tree.
+
+	If the subtree of $k$ leaves is moved to an ancestor, then we gain an additional leaf to balance the square but increase $j$.
+	This corresponds to moving the bottom subtree of $\floor{\frac{n}{2}}$ or $\ceil{\frac{n}{2}}$ leaves in a ladder tree to the root.
+	Namely, we have $2(ka + 1 - j)$, where $j = n - k = a + 1$.
+	If we move the additional leaf, we have:
+$\degree{S} - \degree{T} \le 2\ceil{\frac{n}{2}}\floor{\frac{n-2}{2}} -  (\floor{\frac{n-2}{2}} + 1) = 2\floor{\frac{n-2}{2}}\ceil{\frac{n-2}{2}}$.
+Similarly, if we do not move the additional leaf, we have:
+$\degree{S} - \degree{T} \le 2\ceil{\frac{n-2}{2}}\floor{\frac{n}{2}} -  (\ceil{\frac{n-2}{2}} + 1) = 2\floor{\frac{n-2}{2}}\ceil{\frac{n-2}{2}}$.
+
+	The relative change in degree, $\frac{\degree{T}}{\degree{S}}$, is maximized when $\degree{T}$ is as small as possible and $\degree{S} - \degree{T}$ is maximal.
+	That is, $\degree{S} = 3n^2 - 13n + 14$ and $\degree{S} + 2\floor{\frac{n-2}{2}} \ceil{\frac{n-2}{2}}$.
+	We then have:
+	\begin{align}
+		\frac{\degree{T}}{\degree{S}} &= \frac{3n^2 - 13n + 14}{3n^2 - 13n + 14 + 2\floor{\frac{n-2}{2}} \ceil{\frac{n-2}{2}}} \\
+		&\ge \frac{3n^2 - 13n + 14}{3n^2 - 13n + 14 + \frac{1}{2}(n-2)^2} \\
+		&\ge \frac{3n^2 - 13n + 14}{3.5n^2 - 15n + 16}
+	\end{align}
+	Thus (2) and (3) follow.
+
+\end{proof}
+
 
 
 \section{Curvature}
@@ -176,6 +269,7 @@ We again bound $W_{1,n}$ from below with $(q_n - \OhOf{n}) / q_n$ by ignoring th
 The proposition again follows because $q_n$ is quadratic in $n$.
 
 \end{proof}
+
 
 
 \section{$k$-tubes}
