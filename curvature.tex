@@ -230,6 +230,29 @@ $$\degree{S} - \degree{T} \le 2 \left(\ceilV{\frac{n-2}{2}}\floorXXL{\frac{n}{2}
 
 \end{proof}
 
+Next, we bound the number of neighbors shared by two adjacent trees.
+
+\begin{lemma}
+	\label{lem:shared_neighbors}
+Let $T$ and $S$ be rooted $X$-trees such that $\dspr{T,S} = 1$.
+Then $\size{N(T) \cap N(S)} \le 6n - 17$.
+\end{lemma}
+
+\begin{proof}
+	$T$ and $S$ differ by one SPR move that moves a subtree $R$.
+	Let $U$ be a tree in $N(T)$ and $N(S)$.
+	Then either (1) $T$ and $U$ differ in the location of $R$, or (2) $T$ and $U$ differ in the location of another subtree $P$.
+	In the latter case, the facts that $T$ and $S$ differ only in the location of $R$ and $\dspr{T,P} = \dspr{S,P} = 1$, imply that $T|(X \setminus L(P) - S|(X \setminus L(P)$.
+	Then leaves $r' \in R$, $p' \in P$, and $q' \in Q$, for some subtree $Q$, form a triple of $T$ and a different triple in $S$.
+	This incompatible triple can be resolved in at most $6n - 17$ ways, the maximum of which is reached when $P$, $Q$, and $R$ are themselves a ``triple'' of subtrees.
+	By Lemma~\ref{ }\todo{need unique move lemma}, each of the subtrees is assigned to at most $2n-6$ unique moves.
+	Moreover, one additional overlapping move also moves one of the subtrees (that of the aunt of the LCA of the three subtrees).
+	The number of shared neighbors is thus at most $3(2n-6) + 1 = 6n-17$.
+	Note that this bound is tight when, for example, $T$ and $S$ are ladders with a different configuration of 3 leaves at maximum depth.
+\end{proof}
+
+
+
 
 
 \section{Curvature}
@@ -253,8 +276,7 @@ In the mass transport, we pair $T'_n$ with $S'_n$, which results from the same m
 The number of trees unmatched by this pairing is $\OhOf{kn}$, and their distance is at most 3.
 Thus, $W_{1,n}$ is bounded above by $(q_n + 2\OhOf{kn}) / q_n$.
 
-A lower bound is also available because we can't do better than distance 1 for all trees unless they move $R$.
-There are only $\OhOf{n}$ pairs with trees that move $R$.
+A lower bound is also available because we can't do better than distance 1 for all trees but the $\OhOf{n}$ pairs from Lemma~\ref{lem:shared_neighbors}.
 By ignoring these trees we get a lower bound of $(q_n -(\OhOf{n}))/q_n$ for $W_{1,n}$.
 
 The desired control of $W_{1,n}$ is thus obtained because $q_n$ is quadratic in $n$.
@@ -270,6 +292,21 @@ We again bound $W_{1,n}$ from below with $(q_n - \OhOf{n}) / q_n$ by ignoring th
 The proposition again follows because $q_n$ is quadratic in $n$.
 
 \end{proof}
+
+Next we bound the maximum curvature of two adjacent trees.
+
+\begin{lemma}
+	The maximum curvature of the uniform random walk between two adjacent trees is $\frac{6n-17}{3n^2-13n+14}$. \todo{lazy random walk is $\frac{6n-15}{3n^2 - 13n + 14}$}
+\end{lemma}
+\begin{proof}
+Let $T$ and $S$ be two adjacent trees.
+The maximum curvature occurs when their neighborhoods have maximum overlap, are of equal size, and all other tree pairs are at distance 1.
+By Lemma~\ref{lem:shared_neighbors} the maximum overlap is $6n-17$.
+The maximum curvature is thus $1 - \frac{\degree{T} - 6n-17}{\degree{T}} = \frac{6n - 17}{\degree{T}}$. This is maximized when $\degree{T}$ is as small as possible, that is $T,S$ are ladders and $\degree{T} = 3n^2 - 13n + 14$.
+\end{proof}
+
+
+
 
 
 
