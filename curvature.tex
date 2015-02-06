@@ -21,6 +21,7 @@
   \expandafter\newcommand\csname #1\endcsname[1]{#2##1#3}%
   \expandafter\newcommand\csname #1L\endcsname[1]{\bigl#2##1\bigr#3}%
   \expandafter\newcommand\csname #1XL\endcsname[1]{\Bigl#2##1\Bigr#3}%
+  \expandafter\newcommand\csname #1XXL\endcsname[1]{\biggl#2##1\biggr#3}%
   \expandafter\newcommand\csname #1V\endcsname[1]{\left#2##1\right#3}}
 
 \newparentheses{parens}{(}{)}
@@ -206,16 +207,16 @@ We can now use Lemma~\ref{lem:degree_change} to improve on our bounds in Lemma~\
 	This value is maximized by minimizing $b$, namely by setting $b=0$.
 	The resulting equation $2(ka + i - j)$ is similarly maximized by setting $i=1$ and balancing the sides of the square $ka$ with as many leaves as possible.
 	There are two cases, depending on whether the subtree of $k$ leaves is moved to an ancestor or not. If not, then we set $j=1$ and balance the square with the remaining $n-b-i-j = n-2$ leaves
-	Thus, $\degree{S} - \degree{T} \le 2\floor{\frac{n-2}{2}}\ceil{\frac{n-2}{2}} \le \frac{1}{2} (n-2)^2 $.
+	Thus, $$\degree{S} - \degree{T} \le 2\floorV{\frac{n-2}{2}}\ceilV{\frac{n-2}{2}} \le \frac{1}{2} (n-2)^2.$$
 	Note that this corresponds to moving the bottom subtree of $\floor{\frac{n-2}{2}}$ or $\ceil{\frac{n-2}{2}}$ leaves in a ladder tree to the rootmost leaf of the tree.
 
 	If the subtree of $k$ leaves is moved to an ancestor, then we gain an additional leaf to balance the square but increase $j$.
 	This corresponds to moving the bottom subtree of $\floor{\frac{n}{2}}$ or $\ceil{\frac{n}{2}}$ leaves in a ladder tree to the root.
 	Namely, we have $2(ka + 1 - j)$, where $j = n - k = a + 1$.
 	If we move the additional leaf, we have:
-$\degree{S} - \degree{T} \le 2\ceil{\frac{n}{2}}\floor{\frac{n-2}{2}} -  (\floor{\frac{n-2}{2}} + 1) = 2\floor{\frac{n-2}{2}}\ceil{\frac{n-2}{2}}$.
+$$\degree{S} - \degree{T} \le 2\left(\ceilXXL{\frac{n}{2}}\floorV{\frac{n-2}{2}}  + 1 - \left(\floorV{\frac{n-2}{2}} + 1\right)\right) = 2\floorV{\frac{n-2}{2}}\ceilV{\frac{n-2}{2}}.$$
 Similarly, if we do not move the additional leaf, we have:
-$\degree{S} - \degree{T} \le 2\ceil{\frac{n-2}{2}}\floor{\frac{n}{2}} -  (\ceil{\frac{n-2}{2}} + 1) = 2\floor{\frac{n-2}{2}}\ceil{\frac{n-2}{2}}$.
+$$\degree{S} - \degree{T} \le 2 \left(\ceilV{\frac{n-2}{2}}\floorXXL{\frac{n}{2}} +1 -  \left(\ceilV{\frac{n-2}{2}} + 1\right)\right) = 2\floorV{\frac{n-2}{2}}\ceilV{\frac{n-2}{2}}.$$
 
 	The relative change in degree, $\frac{\degree{T}}{\degree{S}}$, is maximized when $\degree{T}$ is as small as possible and $\degree{S} - \degree{T}$ is maximal.
 	That is, $\degree{S} = 3n^2 - 13n + 14$ and $\degree{S} + 2\floor{\frac{n-2}{2}} \ceil{\frac{n-2}{2}}$.
