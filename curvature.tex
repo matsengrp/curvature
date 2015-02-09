@@ -242,7 +242,7 @@ Then $\size{N(T) \cap N(S)} \le 6n - 17$.
 	$T$ and $S$ differ by one SPR move that moves a subtree $R$.
 	Let $U$ be a tree in $N(T)$ and $N(S)$.
 	Then either (1) $T$ and $U$ differ in the location of $R$, or (2) $T$ and $U$ differ in the location of another subtree $P$.
-	In the latter case, the facts that $T$ and $S$ differ only in the location of $R$ and $\dspr{T,P} = \dspr{S,P} = 1$, imply that $T|(X \setminus L(P) - S|(X \setminus L(P)$.
+	In the latter case, the facts that $T$ and $S$ differ only in the location of $R$ and $\dspr{T,P} = \dspr{S,P} = 1$, imply that $T|(X \setminus L(P)) = S|(X \setminus L(P))$.
 	Then leaves $r' \in R$, $p' \in P$, and $q' \in Q$, for some subtree $Q$, form a triple of $T$ and a different triple in $S$.
 	This incompatible triple can be resolved in at most $6n - 17$ ways, the maximum of which is reached when $P$, $Q$, and $R$ are themselves a ``triple'' of subtrees.
 	By Lemma~\ref{ }\todo{need unique move lemma}, each of the subtrees is assigned to at most $2n-6$ unique moves.
@@ -296,13 +296,44 @@ The proposition again follows because $q_n$ is quadratic in $n$.
 Next we bound the maximum curvature of two adjacent trees.
 
 \begin{lemma}
-	The maximum curvature of the uniform random walk between two adjacent trees is $\frac{6n-17}{3n^2-13n+14}$. \todo{lazy random walk is $\frac{6n-15}{3n^2 - 13n + 14}$}
+	The maximum curvature of the uniform random walk between two adjacent trees with $n$ leaves is $\frac{6n-17}{3n^2-13n+14}$. \todo{lazy random walk is $\frac{6n-15}{3n^2 - 13n + 14}$}
 \end{lemma}
 \begin{proof}
 Let $T$ and $S$ be two adjacent trees.
 The maximum curvature occurs when their neighborhoods have maximum overlap, are of equal size, and all other tree pairs are at distance 1.
 By Lemma~\ref{lem:shared_neighbors} the maximum overlap is $6n-17$.
 The maximum curvature is thus $1 - \frac{\degree{T} - 6n-17}{\degree{T}} = \frac{6n - 17}{\degree{T}}$. This is maximized when $\degree{T}$ is as small as possible, that is $T,S$ are ladders and $\degree{T} = 3n^2 - 13n + 14$.
+\end{proof}
+
+We next bound the effect of laziness on curvature. Let $\kappa_{l,p}$ be the curvature of a lazy random walk which moves with probability $p$ and remains stationary with probability $1 - p$. 
+For example, $\kappa_{l,\frac{1}{4}}$ moves with probability $\frac{1}{4}$ and remains stationary with probability $\frac{3}{4}$. \todo{should be defined earlier, particularly the part where the curvature is divided by $p$.}
+
+\begin{lemma}
+	Let $T$ and $S$ be rooted phylogenetic trees with $n$ leaves.
+	Then:
+	\begin{enumerate}
+		\item	$\kappa_{l,p}(T,S) = \kappa_{l,0}(T,S)$, if $\dspr{T,S} > 1$, and
+		\item	$\kappa_{l,0}(T,S) \le \kappa_{l,p}(T,S) \le \kappa_{l,0}(T,S) + \frac{2}{\max(\degree{T}, \degree{S})}$, if $\dspr{T,S} = 1$.
+	\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+	We first prove the lower bound, that is $\kappa_{l,0}(T,S) \le \kappa_{l,p}(T,s)$.
+	Let $W_1(T,S)$ be the mass transport cost in the uniform case, and $W_1'(T,S)$ be the same for the lazy case with parameter $p$.
+	Recall that $\kappa_{l,0}(T,S) = 1 - \frac{W_1(T,S)}{\dspr{T,S}}$, and $\kappa_{l,p}(T,S) = (1 - \frac{W_1'(T,S)}{\dspr{T,S}}) / p$.
+	Observe that $$W_1'(T,S) \le pW_1(T,S) + (1-p)\dspr{T,S},$$ by taking an optimal uniform mass assignment spread over $p$ of the mass and moving the remainder from $T$ to $S$ (or vice versa).
+	Then:
+	\begin{align}
+		\kappa_{l,p}(T,S) &= (1 - \frac{W_1'(T,S)}{\dspr{T,S}}) / p \\
+		&\ge (1 - \frac{pW_1(T,S) + (1-p)\dspr{T,S}}{\dspr{T,S}}) / p \\
+		&\ge (\frac{1}{p} - \frac{W_1(T,S)}{\dspr{T,S}} - \frac{1-p}{p}) \\
+		&\ge 1 - \frac{W_1(T,S)}{\dspr{T,S}} \\
+		&\ge \kappa_{l,0}(T,S)
+	\end{align}
+
+	For the upper bound, we observe that $$W_1'(T,S) \ge p(W_1(T,S) + (1-p)\left(\dspr{T,S}\right) - \frac{2}{\max(\degree{T}, \degree{S})},$$ as at most $\frac{1}{\max(\degree{T},\degree{S})}$ of the mass can remain at each of $T$ and $S$, paired with the lazy remainder.
+	The upper bound then follows analogously to the lower bound.
+	Moreover, no mass can remain at $T$ or $S$ when $\dspr{T,S} > 1$, in which case the curvatures are equal.
 \end{proof}
 
 
