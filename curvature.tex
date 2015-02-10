@@ -122,27 +122,27 @@ We now bound the relative and exact difference in SPR degree between two trees w
 	Clearly $\degree{T} / \degree{S}$ is minimized when $T$ is of minimum degree and $S$ of maximum degree.
 	Then, by Lemma~\ref{lem:degree_extremes}, $\degree{T} = 3n^2 - 13n + 14$ and $\degree{S} = 4(n-2)^2 - 2 \sum_{m=1}^{n-2} \floor{\log_2(m+1)}$.
 	We thus have:
-	\begin{align}
+	\begin{align*}
 		\frac{\degree{T}}{\degree{S}} \ge\ &\frac{3n^2 - 13n + 14}{4(n-2)^2 - 2 \sum_{m=1}^{n-2} \floor{\log_2(m+1)}} \\
 		\ge\ &\frac{3n^2 - 13n + 12}{4(n-2)^2 - 2(n-2)} \\
 		\ge\ &\frac{3n^2 - 13n + 12}{4n^2 - 16n + 16 - 2(n-2)} \\
 		\ge\ &\frac{3n^2 - 13n + 12}{4n^2 - 18n + 20} \\
 		\ge\ &\frac{3n^2 - 13n + 12}{4n^2 - 17\frac{1}{3}n + 18} &\forall n \ge 3 \\
 		\ge\ &\frac{3}{4} &\forall n \ge 3
-	\end{align}
+	\end{align*}
 
 
 	We now prove (2).
 	$\degree{S} - \degree{T}$  is maximized when $T$ and $S$ are of minimum and maximum degree.
 	We thus have:
-	\begin{align}
+	\begin{align*}
 		\degree{S} - \degree{T}
 		\le\ &(4(n-2)^2 - 2 \sum_{m=1}^{n-2} \floor{\log_2(m+1)})
 		- (3n^2 - 13n + 14) \\
 		\le\ &(4(n-2)^2 - 2(n-2)) - (3n^2 - 13n + 14) \\
 		\le\ &4n^2 - 16n + 16 - 2n +4 - 3n^2 + 13n - 14 \\
 		\le\ &n^2 - 5n + 6
-	\end{align}
+	\end{align*}
 \end{proof}
 
 \begin{lemma}
@@ -221,11 +221,11 @@ $$\degree{S} - \degree{T} \le 2 \left(\ceilV{\frac{n-2}{2}}\floorXXL{\frac{n}{2}
 	The relative change in degree, $\frac{\degree{T}}{\degree{S}}$, is maximized when $\degree{T}$ is as small as possible and $\degree{S} - \degree{T}$ is maximal.
 	That is, $\degree{S} = 3n^2 - 13n + 14$ and $\degree{S} + 2\floor{\frac{n-2}{2}} \ceil{\frac{n-2}{2}}$.
 	We then have:
-	\begin{align}
+	\begin{align*}
 		\frac{\degree{T}}{\degree{S}} &= \frac{3n^2 - 13n + 14}{3n^2 - 13n + 14 + 2\floor{\frac{n-2}{2}} \ceil{\frac{n-2}{2}}} \\
 		&\ge \frac{3n^2 - 13n + 14}{3n^2 - 13n + 14 + \frac{1}{2}(n-2)^2} \\
 		&\ge \frac{3n^2 - 13n + 14}{3.5n^2 - 15n + 16}
-	\end{align}
+	\end{align*}
 	Thus (2) and (3) follow.
 
 \end{proof}
@@ -357,18 +357,58 @@ For example, $\kappa_{l,\frac{1}{4}}$ moves with probability $\frac{1}{4}$ and r
 	Recall that $\kappa_{l,0}(T,S) = 1 - \frac{W_1(T,S)}{\dspr{T,S}}$, and $\kappa_{l,p}(T,S) = (1 - \frac{W_1'(T,S)}{\dspr{T,S}}) / p$.
 	Observe that $$W_1'(T,S) \le pW_1(T,S) + (1-p)\dspr{T,S},$$ by taking an optimal uniform mass assignment spread over $p$ of the mass and moving the remainder from $T$ to $S$ (or vice versa).
 	Then:
-	\begin{align}
+	\begin{align*}
 		\kappa_{l,p}(T,S) &= (1 - \frac{W_1'(T,S)}{\dspr{T,S}}) / p \\
 		&\ge (1 - \frac{pW_1(T,S) + (1-p)\dspr{T,S}}{\dspr{T,S}}) / p \\
 		&\ge (\frac{1}{p} - \frac{W_1(T,S)}{\dspr{T,S}} - \frac{1-p}{p}) \\
 		&\ge 1 - \frac{W_1(T,S)}{\dspr{T,S}} \\
 		&\ge \kappa_{l,0}(T,S)
-	\end{align}
+	\end{align*}
 
 	For the upper bound, we observe that $$W_1'(T,S) \ge p(W_1(T,S) + (1-p)\left(\dspr{T,S}\right) - \frac{2}{\max(\degree{T}, \degree{S})},$$ as at most $\frac{1}{\max(\degree{T},\degree{S})}$ of the mass can remain at each of $T$ and $S$, paired with the lazy remainder.
 	The upper bound then follows analogously to the lower bound.
 	Moreover, no mass can remain at $T$ or $S$ when $\dspr{T,S} > 1$, in which case the curvatures are equal.
 \end{proof}
+
+We continue to explore the effect of biased random walks by considering the curvature of Metropolis Hastings random walks.
+The Metropolis Hastings (MH) random walk proposes a move from a tree $T$ to a neighbor tree $S$ uniformly at random and then accepts the move according to the Hastings ratio, $\min\left(1, \frac{\degree{T}}{\degree{S}}\right)$.
+The mass distribution for the MH random walk thus leaves a portion of mass at the origin tree, proportional to the relative degree difference of its higher degree neighbors.
+We now bound the difference between the curvature of uniform random walks $\kappa$, and that of MH random walks, $\kappa_{MH}$.
+
+\begin{lemma}
+	Let $T$ and $S$ be phylogenetic trees with $n$ leaves. Then:
+	\begin{enumerate}
+	$$\kappa(T,S) - \frac{1}{3\dspr{T,S}}
+	\le \kappa_{MH}(T,S)
+	\le \kappa(T,S) + \frac{1}{3\dspr{T,S}}, \text{ and }$$ 
+	$$\kappa(T,S) - \frac{1}{6}
+	\le \kappa_{MH}(T,S)
+	\le \kappa(T,S) + \frac{1}{6}.$$
+\end{lemma}
+\begin{proof}
+	We first prove the lower bound.
+	By Lemma~\ref{lem:degree_max_delta_adjacent}, the quotient of degrees for two adjacent trees $\ge \frac{5}{6}$.
+	Thus, the hastings ratio is always $\ge \frac{5}{6}$.
+	This implies that at most $\frac{1}{6}$ of the mass remains at tree $T$ in the mass distribution.
+	Let $W_1(T,S)$ be the cost of an optimal mass transport for the uniform random walk from $T$ to $S$.
+	We construct an upper bound on $W_1'(T,S)$ for the MH random walk by moving mass according to $W_1$ where possible, and moving the remainder either from $T$ to $S$, $T$ to a neighbor of $S$, or from $T's$ neighbors to $S$.
+	The maximum possible mass that is not moved according to $W_1$ is $\frac{1}{6}$.
+	Moreover, the affected mass must be moved through at most two additional trees.
+	Then, $W_1' &\le W_1 + \frac{2}{6}$.
+	We now have:
+	\begin{align*}
+		\kappa_{MH}(T,S) & \ge 1 - \frac{W_1 + \frac{1}{3}}{\dspr{T,S}} \\
+		& \ge \kappa(T,S) - \frac{1}{3\dspr{T,S}}
+	\end{align*}
+
+	In the case that $\dspr{T,S}=1$, the affected mass must be moved through only at most one additonal tree, as $T$ and $S$ are adjacent.
+	We thus obtain the lower bound of $\kappa(T,S) - \frac{1}{6}$ in this case.
+
+	We obtain the upper bounds similarly to the lower bounds, by observing that the affected at most $\frac{1}{6}$ of the mass may move through at most two fewer trees (i.e. directly between $T$ and $S$ rather than a pair of neighbors at distance $\dspr{T,S} + 2$ from each other).
+	Again, this is at most one fewer tree when $\dspr{T,S}=1$.
+
+\end{proof}
+
 
 
 
