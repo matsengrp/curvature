@@ -305,6 +305,40 @@ By Lemma~\ref{lem:shared_neighbors} the maximum overlap is $6n-17$.
 The maximum curvature is thus $1 - \frac{\degree{T} - 6n-17}{\degree{T}} = \frac{6n - 17}{\degree{T}}$. This is maximized when $\degree{T}$ is as small as possible, that is $T,S$ are ladders and $\degree{T} = 3n^2 - 13n + 14$.
 \end{proof}
 
+Note that this bound is tight and has been verified computationally for $n \le 7$.
+
+Next, we bound the minimum curvature of two adjacent trees.
+
+\begin{lemma}
+	The curvature of the uniform random walk between two adjacent trees with $n$ leaves is at least
+	$$\frac{-n^2 + 2n}{3.5n^2 - 15n + 16}.$$
+\end{lemma}
+\begin{proof}
+	Let $T$ and $S$ be two adjacent trees.
+	We can bound the mass transport cost from above by $1 + 2m$, where $m$ is the maximum proportion of mass that can not be moved between adjacent trees. 
+	This gives a lower bound of $1 - (1 + 2m) / 1) = -2m$ on the curvature.
+	The mass transport cost is maximized (and therefore curvature minimized) by a combination of two effects: trees that must be paired at a distance $>1$ and mass that must be moved between unpaired trees due to differing degrees of $T$ and $S$.  
+	By Lemmas~\ref{lem:degree_change} and~\ref{lem:degree_max_delta_adjacent}, the latter effect is maximized when the relative degree change is maximized.
+	By Corollary~\ref{cor:paired_neighbors}, there are at most $o := \degree{T} -2ka - 2(i-1)$ paired trees.
+	Then, let $S$ be the ladder tree with degree $3n^2 - 13n + 14$ and $T$ be the adjacent tree constructed by moving the lower $\floor{\frac{n}{2}}$ leaves of $S$ to the root.
+	$T$ has degree at most $3.5n^2 -15n + 16$.
+	There are thus $2ka + 2(i-1) = 2\left(\ceil{\frac{n-2}{2}}\floor{\frac{n}{2}} +(1-1)\right) \le \frac{1}{2}n^2 - n$ unpaired neighbors, the maximum possible.
+	Then the maximum $m$ is:
+	$$\frac{\frac{1}{2}n^2 - n}{3.5n^2 - 15n + 16}.$$
+	The claim follows from multiplying this value by $-2$.
+\end{proof}
+
+We further observe that the limit of our curvature lower bound is $-\frac{2}{7}$.
+Exhaustive tests with $n \le 7$ show that no pair of trees have curvature less than $-\frac{2}{5}$ and our bound meets or exceeds this value for $n > 7$.
+Moreover, the SPR distance is a metric, so this bounds the curvature for arbitrary pairs of trees\todo{cite one of the Ollivier papers}.
+This directly leads to the following corollary:
+
+\begin{corollary}
+	The curvature of the uniform random walk between two phylogenetic trees is at least $-\frac{2}{5}$.
+\end{corollary}
+
+Note that this bound is not tight (at least for small $n$) as it is rarely necessary to transport mass the maximum distance between unpaired trees.
+
 We next bound the effect of laziness on curvature. Let $\kappa_{l,p}$ be the curvature of a lazy random walk which moves with probability $p$ and remains stationary with probability $1 - p$. 
 For example, $\kappa_{l,\frac{1}{4}}$ moves with probability $\frac{1}{4}$ and remains stationary with probability $\frac{3}{4}$. \todo{should be defined earlier, particularly the part where the curvature is divided by $p$.}
 
@@ -335,6 +369,10 @@ For example, $\kappa_{l,\frac{1}{4}}$ moves with probability $\frac{1}{4}$ and r
 	The upper bound then follows analogously to the lower bound.
 	Moreover, no mass can remain at $T$ or $S$ when $\dspr{T,S} > 1$, in which case the curvatures are equal.
 \end{proof}
+
+
+
+
 
 
 
