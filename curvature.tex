@@ -64,7 +64,7 @@
 
 
 \begin{document}
-\title{Ricci curvature of the rooted phylogenetic subtree-prune-regraft graph}
+\title{Ricci-Ollivier curvature of the data-free random walks on rooted phylogenetic subtree-prune-regraft graph}
 \author[Whidden]{Christopher Whidden}
 \author[Matsen]{Frederick Matsen}
 \address{}
@@ -86,11 +86,55 @@
 
 \section{Introduction}
 
-This isn't quite the right graph to be looking at (rooted).
+Statistical phylogenetics is.
+Likelihood of generating the observed sequences via a continuous time Markov chain.
+Likelihood-based phylogenetics gives an optimality criterion that comes from both branch length and topology.
+Bayesian versus maximum likelihood (ML).
 
-We are talking about rooted.
+Phylogenetic algorithms do MCMC or heuristic local search.
+In both settings, one needs a means of describing "nearby" trees.
+There are a number of such
+SPR graph.
+For MCMC moves, one would like to ensure good mixing.
+For ML moves, we are concerned about local optima.
+We will call these "graph effects"-- can't get easily from one spot to another because of structure of the graph.
+vs. branch length effects?
+
+Researchers have noticed SPR graph effects in MCMC.
+\cite{Mossel2005-ly,Mossel2006-fo}
+\cite{Ronquist2006-fv}
+\cite{Stefankovic2011-hu}
+We recently showed that graph structure has an effect of MCMC mixing using real data and programs.
+\cite{Whidden2015-yi}
+Probabilists have also approached the problem using related frameworks that are more amenable to proving theorems, both for other sets of moves on trees with a finite number of leaves \cite{Aldous2000-vg,Diaconis2002-gy} or for SPR and related moves on a continuous tree-like object called the compact real tree which formalizes the notion of a tree with infinite leaves\cite{Evans2006-xh,Athreya2014-de}.
+
+ML also has graph effects, which manifest as local maxima.
+There have been investigation of local maxima, but concern branch lengths.
+\cite{Fukami1989-fs,Steel1994-pt,Chor2003-wh,Chor2000-ea}
+The work on SPR moves in the ML context has been focused on increasing efficiency of the SPR moves in finding a well-defined maximum (via simulated data) rather than investigating local maxima \cite{Hordijk2005-dl,Stamatakis2005-rh,Guindon2010-lo,Price2010-fi}.
+
+The SPR graph is very important in phylogenetic inference, and yet still little is known about the rooted or unrooted versions of the SPR graph itself, or random walks thereupon.
+\cite{Song2003-gf} developed a recursive procedure on a tree to find the degree of the corresponding vertex in the rSPR graph.
+\cite{Ding2011-bj} showed that the diameter of the rSPR graph is $n - \Theta(\sqrt n)$.
+\todo{CW: what is known about the uSPR graph?}
+
+Recently, a new approach to proving theorems about random walks on discrete spaces has been pioneered by Ollivier and colleagues \cite{Ollivier2009-bw,Joulin2010-jg}.
+
+
+\section{Preliminaries}
+\[
+\kappa(x, y) := 1 - \frac{W_1(m_x, m_y)}{d(x, y)}
+\]
+
+We are talking about rooted, and would like to make it clear that this is not the most realistic graph to consider.
+Our motivations for considering this graph are because it is understand-able, and some programs do rSPR-type moves.
 Parent and parent subtree.
 Define adjacency of subtrees.
+
+
+\section{Access times of random walks on the rSPR graph can be understood using distance, degree, and curvature}
+
+After the chain has achieved stationarity, one sees a
 
 \section{Rooted SPR Neighborhoods}
 
@@ -245,7 +289,7 @@ Then $\size{N(T) \cap N(S)} \le 6n - 17$.
 	In the latter case, the facts that $T$ and $S$ differ only in the location of $R$ and $\dspr{T,P} = \dspr{S,P} = 1$, imply that $T|(X \setminus L(P)) = S|(X \setminus L(P))$.
 	Then leaves $r' \in R$, $p' \in P$, and $q' \in Q$, for some subtree $Q$, form a triple of $T$ and a different triple in $S$.
 	This incompatible triple can be resolved in at most $6n - 17$ ways, the maximum of which is reached when $P$, $Q$, and $R$ are themselves a ``triple'' of subtrees.
-	By Lemma~\ref{ }\todo{need unique move lemma}, each of the subtrees is assigned to at most $2n-6$ unique moves.
+	By Lemma~ref{ }\todo{need unique move lemma}, each of the subtrees is assigned to at most $2n-6$ unique moves.
 	Moreover, one additional overlapping move also moves one of the subtrees (that of the aunt of the LCA of the three subtrees).
 	The number of shared neighbors is thus at most $3(2n-6) + 1 = 6n-17$.
 	Note that this bound is tight when, for example, $T$ and $S$ are ladders with a different configuration of 3 leaves at maximum depth.
@@ -485,7 +529,20 @@ This procedure identifies exactly the trees in the $k$-tube, so we have the foll
 	Then, by the properties of BFS, $x$ would have been on the path from $t_1$ to $t_2$ in the $t_1$ BFS tree.
 \end{proof}
 
-% \bibliographystyle{plain}
-% \bibliography{curvature}
+\section{Conclusion and future work}
+This isn't quite the right graph to be looking at (rooted).
+
+Want to investigate curvature of MCMC steps with a nontrivial likelihood function.
+MCMC does both branch length and topology changes, thus this isn't the real thing.
+Nevertheless, graph effects still matter.
+\cite{Stefankovic2011-hu} take a chain where the likelihoods are the likelihoods maximized across branch length.
+
+Ranked trees \cite{Song2006-xe}
+Partitions \cite{Gusfield2002-il}
+
+
+
+\bibliographystyle{plain}
+\bibliography{curvature}
 \end{document}
 
