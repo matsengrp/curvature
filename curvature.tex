@@ -315,9 +315,9 @@ Next, we bound the minimum curvature of two adjacent trees.
 \end{lemma}
 \begin{proof}
 	Let $T$ and $S$ be two adjacent trees.
-	We can bound the mass transport cost from above by $1 + 2m$, where $m$ is the maximum proportion of mass that can not be moved between adjacent trees. 
+	We can bound the mass transport cost from above by $1 + 2m$, where $m$ is the maximum proportion of mass that can not be moved between adjacent trees.
 	This gives a lower bound of $1 - (1 + 2m) / 1) = -2m$ on the curvature.
-	The mass transport cost is maximized (and therefore curvature minimized) by a combination of two effects: trees that must be paired at a distance $>1$ and mass that must be moved between unpaired trees due to differing degrees of $T$ and $S$.  
+	The mass transport cost is maximized (and therefore curvature minimized) by a combination of two effects: trees that must be paired at a distance $>1$ and mass that must be moved between unpaired trees due to differing degrees of $T$ and $S$.
 	By Lemmas~\ref{lem:degree_change} and~\ref{lem:degree_max_delta_adjacent}, the latter effect is maximized when the relative degree change is maximized.
 	By Corollary~\ref{cor:paired_neighbors}, there are at most $o := \degree{T} -2ka - 2(i-1)$ paired trees.
 	Then, let $S$ be the ladder tree with degree $3n^2 - 13n + 14$ and $T$ be the adjacent tree constructed by moving the lower $\floor{\frac{n}{2}}$ leaves of $S$ to the root.
@@ -339,7 +339,7 @@ This directly leads to the following corollary:
 
 Note that this bound is not tight (at least for small $n$) as it is rarely necessary to transport mass the maximum distance between unpaired trees.
 
-We next bound the effect of laziness on curvature. Let $\kappa_{l,p}$ be the curvature of a lazy random walk which moves with probability $p$ and remains stationary with probability $1 - p$. 
+We next bound the effect of laziness on curvature. Let $\kappa_{l,p}$ be the curvature of a lazy random walk which moves with probability $p$ and remains stationary with probability $1 - p$.
 For example, $\kappa_{l,\frac{1}{4}}$ moves with probability $\frac{1}{4}$ and remains stationary with probability $\frac{3}{4}$. \todo{should be defined earlier, particularly the part where the curvature is divided by $p$.}
 
 \begin{lemma}
@@ -377,10 +377,9 @@ We now bound the difference between the curvature of uniform random walks $\kapp
 
 \begin{lemma}
 	Let $T$ and $S$ be phylogenetic trees with $n$ leaves. Then:
-	\begin{enumerate}
 	$$\kappa(T,S) - \frac{1}{3\dspr{T,S}}
 	\le \kappa_{MH}(T,S)
-	\le \kappa(T,S) + \frac{1}{3\dspr{T,S}}, \text{ and }$$ 
+	\le \kappa(T,S) + \frac{1}{3\dspr{T,S}}, \text{ and }$$
 	$$\kappa(T,S) - \frac{1}{6}
 	\le \kappa_{MH}(T,S)
 	\le \kappa(T,S) + \frac{1}{6}.$$
@@ -394,7 +393,7 @@ We now bound the difference between the curvature of uniform random walks $\kapp
 	We construct an upper bound on $W_1'(T,S)$ for the MH random walk by moving mass according to $W_1$ where possible, and moving the remainder either from $T$ to $S$, $T$ to a neighbor of $S$, or from $T's$ neighbors to $S$.
 	The maximum possible mass that is not moved according to $W_1$ is $\frac{1}{6}$.
 	Moreover, the affected mass must be moved through at most two additional trees.
-	Then, $W_1' &\le W_1 + \frac{2}{6}$.
+	Then, $W_1' \le W_1 + \frac{2}{6}$.
 	We now have:
 	\begin{align*}
 		\kappa_{MH}(T,S) & \ge 1 - \frac{W_1 + \frac{1}{3}}{\dspr{T,S}} \\
