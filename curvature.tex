@@ -119,8 +119,13 @@ We are not aware of any general conclusions concerning hill-climbing on the SPR 
 The SPR graph is very important in phylogenetic inference, and yet still little is known about the rooted or unrooted versions of the SPR graph itself, or random walks thereupon.
 \cite{Song2003-gf} developed a recursive procedure on a tree to find the degree of the corresponding vertex in the rSPR graph.
 \cite{Ding2011-bj} showed that the diameter of the rSPR graph is $n - \Theta(\sqrt n)$.
-\todo{CW: what is known about the uSPR graph?}
-
+\todo{CW: what is known about the uSPR graph? EM: the best bounds are in the same paper}
+\cite{Ding2011-bj} showed that
+$$ n - 2\ceil{\sqrt{n}} + 1
+\le \Delta_{\text{TBR}}(n)
+\le \Delta_{\text{SPR}}(n)
+\le \floorV{\frac{\sqrt{n - 2} - 1}{2}}.
+$$
 Recently, a new approach to quantifying properties of random walks has been pioneered by Ollivier and colleagues \cite{Ollivier2009-bw,Joulin2010-jg}.
 They define a notion of curvature on a discrete or continuous case.
 Formalizes idea of the extent to which random walking brings points together, and is generalization of the notion of Ricci curvature on manifolds.
