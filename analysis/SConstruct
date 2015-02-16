@@ -7,7 +7,13 @@ env = Environment(ENV=os.environ)
 no_slurm = bool(subprocess.call('which sbatch'.split()))
 
 min_leaves = 4
-max_leaves = 6
+max_leaves = 5
+
+walk_seed = 0
+walk_n_iter = 100000
+# walk_n_iter = 10000000;
+walk_sample_freq = 1
+
 graph_types = ['rspr', 'nni']
 random_walks = ['lurw', 'upmh']
 
@@ -15,6 +21,7 @@ curvatures_dir = 'curvatures/'
 graphs_dir = 'graphs/'
 scripts_dir = '../scripts/'
 tangles_dir = '../tangle/rooted-symmetric/'
+walks_dir = 'walks/'
 
 
 # First make graphs and associated files.
@@ -23,6 +30,7 @@ graphs = {t: {} for t in graph_types}
 graph_degrees = {t: {} for t in graph_types}
 tangle_degrees = {t: {} for t in graph_types}
 tangle_newicks = {t: {} for t in graph_types}
+walks = {t: {} for t in graph_types}
 
 for graph_type in graph_types:
     for n_leaves in range(min_leaves, max_leaves+1):
@@ -56,6 +64,21 @@ for graph_type in graph_types:
             [tangle_idx_path,
              tree_path],
             scripts_dir+'tangle-infos.py ${SOURCES[0]} ${SOURCES[1]} $TARGET')
+
+        if graph_type == 'rspr':
+            walk_flags = ''
+        elif graph_type == 'nni':
+            walk_flags = ' -nni '
+        else:
+            raise AssertionError
+
+        walks[graph_type][n_leaves] = Command(
+            walks_dir+graph_type+'/walk'+str(n_leaves)+'.tsv',
+            '../random_spr_walk/random_spr_walk',
+            '$SOURCE {} -seed {} -ntax {} -niterations {} -sfreq {} \
+                | sed "s/: /\\t/" > $TARGET'
+            .format(walk_flags, walk_seed, n_leaves,
+                    walk_n_iter, walk_sample_freq))
 
 
 # Then make curvatures and plots for those graphs.

@@ -7,3 +7,6 @@
 [submodule "spr_neighbors"]
 	path = spr_neighbors
 	url = https://github.com/cwhidden/spr_neighbors
+[submodule "random_spr_walk"]
+	path = random_spr_walk
+	url = https://github.com/cwhidden/random_spr_walk.git
