@@ -98,16 +98,16 @@ We find that indeed there is
 
 
 \section{Introduction}
-Phylogenetic methods, which reconstruct evolutionary trees from DNA or RNA data, are of fundamental importance to modern biology.
+Molecular phylogenetic methods, which reconstruct evolutionary trees from DNA or RNA data, are of fundamental importance to modern biology.
 Statistical phylogenetics forms the currently most popular means of reconstructing phylogenetic trees, in which the tree is viewed as an unknown parameter in a likelihood-based statistical inference problem.
 The likelihood function in this setting is the likelihood of generating the observed sequences via a continuous time Markov chain (CTMC) evolving down the tree starting from a sequence assumed to be sampled from the stationary distribution (cite{Felsenstein}).
 The lengths of the branches of the phylogenetic tree give the ``time'' parameter in the CTMC, where the generated sequence accrues mutations, typically in an IID manner across sites.
 Thus likelihood-based phylogenetics gives an optimality criterion that comes from both branch length and topology.
-Within this framework researchers typically choose either a Bayesian approach, in which a computer program approximates the posterior distribution of trees and their associated parameters, or a maximum likelihood (ML) approach, in which a computer program searches across tree topologies and continuous parameters in order to find the combination with the highest likelihood.
+Within this framework researchers typically choose either a Bayesian approach, in which an algorithm (typically Markov chain Monte Carlo or MCMC) approximates the posterior distribution of trees and their associated parameters, or a maximum likelihood (ML) approach, in which an algorithm searches across tree topologies and continuous parameters in order to find the combination with the highest likelihood.
 
-Here we focus on the discrete search part.
-Phylogenetic algorithms do MCMC or heuristic local search.
-In both settings, one needs a means of describing "nearby" trees.
+In order to get accurate such estimates, MCMC samplers must sufficiently explore the collection of trees, or heuristic local search algorithms must find a way to the ML tree, avoiding and escaping local peaks.
+In both settings, one needs a means of describing the trees that are ``near'' to the current tree.
+% Here we focus on the discrete search part.
 There are a number of such means of doing so.
 SPR.
 SPR graph.
