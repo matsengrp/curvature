@@ -73,10 +73,10 @@ for graph_type in graph_types:
             raise AssertionError
 
         walks[graph_type][n_leaves] = Command(
-            walks_dir+graph_type+'/walk'+str(n_leaves)+'.tsv',
+            walks_dir+graph_type+'/walk'+str(n_leaves)+'.tsv.gz',
             '../random_spr_walk/random_spr_walk',
             '$SOURCE {} -seed {} -ntax {} -niterations {} -sfreq {} \
-                | sed "s/: /\\t/" > $TARGET'
+                | sed "s/: /\\t/" | gzip -cn > $TARGET'
             .format(walk_flags, walk_seed, n_leaves,
                     walk_n_iter, walk_sample_freq))
 
