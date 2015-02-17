@@ -13,6 +13,8 @@
 \newtheorem{example}[theorem]{Example}
 \newtheorem{definition}[theorem]{Definition}
 
+\renewcommand{\theenumi}{\roman{enumi}}
+
 \newcommand{\RR}{\mathbb R}
 \newcommand{\TT}{\mathcal T}
 
@@ -150,12 +152,16 @@ Using simulation of these processes, we find that the distribution of access tim
 
 
 \section{Preliminaries}
-\[
+\begin{equation}
 \kappa(x, y) := 1 - \frac{W_1(m_x, m_y)}{d(x, y)}
-\]
+\label{eq:curvatureDef}
+\end{equation}
 
+Rooted $X$-trees.
+Leaf restriction notation with $|$.
 We are talking about rooted, and would like to make it clear that this is not the most realistic graph to consider.
-Our motivations for considering this graph are because it is understand-able, and some programs do rSPR-type moves.
+Our motivations for considering this graph are because it is understandable, and some programs do rSPR-type moves.
+Note that in rSPR you can move subtrees to the root.
 Parent and parent subtree.
 Define adjacency of subtrees.
 
@@ -176,7 +182,8 @@ After the chain has achieved stationarity, one sees a
 In the absence of a bias provided by a likelihood function, curvature for the random walks we consider is entirely determined by the degree of vertices in the graph.
 Thus, in order to provide bounds on curvature, we will begin by bounding differences between degrees.
 
-\begin{lemma}{Song, \cite{Song2003-gf}.}
+\begin{lemma}[{Song \cite{Song2003-gf}}]
+    \pushQED{\qed}
 	\label{lem:degree_extremes}
 	Let $T$ be a rooted phylogenetic tree with $n$ leaves. Then
 	\begin{enumerate}
@@ -184,6 +191,7 @@ Thus, in order to provide bounds on curvature, we will begin by bounding differe
 		\item $\degree{T} = 4(n-2)^2 - 2 \sum_{m=1}^{n-2} \floor{\log_2(m+1)}$, if $T$ is a balanced tree, and
 		\item  $3n^2 - 13n + 14 \le \degree{T} \le 4(n-2)^2 - 2 \sum_{m=1}^{n-2} \floor{\log_2(m+1)}$, otherwise.
 	\end{enumerate}
+    \popQED
 \end{lemma}
 
 We now bound the relative and exact difference in SPR degree between two trees with $n$ leaves.
@@ -198,7 +206,7 @@ We now bound the relative and exact difference in SPR degree between two trees w
 	\end{enumerate}
 \end{lemma}
 \begin{proof}
-	To prove (1), we simply note from Lemma~\ref{lem:degree_extremes} that the ladder tree achieves the minimum degree, and the balanced tree achieves the maximum degree:
+	To prove (i), we simply note from Lemma~\ref{lem:degree_extremes} that the ladder tree achieves the minimum degree, and the balanced tree achieves the maximum degree:
 	\begin{align*}
 		\frac{\degree{T}}{\degree{S}} \ge\ &\frac{3n^2 - 13n + 14}{4(n-2)^2 - 2 \sum_{m=1}^{n-2} \floor{\log_2(m+1)}} \\
 		\ge\ &\frac{3n^2 - 13n + 12}{4(n-2)^2 - 2(n-2)} \\
@@ -207,7 +215,7 @@ We now bound the relative and exact difference in SPR degree between two trees w
 		\cuttable{\ge\ &\frac{3n^2 - 13n + 12}{4n^2 - 17\frac{1}{3}n + 18} &\forall n \ge 3 \\}
 	\end{align*}
 	which is greater than 3/4 when $n \ge 3$.
-    Similarly for (2):
+    Similarly for (ii):
 	\begin{align*}
 		\cuttable{\degree{S} - \degree{T}
 		\le\ &(4(n-2)^2 - 2 \sum_{m=1}^{n-2} \floor{\log_2(m+1)})
@@ -231,10 +239,10 @@ $$2\left(k(a-b) + i - j\right).$$
 \end{lemma}
 \begin{proof}
 The set of permissible SPR moves changes in four different ways due to the movement of $R$:
-1) subtrees that include vertices on the path from $U$ to $L$ may now be moved into $R$ and its newly introduced parent vertex,
-2) subtrees that include vertices on the path from $V$ to $L$ may no longer be moved into $R$ and its parent vertex,
-3) $R$'s parent subtree may now be moved into $U$, and
-4) $R$'s parent subtree may no longer be moved into $V$.
+(i) subtrees that include vertices on the path from $U$ to $L$ may now be moved into $R$ and its newly introduced parent vertex,
+(ii) subtrees that include vertices on the path from $V$ to $L$ may no longer be moved into $R$ and its parent vertex,
+(iii) $R$'s parent subtree may now be moved into $U$, and
+(iv) $R$'s parent subtree may no longer be moved into $V$.
 No additional moves are introduced or blocked by the original SPR operation on $R$.
 
 Recall that a rooted tree with $k$ leaves has $2(k-1)$ internal edges (recall that we are excluding any ``root edge'' in these calculations).
@@ -268,38 +276,42 @@ We can now use Lemma~\ref{lem:degree_change} to improve the bounds in Lemma~\ref
 	\end{enumerate}
 \end{lemma}
 \begin{proof}
-	We first prove (1).
+	We first prove (i).
 	By Lemma~\ref{lem:degree_change}, $\degree{S} - \degree{T} = 2(k(a-b) + i - j)$.
 	This value is maximized by making $L$ the root and minimizing $b$, namely by setting $b=0$.
-	The resulting equation $2(ka + i - j)$ is similarly maximized by setting $i=1$ (which allows us to increase $a$) and balancing the sides of the product $ka$ with as many leaves as possible.
+	The resulting equation $2(ka + i - j)$ is similarly maximized by setting $i=1$ (which allows us to increase $a$) then maximally balancing the terms in the product $ka$ as follows.
 
-	There are two cases, depending on whether the subtree of $k$ leaves is moved to an ancestor or not.
-    If not, then we set $j=1$ and balance the root with the remaining $n-b-i-j = n-2$ leaves, giving (1).
-	Note that this corresponds to moving the bottom subtree of $\floor{\frac{n-2}{2}}$ or $\ceil{\frac{n-2}{2}}$ leaves in a ladder tree to the rootmost leaf of the tree.
+	There are two cases, depending on whether the subtree of $k$ leaves is moved to the root or not.
+    If not, then we set $j=1$ and split the remaining $n-b-i-j = n-2$ leaves between $k$ and $a$ in as balanced a way as possible, giving (i).
+	Note that this corresponds to moving the bottom subtree of $\floor{\frac{n-2}{2}}$ or $\ceil{\frac{n-2}{2}}$ leaves in a ladder tree to the root-most leaf of the tree.
 
-	If the subtree of $k$ leaves is moved to an ancestor, then we do not need to exclude the target branch from $k$ and $a$, gaining an additional leaf to balance the product at the cost of increasing $j$.
+	If the subtree of $k$ leaves is moved to the root, then we do not need to exclude the target branch from $k$ and $a$, gaining an additional leaf to balance the product $ka$ at the cost of increasing $j$.
 	This corresponds to moving the bottom subtree of $\floor{\frac{n}{2}}$ or $\ceil{\frac{n}{2}}$ leaves in a ladder tree to the root.
 	Namely, we have $2(ka + 1 - j)$, where $j = n - k = a + 1$.
 	If we move the additional leaf, we have:
-$$\degree{S} - \degree{T} \le 2\left(\ceilXXL{\frac{n}{2}}\floorV{\frac{n-2}{2}}  + 1 - \left(\floorV{\frac{n-2}{2}} + 1\right)\right) = 2\floorV{\frac{n-2}{2}}\ceilV{\frac{n-2}{2}}.$$
-Similarly, if we do not move the additional leaf, we have:
-$$\degree{S} - \degree{T} \le 2 \left(\ceilV{\frac{n-2}{2}}\floorXXL{\frac{n}{2}} +1 -  \left(\ceilV{\frac{n-2}{2}} + 1\right)\right) = 2\floorV{\frac{n-2}{2}}\ceilV{\frac{n-2}{2}}.$$
-Therefore claim (1) holds.
+$$\degree{S} - \degree{T} \le 2\left(\ceilXXL{\frac{n}{2}}\floorV{\frac{n-2}{2}}  + 1 - \left(\floorV{\frac{n-2}{2}} + 1\right)\right) = 2\floorV{\frac{n-2}{2}}\ceilV{\frac{n-2}{2}}$$
+like before.
+Similarly, if we do not move the additional leaf, we also have:
+$$\degree{S} - \degree{T} \le 2 \left(\ceilV{\frac{n-2}{2}}\floorXXL{\frac{n}{2}} +1 -  \left(\ceilV{\frac{n-2}{2}} + 1\right)\right) = 2\floorV{\frac{n-2}{2}}\ceilV{\frac{n-2}{2}},$$
+proving (i).
 
 The relative change in degree, $\frac{\degree{T}}{\degree{S}}$, can also be written as $\frac{\degree{T}}{\degree{T} + (\degree{S} - \degree{T})}$.
-By (1), we have that $\degree{S} - \degree{T} \le \frac{1}{2} (n-2)^2 $.
-Thus, $\frac{\degree{T}}{\degree{S}} \ge \frac{\degree{T}}{\degree{T} + \frac{1}{2} (n-2)^2} $.
-This bound is minimized when $\degree{T}$ is minimized and, again, $\degree{T} \ge 3n^2 - 13n + 14$ by Lemma~\ref{lem:degree_extremes}.
-	We then have:
+By (i), we have that $\degree{S} - \degree{T} \le \frac{1}{2} (n-2)^2$,
+so $\frac{\degree{T}}{\degree{S}} \ge \frac{\degree{T}}{\degree{T} + \frac{1}{2} (n-2)^2} $.
+This bound is minimized when $\degree{T}$ is minimized, and recall by Lemma~\ref{lem:degree_extremes} that $\degree{T}$ is bounded below by $3n^2 - 13n + 14$.
+	Thus
 	\begin{align*}
 		\frac{\degree{T}}{\degree{S}} &\ge \frac{3n^2 - 13n + 14}{3n^2 - 13n + 14 + \frac{1}{2}(n-2)^2} \\
-		&\ge \frac{3n^2 - 13n + 14}{3.5n^2 - 15n + 16}
+		&\ge \frac{3n^2 - 13n + 14}{3.5n^2 - 15n + 16}.
 	\end{align*}
-	Thus (2) and (3) follow.
+	Statements (ii) and (iii) follow from this bound.
+    % 3*16 - 13*4 + 14 = 10
+    % 3.5*16 - 15*4 + 16 = 12
 
 \end{proof}
 
 Next, we bound the number of neighbors shared by two adjacent trees.
+Let $N(Q)$ be the set of neighbors of a tree $Q$ (this does not include $Q$).
 
 \begin{lemma}
 	\label{lem:shared_neighbors}
@@ -309,9 +321,10 @@ Then $\size{N(T) \cap N(S)} \le 6n - 17$.
 
 \begin{proof}
 	$T$ and $S$ differ by one SPR move that moves a subtree $R$.
-	Let $U$ be a tree in $N(T)$ and $N(S)$.
-	Then either (1) $T$ and $U$ differ in the location of $R$, or (2) $T$ and $U$ differ in the location of another subtree $P$.
-	In the latter case, the facts that $T$ and $S$ differ only in the location of $R$ and $\dspr{T,P} = \dspr{S,P} = 1$, imply that $T|(X \setminus L(P)) = S|(X \setminus L(P))$.
+	Pick a neighbor $Q \in N(T) \cap N(S)$ of both $T$ and $S$ \todo{Um, why can't this intersection be empty?}.
+	Then either (i) $T$ and $Q$ differ in the location of $R$, or (ii) $T$ and $Q$ differ in the location of another subtree $P$.
+	In the latter case, $T|(X \setminus L(P)) = S|(X \setminus L(P))$ because $T$ and $S$ differ only in the location of $R$ and $\dspr{T,P} = \dspr{S,P} = 1$.
+    \todo{FAM stopped here}
 	Then leaves $r' \in R$, $p' \in P$, and $q' \in Q$, for some subtree $Q$, form a triple of $T$ and a different triple in $S$.
 	This incompatible triple can be resolved in at most $6n - 17$ ways, the maximum of which is reached when $P$, $Q$, and $R$ are themselves a ``triple'' of subtrees.
 	By Lemma~ref{ }\todo{need unique move lemma}, each of the subtrees is assigned to at most $2n-6$ unique moves.
@@ -325,10 +338,7 @@ Then $\size{N(T) \cap N(S)} \le 6n - 17$.
 
 
 \section{Curvature}
-Note that we have to write out simple random walk versus degree-informed.
-Can we just say that degree differences are small relative to $n$? Is that true?
-
-For the purposes of this paper, $\kappa_n$ is curvature on the $n$-taxon rSPR graph and $W_{1,n}$ is the corresponding mass transport term.
+For the purposes of this paper, $\kappa_n$ is the Ricci-Ollivier curvature \eqref{eq:curvatureDef} on the $n$-taxon rSPR graph with respect to a specified random walk and $W_{1,n}$ is the corresponding mass transport term.
 
 \begin{proposition}
 Fix a positive integer $k$ and let $R$ be a tree with $k$ leaves.
@@ -336,29 +346,28 @@ Let $\{T_n \mid n > k\}$ be a sequence of phylogenetic trees all containing $R$,
 Then $\lim_{n \rightarrow \infty} \kappa_n(T_n, S_n) = 0$ for \todo{TBA} random walk on the SPR graph.
 \end{proposition}
 \begin{proof}
-Because $d(T_n, S_n) = 1$, we will prove the proposition by showing that the mass transport term $W_{1,n}$ sits between two bounds with limit 1 as $n$ goes to infinity.
+Because $d(T_n, S_n) = 1$, we will prove the proposition by showing that the mass transport term $W_{1,n}$ sits between two bounds, each of which has limit 1 as $n$ goes to infinity.
 
 To start we demonstrate the proposition in the case that $T_n$ and $S_n$ have the same number of neighbors.
-First we show that $W_{1,n}$ is bounded above by $(q_n+3(2k-1)(\OhOf{n}))/q_n$, where $q_n$ is the number of neighbors of $T_n$ and $S_n$.
-Let $T'_n$ be any of the $o$ SPR moves from a pairing following Corollary~\ref{cor:paired_neighbors}.
-In the mass transport, we pair $T'_n$ with $S'_n$, which results from the same move applied to $S_n$ such that $\dspr{T'_n, S'_n} = 1$.
-The number of trees unmatched by this pairing is $\OhOf{kn}$, and their distance is at most 3.
-Thus, $W_{1,n}$ is bounded above by $(q_n + 2\OhOf{kn}) / q_n$.
+First we claim that $W_{1,n}$ is bounded above by $(|N(T_n)|+\OhOf{kn})/|N(T_n)|$ by exhibiting a mass transport program satisfying that bound.
+Let $(T'_n, S'_n)$ be any of the $o$ pairs of trees which are one SPR move apart as per Corollary~\ref{cor:paired_neighbors}.
+We pair the these trees in the mass transport.
+The number of trees unmatched by this pairing is $\OhOf{kn}$, and we can pair each of them arbitrarily with another tree of distance at most 3.
+Thus, $W_{1,n}$ is bounded above by $(|N(T_n)| + \OhOf{kn}) / |N(T_n)|$.
 
-A lower bound is also available because we can't do better than distance 1 for all trees but the $\OhOf{n}$ pairs from Lemma~\ref{lem:shared_neighbors}.
-By ignoring these trees we get a lower bound of $(q_n -(\OhOf{n}))/q_n$ for $W_{1,n}$.
+A lower bound is also available because we can't do better than distance 1 for all trees except for the $\OhOf{n}$ pairs from Lemma~\ref{lem:shared_neighbors}.
+By ignoring these trees we get a lower bound of $(|N(T_n)| - (\OhOf{n}))/|N(T_n)|$ for $W_{1,n}$.
 
-The desired control of $W_{1,n}$ is thus obtained because $q_n$ is quadratic in $n$.
+The desired control of $W_{1,n}$ is thus obtained because $|N(T_n)|$ is quadratic in $n$.
 
-Now, we prove the proposition when the number of neighbors differ.
-Let $q_n$ and $p_n$ be the number of neighbors of $T_n$ and $S_n$, respectively.
-Assume without loss of generality that $q_n < p_n$.
-By Lemma~\ref{lem:degree_change}, $p_n - q_n = 2(k(a-b) + i - j)$, where $a,b,i,j < n$.
-Thus, $p_n - q_n = \OhOf{kn}$.
-We again pair $T'_n$ with $S'_n$ such that $\dspr{T'_n, S'_n}=1$ but, as $p_n > q_n$ we can only account for at most $q_n / p_n$ of the mass directly and may have to move the $(p_n - q_n) / p_n$ remainder to trees a distance at most 3.
-Thus, $W_{1,n}$ is bounded above by $(q_n + 3\OhOf{kn}) / p_n = (p_n + 2\OhOf{kn}) / p_n$.
-We again bound $W_{1,n}$ from below with $(q_n - \OhOf{n}) / q_n$ by ignoring the mass in trees that may overlap.
-The proposition again follows because $q_n$ is quadratic in $n$.
+Now we prove the proposition when the number of neighbors differ.
+Assume without loss of generality that $|N(T_n)| < |N(S_n)|$.
+By Lemma~\ref{lem:degree_change}, $|N(S_n)| - |N(T_n)| = 2(k(a-b) + i - j)$, where each of $\{a,b,i,j\}$ is less than $n$.
+Thus, $|N(S_n)| - |N(T_n)| = \OhOf{kn}$.
+We again pair $T'_n$ with $S'_n$ such that $\dspr{T'_n, S'_n}=1$ but, as $|N(T_n)| < |N(S_n)|$ we can only account for at most $|N(T_n)| / |N(S_n)|$ of the mass directly and may have to move the $(|N(S_n)| - |N(T_n)|) / |N(S_n)|$ remainder to trees a distance at most 3.
+Thus, $W_{1,n}$ is bounded above by $(|N(T_n)| + 3\OhOf{kn}) / |N(S_n)| = (|N(S_n)| + 2\OhOf{kn}) / |N(S_n)|$.
+We again bound $W_{1,n}$ from below with $(|N(T_n)| - \OhOf{n}) / |N(T_n)|$ by ignoring the mass in common neighbors of $T_n$ and $S_n$.
+The proposition again follows because $|N(T_n)|$ is quadratic in $n$.
 
 \end{proof}
 
@@ -567,7 +576,7 @@ Partitions \cite{Gusfield2002-il}
 
 
 
-\bibliographystyle{plain}
+\bibliographystyle{unsrt}
 \bibliography{curvature}
 \end{document}
 
