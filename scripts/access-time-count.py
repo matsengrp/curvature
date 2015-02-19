@@ -2,7 +2,8 @@
 '''
 Suggested use:
 ./access-time-count.py --tp \
-    "$(sed -n 60p ../../tangle/rooted-symmetric/tangle5.idx)" <mcmc-trace-files>
+    "$(sed -n 60p ../../tangle/rooted-symmetric/tangle5.idx)" \
+    <mcmc-trace-files>
 '''
 
 import argparse
