@@ -312,7 +312,7 @@ This bound is minimized when $\degree{T}$ is minimized, and recall by Lemma~\ref
 \end{proof}
 
 Next, we bound the number of neighbors shared by two adjacent trees.
-Let $N(Q)$ be the set of neighbors of a tree $Q$ (this does not include $Q$).
+Let $N(U)$ be the set of neighbors of a tree $U$ (this does not include $U$).
 
 \begin{lemma}
 	\label{lem:shared_neighbors}
@@ -322,12 +322,11 @@ Then $\size{N(T) \cap N(S)} \le 6n - 17$.
 
 \begin{proof}
 	$T$ and $S$ differ by one SPR move that moves a subtree $R$.
-	Pick a neighbor $Q \in N(T) \cap N(S)$ of both $T$ and $S$ \todo{Um, why can't this intersection be empty?}.
-	Then either (i) $T$ and $Q$ differ in the location of $R$, or (ii) $T$ and $Q$ differ in the location of another subtree $P$.
-	In the latter case, $T|(X \setminus L(P)) = S|(X \setminus L(P))$ because $T$ and $S$ differ only in the location of $R$ and $\dspr{T,P} = \dspr{S,P} = 1$.
-    \todo{FAM stopped here}
-	Then leaves $r' \in R$, $p' \in P$, and $q' \in Q$, for some subtree $Q$, form a triple of $T$ and a different triple in $S$.
-	This incompatible triple can be resolved in at most $6n - 17$ ways, the maximum of which is reached when $P$, $Q$, and $R$ are themselves a ``triple'' of subtrees.
+	Pick a neighbor $U \in N(T) \cap N(S)$ of both $T$ and $S$ \todo{Um, why can't this intersection be empty?}.
+	Then either (i) $T$ and $U$ differ in the location of $R$, or (ii) $T$ and $U$ differ in the location of another subtree $Q$.
+	In the latter case, $T|(X \setminus L(Q)) = S|(X \setminus L(Q))$ because $T$ and $S$ differ only in the location of $R$ and $\dspr{T,U} = \dspr{S,U} = 1$.
+	Then leaves $r' \in R$, $q' \in Q$, and $u' \in U$, for some subtree $U$, form a triple of $T$ and a different triple in $S$.
+	This incompatible triple can be resolved in at most $6n - 17$ ways, the maximum of which is reached when $Q$, $U$, and $R$ are themselves a ``triple'' of subtrees.
 	By Lemma~ref{ }\todo{need unique move lemma}, each of the subtrees is assigned to at most $2n-6$ unique moves.
 	Moreover, one additional overlapping move also moves one of the subtrees (that of the aunt of the LCA of the three subtrees).
 	The number of shared neighbors is thus at most $3(2n-6) + 1 = 6n-17$.
