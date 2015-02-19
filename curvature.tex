@@ -146,7 +146,7 @@ They define a notion of curvature on a discrete or continuous case.
 Formalizes idea of the extent to which random walking brings points together, and is generalization of the notion of Ricci curvature on manifolds.
 
 In this paper, we investigate curvature of the rSPR graph with respect to two different random walks and make connections to access times for those random walks.
-For this first effort we investigate random walks defined in terms of the graph itself: the lazy isotropic random walk and MCMC sampling from the uniform prior on trees.
+For this first effort we investigate random walks defined in terms of the graph itself: the lazy isotropic\todo{Shall we use uniform or isotropic? The former is more intuitive, but the latter seems more specific to me.} random walk and MCMC sampling from the uniform prior on trees.
 By getting a more fine-tuned understanding of the rSPR neighborhood of pairs of vertices, we are able to give bounds on curvatures under these random walks.
 By exploiting symmetries in the rSPR graph, we are able to calculate all of the curvatures for pairs of trees with up to seven leaves.
 Using simulation of these processes, we find that the distribution of access times between pairs of trees can be described by distance between the trees, the degrees of the trees, and the curvature.
@@ -349,13 +349,14 @@ Then $\lim_{n \rightarrow \infty} \kappa_n(T_n, S_n) = 0$ for \todo{TBA} random 
 Because $d(T_n, S_n) = 1$, we will prove the proposition by showing that the mass transport term $W_{1,n}$ sits between two bounds, each of which has limit 1 as $n$ goes to infinity.
 
 To start we demonstrate the proposition in the case that $T_n$ and $S_n$ have the same number of neighbors.
+\todo[inline]{Do you think that we should talk about $3 \OhOf{kn}$, or just talk about $\OhOf{kn}$?}
 First we claim that $W_{1,n}$ is bounded above by $(|N(T_n)|+\OhOf{kn})/|N(T_n)|$ by exhibiting a mass transport program satisfying that bound.
-Let $(T'_n, S'_n)$ be any of the $o$ pairs of trees which are one SPR move apart as per Corollary~\ref{cor:paired_neighbors}.
+Let $(T'_n, S'_n)$ be any of the $o$ pairs of neighbors of $(T_n, S_n)$ which are one SPR move apart as per Corollary~\ref{cor:paired_neighbors}.
 We pair the these trees in the mass transport.
-The number of trees unmatched by this pairing is $\OhOf{kn}$, and we can pair each of them arbitrarily with another tree of distance at most 3.
+There are $\OhOf{kn}$ trees unmatched by this pairing, and we can pair each of them arbitrarily with another tree of distance at most 3.
 Thus, $W_{1,n}$ is bounded above by $(|N(T_n)| + \OhOf{kn}) / |N(T_n)|$.
 
-A lower bound is also available because we can't do better than distance 1 for all trees except for the $\OhOf{n}$ pairs from Lemma~\ref{lem:shared_neighbors}.
+A lower bound is also available because we can't do better than distance 1 for all trees except for shared neighbors, of which there are $\OhOf{n}$ by Lemma~\ref{lem:shared_neighbors}.
 By ignoring these trees we get a lower bound of $(|N(T_n)| - (\OhOf{n}))/|N(T_n)|$ for $W_{1,n}$.
 
 The desired control of $W_{1,n}$ is thus obtained because $|N(T_n)|$ is quadratic in $n$.
@@ -364,7 +365,7 @@ Now we prove the proposition when the number of neighbors differ.
 Assume without loss of generality that $|N(T_n)| < |N(S_n)|$.
 By Lemma~\ref{lem:degree_change}, $|N(S_n)| - |N(T_n)| = 2(k(a-b) + i - j)$, where each of $\{a,b,i,j\}$ is less than $n$.
 Thus, $|N(S_n)| - |N(T_n)| = \OhOf{kn}$.
-We again pair $T'_n$ with $S'_n$ such that $\dspr{T'_n, S'_n}=1$ but, as $|N(T_n)| < |N(S_n)|$ we can only account for at most $|N(T_n)| / |N(S_n)|$ of the mass directly and may have to move the $(|N(S_n)| - |N(T_n)|) / |N(S_n)|$ remainder to trees a distance at most 3.
+We again pair neighbor $T'_n$ of $T$ with neighbor $S'_n$ of $S$ such that $\dspr{T'_n, S'_n}=1$ but, as $|N(T_n)| < |N(S_n)|$ we can only account for at most $|N(T_n)| / |N(S_n)|$ of the mass directly and may have to move the $(|N(S_n)| - |N(T_n)|) / |N(S_n)|$ remainder to trees a distance at most 3.
 Thus, $W_{1,n}$ is bounded above by $(|N(T_n)| + 3\OhOf{kn}) / |N(S_n)| = (|N(S_n)| + 2\OhOf{kn}) / |N(S_n)|$.
 We again bound $W_{1,n}$ from below with $(|N(T_n)| - \OhOf{n}) / |N(T_n)|$ by ignoring the mass in common neighbors of $T_n$ and $S_n$.
 The proposition again follows because $|N(T_n)|$ is quadratic in $n$.
@@ -372,18 +373,15 @@ The proposition again follows because $|N(T_n)|$ is quadratic in $n$.
 \end{proof}
 
 Next we bound the maximum curvature of two adjacent trees.
-
 \begin{lemma}
-	The maximum curvature of the uniform random walk between two adjacent trees with $n$ leaves is $\frac{6n-17}{3n^2-13n+14}$. \todo{lazy random walk is $\frac{6n-15}{3n^2 - 13n + 14}$}
+	The maximum curvature of the uniform random walk between two adjacent trees with $n$ leaves is $\frac{6n-17}{3n^2-13n+14}$. \todo{lazy random walk is $\frac{6n-15}{3n^2 - 13n + 14}$. CW: I'm a little confused here. Doesn't the curvature of the lazy random walk depend on how lazy it is?}
 \end{lemma}
 \begin{proof}
-Let $T$ and $S$ be two adjacent trees.
-The maximum curvature occurs when their neighborhoods have maximum overlap, are of equal size, and all other tree pairs are at distance 1.
+The maximum curvature between adjacent trees $T$ and $S$ occurs when their neighborhoods have maximum overlap, are of equal size, and all other tree pairs are at distance 1.
 By Lemma~\ref{lem:shared_neighbors} the maximum overlap is $6n-17$.
 The maximum curvature is thus $1 - \frac{\degree{T} - (6n-17)}{\degree{T}} = \frac{6n - 17}{\degree{T}}$. This is maximized when $\degree{T}$ is as small as possible, that is $T,S$ are ladders and $\degree{T} = 3n^2 - 13n + 14$.
 \end{proof}
-
-Note that this bound is tight and has been verified computationally for $n \le 7$.
+This bound is tight and has been verified computationally for $n \le 7$.
 
 Next, we bound the minimum curvature of two adjacent trees.
 
@@ -393,9 +391,9 @@ Next, we bound the minimum curvature of two adjacent trees.
 \end{lemma}
 \begin{proof}
 	Let $T$ and $S$ be two adjacent trees.
-	We can bound the mass transport cost from above by $1 + 2m$, where $m$ is the maximum proportion of mass that can not be moved between adjacent trees.
+	Because pairs of neighbors of adjacent trees are at most distance 3 apart, we can bound the mass transport cost from above by $1 + 2m$, where $m$ is the maximum proportion of mass that can not be moved between adjacent trees.
 	This gives a lower bound of $1 - (1 + 2m) / 1) = -2m$ on the curvature.
-	The mass transport cost is maximized (and therefore curvature minimized) by a combination of two effects: trees that must be paired at a distance $>1$ and mass that must be moved between unpaired trees due to differing degrees of $T$ and $S$.
+	The mass transport cost is maximized (and therefore curvature minimized) by a combination of two effects: trees that must be paired at a distance $>1$ and mass that must be moved between unpaired trees due to differing degrees of $T$ and $S$\todo{It's not clear what "pairing" means when degrees differ. Thus it's confusing when it's used in the same sentence as a statement concerning differing degrees. If you want to use it as a concept, how about introducing it at the beginning of the section as a proof strategy?}
 	By Lemmas~\ref{lem:degree_change} and~\ref{lem:degree_max_delta_adjacent}, the latter effect is maximized when the relative degree change is maximized.
 	By Corollary~\ref{cor:paired_neighbors}, there are at most $o := \degree{T} -2ka - 2(i-1)$ paired trees.
 	Then, let $S$ be the ladder tree with degree $3n^2 - 13n + 14$ and $T$ be the adjacent tree constructed by moving the lower $\floor{\frac{n}{2}}$ leaves of $S$ to the root.
@@ -575,6 +573,11 @@ Ranked trees \cite{Song2006-xe}
 Partitions \cite{Gusfield2002-il}
 
 
+\section{Acknowledgements}
+Alex Gavruskin,
+Vladimir Minin,
+
+This work was funded by National Science Foundation award 1223057.
 
 \bibliographystyle{unsrt}
 \bibliography{curvature}
