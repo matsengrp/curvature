@@ -322,12 +322,13 @@ Then $\size{N(T) \cap N(S)} \le 6n - 17$.
 
 \begin{proof}
 	$T$ and $S$ differ by one SPR move that moves a subtree $R$.
-	Pick a neighbor $U \in N(T) \cap N(S)$ of both $T$ and $S$ \todo{Um, why can't this intersection be empty?}.
+	Pick a neighbor $U \in N(T) \cap N(S)$ of both $T$ and $S$.
+	Note that this intersection is nonempty, as the fact that $T$ and $S$ differ implies that $R$ contains at most $n-2$ of the leaves, so there must be at least one other tree $U$ obtained by moving $R$ in $T$ and $S$. \todo{Um, why can't this intersection be empty? EM: reason added. This is not strictly necessary to get an upper bound but might be interesting.}
 	Then either (i) $T$ and $U$ differ in the location of $R$, or (ii) $T$ and $U$ differ in the location of another subtree $Q$.
 	In the latter case, $T|(X \setminus L(Q)) = S|(X \setminus L(Q))$ because $T$ and $S$ differ only in the location of $R$ and $\dspr{T,U} = \dspr{S,U} = 1$.
 	Then leaves $r' \in R$, $q' \in Q$, and $u' \in U$, for some subtree $U$, form a triple of $T$ and a different triple in $S$.
 	This incompatible triple can be resolved in at most $6n - 17$ ways, the maximum of which is reached when $Q$, $U$, and $R$ are themselves a ``triple'' of subtrees.
-	By Lemma~ref{ }\todo{need unique move lemma}, each of the subtrees is assigned to at most $2n-6$ unique moves.
+	By Lemma~\ref{ }\todo{need unique move lemma}, each of the subtrees is assigned to at most $2n-6$ unique moves.
 	Moreover, one additional overlapping move also moves one of the subtrees (that of the aunt of the LCA of the three subtrees).
 	The number of shared neighbors is thus at most $3(2n-6) + 1 = 6n-17$.
 	Note that this bound is tight when, for example, $T$ and $S$ are ladders with a different configuration of 3 leaves at maximum depth.
@@ -343,13 +344,12 @@ For the purposes of this paper, $\kappa_n$ is the Ricci-Ollivier curvature \eqre
 \begin{proposition}
 Fix a positive integer $k$ and let $R$ be a tree with $k$ leaves.
 Let $\{T_n \mid n > k\}$ be a sequence of phylogenetic trees all containing $R$, and let $\{S_n \mid n > k\}$ be the same sequence $T_n$ but with $R$ cut off and attached at a different location.
-Then $\lim_{n \rightarrow \infty} \kappa_n(T_n, S_n) = 0$ for \todo{TBA} random walk on the SPR graph.
+Then $\lim_{n \rightarrow \infty} \kappa_n(T_n, S_n) = 0$ for the uniform random walk on the SPR graph.
 \end{proposition}
 \begin{proof}
 Because $d(T_n, S_n) = 1$, we will prove the proposition by showing that the mass transport term $W_{1,n}$ sits between two bounds, each of which has limit 1 as $n$ goes to infinity.
 
 To start we demonstrate the proposition in the case that $T_n$ and $S_n$ have the same number of neighbors.
-\todo[inline]{Do you think that we should talk about $3 \OhOf{kn}$, or just talk about $\OhOf{kn}$?}
 First we claim that $W_{1,n}$ is bounded above by $(|N(T_n)|+\OhOf{kn})/|N(T_n)|$ by exhibiting a mass transport program satisfying that bound.
 Let $(T'_n, S'_n)$ be any of the $o$ pairs of neighbors of $(T_n, S_n)$ which are one SPR move apart as per Corollary~\ref{cor:paired_neighbors}.
 We pair the these trees in the mass transport.
@@ -366,7 +366,7 @@ Assume without loss of generality that $|N(T_n)| < |N(S_n)|$.
 By Lemma~\ref{lem:degree_change}, $|N(S_n)| - |N(T_n)| = 2(k(a-b) + i - j)$, where each of $\{a,b,i,j\}$ is less than $n$.
 Thus, $|N(S_n)| - |N(T_n)| = \OhOf{kn}$.
 We again pair neighbor $T'_n$ of $T$ with neighbor $S'_n$ of $S$ such that $\dspr{T'_n, S'_n}=1$ but, as $|N(T_n)| < |N(S_n)|$ we can only account for at most $|N(T_n)| / |N(S_n)|$ of the mass directly and may have to move the $(|N(S_n)| - |N(T_n)|) / |N(S_n)|$ remainder to trees a distance at most 3.
-Thus, $W_{1,n}$ is bounded above by $(|N(T_n)| + 3\OhOf{kn}) / |N(S_n)| = (|N(S_n)| + 2\OhOf{kn}) / |N(S_n)|$.
+Thus, $W_{1,n}$ is bounded above by $(|N(T_n)| + \OhOf{kn}) / |N(S_n)| = (|N(S_n)| + \OhOf{kn}) / |N(S_n)|$.
 We again bound $W_{1,n}$ from below with $(|N(T_n)| - \OhOf{n}) / |N(T_n)|$ by ignoring the mass in common neighbors of $T_n$ and $S_n$.
 The proposition again follows because $|N(T_n)|$ is quadratic in $n$.
 
@@ -374,7 +374,7 @@ The proposition again follows because $|N(T_n)|$ is quadratic in $n$.
 
 Next we bound the maximum curvature of two adjacent trees.
 \begin{lemma}
-	The maximum curvature of the uniform random walk between two adjacent trees with $n$ leaves is $\frac{6n-17}{3n^2-13n+14}$. \todo{lazy random walk is $\frac{6n-15}{3n^2 - 13n + 14}$. CW: I'm a little confused here. Doesn't the curvature of the lazy random walk depend on how lazy it is?}
+	The maximum curvature of the uniform random walk between two adjacent trees with $n$ leaves is $\frac{6n-17}{3n^2-13n+14}$.
 \end{lemma}
 \begin{proof}
 The maximum curvature between adjacent trees $T$ and $S$ occurs when their neighborhoods have maximum overlap, are of equal size, and all other tree pairs are at distance 1.
@@ -393,7 +393,7 @@ Next, we bound the minimum curvature of two adjacent trees.
 	Let $T$ and $S$ be two adjacent trees.
 	Because pairs of neighbors of adjacent trees are at most distance 3 apart, we can bound the mass transport cost from above by $1 + 2m$, where $m$ is the maximum proportion of mass that can not be moved between adjacent trees.
 	This gives a lower bound of $1 - (1 + 2m) / 1) = -2m$ on the curvature.
-	The mass transport cost is maximized (and therefore curvature minimized) by a combination of two effects: trees that must be paired at a distance $>1$ and mass that must be moved between unpaired trees due to differing degrees of $T$ and $S$\todo{It's not clear what "pairing" means when degrees differ. Thus it's confusing when it's used in the same sentence as a statement concerning differing degrees. If you want to use it as a concept, how about introducing it at the beginning of the section as a proof strategy?}
+	The mass transport cost is maximized (and therefore curvature minimized) by a combination of two effects: trees that cannot be paired (in the sense of Corollary \ref{cor:paired_neighbors}) at distance $1$ and mass that must be moved between unpaired trees due to differing degrees of $T$ and $S$. \todo{It's not clear what "pairing" means when degrees differ. Thus it's confusing when it's used in the same sentence as a statement concerning differing degrees. If you want to use it as a concept, how about introducing it at the beginning of the section as a proof strategy? EM: is this a bit better? I tried to clarify that we mean a Corollary \ref{cor:paired_neighbors} pairing, which does not care about degree.}
 	By Lemmas~\ref{lem:degree_change} and~\ref{lem:degree_max_delta_adjacent}, the latter effect is maximized when the relative degree change is maximized.
 	By Corollary~\ref{cor:paired_neighbors}, there are at most $o := \degree{T} -2ka - 2(i-1)$ paired trees.
 	Then, let $S$ be the ladder tree with degree $3n^2 - 13n + 14$ and $T$ be the adjacent tree constructed by moving the lower $\floor{\frac{n}{2}}$ leaves of $S$ to the root.
@@ -406,7 +406,7 @@ Next, we bound the minimum curvature of two adjacent trees.
 
 We further observe that the limit of our curvature lower bound is $-\frac{2}{7}$.
 Exhaustive tests with $n \le 7$ show that no pair of trees have curvature less than $-\frac{2}{5}$ and our bound meets or exceeds this value for $n > 7$.
-Moreover, the SPR distance is a metric, so this bounds the curvature for arbitrary pairs of trees\todo{cite one of the Ollivier papers}.
+Moreover, the SPR distance is a metric, so this bounds the curvature for arbitrary pairs of trees (Proposition 19 of \cite{Ollivier2009-bw}).
 This directly leads to the following corollary:
 
 \begin{corollary}
@@ -536,14 +536,14 @@ Along with the fact that $\dspr{T_1, t_1} \le k$, we have that
 We can thus restrict our search for members of the $k$-tube to topologies of distance at most $\floor{\dspr{T_1, T_2}/2} + 2k$ from the central trees.
 We call this set of trees $k$-tube candidates.
 Note that there are $\OhOf{n^{2(\floor{\dspr{T_1, T_2}/2} + 2k)}}$ $k$-tube candidates.
-We identify these candidates by iterating over increasingly large $k$-neighbourhoods of $T_1$ and $T_2$, and removing duplicate topologies through hashing.  \todo{We might be able to do better by using ``edge protection'' to avoid duplicates. I need to check how accurately neighbourhood sizes follow the naive $\OhOf(n^{2k})$ bound.}
+We identify these candidates by iterating over increasingly large $k$-neighbourhoods of $T_1$ and $T_2$, and removing duplicate topologies through hashing.
 
 In the second part of our procedure for computing a $k$-tube, we identify $k$-tube candidates that are not on the shortest path between two $k$-neighbors of the central trees.
 We first compute shortest path lengths from each member of $N_k(T_1)$ to each $k$-tube candidate using breadth-first search (BFS).
 For each BFS traversal tree, we backtrack from members of $N_k(T_2)$, identifying topologies in the $k$-tube.
 We can use unique tree indices here, rather than hashing, to avoid duplicates.
 The size of $N_k(T_1)$ is $\OhOf{n^{2k}}$, so this takes
-$\OhOf( n^{2k} M)$ time, where $M$ is the number of edges between $k$-tube candidates, that is, at most the square of the number of $k$-tube candidates. \todo{We could probably do something smarter by starting from trees that are 0, 1, etc SPRs from $T_1$.}
+$\OhOf( n^{2k} M)$ time, where $M$ is the number of edges between $k$-tube candidates, that is, at most the square of the number of $k$-tube candidates.
 
 This procedure identifies exactly the trees in the $k$-tube, so we have the following lemma:
 \begin{lemma}
