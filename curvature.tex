@@ -12,6 +12,7 @@
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{example}[theorem]{Example}
 \newtheorem{definition}[theorem]{Definition}
+\newtheorem{conjecture}[theorem]{Conjecture}
 
 \renewcommand{\theenumi}{\roman{enumi}}
 
@@ -311,6 +312,7 @@ This bound is minimized when $\degree{T}$ is minimized, and recall by Lemma~\ref
 
 \end{proof}
 
+
 Next, we bound the number of neighbors shared by two adjacent trees.
 Let $N(U)$ be the set of neighbors of a tree $U$ (this does not include $U$).
 
@@ -372,7 +374,20 @@ The proposition again follows because $|N(T_n)|$ is quadratic in $n$.
 
 \end{proof}
 
-Next we bound the maximum curvature of two adjacent trees.
+Next we note a rough bound on the curvature of two trees with respect to their distance.
+
+\begin{lemma}
+	\label{lem:curvature_distance_bound}
+	Let $T$ and $S$ be two trees. Then:
+	$$ \frac{-2}{\dspr{T,S}} \le \kappa_n(T,S) \le \frac{2}{\dspr{T,S}} .$$
+\end{lemma}
+\begin{proof}
+	Observe that the distance between neighbors of $S$ and $T$, is bounded between $\dspr{T,S} - 2$ and $\dspr{T,S} + 2$.
+	For the curvature upper bound, we then have $\kappa_n(T,S) \le 1 - \frac{\dspr{T,S} + 2}{\dspr{T,S}} = \frac{2}{\dspr{T,S}}$.
+	The lower bound follows similarly. 
+\end{proof}
+
+Next we obtain a tighter bound on the maximum curvature of two adjacent trees.
 \begin{lemma}
 	The maximum curvature of the uniform random walk between two adjacent trees with $n$ leaves is $\frac{6n-17}{3n^2-13n+14}$.
 \end{lemma}
@@ -382,6 +397,23 @@ By Lemma~\ref{lem:shared_neighbors} the maximum overlap is $6n-17$.
 The maximum curvature is thus $1 - \frac{\degree{T} - (6n-17)}{\degree{T}} = \frac{6n - 17}{\degree{T}}$. This is maximized when $\degree{T}$ is as small as possible, that is $T,S$ are ladders and $\degree{T} = 3n^2 - 13n + 14$.
 \end{proof}
 This bound is tight and has been verified computationally for $n \le 7$.
+
+It is more difficult to obtain a closer bound on the maximum curvature of nonadjacent trees. 
+Lemma~\ref{lem:curvature_distance_bound} suggests that more distant pairs of trees should have smaller curvatures than close trees as neighborhood effects decrease with respect to the increasing distance.
+However, our experiments with $n \le 7$ suggest that curvature tends to increase with distance (with respect to a fixed $n$), as a far greater fraction of the neighbors approach each other as the distance increases.
+Indeed, for all but $n = 5$ the maximum curvature is obtained by pairs of trees at maximum distance (for $n = 5$, the maximum curvature, between trees at distance 2, exceeds $2/3$, the maximum curvature obtainable by maximally distant pairs).
+Moreover, nearly all of the neighbors of maximally distant pairs approach each either.
+We thus conjecture the following:
+\begin{conjecture}
+	Let $k_n$ be the maximum curvature of the uniform random walk on trees of $n$ leaves.
+	Then:
+	\begin{enumerate}
+		\item $k_n \le \frac{2}{\Delta_{\text{rSPR}}(n)}$, for all $n \ge 6$.
+		\item $\lim_{n\rightarrow\infty} k_n  = \frac{2}{\Delta_{\text{rSPR}}(n)}$
+	\end{enumerate}
+\end{conjecture}
+Proving or disproving this conjecture would go a long way toward understanding the effects of relative distance on curvature.
+However, we suspect that this will require a greater understanding of the distribution of tree neighborhoods with respect to one another than is currently known.\todo{this belongs here if we can prove it. If, not then we should consider moving it and discuss this more in the conclusion as an area for future work.}
 
 Next, we bound the minimum curvature of two adjacent trees.
 
@@ -453,12 +485,12 @@ We now bound the difference between the curvature of uniform random walks $\kapp
 
 \begin{lemma}
 	Let $T$ and $S$ be phylogenetic trees with $n$ leaves. Then:
-	$$\kappa(T,S) - \frac{1}{3\dspr{T,S}}
+	$$\kappa_n(T,S) - \frac{1}{3\dspr{T,S}}
 	\le \kappa_{MH}(T,S)
-	\le \kappa(T,S) + \frac{1}{3\dspr{T,S}}, \text{ and }$$
-	$$\kappa(T,S) - \frac{1}{6}
+	\le \kappa_n(T,S) + \frac{1}{3\dspr{T,S}}, \text{ and }$$
+	$$\kappa_n(T,S) - \frac{1}{6}
 	\le \kappa_{MH}(T,S)
-	\le \kappa(T,S) + \frac{1}{6}.$$
+	\le \kappa_n(T,S) + \frac{1}{6}.$$
 \end{lemma}
 \begin{proof}
 	We first prove the lower bound.
@@ -473,11 +505,11 @@ We now bound the difference between the curvature of uniform random walks $\kapp
 	We now have:
 	\begin{align*}
 		\kappa_{MH}(T,S) & \ge 1 - \frac{W_1 + \frac{1}{3}}{\dspr{T,S}} \\
-		& \ge \kappa(T,S) - \frac{1}{3\dspr{T,S}}
+		& \ge \kappa_n(T,S) - \frac{1}{3\dspr{T,S}}
 	\end{align*}
 
 	In the case that $\dspr{T,S}=1$, the affected mass must be moved through only at most one additonal tree, as $T$ and $S$ are adjacent.
-	We thus obtain the lower bound of $\kappa(T,S) - \frac{1}{6}$ in this case.
+	We thus obtain the lower bound of $\kappa_n(T,S) - \frac{1}{6}$ in this case.
 
 	We obtain the upper bounds similarly to the lower bounds, by observing that the affected at most $\frac{1}{6}$ of the mass may move through at most two fewer trees (i.e. directly between $T$ and $S$ rather than a pair of neighbors at distance $\dspr{T,S} + 2$ from each other).
 	Again, this is at most one fewer tree when $\dspr{T,S}=1$.
