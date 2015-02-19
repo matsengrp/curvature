@@ -133,14 +133,15 @@ The work on SPR moves in the ML context is primarily found in the literature com
 We are not aware of any general conclusions concerning hill-climbing on the SPR or related graphs that has come from this work.
 
 The SPR graph is very important in phylogenetic inference, and yet still little is known about the rooted or unrooted versions of the SPR graph itself, or random walks thereupon.
-\cite{Song2003-gf} developed a recursive procedure on a tree to find the degree of the corresponding vertex in the rSPR graph.
+\cite{Song2003-gf} developed a recursive procedure on a tree to find the degree of the corresponding vertex in the rSPR graph, and corresponding bounds on degree.
 \cite{Ding2011-bj} showed that the diameter $\Delta_{\text{rSPR}}$ of the rSPR graph is $n - \Theta(\sqrt n)$, and for the unrooted case they show
 $$ n - 2\ceil{\sqrt{n}} + 1
 \le \Delta_{\text{uSPR}}(n)
 \le n - 3 - \floorV{\frac{\sqrt{n - 2} - 1}{2}}.
 $$
+Despite the centrality of the SPR graph to phylogenetic inference, we are not aware of any other work investigating its properties.
 
-Recently, a new approach to quantifying properties of random walks has been pioneered by Ollivier and colleagues \cite{Ollivier2009-bw,Joulin2010-jg}.
+Recently, a new approach to quantifying properties of discrete and continuous spaces with respect to random walks has been pioneered by Ollivier and colleagues \cite{Ollivier2009-bw,Joulin2010-jg}.
 They define a notion of curvature on a discrete or continuous case.
 Formalizes idea of the extent to which random walking brings points together, and is generalization of the notion of Ricci curvature on manifolds.
 
