@@ -238,6 +238,9 @@ We now bound the relative and exact difference in SPR degree between two trees w
 	\end{align*}
 \end{proof}
 
+We can improve these bounds in the case of adjacent trees.
+To do so, we require the following lemma that characterizes exactly how the degree of a tree changes after an rSPR operation.
+
 \begin{lemma}
 \label{lem:degree_change}
 Let $T$ and $S$ be phylogenetic trees such that $T$ can be obtained from $S$ by moving a subtree $R$ with $k$ leaves from its position adjacent to subtree $U$ to a location adjacent to subtree $V$.
@@ -265,6 +268,11 @@ Similarly, we lose $2(j-1)$ moves in the fourth case.
 
 The difference in SPR degree is thus $2ka - 2kb + 2(i-1) - 2(j-1)$ as claimed.
 \end{proof}
+
+Moreover, we can use these ideas to determine the number of SPR moves that are, in some respects, independent of a given SPR move.
+That is, for two trees $S$ and $T$ differing by a single SPR move, we wish to know the number of SPR moves that are applicable to both trees rather than unique to one of the trees.
+To formalize this concept, we consider pairs of trees $T' \in N(T)$ and $S' \in S(T)$ such that $\dspr{T',S'} = 1$.
+The number of such ``squares'' involving two adjacent trees will play a key rule in our bounds on curvature, as they push the curvature of those trees towards 0.
 
 \begin{corollary}
 \label{cor:paired_neighbors}
@@ -325,6 +333,7 @@ This bound is minimized when $\degree{T}$ is minimized, and recall by Lemma~\ref
 
 
 Next, we bound the number of neighbors shared by two adjacent trees.
+The number of such "triangles" involving two adjacent trees has a key role in determining whether the curvature of two adjacent trees is positive or negative.
 
 \begin{lemma}
 	\label{lem:shared_neighbors}
@@ -357,7 +366,7 @@ Assume that the random walk begins at a tree $T$.
 The uniform random walk selects a tree uniformly at random from $N(T)$.
 We denote the curvature of the uniform random walk between two trees $T$ and $S$ with $\curvature{T,S}$.
 Recall that $\curvature{T, S} := 1 - \frac{W_1(m_T, m_S)}{d(x, y)}$.
-For the uniform random walk, $m_T$ is simply the set of neighbors of $T$ with each assigned a mass of $\frac{1}{\degree{T}}$.
+For the uniform random walk, $m_T$ is simply the set of neighbors of $T$ each assigned a mass of $\frac{1}{\degree{T}}$.
 
 \begin{proposition}
 Fix a positive integer $k$ and let $R$ be a tree with $k$ leaves.
