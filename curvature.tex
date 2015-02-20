@@ -66,7 +66,14 @@
 
 %---[ Distance measures, invocations, etc ]-------------------------------------
 \newattribute{dspr}{d_{\mathrm{SPR}}}
-\newattribute{degree}{\operatorname{deg}}
+\newparentheses{degree}{|N(}{)|}
+
+%---[ curvature ]---------------------------------------------------------------
+\newcommand{\curvature}[2][]{%
+    \ifthenelse{\equal{#1}{}}%
+		{\kappa_n(#2)}%
+		{\kappa_n(#1;#2)}%
+}
 
 
 \begin{document}
@@ -155,7 +162,7 @@ Using simulation of these processes, we find that the distribution of access tim
 
 \section{Preliminaries}
 \begin{equation}
-\kappa(x, y) := 1 - \frac{W_1(m_x, m_y)}{d(x, y)}
+\curvature{x, y} := 1 - \frac{W_1(m_x, m_y)}{d(x, y)}
 \label{eq:curvatureDef}
 \end{equation}
 
@@ -181,6 +188,9 @@ After the chain has achieved stationarity, one sees a
 
 \section{Rooted SPR Neighborhoods}
 
+Let $N(T)$ be the set of SPR neighbors of a tree $T$ (this does not include $T$).
+We say that the degree of $T$ is $\degree{T}$, that is, the number of trees which can be obtained from $T$ by a single SPR operation.
+Note that this concept of degree is unrelated to the degree of vertices of $T$.
 In the absence of a bias provided by a likelihood function, curvature for the random walks we consider is entirely determined by the degree of vertices in the graph.
 Thus, in order to provide bounds on curvature, we will begin by bounding differences between degrees.
 
@@ -258,10 +268,8 @@ The difference in SPR degree is thus $2ka - 2kb + 2(i-1) - 2(j-1)$ as claimed.
 
 \begin{corollary}
 \label{cor:paired_neighbors}
-Continuing with the setting and notation in Lemma~\ref{lem:degree_change}, let the degrees of $T$ and $S$ vertices in the SPR graph be $q$ and $p$ respectively.
-\todo{We have three systems of notation for the degree of trees: $\deg(T)$, this $q$ and $p$, and below $|N(T)|$. Please make this consistent, and make it clear what we actually mean by the degree of a tree.}
-Then at least
-$$o := q - 2kb - 2(j-1) = p - 2ka - 2(i-1)$$
+Continuing with the setting and notation in Lemma~\ref{lem:degree_change}, at least
+$$o := \deg(T) - 2kb - 2(j-1) = \deg(S) - 2ka - 2(i-1)$$
 trees in the neighborhood of $T$ can be paired with $o$ trees in the neighborhood of $S$ such that the pairings are disjoint and $\dspr{T',S'} = 1$ for each $(T',S')$ pair.
 \end{corollary}
 \begin{proof}
@@ -317,7 +325,6 @@ This bound is minimized when $\degree{T}$ is minimized, and recall by Lemma~\ref
 
 
 Next, we bound the number of neighbors shared by two adjacent trees.
-Let $N(U)$ be the set of neighbors of a tree $U$ (this does not include $U$).
 
 \begin{lemma}
 	\label{lem:shared_neighbors}
@@ -345,34 +352,41 @@ Then $\size{N(T) \cap N(S)} \le 6n - 17$.
 \section{Curvature}
 For the purposes of this paper, $\kappa_n$ is the Ricci-Ollivier curvature \eqref{eq:curvatureDef} on the $n$-taxon rSPR graph with respect to a specified random walk and $W_{1,n}$ is the corresponding mass transport term.
 
+We first consider properties of the uniform random walk on the rSPR graph.
+Assume that the random walk begins at a tree $T$.
+The uniform random walk selects a tree uniformly at random from $N(T)$.
+We denote the curvature of the uniform random walk between two trees $T$ and $S$ with $\curvature{T,S}$.
+Recall that $\curvature{T, S} := 1 - \frac{W_1(m_T, m_S)}{d(x, y)}$.
+For the uniform random walk, $m_T$ is simply the set of neighbors of $T$ with each assigned a mass of $\frac{1}{\degree{T}}$.
+
 \begin{proposition}
 Fix a positive integer $k$ and let $R$ be a tree with $k$ leaves.
 Let $\{T_n \mid n > k\}$ be a sequence of phylogenetic trees all containing $R$, and let $\{S_n \mid n > k\}$ be the same sequence $T_n$ but with $R$ cut off and attached at a different location.
-Then $\lim_{n \rightarrow \infty} \kappa_n(T_n, S_n) = 0$ for the uniform random walk on the SPR graph.
+Then $\lim_{n \rightarrow \infty} \curvature{T_n,S_n} = 0$ for the uniform random walk on the SPR graph.
 \end{proposition}
 \begin{proof}
 Because $d(T_n, S_n) = 1$, we will prove the proposition by showing that the mass transport term $W_{1,n}$ sits between two bounds, each of which has limit 1 as $n$ goes to infinity.
 
 To start we demonstrate the proposition in the case that $T_n$ and $S_n$ have the same number of neighbors.
-First we claim that $W_{1,n}$ is bounded above by $(|N(T_n)|+\OhOf{kn})/|N(T_n)|$ by exhibiting a mass transport program satisfying that bound.
+First we claim that $W_{1,n}$ is bounded above by $(\degree{T_n}+\OhOf{kn})/\degree{T_n}$ by exhibiting a mass transport program satisfying that bound.
 Let $(T'_n, S'_n)$ be any of the $o$ pairs of neighbors of $(T_n, S_n)$ which are one SPR move apart as per Corollary~\ref{cor:paired_neighbors}.
 We pair the these trees in the mass transport.
 There are $\OhOf{kn}$ trees unmatched by this pairing, and we can pair each of them arbitrarily with another tree of distance at most 3.
-Thus, $W_{1,n}$ is bounded above by $(|N(T_n)| + \OhOf{kn}) / |N(T_n)|$.
+Thus, $W_{1,n}$ is bounded above by $(\degree{T_n} + \OhOf{kn}) / \degree{T_n}$.
 
 A lower bound is also available because we can't do better than distance 1 for all trees except for shared neighbors, of which there are $\OhOf{n}$ by Lemma~\ref{lem:shared_neighbors}.
-By ignoring these trees we get a lower bound of $(|N(T_n)| - (\OhOf{n}))/|N(T_n)|$ for $W_{1,n}$.
+By ignoring these trees we get a lower bound of $(\degree{T_n} - (\OhOf{n}))/\degree{T_n}$ for $W_{1,n}$.
 
-The desired control of $W_{1,n}$ is thus obtained because $|N(T_n)|$ is quadratic in $n$.
+The desired control of $W_{1,n}$ is thus obtained because $\degree{T_n}$ is quadratic in $n$.
 
 Now we prove the proposition when the number of neighbors differ.
-Assume without loss of generality that $|N(T_n)| < |N(S_n)|$.
-By Lemma~\ref{lem:degree_change}, $|N(S_n)| - |N(T_n)| = 2(k(a-b) + i - j)$, where each of $\{a,b,i,j\}$ is less than $n$.
-Thus, $|N(S_n)| - |N(T_n)| = \OhOf{kn}$.
-We again pair neighbor $T'_n$ of $T$ with neighbor $S'_n$ of $S$ such that $\dspr{T'_n, S'_n}=1$ but, as $|N(T_n)| < |N(S_n)|$ we can only account for at most $|N(T_n)| / |N(S_n)|$ of the mass directly and may have to move the $(|N(S_n)| - |N(T_n)|) / |N(S_n)|$ remainder to trees a distance at most 3.
-Thus, $W_{1,n}$ is bounded above by $(|N(T_n)| + \OhOf{kn}) / |N(S_n)| = (|N(S_n)| + \OhOf{kn}) / |N(S_n)|$.
-We again bound $W_{1,n}$ from below with $(|N(T_n)| - \OhOf{n}) / |N(T_n)|$ by ignoring the mass in common neighbors of $T_n$ and $S_n$.
-The proposition again follows because $|N(T_n)|$ is quadratic in $n$.
+Assume without loss of generality that $\degree{T_n} < \degree{S_n}$.
+By Lemma~\ref{lem:degree_change}, $\degree{S_n} - \degree{T_n} = 2(k(a-b) + i - j)$, where each of $\{a,b,i,j\}$ is less than $n$.
+Thus, $\degree{S_n} - \degree{T_n} = \OhOf{kn}$.
+We again pair neighbor $T'_n$ of $T$ with neighbor $S'_n$ of $S$ such that $\dspr{T'_n, S'_n}=1$ but, as $\degree{T_n} < \degree{S_n}$ we can only account for at most $\degree{T_n} / \degree{S_n}$ of the mass directly and may have to move the $(\degree{S_n} - \degree{T_n}) / \degree{S_n}$ remainder to trees a distance at most 3.
+Thus, $W_{1,n}$ is bounded above by $(\degree{T_n} + \OhOf{kn}) / \degree{S_n} = (\degree{S_n} + \OhOf{kn}) / \degree{S_n}$.
+We again bound $W_{1,n}$ from below with $(\degree{T_n} - \OhOf{n}) / \degree{T_n}$ by ignoring the mass in common neighbors of $T_n$ and $S_n$.
+The proposition again follows because $\degree{T_n}$ is quadratic in $n$.
 
 \end{proof}
 
@@ -381,11 +395,11 @@ Next we note a rough bound on the curvature of two trees with respect to their d
 \begin{lemma}
 	\label{lem:curvature_distance_bound}
 	Let $T$ and $S$ be two trees. Then:
-	$$ \frac{-2}{\dspr{T,S}} \le \kappa_n(T,S) \le \frac{2}{\dspr{T,S}} .$$
+	$$ \frac{-2}{\dspr{T,S}} \le \curvature{T,S} \le \frac{2}{\dspr{T,S}} .$$
 \end{lemma}
 \begin{proof}
 	Observe that the distance between neighbors of $T$ and $S$ is bounded between $\dspr{T,S} - 2$ and $\dspr{T,S} + 2$.
-	For the curvature upper bound, we then have $\kappa_n(T,S) \le 1 - \frac{\dspr{T,S} + 2}{\dspr{T,S}} = \frac{2}{\dspr{T,S}}$.
+	For the curvature upper bound, we then have $\curvature{T,S} \le 1 - \frac{\dspr{T,S} + 2}{\dspr{T,S}} = \frac{2}{\dspr{T,S}}$.
 	The lower bound follows similarly.
 \end{proof}
 
@@ -404,20 +418,19 @@ This bound is tight and has been verified computationally for $n \le 7$.
 It is more difficult to obtain a closer bound on the maximum curvature of nonadjacent trees.
 Lemma~\ref{lem:curvature_distance_bound} suggests that more distant pairs of trees should have smaller curvatures than close trees as neighborhood effects decrease with respect to the increasing distance.
 However, our experiments with $n \le 7$ suggest that maximum curvature tends to increase with distance (with respect to a fixed $n$), as a far greater fraction of the neighbors approach each other as the distance increases.
-Indeed, for all but $n = 5$ the maximum curvature is obtained by pairs of trees at maximum distance (for $n = 5$, the maximum curvature, between trees at distance 2, exceeds $2/3$, the maximum curvature obtainable by maximally distant pairs).
-Moreover, nearly all of the neighbors of maximally distant pairs approach each either.
+Indeed, for $5 \le n \le 7$ the maximum curvature is obtained by pairs of trees at one less than the maximum distance.
+Moreover, nearly all of the neighbors of these pairs approach each either.
 We thus conjecture the following:
 \begin{conjecture}
 	Let $k_n$ be the maximum curvature of the uniform random walk on trees of $n$ leaves.
 	Then:
 	\begin{enumerate}
-		\item $k_n \le \frac{2}{\Delta_{\text{rSPR}}(n)}$, for all $n \ge 6$.
-		\item $\lim_{n\rightarrow\infty} k_n  = \frac{2}{\Delta_{\text{rSPR}}(n)}$
+		\item $k_n \le \frac{2}{\Delta_{\text{rSPR}}(n)-1}$.
+		\item $\lim_{n\rightarrow\infty} k_n  = \frac{2}{\Delta_{\text{rSPR}}(n)-1}$
 	\end{enumerate}
 \end{conjecture}
 Proving or disproving this conjecture would go a long way toward understanding the effects of relative distance on curvature.
 However, we suspect that this will require a greater understanding of the distribution of tree neighborhoods with respect to one another than is currently known.
-\todo{this belongs here if we can prove it. If, not then we should consider moving it and discuss this more in the conclusion as an area for future work.}
 \todo{Do you have some key lemmas that could be tested computationally to isolate the problem?}
 Next, we bound the minimum curvature of two adjacent trees.
 
@@ -427,17 +440,19 @@ Next, we bound the minimum curvature of two adjacent trees.
 \end{lemma}
 \begin{proof}
     In light of Corollary \ref{cor:paired_neighbors}, the optimal mass transport cost is maximized (and therefore curvature minimized) across adjacent trees $T$ and $S$ by a combination of two effects: trees that cannot be paired at distance $1$ and mass that must be moved between unpaired trees due to differing degrees of $T$ and $S$.
-    \todo{Please make it crystal clear that these two criteria can be optimized simultaneously.}
-    To bound the former effect, let $m$ be the maximum (across $T$ and $S$) proportion of mass that cannot be moved between adjacent neighbors of those trees.
+		As we will show, these effects can be optimized simultaneously.
+    To bound these effects, let $m$ be the maximum (across $T$ and $S$) proportion of mass that cannot be moved between adjacent neighbors of those trees.
     We can bound the mass transport cost from above by $1 + 2m$ because pairs of neighbors of adjacent trees are at most distance 3 apart.
 	This gives a lower bound of $1 - (1 + 2m) / 1) = -2m$ on the curvature.
 
 	By Lemmas~\ref{lem:degree_change} and~\ref{lem:degree_max_delta_adjacent}, the latter effect is maximized when the relative degree change is maximized.
-	By Corollary~\ref{cor:paired_neighbors}, there are at most $o := \degree{T} -2ka - 2(i-1)$ paired trees.
-	Then, let $S$ be the ladder tree with degree $3n^2 - 13n + 14$ and $T$ be the adjacent tree constructed by moving the lower $\floor{\frac{n}{2}}$ leaves of $S$ to the root.
+	By Corollary~\ref{cor:paired_neighbors}, there are at most $o := \degree{T} -2ka - 2(i-1)$ paired trees, bounding the former effect.
+	We now construct a pair of trees that maximizes both effects.
+	Let $S$ be the ladder tree with degree $3n^2 - 13n + 14$ and $T$ be the adjacent tree constructed by moving the lower $\floor{\frac{n}{2}}$ leaves of $S$ to the root.
 	$T$ has degree at most $3.5n^2 -15n + 16$.
 	There are thus $2ka + 2(i-1) = 2\left(\ceil{\frac{n-2}{2}}\floor{\frac{n}{2}} +(1-1)\right) \le \frac{1}{2}n^2 - n$ unpaired neighbors, the maximum possible.
-	Then the maximum $m$ is:
+	Moreover, as shown by Lemma~\ref{lem:degree_change} this pair of trees obtains the maximum (absolute and relative) degree change.
+	Thus, the maximum $m$ is:
 	$$\frac{\frac{1}{2}n^2 - n}{3.5n^2 - 15n + 16}.$$
 	The claim follows from multiplying this value by $-2$.
 \end{proof}
@@ -453,30 +468,34 @@ This directly leads to the following Corollary:
 
 Note that this bound is not tight (at least for small $n$) as it is rarely necessary to transport mass the maximum distance between unpaired trees.
 
-We next bound the effect of laziness on curvature. Let $\kappa_{l,p}$\todo{conflicts with original definition of curvature $\kappa_n$. Perhaps $\kappa^{(p)}_n$?} be the curvature of a lazy random walk which moves with probability $p$ and remains stationary with probability $1 - p$.
-For example, $\kappa_{l,\frac{1}{4}}$\todo{$\kappa$ does not move} moves with probability $\frac{1}{4}$ and remains stationary with probability $\frac{3}{4}$. \todo{should be defined earlier, particularly the part where the curvature is divided by $p$.}
+We next bound the effect of laziness on curvature.
+The lazy random walk again selects a tree uniformly at random, as with the uniform random walk, but only accepts the move with probability $p$.
+We denote the curvature of the lazy random walk between two trees $T$ and $S$ by $\curvature[\ell_p]{T,S}$.
+For example, $\curvature[\ell_{\frac{1}{4}}]{T,S}$ describes the curvature of the lazy random walk that moves with probability $\frac{1}{4}$ and remains stationary with probability $\frac{3}{4}$.
+For the lazy random walk, $m_T$ is now $T \cup N(T)$, with each neighbor assigned mass $\frac{p}{\degree{T}}$ and $T$ assigned the remaining $1 - p$ mass.
+Note that $\curvature[\ell_p]{T, S} := \left(1 - \frac{W_1(m_T, m_S)}{d(x, y)}\right) / p$. \todo{Do you have a good explanation for the lazy curvature definition?}
 
 \begin{lemma}
 	Let $T$ and $S$ be rooted phylogenetic trees with $n$ leaves.
 	Then:
 	\begin{enumerate}
-		\item	$\kappa_{l,p}(T,S) = \kappa_{l,0}(T,S)$, if $\dspr{T,S} > 1$, and
-		\item	$\kappa_{l,0}(T,S) \le \kappa_{l,p}(T,S) \le \kappa_{l,0}(T,S) + \frac{2}{\max(\degree{T}, \degree{S})}$, if $\dspr{T,S} = 1$.
+		\item	$\curvature[\ell_p]{T,S} = \curvature{T,S}$, if $\dspr{T,S} > 1$, and
+		\item	$\curvature{T,S} \le \curvature[\ell_p]{T,S} \le \curvature{T,S} + \frac{2}{\max(\degree{T}, \degree{S})}$, if $\dspr{T,S} = 1$.
 	\end{enumerate}
 \end{lemma}
 
 \begin{proof}
-	We first prove the lower bound, that is $\kappa_{l,0}(T,S) \le \kappa_{l,p}(T,s)$.
+	We first prove the lower bound, that is $\curvature{T,S} \le \curvature[\ell_p]{T,S}$.
 	Let $W_1(T,S)$ be the mass transport cost in the uniform case, and $W_1'(T,S)$ be the same for the lazy case with parameter $p$.
-	Recall that $\kappa_{l,0}(T,S) = 1 - \frac{W_1(T,S)}{\dspr{T,S}}$, and $\kappa_{l,p}(T,S) = (1 - \frac{W_1'(T,S)}{\dspr{T,S}}) / p$.
+	Recall that $\curvature{T,S} = \curvature[\ell_1]{T,S} = 1 - \frac{W_1(T,S)}{\dspr{T,S}}$, and $\curvature[\ell_p]{T,S} = (1 - \frac{W_1'(T,S)}{\dspr{T,S}}) / p$.
 	Observe that $$W_1'(T,S) \le pW_1(T,S) + (1-p)\dspr{T,S},$$ by taking an optimal uniform mass assignment spread over $p$ of the mass and moving the remainder from $T$ to $S$ (or vice versa).
 	Then:
 	\begin{align*}
-		\kappa_{l,p}(T,S) &= (1 - \frac{W_1'(T,S)}{\dspr{T,S}}) / p \\
+		\curvature[\ell_p]{T,S} &= (1 - \frac{W_1'(T,S)}{\dspr{T,S}}) / p \\
 		&\ge (1 - \frac{pW_1(T,S) + (1-p)\dspr{T,S}}{\dspr{T,S}}) / p \\
 		&\ge (\frac{1}{p} - \frac{W_1(T,S)}{\dspr{T,S}} - \frac{1-p}{p}) \\
 		&\ge 1 - \frac{W_1(T,S)}{\dspr{T,S}} \\
-		&\ge \kappa_{l,0}(T,S)
+		&\ge \curvature{T,S}
 	\end{align*}
 
 	For the upper bound, we observe that $$W_1'(T,S) \ge p(W_1(T,S) + (1-p)\left(\dspr{T,S}\right) - \frac{2}{\max(\degree{T}, \degree{S})},$$ as at most $\frac{1}{\max(\degree{T},\degree{S})}$ of the mass can remain at each of $T$ and $S$, paired with the lazy remainder.
@@ -487,16 +506,16 @@ For example, $\kappa_{l,\frac{1}{4}}$\todo{$\kappa$ does not move} moves with pr
 We continue to explore the effect of biased random walks by considering the curvature of Metropolis Hastings random walks.
 The Metropolis Hastings (MH) random walk proposes a move from a tree $T$ to a neighbor tree $S$ uniformly at random and then accepts the move according to the Hastings ratio, $\min\left(1, \frac{\degree{T}}{\degree{S}}\right)$.
 The mass distribution for the MH random walk thus leaves a portion of mass at the origin tree, proportional to the relative degree difference of its higher degree neighbors.
-We now bound the difference between the curvature of uniform random walks $\kappa$, and that of MH random walks, $\kappa_{MH}$. \todo{I suggest $\kappa^{\mathrm{MH}}_n$}.
+We now bound the difference between the curvature of uniform random walks $\curvature{S,T}$, and that of MH random walks, $\curvature[\mathrm{MH}]{S,T}$.
 
 \begin{lemma}
 	Let $T$ and $S$ be phylogenetic trees with $n$ leaves. Then:
-	$$\kappa_n(T,S) - \frac{1}{3\dspr{T,S}}
-	\le \kappa_{MH}(T,S)
-	\le \kappa_n(T,S) + \frac{1}{3\dspr{T,S}}, \text{ and }$$
-	$$\kappa_n(T,S) - \frac{1}{6}
-	\le \kappa_{MH}(T,S)
-	\le \kappa_n(T,S) + \frac{1}{6}.$$
+	$$\curvature{T,S} - \frac{1}{3\dspr{T,S}}
+	\le \curvature[MH]{T,S}
+	\le \curvature{T,S} + \frac{1}{3\dspr{T,S}}, \text{ and }$$
+	$$\curvature{T,S} - \frac{1}{6}
+	\le \curvature[MH]{T,S}
+	\le \curvature{T,S} + \frac{1}{6}.$$
 \end{lemma}
 \begin{proof}
 	We first prove the lower bound.
@@ -510,12 +529,12 @@ We now bound the difference between the curvature of uniform random walks $\kapp
 	Then, $W_1' \le W_1 + \frac{2}{6}$.
 	We now have:
 	\begin{align*}
-		\kappa_{MH}(T,S) & \ge 1 - \frac{W_1 + \frac{1}{3}}{\dspr{T,S}} \\
-		& \ge \kappa_n(T,S) - \frac{1}{3\dspr{T,S}}
+		\curvature[\mathrm{MH}]{T,S} & \ge 1 - \frac{W_1 + \frac{1}{3}}{\dspr{T,S}} \\
+		& \ge \curvature{T,S} - \frac{1}{3\dspr{T,S}}
 	\end{align*}
 
 	In the case that $\dspr{T,S}=1$, the affected mass must be moved through only at most one additonal tree, as $T$ and $S$ are adjacent.
-	We thus obtain the lower bound of $\kappa_n(T,S) - \frac{1}{6}$ in this case.
+	We thus obtain the lower bound of $\curvature{T,S} - \frac{1}{6}$ in this case.
 
 	We obtain the upper bounds similarly to the lower bounds, by observing that the affected at most $\frac{1}{6}$ of the mass may move through at most two fewer trees (i.e. directly between $T$ and $S$ rather than a pair of neighbors at distance $\dspr{T,S} + 2$ from each other).
 	Again, this is at most one fewer tree when $\dspr{T,S}=1$.
