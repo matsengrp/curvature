@@ -147,7 +147,7 @@ They define a notion of curvature on a discrete or continuous case.
 Formalizes idea of the extent to which random walking brings points together, and is generalization of the notion of Ricci curvature on manifolds.
 
 In this paper, we investigate curvature of the rSPR graph with respect to two different random walks and make connections to access times for those random walks.
-For this first effort we investigate random walks defined in terms of the graph itself: the lazy isotropic\todo{Shall we use uniform or isotropic? The former is more intuitive, but the latter seems more specific to me.} random walk and MCMC sampling from the uniform prior on trees.
+For this first effort we investigate random walks defined in terms of the graph itself: the lazy uniform random walk and MCMC sampling from the uniform prior on trees.
 By getting a more fine-tuned understanding of the rSPR neighborhood of pairs of vertices, we are able to give bounds on curvatures under these random walks.
 By exploiting symmetries in the rSPR graph, we are able to calculate all of the curvatures for pairs of trees with up to seven leaves.
 Using simulation of these processes, we find that the distribution of access times between pairs of trees can be described by distance between the trees, the degrees of the trees, and the curvature.
@@ -259,7 +259,10 @@ The difference in SPR degree is thus $2ka - 2kb + 2(i-1) - 2(j-1)$ as claimed.
 \begin{corollary}
 \label{cor:paired_neighbors}
 Continuing with the setting and notation in Lemma~\ref{lem:degree_change}, let the degrees of $T$ and $S$ vertices in the SPR graph be $q$ and $p$ respectively.
-Then at least $o := q - 2kb - 2(j-1) = p - 2ka - 2(i-1)$ trees in the neighborhood of $T$ can be paired with $o$ trees in the neighborhood of $S$ such that the pairings are disjoint and $\dspr{T',S'} = 1$ for each $(T',S')$ pair.
+\todo{We have three systems of notation for the degree of trees: $\deg(T)$, this $q$ and $p$, and below $|N(T)|$. Please make this consistent, and make it clear what we actually mean by the degree of a tree.}
+Then at least
+$$o := q - 2kb - 2(j-1) = p - 2ka - 2(i-1)$$
+trees in the neighborhood of $T$ can be paired with $o$ trees in the neighborhood of $S$ such that the pairings are disjoint and $\dspr{T',S'} = 1$ for each $(T',S')$ pair.
 \end{corollary}
 \begin{proof}
 By the same arguments as in the proof of Lemma~\ref{lem:degree_change}, $o$ SPR moves can be applied to $T$ and $S$ with the same source and target vertices.
@@ -324,8 +327,7 @@ Then $\size{N(T) \cap N(S)} \le 6n - 17$.
 
 \begin{proof}
 	$T$ and $S$ differ by one SPR move that moves a subtree $R$.
-	Pick a neighbor $U \in N(T) \cap N(S)$ of both $T$ and $S$.
-	Note that this intersection is nonempty, as the fact that $T$ and $S$ differ implies that $R$ contains at most $n-2$ of the leaves, so there must be at least one other tree $U$ obtained by moving $R$ in $T$ and $S$. \todo{Um, why can't this intersection be empty? EM: reason added. This is not strictly necessary to get an upper bound but might be interesting.}
+	Pick a neighbor $U \in N(T) \cap N(S)$ of both $T$ and $S$ (this intersection is not empty: $T$ and $S$ are different, so $R$ contains at most $n-2$ of the leaves, thus there must be at least one other tree $U$ obtained by moving $R$ in $T$ and $S$).
 	Then either (i) $T$ and $U$ differ in the location of $R$, or (ii) $T$ and $U$ differ in the location of another subtree $Q$.
 	In the latter case, $T|(X \setminus L(Q)) = S|(X \setminus L(Q))$ because $T$ and $S$ differ only in the location of $R$ and $\dspr{T,U} = \dspr{S,U} = 1$.
 	Then leaves $r' \in R$, $q' \in Q$, and $u' \in U$, for some subtree $U$, form a triple of $T$ and a different triple in $S$.
@@ -382,9 +384,9 @@ Next we note a rough bound on the curvature of two trees with respect to their d
 	$$ \frac{-2}{\dspr{T,S}} \le \kappa_n(T,S) \le \frac{2}{\dspr{T,S}} .$$
 \end{lemma}
 \begin{proof}
-	Observe that the distance between neighbors of $S$ and $T$, is bounded between $\dspr{T,S} - 2$ and $\dspr{T,S} + 2$.
+	Observe that the distance between neighbors of $T$ and $S$ is bounded between $\dspr{T,S} - 2$ and $\dspr{T,S} + 2$.
 	For the curvature upper bound, we then have $\kappa_n(T,S) \le 1 - \frac{\dspr{T,S} + 2}{\dspr{T,S}} = \frac{2}{\dspr{T,S}}$.
-	The lower bound follows similarly. 
+	The lower bound follows similarly.
 \end{proof}
 
 Next we obtain a tighter bound on the maximum curvature of two adjacent trees.
@@ -393,14 +395,15 @@ Next we obtain a tighter bound on the maximum curvature of two adjacent trees.
 \end{lemma}
 \begin{proof}
 The maximum curvature between adjacent trees $T$ and $S$ occurs when their neighborhoods have maximum overlap, are of equal size, and all other tree pairs are at distance 1.
+\todo{In view of Lemma~\ref{lem:shared_neighbors} do you need the equal size statement?}
 By Lemma~\ref{lem:shared_neighbors} the maximum overlap is $6n-17$.
 The maximum curvature is thus $1 - \frac{\degree{T} - (6n-17)}{\degree{T}} = \frac{6n - 17}{\degree{T}}$. This is maximized when $\degree{T}$ is as small as possible, that is $T,S$ are ladders and $\degree{T} = 3n^2 - 13n + 14$.
 \end{proof}
 This bound is tight and has been verified computationally for $n \le 7$.
 
-It is more difficult to obtain a closer bound on the maximum curvature of nonadjacent trees. 
+It is more difficult to obtain a closer bound on the maximum curvature of nonadjacent trees.
 Lemma~\ref{lem:curvature_distance_bound} suggests that more distant pairs of trees should have smaller curvatures than close trees as neighborhood effects decrease with respect to the increasing distance.
-However, our experiments with $n \le 7$ suggest that curvature tends to increase with distance (with respect to a fixed $n$), as a far greater fraction of the neighbors approach each other as the distance increases.
+However, our experiments with $n \le 7$ suggest that maximum curvature tends to increase with distance (with respect to a fixed $n$), as a far greater fraction of the neighbors approach each other as the distance increases.
 Indeed, for all but $n = 5$ the maximum curvature is obtained by pairs of trees at maximum distance (for $n = 5$, the maximum curvature, between trees at distance 2, exceeds $2/3$, the maximum curvature obtainable by maximally distant pairs).
 Moreover, nearly all of the neighbors of maximally distant pairs approach each either.
 We thus conjecture the following:
@@ -413,8 +416,9 @@ We thus conjecture the following:
 	\end{enumerate}
 \end{conjecture}
 Proving or disproving this conjecture would go a long way toward understanding the effects of relative distance on curvature.
-However, we suspect that this will require a greater understanding of the distribution of tree neighborhoods with respect to one another than is currently known.\todo{this belongs here if we can prove it. If, not then we should consider moving it and discuss this more in the conclusion as an area for future work.}
-
+However, we suspect that this will require a greater understanding of the distribution of tree neighborhoods with respect to one another than is currently known.
+\todo{this belongs here if we can prove it. If, not then we should consider moving it and discuss this more in the conclusion as an area for future work.}
+\todo{Do you have some key lemmas that could be tested computationally to isolate the problem?}
 Next, we bound the minimum curvature of two adjacent trees.
 
 \begin{lemma}
@@ -422,10 +426,12 @@ Next, we bound the minimum curvature of two adjacent trees.
 	$$\frac{-n^2 + 2n}{3.5n^2 - 15n + 16}.$$
 \end{lemma}
 \begin{proof}
-	Let $T$ and $S$ be two adjacent trees.
-	Because pairs of neighbors of adjacent trees are at most distance 3 apart, we can bound the mass transport cost from above by $1 + 2m$, where $m$ is the maximum proportion of mass that can not be moved between adjacent trees.
+    In light of Corollary \ref{cor:paired_neighbors}, the optimal mass transport cost is maximized (and therefore curvature minimized) across adjacent trees $T$ and $S$ by a combination of two effects: trees that cannot be paired at distance $1$ and mass that must be moved between unpaired trees due to differing degrees of $T$ and $S$.
+    \todo{Please make it crystal clear that these two criteria can be optimized simultaneously.}
+    To bound the former effect, let $m$ be the maximum (across $T$ and $S$) proportion of mass that cannot be moved between adjacent neighbors of those trees.
+    We can bound the mass transport cost from above by $1 + 2m$ because pairs of neighbors of adjacent trees are at most distance 3 apart.
 	This gives a lower bound of $1 - (1 + 2m) / 1) = -2m$ on the curvature.
-	The mass transport cost is maximized (and therefore curvature minimized) by a combination of two effects: trees that cannot be paired (in the sense of Corollary \ref{cor:paired_neighbors}) at distance $1$ and mass that must be moved between unpaired trees due to differing degrees of $T$ and $S$. \todo{It's not clear what "pairing" means when degrees differ. Thus it's confusing when it's used in the same sentence as a statement concerning differing degrees. If you want to use it as a concept, how about introducing it at the beginning of the section as a proof strategy? EM: is this a bit better? I tried to clarify that we mean a Corollary \ref{cor:paired_neighbors} pairing, which does not care about degree.}
+
 	By Lemmas~\ref{lem:degree_change} and~\ref{lem:degree_max_delta_adjacent}, the latter effect is maximized when the relative degree change is maximized.
 	By Corollary~\ref{cor:paired_neighbors}, there are at most $o := \degree{T} -2ka - 2(i-1)$ paired trees.
 	Then, let $S$ be the ladder tree with degree $3n^2 - 13n + 14$ and $T$ be the adjacent tree constructed by moving the lower $\floor{\frac{n}{2}}$ leaves of $S$ to the root.
@@ -437,9 +443,9 @@ Next, we bound the minimum curvature of two adjacent trees.
 \end{proof}
 
 We further observe that the limit of our curvature lower bound is $-\frac{2}{7}$.
-Exhaustive tests with $n \le 7$ show that no pair of trees have curvature less than $-\frac{2}{5}$ and our bound meets or exceeds this value for $n > 7$.
+Complete enumeration with $n \le 7$ show that no pair of trees have curvature less than $-\frac{2}{5}$ and our bound meets or exceeds this value for $n > 7$.
 Moreover, the SPR distance is a metric, so this bounds the curvature for arbitrary pairs of trees (Proposition 19 of \cite{Ollivier2009-bw}).
-This directly leads to the following corollary:
+This directly leads to the following Corollary:
 
 \begin{corollary}
 	The curvature of the uniform random walk between two phylogenetic trees is at least $-\frac{2}{5}$.
@@ -447,8 +453,8 @@ This directly leads to the following corollary:
 
 Note that this bound is not tight (at least for small $n$) as it is rarely necessary to transport mass the maximum distance between unpaired trees.
 
-We next bound the effect of laziness on curvature. Let $\kappa_{l,p}$ be the curvature of a lazy random walk which moves with probability $p$ and remains stationary with probability $1 - p$.
-For example, $\kappa_{l,\frac{1}{4}}$ moves with probability $\frac{1}{4}$ and remains stationary with probability $\frac{3}{4}$. \todo{should be defined earlier, particularly the part where the curvature is divided by $p$.}
+We next bound the effect of laziness on curvature. Let $\kappa_{l,p}$\todo{conflicts with original definition of curvature $\kappa_n$. Perhaps $\kappa^{(p)}_n$?} be the curvature of a lazy random walk which moves with probability $p$ and remains stationary with probability $1 - p$.
+For example, $\kappa_{l,\frac{1}{4}}$\todo{$\kappa$ does not move} moves with probability $\frac{1}{4}$ and remains stationary with probability $\frac{3}{4}$. \todo{should be defined earlier, particularly the part where the curvature is divided by $p$.}
 
 \begin{lemma}
 	Let $T$ and $S$ be rooted phylogenetic trees with $n$ leaves.
@@ -481,7 +487,7 @@ For example, $\kappa_{l,\frac{1}{4}}$ moves with probability $\frac{1}{4}$ and r
 We continue to explore the effect of biased random walks by considering the curvature of Metropolis Hastings random walks.
 The Metropolis Hastings (MH) random walk proposes a move from a tree $T$ to a neighbor tree $S$ uniformly at random and then accepts the move according to the Hastings ratio, $\min\left(1, \frac{\degree{T}}{\degree{S}}\right)$.
 The mass distribution for the MH random walk thus leaves a portion of mass at the origin tree, proportional to the relative degree difference of its higher degree neighbors.
-We now bound the difference between the curvature of uniform random walks $\kappa$, and that of MH random walks, $\kappa_{MH}$.
+We now bound the difference between the curvature of uniform random walks $\kappa$, and that of MH random walks, $\kappa_{MH}$. \todo{I suggest $\kappa^{\mathrm{MH}}_n$}.
 
 \begin{lemma}
 	Let $T$ and $S$ be phylogenetic trees with $n$ leaves. Then:
