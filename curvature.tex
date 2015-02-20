@@ -476,7 +476,7 @@ The lazy random walk again selects a tree uniformly at random, as with the unifo
 We denote the curvature of the lazy random walk between two trees $T$ and $S$ by $\curvature[\ell_p]{T,S}$.
 For example, $\curvature[\ell_{\frac{1}{4}}]{T,S}$ describes the curvature of the lazy random walk that moves with probability $\frac{1}{4}$ and remains stationary with probability $\frac{3}{4}$.
 For the lazy random walk, $m_T$ is now $T \cup N(T)$, with each neighbor assigned mass $\frac{p}{\degree{T}}$ and $T$ assigned the remaining $1 - p$ mass.
-Note that $\curvature[\ell_p]{T, S} := \left(1 - \frac{W_1(m_T, m_S)}{d(x, y)}\right) / p$. \todo{Do you have a good explanation for the lazy curvature definition?}
+Note that $\curvature[\ell_p]{T, S} := \left(1 - \frac{W_1(m_T, m_S)}{d(x, y)}\right) / p$. \todo{EM: Do you have a good explanation for the lazy curvature definition?}
 
 \begin{lemma}
 	Let $T$ and $S$ be rooted phylogenetic trees with $n$ leaves.
@@ -603,7 +603,7 @@ We first compute shortest path lengths from each member of $N_k(T_1)$ to each $k
 For each BFS traversal tree, we backtrack from members of $N_k(T_2)$, identifying topologies in the $k$-tube.
 We can use unique tree indices here, rather than hashing, to avoid duplicates.
 The size of $N_k(T_1)$ is $\OhOf{n^{2k}}$, so this takes
-$\OhOf( n^{2k} M)$ time, where $M$ is the number of edges between $k$-tube candidates, that is, at most the square of the number of $k$-tube candidates.
+$\OhOf{ n^{2k} M}$ time, where $M$ is the number of edges between $k$-tube candidates, that is, at most the square of the number of $k$-tube candidates.
 
 This procedure identifies exactly the trees in the $k$-tube, so we have the following lemma:
 \begin{lemma}
