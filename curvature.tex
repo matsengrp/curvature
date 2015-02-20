@@ -408,10 +408,13 @@ Next we obtain a tighter bound on the maximum curvature of two adjacent trees.
 	The maximum curvature of the uniform random walk between two adjacent trees with $n$ leaves is $\frac{6n-17}{3n^2-13n+14}$.
 \end{lemma}
 \begin{proof}
-The maximum curvature between adjacent trees $T$ and $S$ occurs when their neighborhoods have maximum overlap, are of equal size, and all other tree pairs are at distance 1.
-\todo{In view of Lemma~\ref{lem:shared_neighbors} do you need the equal size statement?}
+The maximum curvature between adjacent trees $T$ and $S$ occurs when their neighborhoods have maximum overlap and all other tree pairs are at distance 1.
 By Lemma~\ref{lem:shared_neighbors} the maximum overlap is $6n-17$.
-The maximum curvature is thus $1 - \frac{\degree{T} - (6n-17)}{\degree{T}} = \frac{6n - 17}{\degree{T}}$. This is maximized when $\degree{T}$ is as small as possible, that is $T,S$ are ladders and $\degree{T} = 3n^2 - 13n + 14$.
+The amount of overlapping mass in the shared neighbors of $T$ and $S$ is thus $\frac{6n-17}{\max(\degree{T},\degree{S})}$.
+The minimum mass transfer cost is thus $1 - \frac{6n-17}{\max(\degree{T},\degree{S})}$.
+This is minimized when $\degree{T}=\degree{S}$ are as small as possible, that is $T,S$ are ladders and $\degree{T} = 3n^2 - 13n + 14$.
+
+The maximum curvature is thus $1 - \frac{\degree{T} - (6n-17)}{\degree{T}} = \frac{6n - 17}{\degree{T}}= \frac{6n-17}{3n^2-13n+14}$.
 \end{proof}
 This bound is tight and has been verified computationally for $n \le 7$.
 
