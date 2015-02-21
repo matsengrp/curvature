@@ -485,7 +485,9 @@ The lazy random walk again selects a tree uniformly at random, as with the unifo
 We denote the curvature of the lazy random walk between two trees $T$ and $S$ by $\curvature[\ell_p]{T,S}$.
 For example, $\curvature[\ell_{\frac{1}{4}}]{T,S}$ describes the curvature of the lazy random walk that moves with probability $\frac{1}{4}$ and remains stationary with probability $\frac{3}{4}$.
 For the lazy random walk, $m_T$ is now $T \cup N(T)$, with each neighbor assigned mass $\frac{p}{\degree{T}}$ and $T$ assigned the remaining $1 - p$ mass.
-Note that $\curvature[\ell_p]{T, S} := \left(1 - \frac{W_1(m_T, m_S)}{d(x, y)}\right) / p$. \todo{EM: Do you have a good explanation for the lazy curvature definition?}
+Note that Ollivier defined $\curvature[\ell_p]{T, S} := \left(1 - \frac{W_1(m_T, m_S)}{d(x, y)}\right) / p$~\cite{Ollivier2009-bw}.
+This definition of curvature is invariant of $p$ for small enough $p$ and was used by Ollivier to avoid parity problems on graphs where the uniform random walk is periodic.
+As we now prove, the curvature of the lazy random walk is closely related to that of the uniform random walk.
 
 \begin{lemma}
 	Let $T$ and $S$ be rooted phylogenetic trees with $n$ leaves.
