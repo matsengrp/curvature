@@ -366,9 +366,7 @@ Assume that the random walk begins at a tree $T$.
 The uniform random walk selects a tree uniformly at random from $N(T)$.
 We denote the curvature of the uniform random walk between two trees $T$ and $S$ with $\curvature{T,S}$.
 Recall that $\curvature{T, S} := 1 - \frac{W_1(m_T, m_S)}{d(T, S)}$.
-For the uniform random walk, $m_T$ is  simply the set
-\todo{AlexG: Technically, $m_T$ is a measure on the set of vertices of the rSPR.}
-of neighbors of $T$ each assigned a mass of $\frac{1}{\degree{T}}$.
+For the uniform random walk, $m_T$ is simply the probability measure assigning a mass of $\frac{1}{\degree{T}}$ to each of the neighbors of $T$.
 
 \begin{proposition}
 Fix a positive integer $k$ and let $R$ be a tree with $k$ leaves.
@@ -445,7 +443,6 @@ We thus conjecture the following:
 \end{conjecture}
 Proving or disproving this conjecture would go a long way toward understanding the effects of relative distance on curvature.
 However, we suspect that this will require a greater understanding of the distribution of tree neighborhoods with respect to one another than is currently known.
-\todo{Do you have some key lemmas that could be tested computationally to isolate the problem?}
 Next, we bound the minimum curvature of two adjacent trees.
 
 \begin{lemma}
