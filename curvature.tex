@@ -179,7 +179,9 @@ A \emph{parent (sub)tree} of a subtree $U$ is the smallest subtree strictly cont
 A \emph{parent edge} of a subtree $U$ is the edge connecting $U$ to the rest of the tree.
 The \emph{internal edges} of a tree are the edges that do not contact a leaf (we do not consider a rooted tree to have a ``root edge'', so trees have a degree two root).
 A \emph{ladder tree} is a tree such that every internal vertex has a leaf as a direct descendant.
-LCA of subtrees.
+A \emph{balanced tree} is a tree such that the sum of the depths of internal vertices is minimum over all trees with the same number of leaves.
+The \emph{least common ancestor} (LCA) of a set $R$ of two or more vertices is the unique vertex that is an ancestor of each vertex $r \in R$ and at maximum depth.
+Similarly, the LCA of two or more subtrees is the LCA of their parent vertices.
 
 \section{Access times of random walks on the rSPR graph can be understood using distance, degree, and curvature}
 
@@ -379,7 +381,7 @@ Because $d(T_n, S_n) = 1$, we will prove the proposition by showing that the mas
 To start we demonstrate the proposition in the case that $T_n$ and $S_n$ have the same number of neighbors.
 First we claim that $W_{1,n}$ is bounded above by $(\degree{T_n}+\OhOf{kn})/\degree{T_n}$ by exhibiting a mass transport program satisfying that bound.
 Let $(T'_n, S'_n)$ be any of the $o$ pairs of neighbors of $(T_n, S_n)$ which are one SPR move apart as per Corollary~\ref{cor:paired_neighbors}.
-We pair the these trees in the mass transport.
+We pair these trees in the mass transport.
 There are $\OhOf{kn}$ trees unmatched by this pairing, and we can pair each of them arbitrarily with another tree of distance at most 3.
 Thus, $W_{1,n}$ is bounded above by $(\degree{T_n} + \OhOf{kn}) / \degree{T_n}$.
 
