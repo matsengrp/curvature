@@ -5,6 +5,7 @@
 \usepackage{todonotes}
 \usepackage[notref,notcite]{showkeys} % show keys for eqs, etc.
 \usepackage{cite}
+\usepackage{enumitem}
 
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}[theorem]{Lemma}
@@ -185,16 +186,62 @@ Similarly, the LCA of two or more subtrees is the LCA of their parent vertices.
 
 \section{Access times of random walks on the rSPR graph can be understood using distance, degree, and curvature}
 
+\subsection{Computing rSPR treespaces}
+
+We computed the rSPR treespaces for four to seven leaves.
+This required a fast new algorithm for SPR graph construction, reducing the time required to do so from $\OhOf{m^2 n}$, where $m$ is the number of trees in the graph ($(2n-3)!!$ in this case) to $\OhOf{mn^3}$.
+In previous work~\cite{Whidden2015-yi}, we constructed (unrooted) SPR graphs from subsets of $m$ high probability trees sampled from phylogenetic posteriors to compare mixing and identify graph effects.
+Although the SPR distance (rooted and unrooted) is NP-hard to compute~\cite{bordewich05,hickey2008sdc}, it is fixed-parameter tractable with respect to the distance.
+In particular, one can determine in $\OhOf{n}$-time whether two rooted phylogenetic trees are adjacent in the SPR graph ($\OhOf{n^2}$-time for unrooted trees).
+Thus, we simply compared each of the $m$ trees to identify adjacencies, requiring a total of $\OhOf{m^2n}$-time ($\OhOf{m^2n^2}$-time in the unrooted case).
+As with our curvature computations, however, an $\OhOf{m^2}$ factor where $m = (2n-3)!!$ would require an enormous amount of computation. 
+
+To quickly compute dense SPR graphs (those containing a significant portion of the full treespace) we avoid pairwise computations by successively adding trees to the graph:
+\begin{enumerate}[label={\arabic*}.]
+	\item Let $G$ be an empty graph
+	\item For each of the $m$ trees in a specified but arbitrary order,
+		\begin{enumerate}
+			\item Add a vertex $i$ to the graph representing the current tree $T$ where $i$ is $T$'s order index
+			\item For each of the $\OhOf{n^2}$ neighbors of $T$
+				\begin{enumerate}
+					\item If the current neighbor $S$'s index is in $G$ then add an edge $(j,i)$ to the graph, where $j$ is $S$'s order index
+				\end{enumerate}
+		\end{enumerate}
+\end{enumerate}
+
+\begin{theorem}
+	The subset of the rSPR graph induced by a set $\mathcal{T}$ of $m$ trees with $n$ leaves can be constructed in $\OhOf{mn^3}$-time.
+\end{theorem}
+\begin{proof}
+	We implement the graph as an adjacency list with integer-labelled vertices.
+	As described above, the integer labels are simply the order of the input trees.
+	Adding the vertices to the graph requires $\OhOf{m}$-time, as they are added in ascending order to the end of the vertex list.
+	Adding the $\OhOf{mn^2}$ edges to the graph requires $\OhOf{mn^2 \log n}$-time (as the vertex degrees are $\OhOf{n^2}$).
+	Enumerating the neighbors of $T$ requires $\OhOf{n^3}$-time for each $T$, for a total of $\OhOf{mn^3}$-time.
+	We discuss below, in Section~\ref{sec:random_walks} how to do so efficiently without considering duplicate neighbors.
+	We store the tree to index mappings for current vertices of $G$ in a trie using the $\OhOf{n}$-length Newick representation of the tree.
+	These representations are made unique by ordering the tree so that leftmost subtrees contain the smallest alphanumeric label of descendants.
+	This requires only $\OhOf{n}$-time for each tree (i.e. a total of $\OhOf{mn^3}$-time) using a standard nodes and pointers representation of the tree and assuming integer leaf labels (a simple $\OhOf{mn\log n}$ leaf preprocessing step could be applied to extend this procedure to realistic phylogenetic trees).
+	Similarly, it takes $\OhOf{n}$-time to determine the index of each of the $\OhOf{mn^2}$ $S$'s.
+	Therefore the graph can be constructed in $\OhOf{mn^3}$-time.
+\end{proof}
+This procedure has been implemented in the C++ program \texttt{dense\_spr\_graph} of the software package \texttt{spr\_neighbors}, which outputs an edge list format graph suitable for input to other software. \todo{github url}
+Our fast graph construction procedure reduced the time required to compute the 10,395-vertex 7-taxon rSPR tree space from 2,104.68 seconds to 12.71 seconds on an Intel Core 2 Duo E7500 desktop running Ubuntu 14.04.
+Moreover, although we do not study the 135,135-vertex 8-taxon tree space in this paper, our algorithm requires only 303.45 seconds to construct it.
+Constructing the 8-taxon tree space is not feasible for the previous method in a reasonable amount of time.
+Thus, we believe this fast graph construction procedure will itself be useful for further studies of treespace subsets similar to~\cite{Whidden2015-yi}.
+
 \subsection{Computing curvature values}
 We computed all of the curvatures for pairs of trees with up to seven leaves to gain an intuitive understanding of the distribution of curvatures.
-We first used \dots to compute the rSPR treespaces for four to seven leaves.
-This required \dots time.
 We then used \dots \todo{ILP, citation, github reference} to compute curvatures for given pairs of trees.
-This would have required an enormous amount of computation to directly compute curvatures for the $((2n-3)!!)^2$ pairs of trees with $n$ leaves.
+This latter step would have required an enormous amount of computation to directly compute curvatures for the $((2n-3)!!)^2$ pairs of trees with $n$ leaves.
 We instead exploited the fact that pairs of trees which are equivalent modulo label renumbering are symmetric in the rSPR graph and therefore guaranteed to have the same curvature.
 We thus directly computed curvature values for one representative pair from each such equivalance class, or tanglegram. \todo{cite} \todo{indicate that a paper on tanglegrams is in preparation}
 
+
+
 \subsection{Simulating random walks on the rSPR graph}
+\label{sec:random_walks}
 We next explored the correspondence between curvature and graph effects.
 To do so, we first simulated Metropolis-Hastings random walks on the rSPR graphs with up to seven leaves.
 The uniform random walk moves to a neighboring vertex in the graph uniformly at random.
@@ -225,7 +272,7 @@ In this manner, we achieve an alternative solution for computing the degree of a
 In particular, this formulation groups moves that move the same subtree.
 We can thus apply the following algorithm to select a neighbor uniformly at random:
 
-\begin{enumerate}
+\begin{enumerate}[label={\arabic*}.]
 \item	compute the degree
 \item pick a random number $r$ from $1$ to the degree
 \item uniquely order the tree by the smallest alphanumeric label of descendants
@@ -239,6 +286,8 @@ We can thus apply the following algorithm to select a neighbor uniformly at rand
 \end{enumerate}
 
 This requires linear time and space.
+TODO: proof
+TODO: corollary that we can explore the neighbors in $O(n^3)$-time.
 
 
 \subsection{Mean access time computation}
@@ -329,7 +378,7 @@ No additional moves are introduced or blocked by the original SPR operation on $
 Recall that a rooted tree with $k$ leaves has $2(k-1)$ internal edges (recall that we are excluding any ``root edge'' in these calculations).
 In the first case there are $a$ subtrees that can now be moved onto the $2k$ edges in $R$ (including its newly introduced parent edge and one of the newly subdivided root edges of $V$) for a total gain of $2ka$ distinct moves.
 Similarly, we lose $2kb$ moves in the second case.
-In the third case, $R's$ parent subtree may now make $2(i-1)$ moves into $U$.
+In the third case, $R$'s parent subtree may now make $2(i-1)$ moves into $U$.
 Similarly, we lose $2(j-1)$ moves in the fourth case.
 
 The difference in SPR degree is thus $2ka - 2kb + 2(i-1) - 2(j-1)$ as claimed.
@@ -602,7 +651,7 @@ We now bound the difference between the curvature of uniform random walks $\curv
 	Thus, the hastings ratio is always $\ge \frac{5}{6}$.
 	This implies that at most $\frac{1}{6}$ of the mass remains at tree $T$ in the mass distribution.
 	Let $W_1(T,S)$ be the cost of an optimal mass transport for the uniform random walk from $T$ to $S$.
-	We construct an upper bound on $W_1'(T,S)$ for the MH random walk by moving mass according to $W_1$ where possible, and moving the remainder either from $T$ to $S$, $T$ to a neighbor of $S$, or from $T's$ neighbors to $S$.
+	We construct an upper bound on $W_1'(T,S)$ for the MH random walk by moving mass according to $W_1$ where possible, and moving the remainder either from $T$ to $S$, $T$ to a neighbor of $S$, or from $T$'s neighbors to $S$.
 	The maximum possible mass that is not moved according to $W_1$ is $\frac{1}{6}$.
 	Moreover, the affected mass must be moved through at most two additional trees.
 	Then, $W_1' \le W_1 + \frac{2}{6}$.
