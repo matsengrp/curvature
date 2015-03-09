@@ -1,3 +1,6 @@
+from collections import defaultdict
+
+
 def trees_shapes_autos_dn_ttsn(n):
     trees = enumerate_rooted_trees(n)
     # So that we can recognize trees after acting on t2 by mu^{-1}.
@@ -23,7 +26,6 @@ def trees_shapes_autos_dn_ttsn(n):
 def newick_factorization_dict(n):
     trees = enumerate_rooted_trees(n)
     fS = sg.SymmetricGroup(n)
-    dn_trees = {to_newick(trees[i]): i for i in range(len(trees))}
     factorization_d = OrderedDict()
     shapes = []
     dn_shapes = OrderedDict()
@@ -52,6 +54,7 @@ class TangleCounter:
     def __init__(self, n):
         self.nfd = newick_factorization_dict(n)
         (_, _, self.shape_autos, _, self.ttsn) = trees_shapes_autos_dn_ttsn(n)
+        self.count_d = defaultdict(list)
 
     # Define an "ntangle" to be a triple of (idx_tree1, idx_tree2, coset)
     # WRT the `sigma_1 * inverse(sigma_2)` term below,
@@ -70,6 +73,14 @@ class TangleCounter:
             self.shape_autos[self.ttsn[idx_tree1]],
             sigma_1 * inverse(sigma_2),
             self.shape_autos[self.ttsn[idx_tree2]])
-        return (idx_tree1, idx_tree2, coset)
+        return ((idx_tree1, idx_tree2), coset)
 
-
+    def add_newick_pair(self, n1, n2):
+        (idxs, coset) = self.newick_pair_to_ntangle(n1, n2)
+        if idxs in self.count_d:
+            for i, (known_coset, count) in enumerate(self.count_d[idxs]):
+                if coset == known_coset:
+                    self.count_d[idxs][i] = (known_coset, count+1)
+                    break
+        else:
+            self.count_d[idxs].append((coset, 1))
