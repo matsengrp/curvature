@@ -10,7 +10,7 @@ min_leaves = 4
 max_leaves = 5
 
 walk_seed = 0
-walk_n_iter = 100000
+walk_n_iter = 1000
 # walk_n_iter = 10000000;
 walk_sample_freq = 1
 
@@ -31,6 +31,7 @@ graph_degrees = {t: {} for t in graph_types}
 tangle_degrees = {t: {} for t in graph_types}
 tangle_newicks = {t: {} for t in graph_types}
 walks = {t: {} for t in graph_types}
+access = {t: {} for t in graph_types}
 
 for graph_type in graph_types:
     for n_leaves in range(min_leaves, max_leaves+1):
@@ -79,6 +80,11 @@ for graph_type in graph_types:
                 | sed "s/: /\\t/" | gzip -cn > $TARGET'
             .format(walk_flags, walk_seed, n_leaves,
                     walk_n_iter, walk_sample_freq))
+        access[graph_type][n_leaves] = Command(
+            walks_dir+graph_type+'/access'+str(n_leaves)+'.tsv.gz',
+            [scripts_dir+'tangle-time-count.py',
+             walks[graph_type][n_leaves]],
+            '${SOURCES[0]} -n '+str(n_leaves)+' -o $TARGET ${SOURCES[1]}')
 
 
 # Then make curvatures and plots for those graphs.

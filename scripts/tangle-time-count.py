@@ -1,10 +1,4 @@
 #!/usr/bin/env sage
-'''
-Suggested use:
-./access-time-count.py --tp \
-    "$(sed -n 60p ../../tangle/rooted-symmetric/tangle5.idx)" \
-    <mcmc-trace-files>
-'''
 
 import argparse
 import collections
@@ -15,8 +9,8 @@ from sage.all import load, RR
 load(os.path.dirname(os.path.realpath(__file__))+'/load-deps.py')
 load(os.path.dirname(os.path.realpath(__file__))+'/tangle-counter.py')
 
-parser = argparse.ArgumentParser(description='Find commute times',
-                                 prog='access-time-count.py')
+parser = argparse.ArgumentParser(description='Find commute times per tangle',
+                                 prog='tangle-time-count.py')
 
 parser.add_argument('tracefiles', nargs='+')
 parser.add_argument(
@@ -29,7 +23,7 @@ args = parser.parse_args()
 
 tc = TangleCounter(int(args.n))
 
-with open(args.o, 'w') as fout:
+with gzip.GzipFile(args.o, mode='wb', mtime=0.) as fout:
     for trace in args.tracefiles:
         print trace
         # Forget if we saw it in another trace file.
