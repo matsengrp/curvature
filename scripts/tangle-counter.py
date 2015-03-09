@@ -1,4 +1,4 @@
-from collections import defaultdict
+from collections import Counter, defaultdict
 
 
 def trees_shapes_autos_dn_ttsn(n):
@@ -39,7 +39,7 @@ def newick_factorization_dict(n):
             assert(check)
             # cert is a dictionary mapping all nodes to each other.
             # Recall that 0 is the root node, and nodes > n are internal nodes.
-            isom = fS(Permutation(cert.values()[1:n+1]))
+            isom = fS(sg.Permutation(cert.values()[1:n+1]))
         else:
             shapes.append(trees[i])
             dn_shapes[newick_shape_i] = [i]
@@ -53,7 +53,7 @@ def newick_factorization_dict(n):
 class TangleCounter:
     def __init__(self, n):
         self.nfd = newick_factorization_dict(n)
-        (_, _, self.shape_autos, _, self.ttsn) = trees_shapes_autos_dn_ttsn(n)
+        (self.trees, _, self.shape_autos, _, self.ttsn) = trees_shapes_autos_dn_ttsn(n)
         self.count_d = defaultdict(list)
 
     # Define an "ntangle" to be a triple of (idx_tree1, idx_tree2, coset)
@@ -75,12 +75,14 @@ class TangleCounter:
             self.shape_autos[self.ttsn[idx_tree2]])
         return ((idx_tree1, idx_tree2), coset)
 
-    def add_newick_pair(self, n1, n2):
+    def add_newick_pair_observation(self, n1, n2, time):
         (idxs, coset) = self.newick_pair_to_ntangle(n1, n2)
         if idxs in self.count_d:
-            for i, (known_coset, count) in enumerate(self.count_d[idxs]):
+            for known_coset, count in self.count_d[idxs]:
                 if coset == known_coset:
-                    self.count_d[idxs][i] = (known_coset, count+1)
+                    count[time] += 1
                     break
-        else:
-            self.count_d[idxs].append((coset, 1))
+            else:  # Not a known coset.
+                self.count_d[idxs].append((coset, Counter({time: 1})))
+        else:  # Not a known pair of indices.
+            self.count_d[idxs].append((coset, Counter({time: 1})))

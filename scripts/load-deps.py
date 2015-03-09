@@ -1,5 +1,6 @@
 # This loads all of the common dependencies.
 
+from sage.all import gap
 import os
 
 wd = os.path.dirname(os.path.realpath(__file__))
@@ -15,5 +16,5 @@ for source in sources:
     load(source)
 
 gap.eval("""
-Read("{}/../tangle/tangle-fun.py");
+Read("{}/../tangle/tangle-fun.g");
 """.format(wd))
