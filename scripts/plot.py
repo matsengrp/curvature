@@ -2,7 +2,7 @@
 
 import argparse
 import gzip
-import matplotlib as mp
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 import os
@@ -25,6 +25,8 @@ parser.add_argument('--d3', action='store_true',
 args = parser.parse_args()
 assert(os.path.exists(args.results_path))
 
+mpl.rcParams.update({'font.size': 48, 'font.family': 'Lato'})
+
 df = pickle.load(gzip.open(args.results_path, 'rb'))
 df['dist_jitter'] = df['dist'] + np.random.normal(0, 0.1, size=len(df))
 df['info'] = \
@@ -36,7 +38,7 @@ if args.which == 'hexbin':
         x='kappa_R',
         y='dist',
         gridsize=24,
-        cmap=mp.cm.gist_yarg)
+        cmap=mpl.cm.gist_yarg)
 elif args.which == 'scatter':
     if min(df['avg_deg']) == max(df['avg_deg']):
         p = df.plot(
