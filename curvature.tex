@@ -123,6 +123,8 @@ In both settings, one needs a means of describing the trees that are ``near'' to
 There are a number of such means of doing so.
 SPR.
 SPR graph.
+For clarity, we refer to vertices of the SPR graph as \emph{vertices} and vertices of individual trees as \emph{nodes}.
+We assume that all trees are bifurcating, and use degree to refer only to the degree of SPR graph vertices. \todo{Not sure if this is better here or in the preliminaries. Revisit this later}
 For MCMC moves, one would like to ensure good mixing.
 For ML moves, we are concerned about local optima.
 We will call these "graph effects"-- can't get easily from one spot to another because of structure of the graph.
@@ -180,22 +182,22 @@ For the rest of the paper, \textbf{we will assume that all phylogenetic trees ar
 A \emph{parent (sub)tree} of a subtree $U$ is the smallest subtree strictly containing $U$.
 A \emph{parent edge} of a subtree $U$ is the edge connecting $U$ to the rest of the tree.
 The \emph{internal edges} of a tree are the edges that do not contact a leaf (we do not consider a rooted tree to have a ``root edge'', so trees have a degree two root).
-A \emph{ladder tree} is a tree such that every internal vertex has a leaf as a direct descendant.
-A \emph{balanced tree} is a tree such that the sum of the depths of internal vertices is minimum over all trees with the same number of leaves.
-The \emph{least common ancestor} (LCA) of a set $R$ of two or more vertices is the unique vertex that is an ancestor of each vertex $r \in R$ and at maximum depth.
-Similarly, the LCA of two or more subtrees is the LCA of their parent vertices.
+A \emph{ladder tree} is a tree such that every internal node has a leaf as a direct descendant.
+A \emph{balanced tree} is a tree such that the sum of the depths of internal nodes is minimum over all trees with the same number of leaves.
+The \emph{least common ancestor} (LCA) of a set $R$ of two or more nodes is the unique node that is an ancestor of each node $r \in R$ and at maximum depth.
+Similarly, the LCA of two or more subtrees is the LCA of their parent nodes.
 
 \section{Access times of random walks on the rSPR graph can be understood using distance, degree, and curvature}
 
 \subsection{Computing rSPR treespaces}
 
 We computed the rSPR treespaces for four to seven leaves.
-This required a fast new algorithm for SPR graph construction, reducing the time required to do so from $\OhOf{m^2 n}$, where $m$ is the number of trees in the graph ($(2n-3)!!$ in this case) to $\OhOf{mn^3}$.
+This required a fast new algorithm for SPR graph construction, reducing the time required to do so from $\OhOf{m^2 n}$ to $\OhOf{mn^3}$, where $m$ is the number of trees in the graph ($(2n-3)!!$ in this case).
 In previous work~\cite{Whidden2015-yi}, we constructed (unrooted) SPR graphs from subsets of $m$ high probability trees sampled from phylogenetic posteriors to compare mixing and identify graph effects.
 Although the SPR distance (rooted and unrooted) is NP-hard to compute~\cite{bordewich05,hickey2008sdc}, it is fixed-parameter tractable with respect to the distance.
 In particular, one can determine in $\OhOf{n}$-time whether two rooted phylogenetic trees are adjacent in the SPR graph ($\OhOf{n^2}$-time for unrooted trees).
-Thus, we simply compared each of the $m$ trees to identify adjacencies, requiring a total of $\OhOf{m^2n}$-time ($\OhOf{m^2n^2}$-time in the unrooted case).
-As with our curvature computations, however, an $\OhOf{m^2}$ factor where $m = (2n-3)!!$ would require an enormous amount of computation.
+We applied this method comparing each of the $m$ trees pairwise to identify adjacencies, requiring a total of $\OhOf{m^2n}$-time ($\OhOf{m^2n^2}$-time in the unrooted case).
+However, applying this method to complete SPR graphs, with the $\OhOf{m^2}$ factor where $m = (2n-3)!!$, would require an enormous amount of computation. 
 
 To quickly compute dense SPR graphs (those containing a significant portion of the full treespace) we avoid pairwise computations by successively adding trees to the graph:
 \begin{enumerate}[label={\arabic*}.]
@@ -211,7 +213,7 @@ To quickly compute dense SPR graphs (those containing a significant portion of t
 \end{enumerate}
 
 \begin{theorem}
-	The subset of the rSPR graph induced by a set $\mathcal{T}$ of $m$ trees with $n$ leaves can be constructed in $\OhOf{mn^3}$-time.
+	The subgraph of the rSPR graph induced by a set $\mathcal{T}$ of $m$ trees with $n$ leaves can be constructed in $\OhOf{mn^3}$-time.
 \end{theorem}
 \begin{proof}
 	We implement the graph as an adjacency list with integer-labelled vertices.
@@ -364,8 +366,8 @@ To do so, we require the following lemma that characterizes exactly how the degr
 \label{lem:degree_change}
 Let $T$ and $S$ be phylogenetic trees such that $S$ can be obtained from $T$ by moving a subtree $R$ with $k$ leaves from its position adjacent to subtree $U$ to a location adjacent to subtree $V$.
 Let $L$ be the $\lca{U,V}$ in $T$.
-Let $a$ be the number of intermediate vertices on the path from the parent of $R$ to $L$ in $T$, excluding endpoints.
-Similarly, let $b$ be the number of intermediate vertices on the path from $V$ to $L$ in $T$, excluding endpoints.
+Let $a$ be the number of intermediate nodes on the path from the parent of $R$ to $L$ in $T$, excluding endpoints.
+Similarly, let $b$ be the number of intermediate nodes on the path from $V$ to $L$ in $T$, excluding endpoints.
 Let $i$ be the number of leaves in $U$ and $j$ be the number of leaves in $V$, excluding any leaves of $R$.
 Then the degrees of $T$ and $S$ differ by:
 $$2\left(k(a-b) + i - j\right).$$
@@ -373,8 +375,8 @@ $$2\left(k(a-b) + i - j\right).$$
 \end{lemma}
 \begin{proof}
 The set of permissible SPR moves changes in four different ways due to the movement of $R$:
-(i) subtrees that include vertices on the path from $U$ to $L$ may now be moved into $R$ and its newly introduced parent vertex,
-(ii) subtrees that include vertices on the path from $V$ to $L$ may no longer be moved into $R$ and its parent vertex,
+(i) subtrees that include nodes on the path from $U$ to $L$ may now be moved into $R$ and its newly introduced parent node,
+(ii) subtrees that include nodes on the path from $V$ to $L$ may no longer be moved into $R$ and its parent node,
 (iii) $R$'s parent subtree may now be moved into $U$, and
 (iv) $R$'s parent subtree may no longer be moved into $V$.
 No additional moves are introduced or blocked by the original SPR operation on $R$.
@@ -400,7 +402,7 @@ $$o := \deg(T) - 2kb - 2(j-1) = \deg(S) - 2ka - 2(i-1)$$
 trees in the neighborhood of $T$ can be paired with $o$ trees in the neighborhood of $S$ such that the pairings are disjoint and $\dspr{T',S'} = 1$ for each $(T',S')$ pair.
 \end{corollary}
 \begin{proof}
-By the same arguments as in the proof of Lemma~\ref{lem:degree_change}, $o$ SPR moves can be applied to $T$ and $S$ with the same source and target vertices.
+By the same arguments as in the proof of Lemma~\ref{lem:degree_change}, $o$ SPR moves can be applied to $T$ and $S$ with the same source and target nodes.
 For each such $(T',S')$ pair, we can move $R$ in either tree to obtain the other member of the pair.
 \end{proof}
 
