@@ -190,6 +190,7 @@ Similarly, the LCA of two or more subtrees is the LCA of their parent nodes.
 \section{Access times of random walks on the rSPR graph can be understood using distance, degree, and curvature}
 
 \subsection{Computing rSPR treespaces}
+\label{sec:computing_treespace}
 
 We computed the rSPR treespaces for four to seven leaves.
 This required a fast new algorithm for SPR graph construction, reducing the time required to do so from $\OhOf{m^2 n}$ to $\OhOf{mn^3}$, where $m$ is the number of trees in the graph ($(2n-3)!!$ in this case).
@@ -231,13 +232,12 @@ To quickly compute dense SPR graphs (those containing a significant portion of t
 This procedure has been implemented in the C++ program \texttt{dense\_spr\_graph} of the software package \texttt{spr\_neighbors}, which outputs an edge list format graph suitable for input to other software. \todo{github url}
 Our fast graph construction procedure reduced the time required to compute the 10,395-vertex 7-taxon rSPR tree space from 2,104.68 seconds to 12.71 seconds on an Intel Core 2 Duo E7500 desktop running Ubuntu 14.04.
 Moreover, although we do not study the 135,135-vertex 8-taxon tree space in this paper, our algorithm requires only 303.45 seconds to construct it.
-Constructing the 8-taxon tree space is not feasible for the previous method in a reasonable amount of time.
+Constructing the 8-taxon tree space is not feasible using the previous method in a reasonable amount of time. \todo{Going on 92 hours at the moment. I'll give it a bit longer and then just say that we terminated our attempt after X hours}
 Thus, we believe this fast graph construction procedure will itself be useful for further studies of treespace subsets similar to~\cite{Whidden2015-yi}.
 
 \subsection{Computing curvature values}
 We computed all of the curvatures for pairs of trees with up to seven leaves to gain an intuitive understanding of the distribution of curvatures.
-We first used \todo{\dots} to compute the rSPR treespaces for four to seven leaves.
-This required \dots time.
+We first used \texttt{dense\_spr\_graph} to compute the rSPR treespaces for four to seven leaves, as discussed in Section~\ref{sec:computing_treespace}.
 We then used linear programming to compute curvatures for given pairs of trees \cite{gricci}.
 This would have required an enormous amount of computation to directly compute curvatures for the $((2n-3)!!)^2$ pairs of trees with $n$ leaves.
 We instead exploited the fact that pairs of trees which are equivalent modulo label renumbering are symmetric in the rSPR graph and therefore guaranteed to have the same curvature.
@@ -256,7 +256,7 @@ The MH random walk is guaranteed to sample each tree uniformly at random and is 
 
 To efficiently simulate the MH random walk, we developed a linear-time algorithm for proposing SPR moves that does not require the rSPR graph to be explicitly built.
 A na\"ive approach would require $\OhOf{n^3}$ time---$OhOf{n}$ time to generate each of the $\OhOf{n^2}$ neighbors of a given tree--- and then one could be picked uniformly at random.
-To eliminate an $\OhOf{n^2}$ factor, we developed a deterministic ordering of SPR moves such that an arbitrary SPR neighbor as described in the next paragraph.
+To eliminate an $\OhOf{n^2}$ factor, we developed a deterministic ordering of SPR moves with a one-to-one correspondence to SPR neighbors, as described in the next paragraph.
 Given such an order, a uniform neighbor can be selected by its index in $\OhOf{n}$ time.
 We note that the recursive formula of Song \cite{Song2003-gf} for the degree of a tree does not group SPR moves that move a particular subtree, and thus would still require $\OhOf{n^2}$ time to select a specific SPR neighbor by index.
 
