@@ -1,11 +1,9 @@
 #!/usr/bin/env sage
 
 import argparse
-import collections
 import gzip
 import os
-import re
-from sage.all import load, RR
+from sage.all import load
 load(os.path.dirname(os.path.realpath(__file__))+'/load-deps.py')
 load(os.path.dirname(os.path.realpath(__file__))+'/tangle-counter.py')
 
@@ -32,6 +30,8 @@ with gzip.GzipFile(args.o, mode='wb', mtime=0.) as fout:
             for l in fin:
                 (idx, curr) = l.split()
                 idx = int(idx)
+                if 0 == idx % 100:
+                    print str(idx)
                 for (prev, when) in last_seen.items():
                     if when is not None:
                         # idx - last_seen[prev] is the number of steps
@@ -42,6 +42,8 @@ with gzip.GzipFile(args.o, mode='wb', mtime=0.) as fout:
                 last_seen[curr] = idx
             for (t1_idx, t2_idx), l in tc.count_d.items():
                 for (coset, counter) in l:
-                    newicks = to_newick_pair(tc.trees[t1_idx], tc.trees[t2_idx], coset)
+                    newicks = to_newick_pair(
+                        tc.trees[t1_idx], tc.trees[t2_idx], coset)
                     for (time, count) in counter.items():
-                        fout.write('\t'.join([newicks, str(time), str(count)])+'\n')
+                        fout.write(
+                            '\t'.join([newicks, str(time), str(count)])+'\n')

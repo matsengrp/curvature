@@ -7,7 +7,7 @@ env = Environment(ENV=os.environ)
 no_slurm = bool(subprocess.call('which sbatch'.split()))
 
 min_leaves = 4
-max_leaves = 5
+max_leaves = 4
 
 walk_seed = 0
 walk_n_iter = 1000
