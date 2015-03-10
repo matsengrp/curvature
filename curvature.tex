@@ -19,6 +19,7 @@
 
 \newcommand{\RR}{\mathbb R}
 \newcommand{\TT}{\mathcal T}
+\newcommand{\MH}{\operatorname{MH}}
 
 \newcommand{\cuttable}[1]{#1} % In case we need to be succinct for limits.
 
@@ -194,7 +195,7 @@ In previous work~\cite{Whidden2015-yi}, we constructed (unrooted) SPR graphs fro
 Although the SPR distance (rooted and unrooted) is NP-hard to compute~\cite{bordewich05,hickey2008sdc}, it is fixed-parameter tractable with respect to the distance.
 In particular, one can determine in $\OhOf{n}$-time whether two rooted phylogenetic trees are adjacent in the SPR graph ($\OhOf{n^2}$-time for unrooted trees).
 Thus, we simply compared each of the $m$ trees to identify adjacencies, requiring a total of $\OhOf{m^2n}$-time ($\OhOf{m^2n^2}$-time in the unrooted case).
-As with our curvature computations, however, an $\OhOf{m^2}$ factor where $m = (2n-3)!!$ would require an enormous amount of computation. 
+As with our curvature computations, however, an $\OhOf{m^2}$ factor where $m = (2n-3)!!$ would require an enormous amount of computation.
 
 To quickly compute dense SPR graphs (those containing a significant portion of the full treespace) we avoid pairwise computations by successively adding trees to the graph:
 \begin{enumerate}[label={\arabic*}.]
@@ -233,10 +234,12 @@ Thus, we believe this fast graph construction procedure will itself be useful fo
 
 \subsection{Computing curvature values}
 We computed all of the curvatures for pairs of trees with up to seven leaves to gain an intuitive understanding of the distribution of curvatures.
-We then used \dots \todo{ILP, citation, github reference} to compute curvatures for given pairs of trees.
-This latter step would have required an enormous amount of computation to directly compute curvatures for the $((2n-3)!!)^2$ pairs of trees with $n$ leaves.
+We first used \todo{\dots} to compute the rSPR treespaces for four to seven leaves.
+This required \dots time.
+We then used linear programming to compute curvatures for given pairs of trees \cite{gricci}.
+This would have required an enormous amount of computation to directly compute curvatures for the $((2n-3)!!)^2$ pairs of trees with $n$ leaves.
 We instead exploited the fact that pairs of trees which are equivalent modulo label renumbering are symmetric in the rSPR graph and therefore guaranteed to have the same curvature.
-We thus directly computed curvature values for one representative pair from each such equivalance class, or tanglegram. \todo{cite} \todo{indicate that a paper on tanglegrams is in preparation}
+We thus directly computed curvature values for one representative pair from each such equivalence class, or \emph{tanglegram} (enumeration methods described in a manuscript in preparation).
 
 
 
@@ -246,28 +249,29 @@ We next explored the correspondence between curvature and graph effects.
 To do so, we first simulated Metropolis-Hastings random walks on the rSPR graphs with up to seven leaves.
 The uniform random walk moves to a neighboring vertex in the graph uniformly at random.
 However, this makes the walk more likely to sample higher degree vertices.
-In contrast, the Metropolis Hastings (MH) random walk proposes a move from a tree $T$ to a neighbor tree $S$ uniformly at random and then accepts the move according to the Hastings ratio, $\min\left(1, \frac{\degree{T}}{\degree{S}}\right)$.
+In contrast, the Metropolis Hastings (MH) random walk with constant likelihood function proposes a move from a tree $T$ to a neighbor tree $S$ uniformly at random and then accepts the move according to the Hastings ratio, $\min\left(1, \frac{\degree{T}}{\degree{S}}\right)$.
 The MH random walk is guaranteed to sample each tree uniformly at random and is therefore representative of a phylogenetic MCMC program sampling trees under a uniform prior.
 
-To efficiently simulate the MH random walk, we developed a linear-time algorithm for proposing SPR moves that does not require the rSPR graph to be precomputed.
-Naively, this would require $\OhOf{n^3}$ time---$\OhOf{n}$ time to generate each of the $\OhOf{n^2}$ neighbors of a given tree and then pick one uniformly at random.
-To eliminate an $\OhOf{n^2}$ factor, we developed a deterministic ordering of SPR moves such that an arbitrary SPR neighbor can be selected by its index in $\OhOf{n}$ time.
-Song \todo{cite} developed a recursive formula for the degree of a tree and an explicit equation that works in terms of the distribution of heights of each node.
-This formula does not group SPR moves that move a particularly subtree, and thus would still require $\OhOf{n^2}$ time to select a specific SPR neighbor by index.
+To efficiently simulate the MH random walk, we developed a linear-time algorithm for proposing SPR moves that does not require the rSPR graph to be explicitly built.
+A na\"ive approach would require $\OhOf{n^3}$ time---$OhOf{n}$ time to generate each of the $\OhOf{n^2}$ neighbors of a given tree--- and then one could be picked uniformly at random.
+To eliminate an $\OhOf{n^2}$ factor, we developed a deterministic ordering of SPR moves such that an arbitrary SPR neighbor as described in the next paragraph.
+Given such an order, a uniform neighbor can be selected by its index in $\OhOf{n}$ time.
+We note that the recursive formula of Song \cite{Song2003-gf} for the degree of a tree does not group SPR moves that move a particular subtree, and thus would still require $\OhOf{n^2}$ time to select a specific SPR neighbor by index.
 
 Instead, we consider the distribution of SPR moves in terms of the number of nodes contained within a subtree.
-Recall that a tree with $n$ leaves has $2n-1$ nodes.
+Recall that a tree with $n$ leaves has $2n-1$ total nodes.
 Given a subtree $R$ with $x$ nodes, observe that there are $2n-1 - x$ possible locations to regraft $R$.
 However, some of these moves will result in the same neighboring tree as other SPR moves.
-In particular:
+In particular, where ``sibling edge'' means the edge connecting the sibling subtree to the rest of the tree, etc.:
 \begin{enumerate}
-\item Moving $R$ to its sibling results in the same tree, not a neighboring tree,
-\item Moving $R$ to its parent results in the same tree,
-\item Moving $R$ to its grandparent is the same as moving its aunt to its sibling
-\item Moving $R$ to its aunt is the same as moving its aunt to R.
+\item Moving $R$ to its sibling edge results in the same tree, not a neighboring tree,
+\item Moving $R$ to its parent edge results in the same tree,
+\item Moving $R$ to its grandparent edge is the same as moving its aunt to its sibling edge
+\item Moving $R$ to its aunt edge is the same as moving its aunt to $R$'s edge.
 \end{enumerate}
+\todo{How do we know that there aren't any other symmetries?}
 We can thus assign $2n-1-x-4$ moves to any node at a depth greater than 1 and $2n-1-x-2$ moves to depth 1 nodes (lacking both an aunt and grandparent).
-In this manner, we achieve an alternative solution for computing the degree of a tree:
+In this manner, we achieve an alternative solution for computing the degree of a tree in the SPR graph:
 \todo{equation}
 In particular, this formulation groups moves that move the same subtree.
 We can thus apply the following algorithm to select a neighbor uniformly at random:
@@ -276,7 +280,7 @@ We can thus apply the following algorithm to select a neighbor uniformly at rand
 \item	compute the degree
 \item pick a random number $r$ from $1$ to the degree
 \item uniquely order the tree by the smallest alphanumeric label of descendants
-\item preorder the nodes of $R$
+\item preorder the nodes of $R$ \todo{preorder how?}
 \item for each tree node $R$ in order and while $r > 0$
 	\begin{enumerate}
 		\item decrease $r$ by $2n-1-x-4$ or $2n-1-x-2$
@@ -634,15 +638,15 @@ As we now prove, the curvature of the lazy random walk is closely related to tha
 We continue to explore the effect of biased random walks by considering the curvature of Metropolis Hastings random walks.
 The Metropolis Hastings (MH) random walk proposes a move from a tree $T$ to a neighbor tree $S$ uniformly at random and then accepts the move according to the Hastings ratio, $\min\left(1, \frac{\degree{T}}{\degree{S}}\right)$.
 The mass distribution for the MH random walk thus leaves a portion of mass at the origin tree, proportional to the relative degree difference of its higher degree neighbors.
-We now bound the difference between the curvature of uniform random walks $\curvature{S,T}$, and that of MH random walks, $\curvature[\mathrm{MH}]{S,T}$.
+We now bound the difference between the curvature of uniform random walks $\curvature{S,T}$, and that of MH random walks, $\curvature[\MH]{S,T}$.
 
 \begin{lemma}
 	Let $T$ and $S$ be phylogenetic trees with $n$ leaves. Then:
 	$$\curvature{T,S} - \frac{1}{3\dspr{T,S}}
-	\le \curvature[MH]{T,S}
+	\le \curvature[\MH]{T,S}
 	\le \curvature{T,S} + \frac{1}{3\dspr{T,S}}, \text{ and }$$
 	$$\curvature{T,S} - \frac{1}{6}
-	\le \curvature[MH]{T,S}
+	\le \curvature[\MH]{T,S}
 	\le \curvature{T,S} + \frac{1}{6}.$$
 \end{lemma}
 \begin{proof}
@@ -657,7 +661,7 @@ We now bound the difference between the curvature of uniform random walks $\curv
 	Then, $W_1' \le W_1 + \frac{2}{6}$.
 	We now have:
 	\begin{align*}
-		\curvature[\mathrm{MH}]{T,S} & \ge 1 - \frac{W_1 + \frac{1}{3}}{\dspr{T,S}} \\
+		\curvature[\MH]{T,S} & \ge 1 - \frac{W_1 + \frac{1}{3}}{\dspr{T,S}} \\
 		& \ge \curvature{T,S} - \frac{1}{3\dspr{T,S}}
 	\end{align*}
 
@@ -763,6 +767,7 @@ Alex Gavruskin,
 Vladimir Minin,
 
 SAGE and GAP4 software
+Alexander Hulpke
 
 This work was funded by National Science Foundation award 1223057.
 
