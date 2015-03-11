@@ -9,7 +9,8 @@ sources = [wd+'/../gricci/'+f for f in [
     'all-hail-sage/nb-fun.py',
     'all-hail-sage/tree-fun.py',
     'code.py']] + [
-    wd+'/../tangle/tangle-fun.py'
+    wd+'/../tangle/tangle-fun.py',
+    wd+'/../scripts/double-coset-counter.py'
     ]
 
 for source in sources:
@@ -17,4 +18,5 @@ for source in sources:
 
 gap.eval("""
 Read("{}/../tangle/tangle-fun.g");
-""".format(wd))
+Read("{}/double-coset-counter.g");
+""".format(wd, wd))

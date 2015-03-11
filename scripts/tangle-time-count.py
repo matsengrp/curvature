@@ -3,9 +3,10 @@
 import argparse
 import gzip
 import os
-from sage.all import load
-load(os.path.dirname(os.path.realpath(__file__))+'/load-deps.py')
-load(os.path.dirname(os.path.realpath(__file__))+'/tangle-counter.py')
+from sage.all import load, gap
+wd = os.path.dirname(os.path.realpath(__file__))
+load(wd+'/load-deps.py')
+load(wd+'/tangle-counter.py')
 
 parser = argparse.ArgumentParser(description='Find commute times per tangle',
                                  prog='tangle-time-count.py')
@@ -40,10 +41,10 @@ with gzip.GzipFile(args.o, mode='wb', mtime=0.) as fout:
                         tc.add_newick_pair_observation(
                             prev, curr, idx - last_seen[prev])
                 last_seen[curr] = idx
-            for (t1_idx, t2_idx), l in tc.count_d.items():
-                for (coset, counter) in l:
+            for (t1_idx, t2_idx) in tc.count_d.keys():
+                for (coset, counts) in tc.get_counts(t1_idx, t2_idx):
                     newicks = to_newick_pair(
                         tc.trees[t1_idx], tc.trees[t2_idx], coset)
-                    for (time, count) in counter.items():
+                    for time, count in enumerate(counts):
                         fout.write(
                             '\t'.join([newicks, str(time), str(count)])+'\n')

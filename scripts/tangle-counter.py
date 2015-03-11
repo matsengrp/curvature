@@ -55,12 +55,16 @@ class TangleCounter:
         self.nfd = newick_factorization_dict(n)
         (self.trees, _, self.shape_autos, _, self.ttsn) = trees_shapes_autos_dn_ttsn(n)
         self.count_d = defaultdict(list)
+        self.fS = sg.SymmetricGroup(n)
 
     # Define an "ntangle" to be a triple of (idx_tree1, idx_tree2, coset)
     # WRT the `sigma_1 * inverse(sigma_2)` term below,
-    # recall that the element in the middle of the double coset gets applied to the first tree to get the right tangle.
-    # sigma_1 maps us from leaves of first tree to "middle" leaves, and sigma_2 maps us from "middle" leaves to leaves of second tree.
-    # Thus sigma_1 * inverse(sigma_2) gives us the map to apply to the first tree to get correct tangle when also using identity map for second tree.
+    # recall that the element in the middle of the double coset gets applied to
+    # the first tree to get the right tangle.
+    # sigma_1 maps us from leaves of first tree to "middle" leaves, and sigma_2
+    # maps us from "middle" leaves to leaves of second tree.
+    # Thus sigma_1 * inverse(sigma_2) gives us the map to apply to the first
+    # tree to get correct tangle when also using identity map for second tree.
     def newick_pair_to_ntangle(self, n1, n2):
         (idx_tree1, sigma_1) = self.nfd[n1]
         (idx_tree2, sigma_2) = self.nfd[n2]
@@ -77,12 +81,9 @@ class TangleCounter:
 
     def add_newick_pair_observation(self, n1, n2, time):
         (idxs, coset) = self.newick_pair_to_ntangle(n1, n2)
-        if idxs in self.count_d:
-            for known_coset, count in self.count_d[idxs]:
-                if coset == known_coset:
-                    count[time] += 1
-                    break
-            else:  # Not a known coset.
-                self.count_d[idxs].append((coset, Counter({time: 1})))
-        else:  # Not a known pair of indices.
-            self.count_d[idxs].append((coset, Counter({time: 1})))
+        if idxs not in self.count_d:
+            self.count_d[idxs] = new_dc_counter_exemplar(self.fS, coset)
+        add_dc_counter(self.count_d[idxs], coset, time)
+
+    def get_counts(self, t1_idx, t2_idx):
+        return dc_counter_table(self.count_d[t1_idx, t2_idx])

@@ -9,6 +9,16 @@ ZeroFill := function(l)
     od;
 end;;
 
+# For some reason DisplayString was just returning '<object>' so I wrote this.
+MyPrintToString := function(obj)
+    local str, out;
+    str := "";;
+    out := OutputTextString( str, true );;
+    PrintTo(out, obj);
+    CloseStream(out);
+    return str;
+end;;
+
 NewDCCounter := function(g, u, v)
     return rec(
         g := g,
@@ -20,8 +30,13 @@ NewDCCounter := function(g, u, v)
         counts := []);
 end;;
 
-AddDCCounter := function(dcc, r, time)
-    local dcn, i, o, p;
+NewDCCounterExemplar := function(g, coset)
+    return NewDCCounter(g, LeftActingGroup(coset), RightActingGroup(coset));
+end;;
+
+AddDCCounter := function(dcc, coset, time)
+    local dcn, i, o, p, r;
+    r := Representative(coset);
     p := PositionCanonical(dcc.t, r); # Number of the right coset for the element.
     if IsBound(dcc.dc_number[p]) then
         dcn := dcc.dc_number[p];
@@ -58,12 +73,13 @@ ShowDCCounter := function(dcc)
 end;;
 
 DCCounterTable := function(dcc)
-    local dcn, tab, pos;
+    local dc, dcn, tab, pos;
     tab := [];
     for dcn in [1..dcc.max_idx] do
         pos := Position(dcc.dc_number, dcn);
         ZeroFill(dcc.counts[dcn]);
-        tab[dcn] := [dcc.t[pos], dcc.counts[dcn]];
+        dc := DoubleCoset(dcc.u, dcc.t[pos], dcc.v);
+        tab[dcn] := [MyPrintToString(dc), dcc.counts[dcn]];
     od;
     return tab;
 end;;
