@@ -11,5 +11,5 @@ def new_dc_counter(g, u, v):
 def add_dc_counter(dcc, r, time):
     return gap.function_call('AddDCCounter', [dcc, gap(r), time])
 
-def show_dc_counter(dcc):
-    return gap.function_call('ShowDCCounter', dcc)
+def dc_counter_table(dcc):
+    return gap.function_call('DCCounterTable', dcc)

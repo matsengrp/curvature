@@ -57,6 +57,19 @@ ShowDCCounter := function(dcc)
     od;
 end;;
 
+DCCounterTable := function(dcc)
+    local dcn, tab, pos;
+    tab := [];
+    for dcn in [1..dcc.max_idx] do
+        pos := Position(dcc.dc_number, dcn);
+        ZeroFill(dcc.counts[dcn]);
+        tab[dcn] := [dcc.t[pos], dcc.counts[dcn]];
+    od;
+    return tab;
+end;;
+
+
+
 # mdcc := NewDCCounter(
 #     SymmetricGroup(4),
 #     Subgroup(SymmetricGroup(4), [(1,2,3),(1,2)]),
