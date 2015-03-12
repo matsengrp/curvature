@@ -215,6 +215,7 @@ To quickly compute dense SPR graphs (those containing a significant portion of t
 \end{enumerate}
 
 \begin{theorem}
+	\label{thm:construct_graph}
 	The subgraph of the rSPR graph induced by a set $\mathcal{T}$ of $m$ trees with $n$ leaves can be constructed in $\OhOf{mn^3}$-time.
 \end{theorem}
 \begin{proof}
@@ -265,7 +266,7 @@ Instead, we consider the distribution of SPR moves in terms of the number of nod
 Recall that a tree with $n$ leaves has $2n-1$ total nodes.
 Given a subtree $R$ with $x$ nodes, observe that there are $2n-1 - x$ possible locations to regraft $R$.
 However, some of these moves will result in the same neighboring tree as other SPR moves.
-In particular, where a node's edge means the edge connecting the subtree rooted at that node to the rest of the tree,
+In particular, where a node's edge means the edge connecting the subtree rooted at that node to the rest of the tree:
 \begin{enumerate}
 \item Moving $R$ to its sibling edge results in the same tree, not a neighboring tree,
 \item Moving $R$ to its parent edge results in the same tree,
@@ -277,6 +278,7 @@ Call the portion of the neighborhood of a tree $T$ that can be obtained by movin
 In this manner, we achieve an alternative solution for computing the degree of a tree in the SPR graph:
 
 \begin{lemma}
+	\label{lem:compute_degree}
 	For a tree $T$ with $n$ leaves,
 	$$\degree{T} = \sum_{u \in T} \size{N(T,u)},$$
 	for nodes $u$ of $T$, where $N(T,u)$ is as defined above, and:
@@ -300,24 +302,45 @@ In this manner, we achieve an alternative solution for computing the degree of a
 
 
 In particular, this formulation groups moves that move the same subtree.
-We can thus apply the following algorithm to select a neighbor uniformly at random:
+We can thus apply the following algorithm to select a neighbor uniformly at random for a tree $T$:
 
 \begin{enumerate}[label={\arabic*}.]
-\item	compute the degree
-\item pick a random number $r$ from $1$ to the degree
-\item uniquely order the tree by the smallest alphanumeric label of descendants
-\item preorder the nodes of $R$ \todo{preorder how?}
-\item for each tree node $R$ in order and while $r > 0$
+	\item	compute the degree of $T$, $\degree{T}$.
+	\item pick a random integer $r$ in the range $[1,\degree{T}]$
+	\item label each node $u$ of $T$ by its preorder number and compute the number of nodes in the subtree rooted at each $u$.
+\item for each tree node $u$ and while $r > 0$
 	\begin{enumerate}
-		\item decrease $r$ by $2n-1-x-4$ or $2n-1-x-2$
-		\item if $r < 0$, pick the $\abs{r}$ valid move of $R$ in order
+		\item decrease $r$ by $\size{N(T,u)}$
+		\item if $r < 0$, let $S$ be the $\abs{r}$ member of $N(T,u)$ and terminate the for loop
 	\end{enumerate}
-\item apply the corresponding move and return the corresponding tree
+\item return the neighbor $S$
 \end{enumerate}
 
-This requires linear time and space.
-TODO: proof
-TODO: corollary that we can explore the neighbors in $O(n^3)$-time.
+\begin{lemma}
+	\label{lem:select_random_neighbor}
+	Given a tree $T$, an SPR neighbor of $T$ can be chosen uniformly at random in $\OhOf{n}$-time using $\OhOF{n}$ space.
+\end{lemma}
+\begin{proof}
+	We apply the above procedure.
+	We use a standard nodes and pointer representation of the trees, which can be constructed in $\OhOf{n}$-time from a newick string representation and uses linear space in $n$.
+	We can compute the degree of $T$ in linear time and space using Lemma~\ref{lem:compute_degree}.
+	To efficiently compute $\size{N(T,u)}$ for each node $u$ of $T$, we require the number of nodes $x$ in the subtree rooted $u$.
+	We precompute these by (1) labeling each node with its preorder number in a preorder traversal and (2) summing the number of descendant nodes in a postorder traversal and storing the results in array indexed by preorder number.
+	Both of these traversals require $\OhOf{n}$-time.
+	There are $2n-1$ = $\OhOf{n}$ nodes of $T$, and $\size{N(T,u)}$ can be computed in constant time using the subtree sizes.
+	Moreover, the tree $S$ can be found by iterating over the edges of $T$ that are not contained within $u$'s subtree to select the corresponding SPR destination.
+	Finally, we require linear time to apply the chosen SPR operation which entails removing a node, adding a node, and updating a constant number of pointers.
+	Thus, the for loop requires linear time.
+	By Lemma~\ref{lem:compute_degree} the chosen tree is an SPR neighbor of $T$ and is chosen uniformly at random.
+	Therefore, the procedure uses linear time and space and selects an SPR neighbor of $T$ uniformly at random.
+\end{proof}
+
+Observe that this procedure can be easily adapted to explore the full neighborhood of a tree in $\OhOf{n^3}$ time, which we use for Theorem~\ref{thm:construct_graph}.
+We thus have the following corollary:
+
+\begin{corollary}
+	Given a tree $T$, the SPR neighbors of $T$ can be enumerated in $\OhOf{n^3}$-time.
+\end{corollary}
 
 
 \subsection{Mean access time computation}
@@ -493,7 +516,7 @@ Then $\size{N(T) \cap N(S)} \le 6n - 17$.
 	In the latter case, $T|(X \setminus L(Q)) = S|(X \setminus L(Q))$ because $T$ and $S$ differ only in the location of $R$ and $\dspr{T,U} = \dspr{S,U} = 1$.
 	Then leaves $r' \in R$, $q' \in Q$, and $u' \in U$, for some subtree $U$, form a triple of $T$ and a different triple in $S$.
 	This incompatible triple can be resolved in at most $6n - 17$ ways, the maximum of which is reached when $Q$, $U$, and $R$ are themselves a ``triple'' of subtrees.
-	By Lemma~\ref{ }\todo{need unique move lemma}, each of the subtrees is assigned to at most $2n-6$ unique moves.
+	By Lemma~\ref{lem:compute_degree}, each of the subtrees is assigned to at most $2n-6$ unique moves.
 	Moreover, one additional overlapping move also moves one of the subtrees (that of the aunt of the LCA of the three subtrees).
 	The number of shared neighbors is thus at most $3(2n-6) + 1 = 6n-17$.
 	Note that this bound is tight when, for example, $T$ and $S$ are ladders with a different configuration of 3 leaves at maximum depth.
