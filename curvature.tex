@@ -113,7 +113,7 @@ We find that indeed there is
 \section{Introduction}
 Molecular phylogenetic methods, which reconstruct evolutionary trees from DNA or RNA data, are of fundamental importance to modern biology.
 Statistical phylogenetics forms the currently most popular means of reconstructing phylogenetic trees, in which the tree is viewed as an unknown parameter in a likelihood-based statistical inference problem.
-The likelihood function in this setting is the likelihood of generating the observed sequences via a continuous time Markov chain (CTMC) evolving down the tree starting from a sequence assumed to be sampled from the stationary distribution (cite{Felsenstein}).
+The likelihood function in this setting is the likelihood of generating the observed sequences via a continuous time Markov chain (CTMC) evolving down the tree starting from a sequence assumed to be sampled from the stationary distribution~\cite{felsenstein1981evolutionary}.
 The lengths of the branches of the phylogenetic tree give the ``time'' parameter in the CTMC, where the generated sequence accrues mutations, typically in an IID manner across sites.
 Thus likelihood-based phylogenetics gives an optimality criterion that comes from both branch length and topology.
 Within this framework researchers typically choose either a Bayesian approach, in which an algorithm (typically Markov chain Monte Carlo or MCMC) approximates the posterior distribution of trees and their associated parameters, or a maximum likelihood (ML) approach, in which an algorithm searches across tree topologies and continuous parameters in order to find the combination with the highest likelihood.
@@ -121,28 +121,19 @@ Within this framework researchers typically choose either a Bayesian approach, i
 In order to get accurate such estimates, MCMC samplers must sufficiently explore the collection of trees, or heuristic local search algorithms must find a way to the ML tree, avoiding and escaping local peaks.
 In both settings, one needs a means of describing the trees that are ``near'' to the current tree.
 % Here we focus on the discrete search part.
-There are a number of such means of doing so.
-SPR.
-SPR graph.
-For clarity, we refer to vertices of the SPR graph as \emph{vertices} and vertices of individual trees as \emph{nodes}.
-We assume that all trees are bifurcating, and use degree to refer only to the degree of SPR graph vertices. \todo{Not sure if this is better here or in the preliminaries. Revisit this later}
-For MCMC moves, one would like to ensure good mixing.
-For ML moves, we are concerned about local optima.
-We will call these "graph effects"-- can't get easily from one spot to another because of structure of the graph.
-We use "random walks" as being a general notion of movement around a graph, including MCMC.
+There are a number of means of doing so, most of which are based on \emph{splits}---partitions of leaves induced by edges in the trees---such as the Robinson Foulds distance~\cite{robinson81}.
+However, phylogenetic search algorithms typically explore the collection of trees by rearranging subtrees with subtree prune-and-regraft (SPR) moves~\cite{hein96} or the subset of SPR moves called nearest neighbor interchanges (NNI)~\cite{robinson1971comparison}.
+Thus, phylogenetic searches can be viewed as traversing the graph of phylogenetic trees induced by SPR adjacencies---the \emph{SPR graph}.
 
-Researchers have noticed SPR graph effects in MCMC.
-\cite{Mossel2005-ly,Mossel2006-fo}
-\cite{Ronquist2006-fv}
-\cite{Stefankovic2011-hu}
-We recently showed that graph structure has an effect of MCMC mixing using real data and programs.
-\cite{Whidden2015-yi}
-Probabilists have also approached the problem using related frameworks that are more amenable to proving theorems, both for other sets of moves on trees with a finite number of leaves \cite{Aldous2000-vg,Diaconis2002-gy} or for SPR and related moves on a continuous tree-like object called the compact real tree which formalizes the notion of a tree with infinite leaves\cite{Evans2006-xh,Athreya2014-de}.
+It has become increasingly clear that the structure of the SPR graph plays an important role in determining the accuracy of tree searches.
+We will call these "graph effects"---one can't easily move from one tree to another due to the structure of the graph.
+Researchers have noticed SPR graph effects in MCMC~\cite{Mossel2005-ly,Mossel2006-fo,Ronquist2006-fv,Stefankovic2011-hu}.
+We recently showed that graph structure has a significant effect on MCMC mixing using real data and programs~\cite{Whidden2015-yi}.
+Probabilists have also approached the problem using related frameworks that are more amenable to proving theorems, both for other sets of moves on trees with a finite number of leaves~\cite{Aldous2000-vg,Diaconis2002-gy} or for SPR and related moves on a continuous tree-like object called the compact real tree which formalizes the notion of a tree with infinite leaves\cite{Evans2006-xh,Athreya2014-de}.
 
 ML also has graph effects, which manifest as local maxima.
-There have been investigation of local maxima, but concern branch lengths.
-\cite{Fukami1989-fs,Steel1994-pt,Chor2003-wh,Chor2000-ea}
-The work on SPR moves in the ML context is primarily found in the literature comparing various SPR variants to one another, usually in the context of comparing one phylogenetic software package to another \cite{Hordijk2005-dl,Stamatakis2006-yz,Price2010-fi,Guindon2010-lo}.
+There have been investigations of local maxima, but mainly from the perspective of branch lengths rather than topology~\cite{Fukami1989-fs,Steel1994-pt,Chor2003-wh,Chor2000-ea}.
+The work on SPR moves in the ML context is primarily found in the literature comparing various SPR variants to one another, usually in the context of comparing one phylogenetic software package to another~\cite{Hordijk2005-dl,Stamatakis2006-yz,Price2010-fi,Guindon2010-lo}.
 We are not aware of any general conclusions concerning hill-climbing on the SPR or related graphs that has come from this work.
 
 The SPR graph is very important in phylogenetic inference, and yet still little is known about the rooted or unrooted versions of the SPR graph itself, or random walks thereupon.
@@ -154,16 +145,20 @@ $$ n - 2\ceil{\sqrt{n}} + 1
 $$
 Despite the centrality of the SPR graph to phylogenetic inference, we are not aware of any other work investigating its properties.
 
-Recently, a new approach to quantifying properties of discrete and continuous spaces with respect to random walks has been pioneered by Ollivier and colleagues \cite{Ollivier2009-bw,Joulin2010-jg}.
+Recently, a new approach to quantifying properties of discrete and continuous spaces with respect to random walks has been pioneered by Ollivier and colleagues~\cite{Ollivier2009-bw,Joulin2010-jg}.
 They define a notion of curvature on a discrete or continuous case.
-Formalizes idea of the extent to which random walking brings points together, and is generalization of the notion of Ricci curvature on manifolds.
+This formalizes the notion of to what extent random walking brings points together, and is a generalization of the notion of Ricci curvature on manifolds.
 
 In this paper, we investigate curvature of the rSPR graph with respect to two different random walks and make connections to access times for those random walks.
+We use random walks on the rSPR graph as being a general notion of movement around a graph, modeling phylogenetic MCMC and ML searches.
 For this first effort we investigate random walks defined in terms of the graph itself: the lazy uniform random walk and MCMC sampling from the uniform prior on trees.
+We present a fast new algorithm for computing SPR graphs from a set of trees, reducing the time to do so from $\OhOf{m^2n}$ to $\OhOf{mn^3}$ for a set of $m$ trees with $n$ leaves.
+As the the full rSPR treespace contains $(2n-3)!!$ trees, this is a significant improvement in practice for exploring large subsets of treespace.
+By exploiting symmetries in the rSPR graph, we were able to calculate all of the curvatures for pairs of trees with up to seven leaves.
+By carefully examining the overlap in SPR moves, we present a new method for computing the degree of a tree in the SPR graph that allows one to select an SPR neighbor uniformly at random in linear-time without explicitly generating the graph.
+Using this method to simulate these random walks, we find that the distribution of access times between pairs of trees can be described by distance between the trees, the degrees of the trees, and the curvature.
 By getting a more fine-tuned understanding of the rSPR neighborhood of pairs of vertices, we are able to give bounds on curvatures under these random walks.
-By exploiting symmetries in the rSPR graph, we are able to calculate all of the curvatures for pairs of trees with up to seven leaves.
-Using simulation of these processes, we find that the distribution of access times between pairs of trees can be described by distance between the trees, the degrees of the trees, and the curvature.
-
+In particular, we present a full characterization of the change in SPR degree that occurs from a given SPR move and find that, contrary to previous assumptions, SPR moves which move large subtrees may have greater graph effects than those that move small subtrees.
 
 \section{Preliminaries}
 \begin{equation}
@@ -187,6 +182,14 @@ A \emph{ladder tree} is a tree such that every internal node has a leaf as a dir
 A \emph{balanced tree} is a tree such that the sum of the depths of internal nodes is minimum over all trees with the same number of leaves.
 The \emph{least common ancestor} (LCA) of a set $R$ of two or more nodes is the unique node that is an ancestor of each node $r \in R$ and at maximum depth.
 Similarly, the LCA of two or more subtrees is the LCA of their parent nodes.
+
+For clarity, we refer to vertices of the SPR graph as \emph{vertices} and vertices of individual trees as \emph{nodes}.
+We assume that all trees are bifurcating, and use degree to refer only to the degree of SPR graph vertices. \todo{Not sure if this is better here or in the preliminaries. Revisit this later}
+
+Let $N(T)$ be the set of SPR neighbors of a tree $T$ (this does not include $T$).
+We say that the degree of $T$ is $\degree{T}$, that is, the number of trees which can be obtained from $T$ by a single SPR operation.
+Note that this concept of degree is unrelated to the degree of vertices of $T$.
+
 
 \section{Access times of random walks on the rSPR graph can be understood using distance, degree, and curvature}
 
@@ -240,7 +243,7 @@ Thus, we believe this fast graph construction procedure will itself be useful fo
 \subsection{Computing curvature values}
 We computed all of the curvatures for pairs of trees with up to seven leaves to gain an intuitive understanding of the distribution of curvatures.
 We first used \texttt{dense\_spr\_graph} to compute the rSPR treespaces for four to seven leaves, as discussed in Section~\ref{sec:computing_treespace}.
-We then used linear programming to compute curvatures for given pairs of trees \cite{gricci}.
+We then used linear programming to compute curvatures for given pairs of trees~\cite{gricci}.
 This would have required an enormous amount of computation to directly compute curvatures for the $((2n-3)!!)^2$ pairs of trees with $n$ leaves.
 We instead exploited the fact that pairs of trees which are equivalent modulo label renumbering are symmetric in the rSPR graph and therefore guaranteed to have the same curvature.
 We thus directly computed curvature values for one representative pair from each such equivalence class, or \emph{tanglegram} (enumeration methods described in a manuscript in preparation).
@@ -260,7 +263,7 @@ To efficiently simulate the MH random walk, we developed a linear-time algorithm
 A na\"ive approach would require $\OhOf{n^3}$ time---$\OhOf{n}$ time to generate each of the $\OhOf{n^2}$ neighbors of a given tree--- and then one could be picked uniformly at random.
 To eliminate an $\OhOf{n^2}$ factor, we developed a deterministic ordering of SPR moves with a one-to-one correspondence to SPR neighbors, as described in the next paragraph.
 Given such an order, a uniform neighbor can be selected by its index in $\OhOf{n}$ time.
-We note that the recursive formula of Song \cite{Song2003-gf} for the degree of a tree does not group SPR moves that move a particular subtree, and thus would still require $\OhOf{n^2}$ time to select a specific SPR neighbor by index.
+We note that the recursive formula of Song~\cite{Song2003-gf} for the degree of a tree does not group SPR moves that move a particular subtree, and thus would still require $\OhOf{n^2}$ time to select a specific SPR neighbor by index.
 
 Instead, we consider the distribution of SPR moves in terms of the number of nodes contained within a subtree.
 Recall that a tree with $n$ leaves has $2n-1$ total nodes.
@@ -318,13 +321,13 @@ We can thus apply the following algorithm to select a neighbor uniformly at rand
 
 \begin{lemma}
 	\label{lem:select_random_neighbor}
-	Given a tree $T$, an SPR neighbor of $T$ can be chosen uniformly at random in $\OhOf{n}$-time using $\OhOF{n}$ space.
+	Given a tree $T$, an SPR neighbor of $T$ can be chosen uniformly at random in $\OhOf{n}$-time using $\OhOf{n}$ space.
 \end{lemma}
 \begin{proof}
 	We apply the above procedure.
 	We use a standard nodes and pointer representation of the trees, which can be constructed in $\OhOf{n}$-time from a newick string representation and uses linear space in $n$.
 	We can compute the degree of $T$ in linear time and space using Lemma~\ref{lem:compute_degree}.
-	To efficiently compute $\size{N(T,u)}$ for each node $u$ of $T$, we require the number of nodes $x$ in the subtree rooted $u$.
+	To efficiently compute $\size{N(T,u)}$ for each node $u$ of $T$, we require the number of nodes $x$ in the subtree rooted at $u$.
 	We precompute these by (1) labeling each node with its preorder number in a preorder traversal and (2) summing the number of descendant nodes in a postorder traversal and storing the results in array indexed by preorder number.
 	Both of these traversals require $\OhOf{n}$-time.
 	There are $2n-1$ = $\OhOf{n}$ nodes of $T$, and $\size{N(T,u)}$ can be computed in constant time using the subtree sizes.
@@ -342,12 +345,15 @@ We thus have the following corollary:
 	Given a tree $T$, the SPR neighbors of $T$ can be enumerated in $\OhOf{n^3}$-time.
 \end{corollary}
 
+We implemented this procedure in the C++ package \texttt{random\_spr\_walk}~\cite{random_spr_walk}.
+We sampled \ldots \todo{sampling and runtime information}.
+
 
 \subsection{Mean access time computation}
 
-We then computed mean access times (MAT) between pairs of trees in the MH random walks---the mean number of iterations required to move from one tree to the other. \todo{cite}
-MAT values have been productively applied to demonstrate graph effects in uSPR subgraphs of real MCMC samples using MrBayes . \todo{cite sprmix}
-We used the same sprspace software to compute MAT values for our simulated random walks.
+We then computed mean access times (MAT) between pairs of trees in the MH random walks---the mean number of iterations required to move from one tree to the other~\cite{lovasz1993random}.
+MAT values have been productively applied to demonstrate graph effects in uSPR subgraphs of real MCMC samples using MrBayes~\cite{Whidden2015-yi}.
+We used the same \texttt{sprspace}~\cite{sprspace} software to compute MAT values for our simulated random walks.\todo{runtime information}
 
 \subsection{Results}
 
@@ -356,13 +362,10 @@ After the chain has achieved stationarity, one sees a
 
 \section{Rooted SPR Neighborhoods}
 
-Let $N(T)$ be the set of SPR neighbors of a tree $T$ (this does not include $T$).
-We say that the degree of $T$ is $\degree{T}$, that is, the number of trees which can be obtained from $T$ by a single SPR operation.
-Note that this concept of degree is unrelated to the degree of vertices of $T$.
 In the absence of a bias provided by a likelihood function, curvature for the random walks we consider is entirely determined by the degree of vertices in the graph.
 Thus, in order to provide bounds on curvature, we will begin by bounding differences between degrees.
 
-\begin{lemma}[{Song \cite{Song2003-gf}}]
+\begin{lemma}[{Song~\cite{Song2003-gf}}]
     \pushQED{\qed}
 	\label{lem:degree_extremes}
 	Let $T$ be a rooted phylogenetic tree with $n$ leaves. Then
@@ -638,7 +641,7 @@ Next, we bound the minimum curvature of two adjacent trees.
 
 We further observe that the limit of our curvature lower bound is $-\frac{2}{7}$.
 Complete enumeration with $n \le 7$ show that no pair of trees have curvature less than $-\frac{2}{5}$ and our bound meets or exceeds this value for $n > 7$.
-Moreover, the SPR distance is a metric, so this bounds the curvature for arbitrary pairs of trees (Proposition 19 of \cite{Ollivier2009-bw}).
+Moreover, the SPR distance is a metric, so this bounds the curvature for arbitrary pairs of trees (Proposition 19 of~\cite{Ollivier2009-bw}).
 This directly leads to the following Corollary:
 
 \begin{corollary}
@@ -740,8 +743,8 @@ MCMC does both branch length and topology changes, thus this isn't the real thin
 Nevertheless, graph effects still matter.
 \cite{Stefankovic2011-hu} take a chain where the likelihoods are the likelihoods maximized across branch length.
 
-Ranked trees \cite{Song2006-xe}
-Partitions \cite{Gusfield2002-il}
+Ranked trees~\cite{Song2006-xe}
+Partitions~\cite{Gusfield2002-il}
 
 
 \section{Acknowledgements}
