@@ -5,6 +5,9 @@ gap.eval("""
 Read("{}/double-coset-counter.g");
 """.format(wd))
 
+def standardize_double_coset(dc):
+    return gap.function_call('StandardizeDoubleCoset', dc)
+
 def new_dc_counter(g, u, v):
     return gap.function_call('NewDCCounter', [gap(g), gap(u), gap(v)])
 

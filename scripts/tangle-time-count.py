@@ -3,7 +3,7 @@
 import argparse
 import gzip
 import os
-from sage.all import load, gap
+from sage.all import load
 wd = os.path.dirname(os.path.realpath(__file__))
 load(wd+'/load-deps.py')
 load(wd+'/tangle-counter.py')
@@ -44,7 +44,9 @@ with gzip.GzipFile(args.o, mode='wb', mtime=0.) as fout:
             for (t1_idx, t2_idx) in tc.count_d.keys():
                 for (coset, counts) in tc.get_counts(t1_idx, t2_idx):
                     newicks = to_newick_pair(
-                        tc.trees[t1_idx], tc.trees[t2_idx], coset)
+                        tc.trees[t1_idx],
+                        tc.trees[t2_idx],
+                        standardize_double_coset(coset))
                     for time, count in enumerate(counts):
                         fout.write(
                             '\t'.join([newicks, str(time), str(count)])+'\n')

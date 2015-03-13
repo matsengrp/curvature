@@ -12,12 +12,24 @@ end;;
 # For some reason DisplayString was just returning '<object>' so I wrote this.
 MyPrintToString := function(obj)
     local str, out;
-    str := "";;
-    out := OutputTextString( str, true );;
+    str := "";
+    out := OutputTextString( str, true );
     PrintTo(out, obj);
     CloseStream(out);
     return str;
 end;;
+
+
+StandardizeDoubleCoset := function(dc)
+    local canonical_elt;
+    canonical_elt := Minimum(Orbit(RightActingGroup(dc),
+        CanonicalRightCosetElement(LeftActingGroup(dc), Representative(dc))));
+    return DoubleCoset(
+        LeftActingGroup(dc),
+        canonical_elt,
+        RightActingGroup(dc));
+end;;
+
 
 NewDCCounter := function(g, u, v)
     return rec(
