@@ -199,8 +199,8 @@ Note that this concept of degree is unrelated to the degree of vertices of $T$.
 We computed the rSPR treespaces for four to seven leaves.
 This required a fast new algorithm for SPR graph construction, reducing the time required to do so from $\OhOf{m^2 n}$ to $\OhOf{mn^3}$, where $m$ is the number of trees in the graph ($(2n-3)!!$ in this case).
 In previous work~\cite{Whidden2015-yi}, we constructed (unrooted) SPR graphs from subsets of $m$ high probability trees sampled from phylogenetic posteriors to compare mixing and identify graph effects.
-Although the SPR distance (rooted and unrooted) is NP-hard to compute~\cite{bordewich05,hickey2008sdc}, it is fixed-parameter tractable with respect to the distance.
-In particular, one can determine in $\OhOf{n}$-time whether two rooted phylogenetic trees are adjacent in the SPR graph ($\OhOf{n^2}$-time for unrooted trees).
+Although the SPR distance (rooted and unrooted) is NP-hard to compute~\cite{bordewich05,hickey2008sdc}, it is fixed-parameter tractable with respect to the distance in the rooted case~\cite{bordewich05}.
+In particular, one can determine in $\OhOf{n}$-time whether two rooted phylogenetic trees are adjacent in the SPR graph ($\OhOf{n^2}$-time for unrooted trees) using the algorithms of Whidden et al.~\cite{whidden2009unifying,whidden2010fast,Whidden2015-yi}.
 We applied this method comparing each of the $m$ trees pairwise to identify adjacencies, requiring a total of $\OhOf{m^2n}$-time ($\OhOf{m^2n^2}$-time in the unrooted case).
 However, applying this method to complete SPR graphs, with the $\OhOf{m^2}$ factor where $m = (2n-3)!!$, would require an enormous amount of computation. 
 
@@ -237,7 +237,7 @@ To quickly compute dense SPR graphs (those containing a significant portion of t
 This procedure has been implemented in the C++ program \texttt{dense\_spr\_graph} of the software package \texttt{spr\_neighbors}~\cite{spr_neighbors}, which outputs an edge list format graph suitable for input to other software.
 Our fast graph construction procedure reduced the time required to compute the 10,395-vertex 7-taxon rSPR tree space from 2,104.68 seconds to 12.71 seconds on an Intel Core 2 Duo E7500 desktop running Ubuntu 14.04.
 Moreover, although we do not study the 135,135-vertex 8-taxon tree space in this paper, our algorithm required only 303.45 seconds to construct it.
-Constructing the 8-taxon tree space using the previous method required 377,395 seconds (more than 4 days), and that method is infeasible for construcing larger tree spaces.
+Constructing the 8-taxon tree space using the previous method required 377,395 seconds (more than 4 days), and that method is infeasible for constructing larger tree spaces.
 Thus, we believe this fast graph construction procedure will itself be useful for further studies of treespace subsets similar to~\cite{Whidden2015-yi}.
 
 \subsection{Computing curvature values}
