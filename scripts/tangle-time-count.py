@@ -16,7 +16,8 @@ parser.add_argument(
     '-n',
     help='Number of leaves',
     required=True)
-parser.add_argument('-o', help='Out path', required=True)
+parser.add_argument('--oaccess', help='Access out path', required=True)
+parser.add_argument('--otangle', help='Tangle out path', required=True)
 parser.add_argument('--asymmetric', action='store_true',
                     help='Generate tangles without exchange symmetry.')
 
@@ -24,7 +25,8 @@ args = parser.parse_args()
 
 tc = TangleCounter(int(args.n), not args.asymmetric)
 
-with gzip.GzipFile(args.o, mode='wb', mtime=0.) as fout:
+with gzip.GzipFile(args.oaccess, mode='wb', mtime=0.) as walk_out, \
+    open(args.otangle, mode='w') as tangle_out:
     for trace in args.tracefiles:
         print trace
         # Forget if we saw it in another trace file.
@@ -48,5 +50,13 @@ with gzip.GzipFile(args.o, mode='wb', mtime=0.) as fout:
                     newicks = to_newick_pair(
                         tc.trees[t1_idx], tc.trees[t2_idx], coset)
                     for time, count in enumerate(counts):
-                        fout.write(
+                        walk_out.write(
                             '\t'.join([newicks, str(time), str(count)])+'\n')
+                    # TODO: this may or may not correspond to the indices in
+                    # the tangle.idxs in the tangle repo. But that's fine here.
+                    tangle_out.write("\t".join([str(o) for o in [
+                        t1_idx,
+                        t2_idx,
+                        newicks,
+                        "".join(str(coset).split())  # Cosets with no whitespace.
+                        ]])+"\n")

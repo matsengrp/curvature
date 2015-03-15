@@ -100,6 +100,7 @@ DCCounterTable := function(dcc)
     local dc, dcn, tab, pos;
     tab := [];
     for dcn in [1..dcc.max_idx] do
+        # Get the first occurrence of dcc.dc_number.
         pos := Position(dcc.dc_number, dcn);
         ZeroFill(dcc.counts[dcn]);
         dc := DoubleCoset(dcc.u, dcc.t[pos], dcc.v);

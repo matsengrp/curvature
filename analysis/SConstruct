@@ -7,10 +7,10 @@ env = Environment(ENV=os.environ)
 no_slurm = bool(subprocess.call('which sbatch'.split()))
 
 min_leaves = 4
-max_leaves = 5
+max_leaves = 4
 
 walk_seed = 0
-walk_n_iter = 1000
+walk_n_iter = 100
 # walk_n_iter = 10000000;
 walk_sample_freq = 1
 
@@ -28,16 +28,26 @@ walks_dir = 'walks/'
 
 graphs = {t: {} for t in graph_types}
 graph_degrees = {t: {} for t in graph_types}
+tangle_idxs = {t: {} for t in graph_types}
 tangle_degrees = {t: {} for t in graph_types}
 tangle_newicks = {t: {} for t in graph_types}
 walks = {t: {} for t in graph_types}
 access = {t: {} for t in graph_types}
 
 for graph_type in graph_types:
+    if graph_type == 'rspr':
+        walk_flags = ''
+    elif graph_type == 'nni':
+        walk_flags = ' -nni '
+    else:
+        raise AssertionError
+
     for n_leaves in range(min_leaves, max_leaves+1):
         tree_path = tangles_dir+'tree'+str(n_leaves)+'.tre',
-        tangle_idx_path = tangles_dir+'tangle'+str(n_leaves)+'.idx'
+        curr_dir = walks_dir+graph_type
 
+        # First make the graphs and degrees.
+        # TODO: silly to depend on tangle's trees.
         adjacencies = Command(
             graphs_dir+graph_type+'/graph'+str(n_leaves)+'.csv.gz',
             tree_path,
@@ -55,39 +65,36 @@ for graph_type in graph_types:
             graph_path,
             scripts_dir+'graph-degrees.py $SOURCE $TARGET')
 
-        tangle_degrees[graph_type][n_leaves] = Command(
-            graphs_dir+graph_type+'/tangle'+str(n_leaves)+'.degrees.tsv',
-            [tangle_idx_path,
-             graph_degrees[graph_type][n_leaves]],
-            scripts_dir+'tangle-infos.py ${SOURCES[0]} ${SOURCES[1]} $TARGET')
-        tangle_newicks[graph_type][n_leaves] = Command(
-            graphs_dir+graph_type+'/tangle'+str(n_leaves)+'.tre',
-            [tangle_idx_path,
-             tree_path],
-            scripts_dir+'tangle-infos.py ${SOURCES[0]} ${SOURCES[1]} $TARGET')
-
-        if graph_type == 'rspr':
-            walk_flags = ''
-        elif graph_type == 'nni':
-            walk_flags = ' -nni '
-        else:
-            raise AssertionError
-
+        # Now do random walks and get access times.
         walks[graph_type][n_leaves] = Command(
-            walks_dir+graph_type+'/walk'+str(n_leaves)+'.tsv.gz',
+            curr_dir+'/walk'+str(n_leaves)+'.tsv.gz',
             '../random_spr_walk/random_spr_walk',
             '$SOURCE {} -seed {} -ntax {} -niterations {} -sfreq {} \
                 | sed "s/: /\\t/" | gzip -cn > $TARGET'
             .format(walk_flags, walk_seed, n_leaves,
                     walk_n_iter, walk_sample_freq))
-        access[graph_type][n_leaves] = Command(
-            walks_dir+graph_type+'/access'+str(n_leaves)+'.tsv.gz',
+
+        tangle_time_count_out = Command(
+            [curr_dir+'/access'+str(n_leaves)+'.tsv.gz',
+             curr_dir+'/tangle'+str(n_leaves)+'.idx'],
             [scripts_dir+'tangle-time-count.py',
              walks[graph_type][n_leaves]],
-            '${SOURCES[0]} -n '+str(n_leaves)+' -o $TARGET ${SOURCES[1]}')
+            '${SOURCES[0]} -n '+str(n_leaves)+
+                ' --oaccess ${TARGETS[0]} --otangle ${TARGETS[1]} ${SOURCES[1]}')
+        access[graph_type][n_leaves] = tangle_time_count_out[0]
+        tangle_idxs[graph_type][n_leaves] = tangle_time_count_out[1]
 
+        tangle_degrees[graph_type][n_leaves] = Command(
+            curr_dir+'/degrees.tsv',
+            [tangle_idxs[graph_type][n_leaves],
+             graph_degrees[graph_type][n_leaves]],
+            scripts_dir+'tangle-infos.py ${SOURCES[0]} ${SOURCES[1]} $TARGET')
 
-# Then make curvatures and plots for those graphs.
+        tangle_newicks[graph_type][n_leaves] = Command(
+            curr_dir+'/tangle.tre',
+            [tangle_idxs[graph_type][n_leaves],
+             tree_path],
+            scripts_dir+'tangle-infos.py ${SOURCES[0]} ${SOURCES[1]} $TARGET')
 
 for graph_type in graph_types:
     for walk in random_walks:
