@@ -10,6 +10,7 @@ ZeroFill := function(l)
 end;;
 
 # For some reason DisplayString was just returning '<object>' so I wrote this.
+# See https://github.com/gap-system/gap/issues/29
 MyPrintToString := function(obj)
     local str, out;
     str := "";;
@@ -19,24 +20,42 @@ MyPrintToString := function(obj)
     return str;
 end;;
 
-NewDCCounter := function(g, u, v)
+# inverse_same determines if we consider the inverse of the double coset to be
+# the same as the original.
+NewDCCounter := function(g, u, v, inverse_same)
+    if inverse_same and u <> v then
+      Error("\n\
+To consider the inverse to be the same, \
+need identical subgroups forming the double coset.");
+    fi;
     return rec(
         g := g,
         u := u,
         v := v,
+        inverse_same := inverse_same,
         max_idx := 0,
         dc_number := [],
         t := RightTransversal(g, u),
         counts := []);
 end;;
 
-NewDCCounterExemplar := function(g, coset)
-    return NewDCCounter(g, LeftActingGroup(coset), RightActingGroup(coset));
+NewDCCounterExemplar := function(g, coset, inverse_same)
+    return NewDCCounter(g, LeftActingGroup(coset), RightActingGroup(coset), inverse_same);
 end;;
 
-AddDCCounter := function(dcc, coset, time)
-    local dcn, i, o, p, r;
-    r := Representative(coset);
+# Get the representatives corresponding to all right cosets within the same
+# double coset, via orbit of right coset (dcc.u, elt) under dcc.v by right
+# multiplication.
+DCCAllRightCosetRepresentatives := function(dcc, elt)
+    return Orbit(dcc.v, CanonicalRightCosetElement(dcc.u, elt),
+        function(pnt, s)
+            return CanonicalRightCosetElement(dcc.u, pnt*s);
+        end);
+end;;
+
+# r is a representative of the double coset to add.
+AddDCCounterRepresentative := function(dcc, r, time)
+    local dcn, i, o, p;
     p := PositionCanonical(dcc.t, r); # Number of the right coset for the element.
     if IsBound(dcc.dc_number[p]) then
         dcn := dcc.dc_number[p];
@@ -50,16 +69,21 @@ AddDCCounter := function(dcc, coset, time)
         dcc.counts[dcc.max_idx] := [];
         dcc.counts[dcc.max_idx][time] := 1;
         dcc.dc_number[p] := dcc.max_idx;
-        # Mark all right cosets within the same double coset, via
-        # orbit of right coset (dcc.u, t[p]) under dcc.v by right multiplication.
-        o := Orbit(dcc.v, CanonicalRightCosetElement(dcc.u, dcc.t[p]),
-            function(pnt, s)
-                return CanonicalRightCosetElement(dcc.u, pnt*s);
-            end);
+        if dcc.inverse_same then
+            o := Union(DCCAllRightCosetRepresentatives(dcc, dcc.t[p]),
+                       DCCAllRightCosetRepresentatives(dcc, Inverse(dcc.t[p]))
+                       );
+        else
+            o := DCCAllRightCosetRepresentatives(dcc, dcc.t[p]);
+        fi;
         for i in o do
             dcc.dc_number[PositionCanonical(dcc.t, i)] := dcc.max_idx;
         od;
     fi;
+end;;
+
+AddDCCounter:= function(dcc, coset, time)
+    AddDCCounterRepresentative(dcc, Representative(coset), time);
 end;;
 
 ShowDCCounter := function(dcc)
@@ -85,18 +109,32 @@ DCCounterTable := function(dcc)
 end;;
 
 
+###### Read("double-coset-counter.g");
 
 # mdcc := NewDCCounter(
 #     SymmetricGroup(4),
-#     Subgroup(SymmetricGroup(4), [(1,2,3),(1,2)]),
-#     Subgroup(SymmetricGroup(4), [(3,4)]));
-# AddDCCounter(mdcc, (1,4), 4); mdcc; ShowDCCounter(mdcc);
-# AddDCCounter(mdcc, (1,4,2), 5); mdcc; ShowDCCounter(mdcc);
-# AddDCCounter(mdcc, (1,2), 3); mdcc; ShowDCCounter(mdcc);
-# AddDCCounter(mdcc, (1,2,3), 4); mdcc; ShowDCCounter(mdcc);
-# AddDCCounter(mdcc, (2,4), 4); mdcc; ShowDCCounter(mdcc);
-# AddDCCounter(mdcc, (1,4), 4); mdcc; ShowDCCounter(mdcc);
-# AddDCCounter(mdcc, (1,4), 4); mdcc; ShowDCCounter(mdcc);
-# AddDCCounter(mdcc, (2,3,4), 4); mdcc; ShowDCCounter(mdcc);
-
-
+#     Subgroup(SymmetricGroup(4), [(3,4)]),
+#     Subgroup(SymmetricGroup(4), [(3,4)]), false);
+# AddDCCounterRepresentative(mdcc, (1,4), 4); mdcc; ShowDCCounter(mdcc);
+# AddDCCounterRepresentative(mdcc, (1,2,3), 5); mdcc; ShowDCCounter(mdcc);
+# AddDCCounterRepresentative(mdcc, (1,3,2), 5); mdcc; ShowDCCounter(mdcc);
+#
+# mdcc := NewDCCounter(
+#     SymmetricGroup(4),
+#     Subgroup(SymmetricGroup(4), [(3,4)]),
+#     Subgroup(SymmetricGroup(4), [(3,4)]), true);
+# AddDCCounterRepresentative(mdcc, (1,4), 4); mdcc; ShowDCCounter(mdcc);
+# AddDCCounterRepresentative(mdcc, (1,2,3), 5); mdcc; ShowDCCounter(mdcc);
+# AddDCCounterRepresentative(mdcc, (1,3,2), 5); mdcc; ShowDCCounter(mdcc);
+#
+# mdcc := NewDCCounter(
+#     SymmetricGroup(4),
+#     Subgroup(SymmetricGroup(4), [(1,3)]),
+#     Subgroup(SymmetricGroup(4), [(3,4)]), false);
+# AddDCCounterRepresentative(mdcc, (1,4), 4); mdcc; ShowDCCounter(mdcc);
+# AddDCCounterRepresentative(mdcc, (1,2,3), 5); mdcc; ShowDCCounter(mdcc);
+# AddDCCounterRepresentative(mdcc, (1,3,2), 5); mdcc; ShowDCCounter(mdcc);
+#
+# AddDCCounterRepresentative(mdcc, (2,4), 4); mdcc; ShowDCCounter(mdcc);
+# AddDCCounterRepresentative(mdcc, (1,4), 4); mdcc; ShowDCCounter(mdcc);
+# AddDCCounterRepresentative(mdcc, (2,3,4), 4); mdcc; ShowDCCounter(mdcc);

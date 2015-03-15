@@ -5,11 +5,17 @@ gap.eval("""
 Read("{}/double-coset-counter.g");
 """.format(wd))
 
-def new_dc_counter(g, u, v):
-    return gap.function_call('NewDCCounter', [gap(g), gap(u), gap(v)])
+# Note: I don't know why, but `sg.libgap(True)` gives a gap `true`,
+# while just `gap(True)` gives 1.
+def new_dc_counter(g, u, v, inverse_same=False):
+    return gap.function_call(
+        'NewDCCounter',
+        [gap(g), gap(u), gap(v), sg.libgap(inverse_same)])
 
-def new_dc_counter_exemplar(g, coset):
-    return gap.function_call('NewDCCounterExemplar', [gap(g), coset])
+def new_dc_counter_exemplar(g, coset, inverse_same=False):
+    return gap.function_call(
+        'NewDCCounterExemplar',
+        [gap(g), coset, sg.libgap(inverse_same)])
 
 def add_dc_counter(dcc, coset, time):
     return gap.function_call('AddDCCounter', [dcc, coset, time])

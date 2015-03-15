@@ -51,9 +51,10 @@ def newick_factorization_dict(n):
 
 
 class TangleCounter:
-    def __init__(self, n):
+    def __init__(self, n, symmetric=True):
         self.nfd = newick_factorization_dict(n)
         (self.trees, _, self.shape_autos, _, self.ttsn) = trees_shapes_autos_dn_ttsn(n)
+        self.symmetric = symmetric
         self.count_d = defaultdict(list)
         self.fS = sg.SymmetricGroup(n)
 
@@ -82,7 +83,9 @@ class TangleCounter:
     def add_newick_pair_observation(self, n1, n2, time):
         (idxs, coset) = self.newick_pair_to_ntangle(n1, n2)
         if idxs not in self.count_d:
-            self.count_d[idxs] = new_dc_counter_exemplar(self.fS, coset)
+            # Only when symmetric do we consider inverse to be the same.
+            self.count_d[idxs] = \
+                new_dc_counter_exemplar(self.fS, coset, not self.symmetric)
         add_dc_counter(self.count_d[idxs], coset, time)
 
     def get_counts(self, t1_idx, t2_idx):

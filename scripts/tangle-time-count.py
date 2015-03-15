@@ -17,10 +17,12 @@ parser.add_argument(
     help='Number of leaves',
     required=True)
 parser.add_argument('-o', help='Out path', required=True)
+parser.add_argument('--asymmetric', action='store_true',
+                    help='Generate tangles without exchange symmetry.')
 
 args = parser.parse_args()
 
-tc = TangleCounter(int(args.n))
+tc = TangleCounter(int(args.n), not args.asymmetric)
 
 with gzip.GzipFile(args.o, mode='wb', mtime=0.) as fout:
     for trace in args.tracefiles:
