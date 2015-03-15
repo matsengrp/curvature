@@ -96,37 +96,37 @@ for graph_type in graph_types:
              tree_path],
             scripts_dir+'tangle-infos.py ${SOURCES[0]} ${SOURCES[1]} $TARGET')
 
-for graph_type in graph_types:
-    for walk in random_walks:
-        curr_dir = os.path.join(curvatures_dir, graph_type, walk, '')
-        cmd = scripts_dir+'ricci-tangle.py --walk '+walk + \
-            ' --graph ${SOURCES[0]} --out'
-        for n_leaves in range(min_leaves, max_leaves+1):
-            if no_slurm:
-                full_cmd = cmd+' $TARGET ${SOURCES[1]}'
-            else:
-                full_cmd = \
-                    'multi-slurm.sh "'+cmd+' DST SRC" ${SOURCES[1]} $TARGET'
-            curvatures = env.Command(
-                curr_dir+'ricci'+str(n_leaves)+'.tsv',
-                [graphs[graph_type][n_leaves],
-                    tangles_dir+'tangle'+str(n_leaves)+'.idx'],
-                full_cmd)
-            results = env.Command(
-                curr_dir+'results'+str(n_leaves)+'.p.gz',
-                [curvatures,
-                 tangle_newicks[graph_type][n_leaves],
-                 tangle_degrees[graph_type][n_leaves]],
-                scripts_dir+'merge-results.py $SOURCES $TARGET')
-            env.Command(
-                curr_dir+'hexbin'+str(n_leaves)+'.svg',
-                results,
-                scripts_dir+'plot.py --which hexbin $SOURCE $TARGET')
-            env.Command(
-                curr_dir+'scatter'+str(n_leaves)+'.png',
-                results,
-                scripts_dir+'plot.py --which scatter $SOURCE $TARGET')
-            env.Command(
-                curr_dir+'scatter'+str(n_leaves)+'.html.gz',
-                results,
-                scripts_dir+'plot.py --d3 --which scatter $SOURCE $TARGET')
+        base_dir = curr_dir
+        for walk in random_walks:
+            curr_dir = os.path.join(base_dir, walk, '')
+            cmd = scripts_dir+'ricci-tangle.py --walk '+walk + \
+                ' --graph ${SOURCES[0]} --out'
+            for n_leaves in range(min_leaves, max_leaves+1):
+                if no_slurm:
+                    full_cmd = cmd+' $TARGET ${SOURCES[1]}'
+                else:
+                    full_cmd = \
+                        'multi-slurm.sh "'+cmd+' DST SRC" ${SOURCES[1]} $TARGET'
+                curvatures = env.Command(
+                    curr_dir+'ricci'+str(n_leaves)+'.tsv',
+                    [graphs[graph_type][n_leaves],
+                        tangles_dir+'tangle'+str(n_leaves)+'.idx'],
+                    full_cmd)
+                results = env.Command(
+                    curr_dir+'results'+str(n_leaves)+'.p.gz',
+                    [curvatures,
+                     tangle_newicks[graph_type][n_leaves],
+                     tangle_degrees[graph_type][n_leaves]],
+                    scripts_dir+'merge-results.py $SOURCES $TARGET')
+                env.Command(
+                    curr_dir+'hexbin'+str(n_leaves)+'.svg',
+                    results,
+                    scripts_dir+'plot.py --which hexbin $SOURCE $TARGET')
+                env.Command(
+                    curr_dir+'scatter'+str(n_leaves)+'.png',
+                    results,
+                    scripts_dir+'plot.py --which scatter $SOURCE $TARGET')
+                env.Command(
+                    curr_dir+'scatter'+str(n_leaves)+'.html.gz',
+                    results,
+                    scripts_dir+'plot.py --d3 --which scatter $SOURCE $TARGET')
