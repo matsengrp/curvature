@@ -45,18 +45,19 @@ with gzip.GzipFile(args.oaccess, mode='wb', mtime=0.) as walk_out, \
                         tc.add_newick_pair_observation(
                             prev, curr, idx - last_seen[prev])
                 last_seen[curr] = idx
-            for (t1_idx, t2_idx) in tc.count_d.keys():
-                for (coset, counts) in tc.get_counts(t1_idx, t2_idx):
-                    newicks = to_newick_pair(
-                        tc.trees[t1_idx], tc.trees[t2_idx], coset)
+            for (tangle_idx, (s1_idx, s2_idx)) in enumerate(tc.count_d.keys()):
+                for (coset, counts) in tc.get_counts(s1_idx, s2_idx):
+                    (t1n, t2n) = to_newick_pair(
+                        tc.trees[s1_idx], tc.trees[s2_idx], coset).split()
+                    t1_idx = tc.dn_trees[t1n]
+                    t2_idx = tc.dn_trees[t2n]
                     for time, count in enumerate(counts):
                         walk_out.write(
-                            '\t'.join([newicks, str(time), str(count)])+'\n')
-                    # TODO: this may or may not correspond to the indices in
-                    # the tangle.idxs in the tangle repo. But that's fine here.
+                            '\t'.join(map(str, [tangle_idx, time, count]))+'\n')
+                    # Note that this does not correspond to the tangle.idxs in
+                    # the tangle repo. But that's fine here.
                     tangle_out.write("\t".join([str(o) for o in [
-                        t1_idx,
-                        t2_idx,
-                        newicks,
+                        t1_idx, t2_idx,
+                        t1n, t2n,
                         "".join(str(coset).split())  # Cosets with no whitespace.
                         ]])+"\n")

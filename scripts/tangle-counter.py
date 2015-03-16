@@ -53,12 +53,15 @@ def newick_factorization_dict(n):
 class TangleCounter:
     def __init__(self, n, symmetric=True):
         self.nfd = newick_factorization_dict(n)
-        (self.trees, _, self.shape_autos, _, self.ttsn) = trees_shapes_autos_dn_ttsn(n)
+        (self.trees, _, self.shape_autos, self.dn_trees, self.ttsn) \
+            = trees_shapes_autos_dn_ttsn(n)
         self.symmetric = symmetric
         self.count_d = defaultdict(list)
         self.fS = sg.SymmetricGroup(n)
 
-    # Define an "ntangle" to be a triple of (idx_tree1, idx_tree2, coset)
+    # Define an "ntangle" to be a triple of (idx_shape1, idx_shape2, coset)
+    # where the idx_shape gives the tree index of the representative of that
+    # shape.
     # WRT the `sigma_1 * inverse(sigma_2)` term below,
     # recall that the element in the middle of the double coset gets applied to
     # the first tree to get the right tangle.
@@ -67,18 +70,18 @@ class TangleCounter:
     # Thus sigma_1 * inverse(sigma_2) gives us the map to apply to the first
     # tree to get correct tangle when also using identity map for second tree.
     def newick_pair_to_ntangle(self, n1, n2):
-        (idx_tree1, sigma_1) = self.nfd[n1]
-        (idx_tree2, sigma_2) = self.nfd[n2]
-        if idx_tree1 > idx_tree2:
+        (idx_shape1, sigma_1) = self.nfd[n1]
+        (idx_shape2, sigma_2) = self.nfd[n2]
+        if idx_shape1 > idx_shape2:
             # Tangles start with lowest shape index, so flip.
-            tmp = (idx_tree1, sigma_1)
-            (idx_tree1, sigma_1) = (idx_tree2, sigma_2)
-            (idx_tree2, sigma_2) = tmp
+            tmp = (idx_shape1, sigma_1)
+            (idx_shape1, sigma_1) = (idx_shape2, sigma_2)
+            (idx_shape2, sigma_2) = tmp
         coset = double_coset(
-            self.shape_autos[self.ttsn[idx_tree1]],
+            self.shape_autos[self.ttsn[idx_shape1]],
             sigma_1 * inverse(sigma_2),
-            self.shape_autos[self.ttsn[idx_tree2]])
-        return ((idx_tree1, idx_tree2), coset)
+            self.shape_autos[self.ttsn[idx_shape2]])
+        return ((idx_shape1, idx_shape2), coset)
 
     def add_newick_pair_observation(self, n1, n2, time):
         (idxs, coset) = self.newick_pair_to_ntangle(n1, n2)

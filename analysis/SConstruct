@@ -110,7 +110,7 @@ for graph_type in graph_types:
                 curvatures = env.Command(
                     curr_dir+'ricci'+str(n_leaves)+'.tsv',
                     [graphs[graph_type][n_leaves],
-                        tangles_dir+'tangle'+str(n_leaves)+'.idx'],
+                        tangle_idxs[graph_type][n_leaves]],
                     full_cmd)
                 results = env.Command(
                     curr_dir+'results'+str(n_leaves)+'.p.gz',
@@ -120,13 +120,13 @@ for graph_type in graph_types:
                     scripts_dir+'merge-results.py $SOURCES $TARGET')
                 env.Command(
                     curr_dir+'hexbin'+str(n_leaves)+'.svg',
-                    results,
-                    scripts_dir+'plot.py --which hexbin $SOURCE $TARGET')
+                    [scripts_dir+'plot.py', results],
+                    '${SOURCES[0]} --which hexbin ${SOURCES[1]} $TARGET')
                 env.Command(
                     curr_dir+'scatter'+str(n_leaves)+'.png',
-                    results,
-                    scripts_dir+'plot.py --which scatter $SOURCE $TARGET')
+                    [scripts_dir+'plot.py', results],
+                    '${SOURCES[0]} --which scatter ${SOURCES[1]} $TARGET')
                 env.Command(
                     curr_dir+'scatter'+str(n_leaves)+'.html.gz',
-                    results,
-                    scripts_dir+'plot.py --d3 --which scatter $SOURCE $TARGET')
+                    [scripts_dir+'plot.py', results],
+                    '${SOURCES[0]} --d3 --which scatter ${SOURCES[1]} $TARGET')
