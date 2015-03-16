@@ -7,6 +7,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 import pickle
+import seaborn as sns
+
+sns.set_style('ticks')
+mpl.rcParams.update({
+    'font.size': 32, 'font.family': 'Lato',
+    'font.weight': 600, 'axes.labelweight': 600})
 
 parser = argparse.ArgumentParser(
     description='plot curvature results',
@@ -24,8 +30,6 @@ parser.add_argument('--d3', action='store_true',
 
 args = parser.parse_args()
 assert(os.path.exists(args.results_path))
-
-mpl.rcParams.update({'font.size': 48, 'font.family': 'Lato'})
 
 df = pickle.load(gzip.open(args.results_path, 'rb'))
 df['dist_jitter'] = df['dist'] + np.random.normal(0, 0.1, size=len(df))
@@ -56,7 +60,8 @@ elif args.which == 'scatter':
             cmap=plt.get_cmap('Blues'))
 
 p.grid(b=None)
-p.set_frame_on(False)
+sns.despine()
+# sns.despine(offset=10, trim=True)
 
 if args.d3:
     from mpld3 import fig_to_html, plugins
