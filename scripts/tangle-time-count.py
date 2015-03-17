@@ -45,7 +45,8 @@ with gzip.GzipFile(args.oaccess, mode='wb', mtime=0.) as walk_out, \
                         tc.add_newick_pair_observation(
                             prev, curr, idx - last_seen[prev])
                 last_seen[curr] = idx
-            for (tangle_idx, (s1_idx, s2_idx)) in enumerate(tc.count_d.keys()):
+            tangle_idx = 0
+            for (s1_idx, s2_idx) in tc.count_d.keys():
                 for (coset, counts) in tc.get_counts(s1_idx, s2_idx):
                     (t1n, t2n) = to_newick_pair(
                         tc.trees[s1_idx], tc.trees[s2_idx], coset).split()
@@ -61,3 +62,4 @@ with gzip.GzipFile(args.oaccess, mode='wb', mtime=0.) as walk_out, \
                         t1n, t2n,
                         "".join(str(coset).split())  # Cosets with no whitespace.
                         ]])+"\n")
+                    tangle_idx += 1
