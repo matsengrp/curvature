@@ -6,8 +6,8 @@ env = Environment(ENV=os.environ)
 
 no_slurm = bool(subprocess.call('which sbatch'.split()))
 
-min_leaves = 4
-max_leaves = 4
+min_leaves = 5
+max_leaves = 5
 
 walk_seed = 0
 walk_n_iter = 100
@@ -85,13 +85,13 @@ for graph_type in graph_types:
         tangle_idxs[graph_type][n_leaves] = tangle_time_count_out[1]
 
         tangle_degrees[graph_type][n_leaves] = Command(
-            curr_dir+'/degrees.tsv',
+            curr_dir+'/degrees'+str(n_leaves)+'.tsv',
             [tangle_idxs[graph_type][n_leaves],
              graph_degrees[graph_type][n_leaves]],
             scripts_dir+'tangle-infos.py ${SOURCES[0]} ${SOURCES[1]} $TARGET')
 
         tangle_newicks[graph_type][n_leaves] = Command(
-            curr_dir+'/tangle.tre',
+            curr_dir+'/tangle'+str(n_leaves)+'.tre',
             [tangle_idxs[graph_type][n_leaves],
              tree_path],
             scripts_dir+'tangle-infos.py ${SOURCES[0]} ${SOURCES[1]} $TARGET')
