@@ -28,7 +28,9 @@ parser.add_argument('--prefix', required=True,
 
 args = parser.parse_args()
 for p in [args.access, args.tangles, args.degrees, args.curvatures]:
-    assert(os.path.exists(p))
+    if not os.path.exists(p):
+        error = "Can't find "+p+'.'
+        raise ValueError(error)
 
 access = pd.read_table(gzip.open(args.access),
                         names=['tangle', 'time', 'count'], header=False)

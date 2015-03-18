@@ -130,13 +130,13 @@ for graph_type in graph_types:
                 [scripts_dir+'plot.py', results],
                 '${SOURCES[0]} --d3 --which scatter ${SOURCES[1]} $TARGET')
 
+            prefix = curr_dir+'access'+str(n_leaves)
             env.Command(
-                curr_dir+'access-expectations'+str(n_leaves)+'.svg',
+                [prefix+'-expected.svg',
+                 prefix+'-distribution.svg'],
                 [scripts_dir+'plot-access.py',
                  access[graph_type][n_leaves],
                  tangle_idxs[graph_type][n_leaves],
                  tangle_degrees[graph_type][n_leaves],
                  curvatures],
-                '${SOURCES[0]} --prefix $TARGET ${SOURCES[1:]}')
-
-
+                '${{SOURCES[0]}} --prefix {} ${{SOURCES[1:]}}'.format(prefix))
