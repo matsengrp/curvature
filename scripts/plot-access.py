@@ -60,6 +60,9 @@ def subplots():
 e_fig, e_axs = subplots()
 d_fig, d_axs = subplots()
 
+cmaps = map(mpl.cm.get_cmap, ['spring', 'summer', 'autumn', 'winter', 'cool',
+                              'copper', 'gray', 'hot', 'pink'])
+
 for (t1_deg, t2_deg, dist), group in catted.groupby(['t1_deg','t2_deg', 'dist']):
     i = np.where(t1_degs == t1_deg)[0][0]
     j = np.where(t2_degs == t2_deg)[0][0]
@@ -68,12 +71,15 @@ for (t1_deg, t2_deg, dist), group in catted.groupby(['t1_deg','t2_deg', 'dist'])
     p.grid(b=None)
 
     norm = mpl.colors.Normalize(group['kappa'].min(), group['kappa'].max())
-    m = mpl.cm.ScalarMappable(norm=norm, cmap=mpl.cm.winter)
+    m = mpl.cm.ScalarMappable(norm=norm, cmap=cmaps[dist])
 
     for (idx, _) in group.iterrows():
         kappa = group['kappa'][idx]
+        if np.isnan(kappa):
+            continue
         sub_d = access[access['tangle'] == idx]
-        d_axs[i][j].plot(sub_d['time'], sub_d['count'], color=m.cmap(kappa), label=kappa)
+        d_axs[i][j].plot(sub_d['time'], sub_d['count'],
+                         color=m.cmap(kappa), label=kappa)
         d_axs[i][j].legend()
 
 sns.despine()
