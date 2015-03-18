@@ -11,7 +11,6 @@ max_leaves = 5
 
 walk_seed = 0
 walk_n_iter = 100
-# walk_n_iter = 10000000;
 walk_sample_freq = 1
 
 graph_types = ['rspr', 'nni']
@@ -26,6 +25,7 @@ walks_dir = 'walks/'
 
 # First make graphs and associated files.
 
+# TODO: do we really need these dictionaries, or can we just re-assign in place?
 graphs = {t: {} for t in graph_types}
 graph_degrees = {t: {} for t in graph_types}
 tangle_idxs = {t: {} for t in graph_types}
@@ -129,3 +129,14 @@ for graph_type in graph_types:
                 curr_dir+'scatter'+str(n_leaves)+'.html.gz',
                 [scripts_dir+'plot.py', results],
                 '${SOURCES[0]} --d3 --which scatter ${SOURCES[1]} $TARGET')
+
+            env.Command(
+                curr_dir+'access-expectations'+str(n_leaves)+'.svg',
+                [scripts_dir+'plot-access.py',
+                 access[graph_type][n_leaves],
+                 tangle_idxs[graph_type][n_leaves],
+                 tangle_degrees[graph_type][n_leaves],
+                 curvatures],
+                '${SOURCES[0]} --prefix $TARGET ${SOURCES[1:]}')
+
+
