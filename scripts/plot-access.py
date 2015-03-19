@@ -74,12 +74,12 @@ for (t1_deg, t2_deg, dist), group in catted.groupby(['t1_deg','t2_deg', 'dist'])
 
     i = np.where(t1_degs == t1_deg)[0][0]
     j = np.where(t2_degs == t2_deg)[0][0]
-    e_axs[i][j].set_title(title_str, weight=500)
+    e_axs[i][j].set_title(title_str, weight=600)
     p = group['mean_access'].plot(
         ax=e_axs[i][j], kind='hist', stacked=True, bins=25)
     p.grid(b=None)
 
-    d_axs[i][j].set_title(title_str, weight=500)
+    d_axs[i][j].set_title(title_str, weight=600)
     norm = mpl.colors.Normalize(group['kappa'].min(), group['kappa'].max())
     m = mpl.cm.ScalarMappable(norm=norm, cmap=cmaps[dist])
 

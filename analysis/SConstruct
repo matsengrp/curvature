@@ -48,25 +48,25 @@ for graph_type in graph_types:
 
         # First make the graphs and degrees.
         # TODO: silly to depend on tangle's trees.
-        adjacencies = Command(
+        adjacencies = env.Command(
             graphs_dir+graph_type+'/graph'+str(n_leaves)+'.csv.gz',
             tree_path,
             scripts_dir+'trees-to-adjacencies.sh ' +
             graph_type+' $SOURCE $TARGET')[0]
         graph_path = str(adjacencies).split('.')[0]+'.sobj'
 
-        graphs[graph_type][n_leaves] = Command(
+        graphs[graph_type][n_leaves] = env.Command(
             graph_path,
             adjacencies,
             scripts_dir+'adjacencies-to-graph.py $SOURCE $TARGET')
 
-        graph_degrees[graph_type][n_leaves] = Command(
+        graph_degrees[graph_type][n_leaves] = env.Command(
             graph_path.split('.')[0]+'.degrees.tsv',
             graph_path,
             scripts_dir+'graph-degrees.py $SOURCE $TARGET')
 
         # Now do random walks and get access times.
-        walks[graph_type][n_leaves] = Command(
+        walks[graph_type][n_leaves] = env.Command(
             curr_dir+'/walk'+str(n_leaves)+'.tsv.gz',
             '../random_spr_walk/random_spr_walk',
             '$SOURCE {} -seed {} -ntax {} -niterations {} -sfreq {} \
@@ -74,7 +74,7 @@ for graph_type in graph_types:
             .format(walk_flags, walk_seed, n_leaves,
                     walk_n_iter, walk_sample_freq))
 
-        tangle_time_count_out = Command(
+        tangle_time_count_out = env.Command(
             [curr_dir+'/access'+str(n_leaves)+'.tsv.gz',
              curr_dir+'/tangle'+str(n_leaves)+'.idx'],
             [scripts_dir+'tangle-time-count.py',
@@ -84,13 +84,13 @@ for graph_type in graph_types:
         access[graph_type][n_leaves] = tangle_time_count_out[0]
         tangle_idxs[graph_type][n_leaves] = tangle_time_count_out[1]
 
-        tangle_degrees[graph_type][n_leaves] = Command(
+        tangle_degrees[graph_type][n_leaves] = env.Command(
             curr_dir+'/degrees'+str(n_leaves)+'.tsv',
             [tangle_idxs[graph_type][n_leaves],
              graph_degrees[graph_type][n_leaves]],
             scripts_dir+'tangle-infos.py ${SOURCES[0]} ${SOURCES[1]} $TARGET')
 
-        tangle_newicks[graph_type][n_leaves] = Command(
+        tangle_newicks[graph_type][n_leaves] = env.Command(
             curr_dir+'/tangle'+str(n_leaves)+'.tre',
             [tangle_idxs[graph_type][n_leaves],
              tree_path],
