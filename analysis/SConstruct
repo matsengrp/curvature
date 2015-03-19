@@ -139,4 +139,4 @@ for graph_type in graph_types:
                  tangle_idxs[graph_type][n_leaves],
                  tangle_degrees[graph_type][n_leaves],
                  curvatures],
-                '${{SOURCES[0]}} --prefix {} ${{SOURCES[1:]}}'.format(prefix))
+                '${{SOURCES[0]}} --maxtime 8 --prefix {} ${{SOURCES[1:]}}'.format(prefix))
