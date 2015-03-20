@@ -8,6 +8,10 @@
 \usepackage{cite}
 \usepackage{enumitem}
 \usepackage{url}
+\usepackage{subfigure}
+\usepackage[nomarkers,nofiglist]{endfloat}
+\let\MYoriglatexcaption\caption
+\renewcommand{\caption}[2][\relax]{\MYoriglatexcaption[#2]{#2}}
 % shift for todonotes
 \usepackage[left=0.5in,right=1.5in,top=1in,bottom=1in,marginparwidth=1.25in]{geometry}
 % regular margins
@@ -189,12 +193,51 @@ In particular, we present a full characterization of the change in SPR degree th
 
 \section{Preliminaries}
 
+\begin{figure}
+	\hspace*{\stretch{1}}
+	\subfigure[\label{fig:x-tree}]{\includegraphics[scale=1.25]{figs/x-tree}}
+	\hspace*{\stretch{2}}
+	\subfigure[\label{fig:subtree}]{\includegraphics[scale=1.25]{figs/subtree}}
+	\hspace*{\stretch{2}}
+	\subfigure[\label{fig:induced}]{\includegraphics[scale=1.25]{figs/contracted-subtree}}
+	\hspace*{\stretch{1}}
+	\\
+	\hspace*{\stretch{1}}
+	\subfigure[\label{fig:spr}]{\includegraphics[scale=1.25]{figs/spr}}
+	\hspace*{\stretch{1}}
+	\\
+	\hspace*{\stretch{1}}
+	\hspace*{\stretch{1}}
+
+	\caption{(a) An $X$-tree $T$.
+		(b) $T(V)$, where $V = \set{1,2,5}$.
+		(c) $T|V$.
+		(d) An SPR operation transforms $T$ into a new tree $T'$ by \emph{pruning} a \emph{subtree} and \emph{regrafting} it in another location.}
+	}
+	\label{fig:trees}
+\end{figure}
+\begin{figure}
+	\hspace*{\stretch{1}}
+	\includegraphics[scale=1.25]{figs/two-spr}
+	\hspace*{\stretch{1}}
+	\caption{Two trees differing by two SPR operations that move the grey subtrees.}
+	\label{fig:two-spr}
+\end{figure}
+\begin{figure}
+	\hspace*{\stretch{1}}
+	\includegraphics[width=0.6\textwidth]{figs/neighborhood}
+	\hspace*{\stretch{1}}
+	\caption{The neighborhood of an $X$-tree $T$ with 4 leaves, showing connections between neighbors.}
+	\label{fig:neighborhood}
+\end{figure}
+
 We follow the definitions and notation from~\cite{bordewich05,whidden2013hybridization, Whidden2015-yi}.
 A (rooted binary phylogenetic) $X$-tree is a rooted tree $T$ whose nodes have zero or two children.
 Leaves of $T$ are bijectively labelled with the members of a label set $X$.
-As in~\cite{bordewich05,whidden2013hybridization,Whidden2015-yi}, the tree is augmented with a labelled root node $\rho$ and $\rho$ is considered a member of $X$.
+As in~\cite{bordewich05,whidden2013hybridization,Whidden2015-yi}, the tree is augmented with a labelled root node $\rho$ and $\rho$ is considered a member of $X$ (Fig.~\ref{fig:x-tree}).
 We generally use $n$ to refer to the number of leaves in an $X$-tree.
-For a subset $V$ of $X$, $T(V)$ is the smallest subtree of $T$ that connects all nodes in $V$. The $V$-tree induced by $T$ is the smallest tree $T|V$ that can be obtained from $T(V)$ by suppressing unlabelled nodes with fewer than two children.
+For a subset $V$ of $X$, $T(V)$ is the smallest subtree of $T$ that connects all nodes in $V$ (Fig.~\ref{fig:subtree}).
+The $V$-tree induced by $T$ is the smallest tree $T|V$ that can be obtained from $T(V)$ by suppressing unlabelled nodes with fewer than two children (Fig.~\ref{fig:induced}).
 For the rest of the paper, \textbf{we will assume that all phylogenetic trees are rooted,} and thus that tree inclusion is rooted tree inclusion.
 \todo{Figure of restriction and SPR operation}
 
@@ -209,10 +252,12 @@ Similarly, the LCA of two or more subtrees is the LCA of their parent nodes.
 A \emph{subtree prune-and-regraft} (SPR) operation on an $X$-tree $T$ cuts an edge $e = (x, p_x)$ where $p_x$ denotes the parent of node $x$.
 $T$ is divided into two subtrees $T_x$ and $T_{p_x}$ containing $x$ and $p_x$, respectively.
 Then the operation adds a new node $p'_x$ to $T_{p_x}$ by subdividing an edge of $T_{p_x}$ and adding a new edge $(x, p'_x)$, making $x$ a child of $p'_x$.
-Finally, $p_x$ is suppressed. \todo{figure}
-Observe that the inclusion of $\rho$ allows for SPR moves that move subtrees to the root of the tree.
+Finally, $p_x$ is suppressed.
+See Figure~\ref{fig:spr} for an example.
+Note that the inclusion of $\rho$ allows for SPR moves that move subtrees to the root of the tree.
 
-SPR operations give rise to a distance measure between $X$-trees: $\dspr{T_1, T_2}$ is the minimum number of SPR operations required to transform an $X$-tree $T_1$ into $T_2$. \todo{ref figure}
+SPR operations give rise to a distance measure between $X$-trees: $\dspr{T_1, T_2}$ is the minimum number of SPR operations required to transform an $X$-tree $T_1$ into $T_2$.
+For example, the trees in Figure~\ref{fig:two-spr} are separated by two SPR operations.
 Moreover, SPR operations naturally give rise to a graph on the set of $X$-trees.
 Let $\mathcal{T}_n$ be the set of trees with $n$ leaves and label set $X = \set{1, 2, \ldots n, \rho}$.
 Then the SPR graph $G$ of $\mathcal{T}_n$ is the graph with vertex set $V(G) = \mathcal{T}_n$ and edge set $E(G) = \set{(T,S) \mid \dspr{T,S} = 1, T \in V, S \in V}$.
@@ -220,7 +265,7 @@ Observe that distances in this graph are given by $\dspr{\cdot,\cdot}$.
 
 For clarity, we refer to vertices of the SPR graph as \emph{vertices} and vertices of individual trees as \emph{nodes}.
 Let $N(T)$ be the set of SPR neighbors of a tree $T$ (this does not include $T$).
-We say that the degree of $T$ is $\degree{T}$, that is, the number of trees which can be obtained from $T$ by a single SPR operation.
+For example, the tree with 4 leaves in Figure~\ref{fig:neighborhood} has 10 neighbors.
 We assume that all trees are bifurcating, and use degree to refer only to the degree of SPR graph vertices.
 
 Ollivier-Ricci curvature provides an intuitive formalization for quantifying the difficulty of moving between two points of a graph during a random walk (or indeed any metric space, see~\cite{Ollivier2009-bw}).
