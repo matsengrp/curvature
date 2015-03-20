@@ -1,13 +1,16 @@
-\documentclass{amsart}
+\documentclass[11pt,onecolumn,conference]{IEEEtran}
 
 \usepackage{amsmath,amsthm}
-\usepackage[foot]{amsaddr}
 \usepackage{ifthen}
 \usepackage{todonotes}
-\usepackage[notref,notcite]{showkeys} % show keys for eqs, etc.
+%\usepackage[notref,notcite]{showkeys} % show keys for eqs, etc.
+\usepackage[right]{showlabels}
 \usepackage{cite}
 \usepackage{enumitem}
 \usepackage{url}
+% shift for todonotes
+\usepackage[left=0.5in,right=1.5in,top=1in,bottom=1in,marginparwidth=1.25in]{geometry}
+% regular margins
 %\usepackage[margin=1in]{geometry}
 
 \newtheorem{theorem}{Theorem}[section]
@@ -88,15 +91,24 @@
 
 
 \begin{document}
-\title[Curvature of phylogenetic subtree-prune-regraft graph]{Ricci-Ollivier curvature of two random walks on rooted phylogenetic subtree-prune-regraft graph}
-\author[Whidden and Matsen]{Christopher Whidden$^1$ and Frederick A Matsen IV$^1$}
-\address{$^1$Program in Computational Biology, Fred Hutchinson Cancer Research Center, Seattle, WA, 98199}
-\email{cwhidden@fredhutch.org}
-\email{matsen@fredhutch.org}
-\thanks{}
+\title{Ricci-Ollivier Curvature of two Random Walks on the Rooted Phylogenetic Subtree-prune-regraft Graph}
 
-\date{\today}
+\author{
+	\IEEEauthorblockN{Christopher Whidden}
+	\IEEEauthorblockA{Program in Computational Biology\\
+	Fred Hutchinson Cancer Research Center\\
+	Seattle, WA 98199\\
+	Email: cwhidden@fredhutch.org}
+	\and
+	\IEEEauthorblockN{Frederick A Matsen IV}
+	\IEEEauthorblockA{Program in Computational Biology\\
+	Fred Hutchinson Cancer Research Center\\
+	Seattle, WA 98199\\
+	Email: matsen@fredhutch.org}
+}
 
+\maketitle
+\IEEEpeerreviewmaketitle
 
 \begin{abstract}
 Statistical phylogenetics inference methods use tree rearrangement operations to perform either local hill-climbing search or Markov chain Monte Carlo across tree topologies.
@@ -111,9 +123,11 @@ This indicates significant structure of the graph, and a greater understanding o
 We find that indeed there is
 \end{abstract}
 
-
-\maketitle
 \pagebreak
+
+
+
+
 
 % % Make a todo table of contents.
 % \makeatletter
