@@ -163,7 +163,7 @@ There have been investigations of local maxima, but mainly from the perspective 
 The work on SPR moves in the ML context is primarily found in the literature comparing various SPR variants to one another, usually in the context of comparing one phylogenetic software package to another~\cite{Hordijk2005-dl,Stamatakis2006-yz,Price2010-fi,Guindon2010-lo}.
 We are not aware of any general conclusions concerning hill-climbing on the SPR or related graphs that has come from this work.
 
-The SPR graph is very important in phylogenetic inference, and yet still little is known about the rooted or unrooted versions of the SPR graph itself, or random walks thereupon.
+The SPR graph is thus very important in phylogenetic inference, and yet still little is known about the rooted or unrooted versions of the SPR graph itself, or random walks thereupon.
 \cite{Song2003-gf} developed a recursive procedure on a tree to find the degree of the corresponding vertex in the rooted SPR (rSPR) graph, and corresponding bounds on degree.
 \cite{Ding2011-bj} showed that the diameter $\Delta_{\text{rSPR}}$ of the rSPR graph is $n - \Theta(\sqrt n)$, and for the unrooted case they show
 $$ n - 2\ceil{\sqrt{n}} + 1
@@ -174,21 +174,24 @@ Despite the centrality of the SPR graph to phylogenetic inference, we are not aw
 
 Recently, a new approach to quantifying properties of discrete and continuous spaces with respect to random walks has been pioneered by Ollivier and colleagues~\cite{Ollivier2009-bw,Joulin2010-jg}.
 They define a notion of curvature on a discrete or continuous case.
-This formalizes the notion of to what extent random walking brings points together, and is a generalization of the notion of Ricci curvature on manifolds.
+This formalizes the notion of to what extent random walking brings points together, and is a generalization of the classical notion of Ricci curvature on manifolds.
+Here the term \emph{random walk} on a space $X$ simply denotes a family of probability measures parameterized by points of $X$.
 
-In this paper, we investigate curvature of the rSPR graph with respect to two different random walks and make connections to access times for those random walks.
-We use random walks on the rSPR graph as being a general notion of movement around a graph, modeling phylogenetic MCMC and ML searches.
+In this paper, we investigate curvature of the rSPR graph with respect to two random walks and make connections to access times for those random walks.
+We use random walks on the rSPR graph as being a general notion of movement around a graph, modeling phylogenetic MCMC and ML searches \todo{Not sure what random walks have to do with ML searches}.
 For this first effort we investigate random walks defined in terms of the graph itself: the lazy uniform random walk and MCMC sampling from the uniform prior on trees.
 We present a fast new algorithm for computing SPR graphs from a set of trees, reducing the time to do so from $\OhOf{m^2n}$ to $\OhOf{mn^3}$ for a set of $m$ trees with $n$ leaves.
-As the the full rSPR treespace contains $(2n-3)!!$ trees, this is a significant improvement in practice for exploring large subsets of treespace.
+As the full rSPR treespace contains $(2n-3)!!$ trees, this is a significant improvement in practice for exploring large subsets of treespace.
 By exploiting symmetries in the rSPR graph, we were able to calculate all of the curvatures for pairs of trees with up to seven leaves.
 By carefully examining the overlap in SPR moves, we present a new method for computing the degree of a tree in the SPR graph that allows one to select an SPR neighbor uniformly at random in linear-time without explicitly generating the graph.
 Using this method to simulate these random walks, we find that the distribution of access times between pairs of trees can be described by distance between the trees, the degrees of the trees, and the curvature.
 By getting a more fine-tuned understanding of the rSPR neighborhood of pairs of vertices, we are able to give bounds on curvatures under these random walks.
-In particular, we present a full characterization of the change in SPR degree that occurs from a given SPR move and find that, contrary to previous assumptions, SPR moves which move large subtrees may have greater graph effects than those that move small subtrees.
+In particular, we present a full characterization of the change in SPR degree that occurs from a given SPR move and find that, contrary to previous assumptions\todo{This is going to need a citation or be taken out}, SPR moves which move large subtrees may have greater graph effects than those that move small subtrees.
+
 
 \section{Preliminaries}
 
+<<<<<<< HEAD
 \begin{figure}
 	\hspace*{\stretch{1}}
 	\subfigure[\label{fig:x-tree}]{\includegraphics[scale=1.25]{figs/x-tree}}
@@ -240,7 +243,7 @@ For the rest of the paper, \textbf{we will assume that all phylogenetic trees ar
 A \emph{parent (sub)tree} of a subtree $U$ is the smallest subtree strictly containing $U$.
 A \emph{parent edge} of a subtree $U$ is the edge connecting $U$ to the rest of the tree.
 The \emph{internal edges} of a tree are the edges that do not contact a leaf (we do not consider a rooted tree to have a ``root edge'', so trees have a degree two root). \todo{Generally we add a $\rho$ label and root edge to make rSPR work formally. I've put this in the definition so lets see if this confuses anything.}
-A \emph{ladder tree} is a tree such that every internal node has a leaf as a direct descendant.
+A \emph{ladder tree} (also known as a \emph{caterpillar tree}) is a tree such that every internal node has a leaf as a direct descendant.
 A \emph{balanced tree} is a tree such that the sum of the depths of internal nodes is minimum over all trees with the same number of leaves.
 The \emph{least common ancestor} (LCA) of a set $R$ of two or more nodes is the unique node that is an ancestor of each node $r \in R$ and at maximum depth.
 Similarly, the LCA of two or more subtrees is the LCA of their parent nodes.
@@ -250,33 +253,35 @@ $T$ is divided into two subtrees $T_x$ and $T_{p_x}$ containing $x$ and $p_x$, r
 Then the operation adds a new node $p'_x$ to $T_{p_x}$ by subdividing an edge of $T_{p_x}$ and adding a new edge $(x, p'_x)$, making $x$ a child of $p'_x$.
 Finally, $p_x$ is suppressed.
 See Figure~\ref{fig:spr} for an example.
-Note that the inclusion of $\rho$ allows for SPR moves that move subtrees to the root of the tree.
+Note that the inclusion of $\rho$ allows for SPR moves that move subtrees to the root of the tree.\todo{Erm? I thought that we weren't going to have a root edge.}
 
 SPR operations give rise to a distance measure between $X$-trees: $\dspr{T_1, T_2}$ is the minimum number of SPR operations required to transform an $X$-tree $T_1$ into $T_2$.
 For example, the trees in Figure~\ref{fig:two-spr} are separated by two SPR operations.
 Moreover, SPR operations naturally give rise to a graph on the set of $X$-trees.
-Let $\mathcal{T}_n$ be the set of trees with $n$ leaves and label set $X = \set{1, 2, \ldots n, \rho}$.
+Let $\mathcal{T}_n$ be the set of trees with $n$ leaves and label set $X = \set{1, 2, \ldots n, \rho}$.\todo{$\rho$ again?}
 Then the SPR graph $G$ of $\mathcal{T}_n$ is the graph with vertex set $V(G) = \mathcal{T}_n$ and edge set $E(G) = \set{(T,S) \mid \dspr{T,S} = 1, T \in V, S \in V}$.
 Observe that distances in this graph are given by $\dspr{\cdot,\cdot}$.
 
-For clarity, we refer to vertices of the SPR graph as \emph{vertices} and vertices of individual trees as \emph{nodes}.
+To avoid confusion between the two types of graph structures considered here, we refer to vertices of the SPR graph as \emph{vertices} and vertices of individual trees as \emph{nodes}.
 Let $N(T)$ be the set of SPR neighbors of a tree $T$ (this does not include $T$).
 For example, the tree with 4 leaves in Figure~\ref{fig:neighborhood} has 10 neighbors.
-We assume that all trees are bifurcating, and use degree to refer only to the degree of SPR graph vertices.
+We say that the degree of $T$ is $\degree{T}$, that is, the number of trees which can be obtained from $T$ by a single SPR operation.
+Because we assume that all trees are bifurcating, we use degree to refer only to the degree of SPR graph vertices.
 
-Ollivier-Ricci curvature provides an intuitive formalization for quantifying the difficulty of moving between two points of a graph during a random walk (or indeed any metric space, see~\cite{Ollivier2009-bw}).
+Ollivier-Ricci curvature provides an intuitive formalization for quantifying the shape of a graph with respect to a random walk (or indeed any metric space, see~\cite{Ollivier2009-bw}).
 Let $m_x$ and $m_y$ be probability densities of a specified random walk starting at points $x$ and $y$ of a graph $G = (V,E)$, respectively.
-The $L^1$ transportation, or Wasserstein distance between $m_x$ and $m_y$ is the minimum amount of "work" required to move $m_x$ to $m_y$ following the graph, that is
- $$ W_1(m_x, m_y) = \min_{\xi \in \Pi(m_x, m_y)} \sum \dspr{x,y} \xi(x,y),$$
-where $\Pi(m_x, m_y)$ is the set of of assignments of probability from $m_x$ to pairs of trees in $V \times V$. \todo{I tried to keep this simple, feel free to change.}
+The $L^1$ transportation, or Wasserstein, distance between $m_x$ and $m_y$ is the minimum amount of ``work'' required to move $m_x$ to $m_y$ following the graph, that is
+ $$ W_1(m_x, m_y) := \min_{\xi \in \Pi(m_x, m_y)} \sum \dspr{x,y} \xi(x,y),$$
+where $\Pi(m_x, m_y)$ is the set of of assignments of probability from $m_x$ to pairs of vertices in $V \times V$. \todo{I tried to keep this simple, feel free to change.}
 
 The curvature of $x$ and $y$ is then defined as:
 \begin{equation}
 \curvature{x, y} := 1 - \frac{W_1(m_x, m_y)}{d(x, y)}
 \label{eq:curvatureDef}
 \end{equation}
-Positive curvature implies that $m_x$ and $m_y$ are "closer" than $x$ and $y$, zero curvature implies that they are neither closer nor farther, and negative curvature implies that $m_x$ and $m_y$ are actually more distant than $x$ and $y$.
+Positive curvature implies that $m_x$ and $m_y$ are ``closer'' than $x$ and $y$, zero curvature implies that they are neither closer nor farther, and negative curvature implies that $m_x$ and $m_y$ are on average more distant than $x$ and $y$.
 Curvature thus provides an intuitive measure of the difficulty of moving between regions of the graph with the given random walk.
+
 
 \section{Access times of random walks on the rSPR graph can be understood using distance, degree, and curvature}
 
@@ -334,8 +339,7 @@ We then compute curvatures for given pairs of trees directly, by using linear pr
 
 This would have required an enormous amount of computation to directly compute curvatures for the $((2n-3)!!)^2$ pairs of trees with $n$ leaves.
 We instead exploited the fact that pairs of trees which are equivalent modulo label renumbering are symmetric in the rSPR graph and therefore guaranteed to have the same curvature.
-We thus directly computed curvature values for one representative pair from each such equivalence class, or \emph{tanglegram}; the enumeration methods are described in a manuscript in preparation, and the SAGE \cite{SAGE} and GAP4 \cite{GAP4} code can be found in \cite{tangle}.
-
+We thus directly computed curvature values for one representative pair from each such equivalence class, or \emph{tanglegram} \cite{Venkatachalam2010-zh}; the enumeration methods are described in a manuscript in preparation, and the SAGE \cite{SAGE} and GAP4 \cite{GAP4} code can be found online \cite{tangle}.
 
 
 \subsection{Simulating random walks on the rSPR graph}
