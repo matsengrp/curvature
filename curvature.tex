@@ -272,7 +272,7 @@ Ollivier-Ricci curvature provides an intuitive formalization for quantifying the
 Let $m_x$ and $m_y$ be probability densities of a specified random walk starting at points $x$ and $y$ of a graph $G = (V,E)$, respectively.
 The $L^1$ transportation, or Wasserstein, distance between $m_x$ and $m_y$ is the minimum amount of ``work'' required to move $m_x$ to $m_y$ following the graph, that is
  $$ W_1(m_x, m_y) := \min_{\xi \in \Pi(m_x, m_y)} \sum \dspr{x,y} \xi(x,y),$$
-where $\Pi(m_x, m_y)$ is the set of of assignments of probability from $m_x$ to pairs of vertices in $V \times V$. \todo{I tried to keep this simple, feel free to change.}
+where $\Pi(m_x, m_y)$ is the set of of assignments of probability from $m_x$ to pairs of vertices in $V \times V$. \todo{FAM: cites.}
 
 The curvature of $x$ and $y$ is then defined as:
 \begin{equation}
@@ -453,10 +453,12 @@ As before, calculating these distributions for all pairs of trees would have req
 Here again we use the insight that the access time for a pair of trees with a simple random walk does not depend on the actual labeling of those trees, but rather only on their relative labeling.
 Thus rather than enumerate access times between trees, we enumerate times between pairs of trees in a tanglegram.
 For example, because the pairs
-$\{(((1,2),3),4) ((1,2),(3,4))\}$ and
-$\{(((1,4),3),4) ((1,4),(2,3))\}$
+$\{(((1,2),3),4), ((1,2),(3,4))\}$ and
+$\{(((1,4),3),4), ((1,4),(2,3))\}$
 are the same after relabeling, their access times will have identical distributions.
-Thus to calculate the empirical distributions of access times we aggregate all access times for the same tangle.
+Thus to calculate the empirical distributions of access times we aggregate all access times for the same tangle \todo{cite software}.
+
+The full analysis can be reproduced using the SCons (\url{http://scons.org/}) build tool; instructions are in the repository README file.
 
 
 \subsection{Results}
