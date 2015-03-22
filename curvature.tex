@@ -87,6 +87,21 @@
 		{\kappa_n(#1;#2)}%
 }
 
+%---[ figures ]-----------------------------------------------------------------
+
+\newcommand{\FIGspr}{\
+\begin{figure}
+\begin{center}
+  \includegraphics[width=4in]{figures/spr.pdf}
+\end{center}
+\caption{\
+  A rooted subtree-prune-regraft (rSPR) move~\cite{hein96}.
+}
+\label{FIGspr}
+\end{figure}
+}
+
+
 % uncomment to remove the proofs for length estimates
 %\usepackage{environ}
 %\NewEnviron{killcontents}{}
@@ -149,8 +164,10 @@ Within this framework researchers typically choose either a Bayesian approach, i
 
 In order to get accurate such estimates, MCMC samplers must sufficiently explore the collection of trees, or heuristic local search algorithms must find a way to the ML tree, avoiding and escaping local peaks.
 In both settings, one needs a means of describing the trees that are ``near'' to the current tree.
-Phylogenetic search algorithms typically explore the collection of trees by rearranging subtrees with subtree prune-and-regraft (SPR) moves~\cite{hein96} or the subset of SPR moves called nearest neighbor interchanges (NNI)~\cite{robinson1971comparison}.
+Phylogenetic search algorithms typically explore the collection of trees by rearranging subtrees with subtree prune-and-regraft (SPR) moves (Figure~\ref{FIGspr}) or the subset of SPR moves called nearest neighbor interchanges (NNI)~\cite{robinson1971comparison}.
 Thus, phylogenetic searches can be viewed as traversing the graph of phylogenetic trees induced by SPR adjacencies---the \emph{SPR graph}.
+
+\FIGspr
 
 It has become increasingly clear that the structure of the SPR graph plays an important role in determining the accuracy of tree searches.
 We will call these "graph effects"---one can't easily move from one tree to another due to the structure of the graph.
