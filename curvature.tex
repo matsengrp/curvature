@@ -115,16 +115,14 @@
 \IEEEpeerreviewmaketitle
 
 \begin{abstract}
-Statistical phylogenetics inference methods use tree rearrangement operations to perform either local hill-climbing search or Markov chain Monte Carlo across tree topologies.
+Statistical phylogenetics inference methods use tree rearrangement operations to perform either hill-climbing local search or Markov chain Monte Carlo across tree topologies.
 The canonical class of such moves are the subtree-prune-regraft (SPR) moves that remove a subtree and reattach it somewhere else via the cut edge of the subtree.
-Phylogenetic trees and such moves naturally form the vertices and edges of a graph, such that tree search algorithms perform a (potentially stochastic) traversal of the graph.
+Phylogenetic trees and such moves naturally form the vertices and edges of a graph, such that tree search algorithms perform a (potentially stochastic) traversal of the SPR graph.
 Despite the centrality of such graphs in phylogenetic inference, rather little is known about their large-scale properties.
-In this paper we learn about the rooted-tree version of the graph, known as the rSPR graph, by calculating the recently-developed notion of Ricci curvature for pairs of vertices in the rSPR graph with respect to two simple random walks on the rSPR graph.
+In this paper we learn about the rooted-tree version of the graph, known as the rSPR graph, by calculating the recently-developed notion of Ricci-Ollivier curvature for pairs of vertices in the rSPR graph with respect to two simple random walks on the rSPR graph.
 This notion of curvature is especially relevant to stochastic search on the graph.
 By proving theorems and direct calculation, we find a remarkable diversity of different curvatures on the rSPR graph for pairs of vertices separated by the same distance.
-This indicates significant structure of the graph, and a greater understanding of this structure could ultimately lead to improved strategies for tree search.
-
-We find that indeed there is
+This indicates significant structure of the graph; a greater understanding of this structure could ultimately lead to improved strategies for tree search.
 \end{abstract}
 
 \pagebreak
@@ -151,9 +149,7 @@ Within this framework researchers typically choose either a Bayesian approach, i
 
 In order to get accurate such estimates, MCMC samplers must sufficiently explore the collection of trees, or heuristic local search algorithms must find a way to the ML tree, avoiding and escaping local peaks.
 In both settings, one needs a means of describing the trees that are ``near'' to the current tree.
-% Here we focus on the discrete search part.
-There are a number of means of doing so, most of which are based on \emph{splits}---partitions of leaves induced by edges in the trees---such as the Robinson Foulds distance~\cite{robinson81}.
-However, phylogenetic search algorithms typically explore the collection of trees by rearranging subtrees with subtree prune-and-regraft (SPR) moves~\cite{hein96} or the subset of SPR moves called nearest neighbor interchanges (NNI)~\cite{robinson1971comparison}.
+Phylogenetic search algorithms typically explore the collection of trees by rearranging subtrees with subtree prune-and-regraft (SPR) moves~\cite{hein96} or the subset of SPR moves called nearest neighbor interchanges (NNI)~\cite{robinson1971comparison}.
 Thus, phylogenetic searches can be viewed as traversing the graph of phylogenetic trees induced by SPR adjacencies---the \emph{SPR graph}.
 
 It has become increasingly clear that the structure of the SPR graph plays an important role in determining the accuracy of tree searches.
@@ -293,7 +289,7 @@ In previous work~\cite{Whidden2015-yi}, we constructed (unrooted) SPR graphs fro
 Although the SPR distance (rooted and unrooted) is NP-hard to compute~\cite{bordewich05,hickey2008sdc}, it is fixed-parameter tractable with respect to the distance in the rooted case~\cite{bordewich05}.
 In particular, one can determine in $\OhOf{n}$-time whether two rooted phylogenetic trees are adjacent in the SPR graph ($\OhOf{n^2}$-time for unrooted trees) using the algorithms of Whidden et al.~\cite{whidden2009unifying,whidden2010fast, whidden2013hybridization,Whidden2015-yi}.
 We applied this method comparing each of the $m$ trees pairwise to identify adjacencies, requiring a total of $\OhOf{m^2n}$-time ($\OhOf{m^2n^2}$-time in the unrooted case).
-However, applying this method to complete SPR graphs, with the $\OhOf{m^2}$ factor where $m = (2n-3)!!$, requires an enormous amount of computation. 
+However, applying this method to complete SPR graphs, with the $\OhOf{m^2}$ factor where $m = (2n-3)!!$, requires an enormous amount of computation.
 
 To quickly compute dense SPR graphs (those containing a significant portion of the full treespace) we can avoid pairwise computations by successively adding trees to the graph:
 \begin{enumerate}[label={\arabic*}.]
@@ -334,10 +330,11 @@ Thus, we believe this fast graph construction procedure will itself be useful fo
 \subsection{Computing curvature values}
 We computed all of the curvatures for pairs of trees with up to seven leaves to gain an intuitive understanding of the distribution of curvatures.
 We first used \texttt{dense\_spr\_graph} to compute the rSPR treespaces for four to seven leaves, as discussed in Section~\ref{sec:computing_treespace}.
-We then used linear programming to compute curvatures for given pairs of trees~\cite{gricci}.
+We then compute curvatures for given pairs of trees directly, by using linear programming to compute the minimal mass transport $W_1$ using the SAGE \cite{SAGE} front-end to the GLPK \todo{GLPK} solver; code can be found in \cite{gricci}.
+
 This would have required an enormous amount of computation to directly compute curvatures for the $((2n-3)!!)^2$ pairs of trees with $n$ leaves.
 We instead exploited the fact that pairs of trees which are equivalent modulo label renumbering are symmetric in the rSPR graph and therefore guaranteed to have the same curvature.
-We thus directly computed curvature values for one representative pair from each such equivalence class, or \emph{tanglegram} (enumeration methods described in a manuscript in preparation).
+We thus directly computed curvature values for one representative pair from each such equivalence class, or \emph{tanglegram}; the enumeration methods are described in a manuscript in preparation, and the SAGE \cite{SAGE} and GAP4 \cite{GAP4} code can be found in \cite{tangle}.
 
 
 
@@ -439,12 +436,24 @@ We thus have the following corollary:
 We implemented this procedure in the C++ package \texttt{random\_spr\_walk}~\cite{random_spr_walk}.
 We sampled \ldots \todo{sampling and runtime information}.
 
+\cite{GAP4}
 
-\subsection{Mean access time computation}
+\subsection{Access time computation}
 
-We then computed mean access times (MAT) between pairs of trees in the MH random walks---the mean number of iterations required to move from one tree to the other~\cite{lovasz1993random}.
-MAT values have been productively applied to demonstrate graph effects in uSPR subgraphs of real MCMC samples using MrBayes~\cite{Whidden2015-yi}.
-We used the same \texttt{sprspace}~\cite{sprspace} software to compute MAT values for our simulated random walks.\todo{runtime information}
+The access time for a pair of vertices in a graph is the (random) number of iterations required to go from one of the vertices to the other in a random walk~\cite{lovasz1993random}; we were interested in the connection between curvature and access time.
+In previous work, we computed mean access times (MAT) between pairs of trees in the MCMC random walks---the mean number of iterations required to move from one tree to the other.
+We applied this work to demonstrate graph effects in uSPR subgraphs of real MCMC samples using MrBayes~\cite{Whidden2015-yi} using the \texttt{sprspace}~\cite{sprspace} software.
+
+Here, to gain more insight, we used simulation to approximate the entire access time distribution.
+As before, calculating these distributions for all pairs of trees would have required a tremendous amount of memory and computational power in order to get good estimates.
+Here again we use the insight that the access time for a pair of trees with a simple random walk does not depend on the actual labeling of those trees, but rather only on their relative labeling.
+Thus rather than enumerate access times between trees, we enumerate times between pairs of trees in a tanglegram.
+For example, because the pairs
+$\{(((1,2),3),4) ((1,2),(3,4))\}$ and
+$\{(((1,4),3),4) ((1,4),(2,3))\}$
+are the same after relabeling, their access times will have identical distributions.
+Thus to calculate the empirical distributions of access times we aggregate all access times for the same tangle.
+
 
 \subsection{Results}
 
@@ -815,12 +824,6 @@ We now bound the difference between the curvature of uniform random walks $\curv
 	Again, this is at most one fewer tree when $\dspr{T,S}=1$.
 
 \end{proof}
-
-
-
-
-
-
 
 
 
