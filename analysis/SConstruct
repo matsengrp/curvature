@@ -1,3 +1,4 @@
+from glob import glob
 import os
 import subprocess
 from SCons.Script import Command, Environment
@@ -66,9 +67,14 @@ for graph_type in graph_types:
             scripts_dir+'graph-degrees.py $SOURCE $TARGET')
 
         # Now do random walks and get access times.
+        random_spr_walk = env.Command(
+            '../random_spr_walk/random_spr_walk',
+            glob('../random_spr_walk/*.cpp') + glob('../random_spr_walk/*.h'),
+            'make -C ../random_spr_walk')
+
         walks[graph_type][n_leaves] = env.Command(
             curr_dir+'/walk'+str(n_leaves)+'.tsv.gz',
-            '../random_spr_walk/random_spr_walk',
+            random_spr_walk,
             '$SOURCE {} -seed {} -ntax {} -niterations {} -sfreq {} \
                 | sed "s/: /\\t/" | gzip -cn > $TARGET'
             .format(walk_flags, walk_seed, n_leaves,
