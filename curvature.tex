@@ -89,17 +89,17 @@
 
 %---[ figures ]-----------------------------------------------------------------
 
-\newcommand{\FIGspr}{\
-\begin{figure}
-\begin{center}
-  \includegraphics[width=4in]{figures/spr.pdf}
-\end{center}
-\caption{\
-  A rooted subtree-prune-regraft (rSPR) move~\cite{hein96}.
-}
-\label{FIGspr}
-\end{figure}
-}
+%\newcommand{\FIGspr}{\
+%\begin{figure}
+%\begin{center}
+%  \includegraphics[width=4in]{figures/spr.pdf}
+%\end{center}
+%\caption{\
+%  A rooted subtree-prune-regraft (rSPR) move~\cite{hein96}.
+%}
+%\label{FIGspr}
+%\end{figure}
+%}
 
 
 % uncomment to remove the proofs for length estimates
@@ -167,7 +167,16 @@ In both settings, one needs a means of describing the trees that are ``near'' to
 Phylogenetic search algorithms typically explore the collection of trees by rearranging subtrees with subtree prune-and-regraft (SPR) moves (Figure~\ref{FIGspr}) or the subset of SPR moves called nearest neighbor interchanges (NNI)~\cite{robinson1971comparison}.
 Thus, phylogenetic searches can be viewed as traversing the graph of phylogenetic trees induced by SPR adjacencies---the \emph{SPR graph}.
 
-\FIGspr
+%\FIGspr
+\begin{figure}
+\begin{center}
+  \includegraphics[width=4in]{figures/spr.pdf}
+\end{center}
+\caption{\
+  A rooted subtree-prune-regraft (rSPR) move~\cite{hein96}.
+}
+\label{FIGspr}
+\end{figure}
 
 It has become increasingly clear that the structure of the SPR graph plays an important role in determining the accuracy of tree searches.
 We will call these "graph effects"---one can't easily move from one tree to another due to the structure of the graph.
@@ -208,7 +217,6 @@ In particular, we present a full characterization of the change in SPR degree th
 
 \section{Preliminaries}
 
-<<<<<<< HEAD
 \begin{figure}
 	\hspace*{\stretch{1}}
 	\subfigure[\label{fig:x-tree}]{\includegraphics[scale=1.25]{figs/x-tree}}
@@ -229,9 +237,9 @@ In particular, we present a full characterization of the change in SPR degree th
 		(b) $T(V)$, where $V = \set{1,2,5}$.
 		(c) $T|V$.
 		(d) An SPR operation transforms $T$ into a new tree $T'$ by \emph{pruning} a \emph{subtree} and \emph{regrafting} it in another location.}
-	}
 	\label{fig:trees}
 \end{figure}
+
 \begin{figure}
 	\hspace*{\stretch{1}}
 	\includegraphics[scale=1.25]{figs/two-spr}
@@ -239,6 +247,7 @@ In particular, we present a full characterization of the change in SPR degree th
 	\caption{Two trees differing by two SPR operations that move the grey subtrees.}
 	\label{fig:two-spr}
 \end{figure}
+
 \begin{figure}
 	\hspace*{\stretch{1}}
 	\includegraphics[width=0.6\textwidth]{figs/neighborhood}
