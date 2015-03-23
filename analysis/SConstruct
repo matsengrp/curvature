@@ -49,11 +49,17 @@ for graph_type in graph_types:
 
         # First make the graphs and degrees.
         # TODO: silly to depend on tangle's trees.
+        spr_dense_graph = env.Command(
+            '../spr_neighbors/spr_dense_graph',
+            glob('../spr_neighbors/*{.cpp,.h}'),
+            'make -C ../spr_neighbors')
+
         adjacencies = env.Command(
             graphs_dir+graph_type+'/graph'+str(n_leaves)+'.csv.gz',
             tree_path,
             scripts_dir+'trees-to-adjacencies.sh ' +
             graph_type+' $SOURCE $TARGET')[0]
+        Depends(adjacencies, spr_dense_graph)
         graph_path = str(adjacencies).split('.')[0]+'.sobj'
 
         graphs[graph_type][n_leaves] = env.Command(
@@ -69,7 +75,7 @@ for graph_type in graph_types:
         # Now do random walks and get access times.
         random_spr_walk = env.Command(
             '../random_spr_walk/random_spr_walk',
-            glob('../random_spr_walk/*.cpp') + glob('../random_spr_walk/*.h'),
+            glob('../random_spr_walk/*{.cpp,.h}'),
             'make -C ../random_spr_walk')
 
         walks[graph_type][n_leaves] = env.Command(
