@@ -543,6 +543,16 @@ We now bound the relative and exact difference in SPR degree between two trees w
 
 We can improve these bounds in the case of adjacent trees.
 To do so, we require the following lemma that characterizes exactly how the degree of a tree changes after an rSPR operation.
+See Figure~\ref{fig:spr-degree-change} for an illustration of the Lemma.
+
+\begin{figure}
+	\hspace*{\stretch{1}}
+	\includegraphics[width=\textwidth]{figs/spr-degree-change}
+	\hspace*{\stretch{1}}
+	\caption{An SPR move labelled as in Lemma~\ref{lem:degree_change}.
+Moving the grey subtree $R$ from its position adjacent to $U$ in tree $T$ to its position adjacent to $V$ in tree $S$ changes the SPR degree by $2\left(k(a-b) + i - j\right)$.}
+	\label{fig:spr-degree-change}
+\end{figure}
 
 \begin{lemma}
 \label{lem:degree_change}
