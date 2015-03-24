@@ -89,19 +89,6 @@
 
 %---[ figures ]-----------------------------------------------------------------
 
-%\newcommand{\FIGspr}{\
-%\begin{figure}
-%\begin{center}
-%  \includegraphics[width=4in]{figures/spr.pdf}
-%\end{center}
-%\caption{\
-%  A rooted subtree-prune-regraft (rSPR) move~\cite{hein96}.
-%}
-%\label{FIGspr}
-%\end{figure}
-%}
-
-
 % uncomment to remove the proofs for length estimates
 %\usepackage{environ}
 %\NewEnviron{killcontents}{}
@@ -136,7 +123,7 @@ Phylogenetic trees and such moves naturally form the vertices and edges of a gra
 Despite the centrality of such graphs in phylogenetic inference, rather little is known about their large-scale properties.
 In this paper we learn about the rooted-tree version of the graph, known as the rSPR graph, by calculating the recently-developed notion of Ricci-Ollivier curvature for pairs of vertices in the rSPR graph with respect to two simple random walks on the rSPR graph.
 This notion of curvature is especially relevant to stochastic search on the graph.
-By proving theorems and direct calculation, we find a remarkable diversity of different curvatures on the rSPR graph for pairs of vertices separated by the same distance.
+By proving theorems and direct calculation with novel algorithms, we find a remarkable diversity of different curvatures on the rSPR graph for pairs of vertices separated by the same distance.
 This indicates significant structure of the graph; a greater understanding of this structure could ultimately lead to improved strategies for tree search.
 \end{abstract}
 
@@ -164,19 +151,8 @@ Within this framework researchers typically choose either a Bayesian approach, i
 
 In order to get accurate such estimates, MCMC samplers must sufficiently explore the collection of trees, or heuristic local search algorithms must find a way to the ML tree, avoiding and escaping local peaks.
 In both settings, one needs a means of describing the trees that are ``near'' to the current tree.
-Phylogenetic search algorithms typically explore the collection of trees by rearranging subtrees with subtree prune-and-regraft (SPR) moves (Figure~\ref{FIGspr}) or the subset of SPR moves called nearest neighbor interchanges (NNI)~\cite{robinson1971comparison}.
+Phylogenetic search algorithms typically explore the collection of trees by rearranging subtrees with subtree prune-and-regraft (SPR) moves (Figure~\ref{fig:spr}) or the subset of SPR moves called nearest neighbor interchanges (NNI)~\cite{robinson1971comparison}.
 Thus, phylogenetic searches can be viewed as traversing the graph of phylogenetic trees induced by SPR adjacencies---the \emph{SPR graph}.
-
-%\FIGspr
-\begin{figure}
-\begin{center}
-  \includegraphics[width=4in]{figures/spr.pdf}
-\end{center}
-\caption{\
-  A rooted subtree-prune-regraft (rSPR) move~\cite{hein96}.
-}
-\label{FIGspr}
-\end{figure}
 
 It has become increasingly clear that the structure of the SPR graph plays an important role in determining the accuracy of tree searches.
 We will call these "graph effects"---one can't easily move from one tree to another due to the structure of the graph.
@@ -204,7 +180,7 @@ This formalizes the notion of to what extent random walking brings points togeth
 Here the term \emph{random walk} on a space $X$ simply denotes a family of probability measures parameterized by points of $X$.
 
 In this paper, we investigate curvature of the rSPR graph with respect to two random walks and make connections to access times for those random walks.
-We use random walks on the rSPR graph as being a general notion of movement around a graph, modeling phylogenetic MCMC and ML searches \todo{Not sure what random walks have to do with ML searches}.
+We use random walks on the rSPR graph as being a general notion of movement around a graph, modeling phylogenetic MCMC searches.
 For this first effort we investigate random walks defined in terms of the graph itself: the lazy uniform random walk and MCMC sampling from the uniform prior on trees.
 We present a fast new algorithm for computing SPR graphs from a set of trees, reducing the time to do so from $\OhOf{m^2n}$ to $\OhOf{mn^3}$ for a set of $m$ trees with $n$ leaves.
 As the full rSPR treespace contains $(2n-3)!!$ trees, this is a significant improvement in practice for exploring large subsets of treespace.
@@ -264,11 +240,10 @@ We generally use $n$ to refer to the number of leaves in an $X$-tree.
 For a subset $V$ of $X$, $T(V)$ is the smallest subtree of $T$ that connects all nodes in $V$ (Fig.~\ref{fig:subtree}).
 The $V$-tree induced by $T$ is the smallest tree $T|V$ that can be obtained from $T(V)$ by suppressing unlabelled nodes with fewer than two children (Fig.~\ref{fig:induced}).
 For the rest of the paper, \textbf{we will assume that all phylogenetic trees are rooted,} and thus that tree inclusion is rooted tree inclusion.
-\todo{Figure of restriction and SPR operation}
 
 A \emph{parent (sub)tree} of a subtree $U$ is the smallest subtree strictly containing $U$.
 A \emph{parent edge} of a subtree $U$ is the edge connecting $U$ to the rest of the tree.
-The \emph{internal edges} of a tree are the edges that do not contact a leaf (we do not consider a rooted tree to have a ``root edge'', so trees have a degree two root). \todo{Generally we add a $\rho$ label and root edge to make rSPR work formally. I've put this in the definition so lets see if this confuses anything.}
+The \emph{internal edges} of a tree are the edges that do not contact a leaf or $\rho$.
 A \emph{ladder tree} (also known as a \emph{caterpillar tree}) is a tree such that every internal node has a leaf as a direct descendant.
 A \emph{balanced tree} is a tree such that the sum of the depths of internal nodes is minimum over all trees with the same number of leaves.
 The \emph{least common ancestor} (LCA) of a set $R$ of two or more nodes is the unique node that is an ancestor of each node $r \in R$ and at maximum depth.
@@ -279,26 +254,26 @@ $T$ is divided into two subtrees $T_x$ and $T_{p_x}$ containing $x$ and $p_x$, r
 Then the operation adds a new node $p'_x$ to $T_{p_x}$ by subdividing an edge of $T_{p_x}$ and adding a new edge $(x, p'_x)$, making $x$ a child of $p'_x$.
 Finally, $p_x$ is suppressed.
 See Figure~\ref{fig:spr} for an example.
-Note that the inclusion of $\rho$ allows for SPR moves that move subtrees to the root of the tree.\todo{Erm? I thought that we weren't going to have a root edge.}
+Note that the inclusion of $\rho$ allows for SPR moves that move subtrees to the root of the tree.
 
 SPR operations give rise to a distance measure between $X$-trees: $\dspr{T_1, T_2}$ is the minimum number of SPR operations required to transform an $X$-tree $T_1$ into $T_2$.
 For example, the trees in Figure~\ref{fig:two-spr} are separated by two SPR operations.
 Moreover, SPR operations naturally give rise to a graph on the set of $X$-trees.
-Let $\mathcal{T}_n$ be the set of trees with $n$ leaves and label set $X = \set{1, 2, \ldots n, \rho}$.\todo{$\rho$ again?}
+Let $\mathcal{T}_n$ be the set of trees with $n$ leaves and label set $X = \set{1, 2, \ldots n, \rho}$.
 Then the SPR graph $G$ of $\mathcal{T}_n$ is the graph with vertex set $V(G) = \mathcal{T}_n$ and edge set $E(G) = \set{(T,S) \mid \dspr{T,S} = 1, T \in V, S \in V}$.
 Observe that distances in this graph are given by $\dspr{\cdot,\cdot}$.
 
 To avoid confusion between the two types of graph structures considered here, we refer to vertices of the SPR graph as \emph{vertices} and vertices of individual trees as \emph{nodes}.
 Let $N(T)$ be the set of SPR neighbors of a tree $T$ (this does not include $T$).
-For example, the tree with 4 leaves in Figure~\ref{fig:neighborhood} has 10 neighbors.
+For example, the tree $T$ with 4 leaves in Figure~\ref{fig:neighborhood} has 10 neighbors.
 We say that the degree of $T$ is $\degree{T}$, that is, the number of trees which can be obtained from $T$ by a single SPR operation.
 Because we assume that all trees are bifurcating, we use degree to refer only to the degree of SPR graph vertices.
 
 Ollivier-Ricci curvature provides an intuitive formalization for quantifying the shape of a graph with respect to a random walk (or indeed any metric space, see~\cite{Ollivier2009-bw}).
 Let $m_x$ and $m_y$ be probability densities of a specified random walk starting at points $x$ and $y$ of a graph $G = (V,E)$, respectively.
-The $L^1$ transportation, or Wasserstein, distance between $m_x$ and $m_y$ is the minimum amount of ``work'' required to move $m_x$ to $m_y$ following the graph, that is
+The earth movers distance~\cite{rubner2000earth} (equivalently $L^1$ transportation, or Wasserstein distance~\cite{wasserstein}) between $m_x$ and $m_y$ is the minimum amount of ``work'' required to move $m_x$ to $m_y$ following the graph, that is
  $$ W_1(m_x, m_y) := \min_{\xi \in \Pi(m_x, m_y)} \sum \dspr{x,y} \xi(x,y),$$
-where $\Pi(m_x, m_y)$ is the set of of assignments of probability from $m_x$ to pairs of vertices in $V \times V$. \todo{FAM: cites.}
+where $\Pi(m_x, m_y)$ is the set of of assignments of probability from $m_x$ to pairs of vertices in $V \times V$.
 
 The curvature of $x$ and $y$ is then defined as:
 \begin{equation}
@@ -361,7 +336,7 @@ Thus, we believe this fast graph construction procedure will itself be useful fo
 \subsection{Computing curvature values}
 We computed all of the curvatures for pairs of trees with up to seven leaves to gain an intuitive understanding of the distribution of curvatures.
 We first used \texttt{dense\_spr\_graph} to compute the rSPR treespaces for four to seven leaves, as discussed in Section~\ref{sec:computing_treespace}.
-We then compute curvatures for given pairs of trees directly, by using linear programming to compute the minimal mass transport $W_1$ using the SAGE \cite{SAGE} front-end to the GLPK \todo{GLPK} solver; code can be found in \cite{gricci}.
+We then compute curvatures for given pairs of trees directly, by using linear programming to compute the minimal mass transport $W_1$ using the SAGE \cite{SAGE} front-end to the GLPK~\cite{glpk} solver; code can be found in \cite{gricci}.
 
 This would have required an enormous amount of computation to directly compute curvatures for the $((2n-3)!!)^2$ pairs of trees with $n$ leaves.
 We instead exploited the fact that pairs of trees which are equivalent modulo label renumbering are symmetric in the rSPR graph and therefore guaranteed to have the same curvature.
@@ -489,7 +464,7 @@ The full analysis can be reproduced using the SCons (\url{http://scons.org/}) bu
 
 \subsection{Results}
 
-After the chain has achieved stationarity, one sees a
+After the chain has achieved stationarity, one sees a \ldots~\todo{results}.
 
 
 \section{Rooted SPR Neighborhoods}
