@@ -87,8 +87,6 @@
 		{\kappa_n(#1;#2)}%
 }
 
-%---[ figures ]-----------------------------------------------------------------
-
 % uncomment to remove the proofs for length estimates
 %\usepackage{environ}
 %\NewEnviron{killcontents}{}
@@ -97,7 +95,7 @@
 
 
 \begin{document}
-\title{Ricci-Ollivier Curvature of two Random Walks on the Rooted Phylogenetic Subtree-prune-regraft Graph}
+\title{Ricci-Ollivier Curvature of two Random Walks on the Rooted Phylogenetic Subtree-Prune-Regraft Graph}
 
 \author{
 	\IEEEauthorblockN{Christopher Whidden}
@@ -464,7 +462,17 @@ The full analysis can be reproduced using the SCons (\url{http://scons.org/}) bu
 
 \subsection{Results}
 
-After the chain has achieved stationarity, one sees a \ldots~\todo{results}.
+
+\begin{figure}
+	\hspace*{\stretch{1}}
+	\subfigure[\label{fig:short-time-kappa-access}]{\includegraphics[width=3in]{figs/short-time-kappa-access}}
+	\hspace*{\stretch{2}}
+	\subfigure[\label{fig:long-time-kappa-access}]{\includegraphics[width=3in]{figs/long-time-kappa-access}}
+	\hspace*{\stretch{1}}
+    \caption{Access times for degree 24 trees and $\kappa$.}
+	\label{fig:kappa-access}
+\end{figure}
+
 
 
 \section{Rooted SPR Neighborhoods}

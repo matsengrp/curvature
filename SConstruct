@@ -4,13 +4,14 @@ import os
 VariantDir('_build', src_dir='.')
 
 env = Environment(ENV=os.environ)
-inkscape = Builder(action = 'inkscape --without-gui --export-pdf=$TARGET $SOURCE')
+inkscape = Builder(
+    action = 'inkscape --without-gui --export-area-drawing --export-pdf=$TARGET $SOURCE')
 env['BUILDERS']['Inkscape'] = inkscape
 env['BUILDERS']['Latexdiff'] = Builder(action = 'latexdiff $SOURCES > $TARGET')
 env['BUILDERS']['Copier'] = Builder(action = Copy('$TARGET', '$SOURCE'))
 
-figure_pdfs = [env.Inkscape(target="figures/" + os.path.basename(svg).replace('.svg','.pdf'), source=svg)
-               for svg in glob.glob('figure_prep/*.svg')]
+figure_pdfs = [env.Inkscape(target="figs/" + os.path.basename(svg).replace('.svg','.pdf'), source=svg)
+               for svg in glob.glob('prefigs/*.svg')]
 
 pdfs = [env.Copier(target = '_build/' + os.path.basename(pdf), source = pdf)
         for pdf in glob.glob('figures/*.pdf')]
