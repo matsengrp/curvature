@@ -7,7 +7,7 @@ env = Environment(ENV=os.environ)
 
 no_slurm = bool(subprocess.call('which sbatch'.split()))
 
-min_leaves = 4
+min_leaves = 5
 max_leaves = 5
 
 walk_seed = 0
@@ -129,10 +129,10 @@ for graph_type in graph_types:
                  tangle_newicks[graph_type][n_leaves],
                  tangle_degrees[graph_type][n_leaves]],
                 scripts_dir+'merge-results.py $SOURCES $TARGET')
-            env.Command(
-                curr_dir+'hexbin'+str(n_leaves)+'.svg',
-                [scripts_dir+'plot.py', results],
-                '${SOURCES[0]} --which hexbin ${SOURCES[1]} $TARGET')
+#            env.Command(
+#                curr_dir+'hexbin'+str(n_leaves)+'.svg',
+#                [scripts_dir+'plot.py', results],
+#                '${SOURCES[0]} --which hexbin ${SOURCES[1]} $TARGET')
             env.Command(
                 curr_dir+'scatter'+str(n_leaves)+'.png',
                 [scripts_dir+'plot.py', results],

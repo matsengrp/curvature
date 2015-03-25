@@ -51,17 +51,20 @@ elif args.which == 'scatter':
             y='dist_jitter',
             alpha=0.4)
     else:
+        # Easy way to re-label colorbar. :)
+        df['average degree'] = df['avg_deg']
         p = df.plot(
             kind='scatter',
             x='kappa_R',
             y='dist_jitter',
             alpha=0.4,
-            c='avg_deg',
+            c='average degree',
             cmap=plt.get_cmap('Blues'))
 
 p.grid(b=None)
-sns.despine()
-# sns.despine(offset=10, trim=True)
+sns.despine(offset=10)
+p.set_xlabel('kappa')
+p.set_ylabel('distance (jittered)')
 
 if args.d3:
     from mpld3 import fig_to_html, plugins
