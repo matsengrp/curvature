@@ -79,6 +79,7 @@
 
 %---[ Distance measures, invocations, etc ]-------------------------------------
 \newattribute{dspr}{d_{\mathrm{SPR}}}
+\newattribute{dnni}{d_{\mathrm{NNI}}}
 \newparentheses{degree}{|N(}{)|}
 
 %---[ curvature ]---------------------------------------------------------------
@@ -334,8 +335,7 @@ Constructing the 8-taxon tree space using the previous method required 377,395 s
 Thus, we believe this fast graph construction procedure will itself be useful for further studies of treespace subsets similar to~\cite{Whidden2015-yi}.
 
 \subsection{Computing curvature values}
-We computed all of the curvatures for pairs of trees with up to seven leaves to gain an intuitive understanding of the distribution of curvatures.
-We first used \texttt{dense\_spr\_graph} to compute the rSPR treespaces for four to seven leaves, as discussed in Section~\ref{sec:computing_treespace}.
+To compute curvature values, we first used \texttt{dense\_spr\_graph} to compute the rSPR treespaces for four to seven leaves, as discussed in Section~\ref{sec:computing_treespace}.
 We then compute curvatures for given pairs of trees directly, by using linear programming to compute the minimal mass transport $W_1$ using the SAGE \cite{SAGE} front-end to the GLPK~\cite{glpk} solver; code can be found in \cite{gricci}.
 
 This would have required an enormous amount of computation to directly compute curvatures for the $((2n-3)!!)^2$ pairs of trees with $n$ leaves.
@@ -444,7 +444,6 @@ We sampled \ldots \todo{sampling and runtime information}.
 \cite{GAP4}
 
 \subsection{Access time computation}
-
 The access time for a pair of vertices in a graph is the (random) number of iterations required to go from one of the vertices to the other in a random walk~\cite{lovasz1993random}; we were interested in the connection between curvature and access time.
 In previous work, we computed mean access times (MAT) between pairs of trees in the MCMC random walks---the mean number of iterations required to move from one tree to the other.
 We applied this work to demonstrate graph effects in uSPR subgraphs of real MCMC samples using MrBayes~\cite{Whidden2015-yi} using the \texttt{sprspace}~\cite{sprspace} software.
@@ -869,6 +868,33 @@ We now bound the difference between the curvature of uniform random walks $\curv
 	Again, this is at most one fewer tree when $\dspr{T,S}=1$.
 
 \end{proof}
+
+\subsection{Computational investigation}
+We computed all of the curvatures for pairs of trees with up to seven leaves to confirm our theoretical work as described before. \todo{Update once 7 taxon runs have finished}.
+
+
+\begin{figure}
+	\hspace*{\stretch{1}}
+	\subfigure[5 taxa]{\includegraphics[width=3in]{figs/rspr-upmh-scatter5}}
+	\hspace*{\stretch{2}}
+	\subfigure[6 taxa]{\includegraphics[width=3in]{figs/rspr-upmh-scatter6}}
+	\hspace*{\stretch{1}}
+    \caption{Scatterplot of $\kappa(\MH; T_1,T_2)$ values versus $\dspr{T_1,T_2}$ for the rSPR graph. Distance values randomly perturbed (``jittered'') a small amount to avoid overplotting.}
+	\label{fig:rspr-scatter}
+\end{figure}
+
+\begin{figure}
+	\hspace*{\stretch{1}}
+	\subfigure[5 taxa]{\includegraphics[width=3in]{figs/nni-upmh-scatter5}}
+	\hspace*{\stretch{2}}
+	\subfigure[6 taxa]{\includegraphics[width=3in]{figs/nni-upmh-scatter6}}
+	\hspace*{\stretch{1}}
+    \caption{Scatterplot of $\kappa(\MH; T_1,T_2)$ values versus $\dnni{T_1,T_2}$ for the NNI graph. Distance values randomly perturbed (``jittered'') a small amount to avoid overplotting.}
+	\label{fig:nni-scatter}
+\end{figure}
+
+
+
 
 
 
