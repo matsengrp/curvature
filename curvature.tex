@@ -357,7 +357,7 @@ Given such an order, a uniform neighbor can be selected by its index in $\OhOf{n
 We note that the recursive formula of Song~\cite{Song2003-gf} for the degree of a tree does not group SPR moves that move a particular subtree, and thus would still require $\OhOf{n^2}$ time to select a specific SPR neighbor by index.
 
 Instead, we consider the distribution of SPR moves in terms of the number of nodes contained within a subtree.
-Recall that a tree with $n$ leaves has $2n-1$ total nodes.
+Recall that a tree with $n$ leaves has $2n-1$ total nodes (ignoring the artificial $\rho$ node).
 Given a subtree $R$ with $x$ nodes, observe that there are $2n-1 - x$ possible locations to regraft $R$.
 However, some of these moves will result in the same neighboring tree as other SPR moves.
 In particular, where a node's edge means the edge connecting the subtree rooted at that node to the rest of the tree:
@@ -367,7 +367,7 @@ In particular, where a node's edge means the edge connecting the subtree rooted 
 \item Moving $R$ to its grandparent edge is the same as moving its aunt to its sibling edge
 \item Moving $R$ to its aunt edge is the same as moving its aunt to $R$'s edge.
 \end{enumerate}
-We can thus assign $2n-1-x-4$ moves to any node at a depth greater than 1 and $2n-1-x-2$ moves to depth 1 nodes (lacking both an aunt and grandparent).
+We can thus assign $2n-1-x-4$ moves to any node at a depth greater than 1 (from the original non-$\rho$ root) and $2n-1-x-2$ moves to depth 1 nodes (lacking both an aunt and grandparent).
 Call the portion of the neighborhood of a tree $T$ that can be obtained by moving a subtree $R$ rooted at a node $u$, and that is assigned to $u$, $N(T,u)$.
 In this manner, we achieve an alternative solution for computing the degree of a tree in the SPR graph:
 
@@ -379,7 +379,7 @@ In this manner, we achieve an alternative solution for computing the degree of a
 	$$\size{N(T,u)} = \begin{cases}
 		2n - 1 - x - 4 &\text{if depth($u$) $ > 1$, } \\
 		2n - 1 - x - 2 &\text{if depth($u$) $ = 1$ } \\
-		0 &\text{if depth($u$) $ = 0$ } \\
+		0 &\text{if depth($u$) $ \le 0$ } \\
 	\end{cases}.$$
 	Moreover, each tree of $N(T,u)$ can be obtained by an SPR operation that moves the subtree rooted at $u$.
 \end{lemma}
@@ -388,8 +388,8 @@ In this manner, we achieve an alternative solution for computing the degree of a
 	So, suppose, for the purpose of obtaining a contradiction, that there exist two nodes $u$ and $v$ of $T$ such that there exists a tree $S \in (N(T,u) \cap N(T,v))$.
 	Then $S$ can be obtained from $T$ by moving the subtrees rooted at $u$ or $v$.
 	Call these $U$ and $V$, respectively.
-	This implies that both $T \setminus U = S \setminus U$ and $T \setminus V = S \setminus V$.
-	Then the SPR moves that move $U$ or $V$ to obtain $S$ must be nearest neighbor interchanges (NNIs), that is SPR moves which move their subtree to one of four locations: their grandparent edge, aunt edge, sibling's left child edge or sibling's right child edge.
+	This implies that both $T \setminus U = S \setminus U$ and $T \setminus V = S \setminus V$ by the definition of an SPR operation.
+	Then the SPR moves that move $U$ or $V$ to obtain $S$ must be nearest neighbor interchanges (NNIs), that is, SPR moves which move their subtree to one of four locations: their grandparent edge, aunt edge, sibling's left child edge or sibling's right child edge.
 	This implies that, without loss of generality, $U$ is moved to its grandparent edge and $V$ to $U's$ sibling (i.e. (iii) above) or $U$ is moved to its aunt edge and $V$ to $U$'s edge (i.e. iv above), a contradiction.
 	Therefore the claim holds.
 \end{proof}
@@ -422,7 +422,7 @@ We can thus apply the following algorithm to select a neighbor uniformly at rand
 	We precompute these by (1) labeling each node with its preorder number in a preorder traversal and (2) summing the number of descendant nodes in a postorder traversal and storing the results in an array indexed by preorder number.
 	Both of these traversals require $\OhOf{n}$-time.
 	There are $2n-1$ = $\OhOf{n}$ nodes of $T$, and $\size{N(T,u)}$ can be computed in constant time using the subtree sizes.
-	Moreover, the tree $S$ can be found by iterating over the edges of $T$ that are not contained within $u$'s subtree to select the corresponding SPR destination.
+	Moreover, the tree $S$ can be found in $\OhOf{n}$-time by iterating over the edges of $T$ that are not contained within $u$'s subtree to select the corresponding SPR destination.
 	Finally, we require linear time to apply the chosen SPR operation which entails removing a node, adding a node, and updating a constant number of pointers.
 	Thus, the for loop requires linear time.
 	By Lemma~\ref{lem:compute_degree} the chosen tree is an SPR neighbor of $T$ and is chosen uniformly at random.
@@ -477,6 +477,7 @@ The full analysis can be reproduced using the SCons (\url{http://scons.org/}) bu
 
 \section{Rooted SPR Neighborhoods}
 
+Having explored curvature values empirically for SPR graphs with 3--7 leaves, we now consider them theoretically.
 In the absence of a bias provided by a likelihood function, curvature for the random walks we consider is entirely determined by the degree of vertices in the graph.
 Thus, in order to provide bounds on curvature, we will begin by bounding differences between degrees.
 
@@ -708,7 +709,7 @@ Next we note a rough bound on the curvature of two trees with respect to their d
 	The lower bound follows similarly.
 \end{proof}
 
-Next we obtain a tighter bound on the maximum curvature of two adjacent trees.
+We can obtain a tighter bound on the maximum curvature of two adjacent trees.
 \begin{lemma}
 	The maximum curvature of the uniform random walk between two adjacent trees with $n$ leaves is $\frac{6n-17}{3n^2-13n+14}$.
 \end{lemma}
@@ -782,7 +783,7 @@ For example, $\curvature[\ell_{\frac{1}{4}}]{T,S}$ describes the curvature of th
 For the lazy random walk, $m_T$ is now $T \cup N(T)$, with each neighbor assigned mass $\frac{p}{\degree{T}}$ and $T$ assigned the remaining $1 - p$ mass.
 Note that Ollivier defined $\curvature[\ell_p]{T, S} := \left(1 - \frac{W_1(m_T, m_S)}{d(x, y)}\right) / p$~\cite{Ollivier2009-bw}.
 This definition of curvature is invariant of $p$ for small enough $p$ and was used by Ollivier to avoid parity problems on graphs where the uniform random walk is periodic.
-As we now prove, the curvature of the lazy random walk is closely related to that of the uniform random walk.
+As we now prove, the curvature of the lazy random walk under this definition is closely related to that of the uniform random walk.
 
 \begin{lemma}
 	Let $T$ and $S$ be rooted phylogenetic trees with $n$ leaves.
