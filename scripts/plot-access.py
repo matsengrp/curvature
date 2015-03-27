@@ -75,8 +75,14 @@ for (t1_deg, t2_deg, dist), group in catted.groupby(['t1_deg','t2_deg', 'dist'])
     i = np.where(t1_degs == t1_deg)[0][0]
     j = np.where(t2_degs == t2_deg)[0][0]
     e_axs[i][j].set_title(title_str, weight=600)
-    p = group['mean_access'].plot(
-        ax=e_axs[i][j], kind='hist', stacked=True, bins=25)
+
+    binwidth=1
+    data = group['mean_access']
+    bins = 10
+#     if len(data) > 1:
+#         bins = np.arange(min(data), max(data) + binwidth, binwidth)
+    p = data.plot(
+        ax=e_axs[i][j], kind='hist', stacked=True, bins=bins)
     p.grid(b=None)
 
     d_axs[i][j].set_title(title_str, weight=600)

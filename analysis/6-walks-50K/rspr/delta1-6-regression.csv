@@ -1,0 +1,5 @@
+,coefficient,p-value
+$T_1$ degree,9.427,2.944e-07
+$T_2$ degree,-2.523,0.1432
+distance,-34.19,0.0007557
+$\kappa$ (uniform prior MH),-690.4,1.436e-22

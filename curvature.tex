@@ -1,6 +1,7 @@
 \documentclass[11pt,onecolumn,conference]{IEEEtran}
 
 \usepackage{amsmath,amsthm}
+\usepackage{csvsimple}
 \usepackage{ifthen}
 \usepackage{todonotes}
 %\usepackage[notref,notcite]{showkeys} % show keys for eqs, etc.
@@ -462,6 +463,7 @@ The full analysis can be reproduced using the SCons (\url{http://scons.org/}) bu
 
 \subsection{Results}
 
+Now
 
 \begin{figure}
 	\hspace*{\stretch{1}}
@@ -472,6 +474,22 @@ The full analysis can be reproduced using the SCons (\url{http://scons.org/}) bu
     \caption{Access times for degree 24 trees and $\kappa$.}
 	\label{fig:kappa-access}
 \end{figure}
+
+\begin{table}
+\centering
+\caption{Regression showing factors determining mean access time for rSPR.}
+\subtable[5 taxa]{\csvautotabular{analysis/5-walks-200K/rspr/mean-access-5-regression.csv}}
+\subtable[6 taxa]{\csvautotabular{analysis/6-walks-50K/rspr/mean-access-6-regression.csv}}
+\label{TABregressionMAT}
+\end{table}
+
+\begin{table}
+\centering
+\caption{Regression showing factors determining $\delta_1$ for rSPR.}
+\subtable[5 taxa]{\csvautotabular{analysis/5-walks-200K/rspr/delta1-5-regression.csv}}
+\subtable[6 taxa]{\csvautotabular{analysis/6-walks-50K/rspr/delta1-6-regression.csv}}
+\label{TABregressionDelta}
+\end{table}
 
 
 
