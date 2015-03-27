@@ -22,6 +22,7 @@ graphs_dir = 'graphs/'
 scripts_dir = '../scripts/'
 tangles_dir = '../tangle/rooted-symmetric/'
 walks_dir = 'walks/'
+#walks_dir = '6-walks-50K/'
 
 
 # First make graphs and associated files.
@@ -134,7 +135,7 @@ for graph_type in graph_types:
 #                [scripts_dir+'plot.py', results],
 #                '${SOURCES[0]} --which hexbin ${SOURCES[1]} $TARGET')
             env.Command(
-                curr_dir+'scatter'+str(n_leaves)+'.png',
+                curr_dir+'scatter'+str(n_leaves)+'.svg',
                 [scripts_dir+'plot.py', results],
                 '${SOURCES[0]} --which scatter ${SOURCES[1]} $TARGET')
             env.Command(
