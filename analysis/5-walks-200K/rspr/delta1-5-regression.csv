@@ -1,5 +1,5 @@
 ,coefficient,p-value
 $T_1$ degree,634,9.376e-05
 $T_2$ degree,-167.8,0.2366
-distance,-2859,5.151e-06
+$d_{\operatorname{rSPR}}$,-2859,5.151e-06
 $\kappa$ (uniform prior MH),-1.331e+04,4.462e-06
