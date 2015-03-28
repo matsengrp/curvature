@@ -10,7 +10,7 @@
 \usepackage{enumitem}
 \usepackage{url}
 \usepackage{subfigure}
-\usepackage[nomarkers,nofiglist]{endfloat}
+\usepackage[nomarkers,nofiglist,notablist]{endfloat}
 \let\MYoriglatexcaption\caption
 \renewcommand{\caption}[2][\relax]{\MYoriglatexcaption[#2]{#2}}
 % shift for todonotes
@@ -261,7 +261,7 @@ Because we assume that all trees are bifurcating, we use degree to refer only to
 
 Ollivier-Ricci curvature provides an intuitive formalization for quantifying the shape of a graph with respect to a random walk (or indeed any metric space, see~\cite{Ollivier2009-bw}).
 Let $m_x$ and $m_y$ be probability densities of a specified random walk starting at points $x$ and $y$ of a graph $G = (V,E)$, respectively.
-The Wasserstein distance~\cite{Villani2003-wv} (equivalently $L^1$ transportation, or ``earth movers distance'') between $m_x$ and $m_y$ is the minimum amount of ``work'' required to move $m_x$ to $m_y$ following the graph, that is
+The Wasserstein distance~\cite{Villani2003-wv} (equivalently $L^1$ transportation, or ``earth movers distance''~\cite{rubner2000earth}) between $m_x$ and $m_y$ is the minimum amount of ``work'' required to move $m_x$ to $m_y$ following the graph, that is
  $$ W_1(m_x, m_y) := \min_{\xi \in \Pi(m_x, m_y)} \sum \dspr{x,y} \xi(x,y),$$
 where $\Pi(m_x, m_y)$ is the set of of assignments of probability from $m_x$ to pairs of vertices in $V \times V$.
 
@@ -331,6 +331,25 @@ This would have required an enormous amount of computation to directly compute c
 We instead exploited the fact that pairs of trees which are equivalent modulo label renumbering are symmetric in the rSPR graph and therefore guaranteed to have the same curvature.
 We thus directly computed curvature values for one representative pair from each such equivalence class, or \emph{tanglegram} \cite{Venkatachalam2010-zh}; the enumeration methods are described in a manuscript in preparation, and the SAGE \cite{SAGE} and GAP4 \cite{GAP4} code can be found online \cite{tangle}.
 
+We saw a wide variation in curvature values among tanglegrams (Figure~\ref{fig:rspr-scatter}).~\todo{EM: add 7-taxa graph when ready}
+Curvature values tended to increase with increasing SPR distance.
+In addition, their variance decreased with increasing distance.
+Minimum curvature values for a given treespace were observed between neighboring trees, while maximum curvature values were observed between trees at maximum distance or one rSPR move closer than the maximum.
+This suggests that the increased difficulty of moving between trees in a random walk due to distance may be tempered somewhat by curvature in the highly connected rSPR treespaces.
+
+Larger treespaces tended to have smaller curvature values.
+Indeed, the 7-leaf treespace contained adjacent pairs of trees with negative curvature.
+Such pairs are possible bottlenecks in phylogenetic searches which may be exarcebated by likelihood or branch length constraints.
+
+\begin{figure}
+	\hspace*{\stretch{1}}
+	\subfigure[5 taxa]{\includegraphics[width=3in]{figs/rspr-upmh-scatter5}}
+	\hspace*{\stretch{2}}
+	\subfigure[6 taxa]{\includegraphics[width=3in]{figs/rspr-upmh-scatter6}}
+	\hspace*{\stretch{1}}
+    \caption{Scatterplot of $\kappa(\MH; T_1,T_2)$ values versus $\dspr{T_1,T_2}$ for the rSPR graph. Distance values randomly perturbed (``jittered'') a small amount to avoid overplotting.}
+	\label{fig:rspr-scatter}
+\end{figure}
 
 \subsection{Simulating random walks on the rSPR graph}
 \label{sec:random_walks}
@@ -427,10 +446,9 @@ We thus have the following corollary:
 	Given a tree $T$, the SPR neighbors of $T$ can be enumerated in $\OhOf{n^3}$-time.
 \end{corollary}
 
-We implemented this procedure in the C++ package \texttt{random\_spr\_walk}~\cite{random_spr_walk}.
-We sampled \ldots \todo{sampling and runtime information}.
-
-\cite{GAP4}
+We implemented this procedure in the C++ package \texttt{random\_spr\_walk}~\cite{random_spr_walk}. 
+We sampled a 200,000-iteration random walk on the 4-leaf rSPR graph and a 50,000-iteration random walk on the 5-leaf rSPR graph.
+This required XXX and YYY time respectively.~\todo{EM: can you fill in the time this required?}
 
 \subsection{Access time simulation}
 The access time for a pair of vertices in a graph is the (random) number of iterations required to go from one of the vertices to the other in a random walk~\cite{lovasz1993random}; we were interested in the connection between curvature and access time.
@@ -489,7 +507,7 @@ The full analysis can be reproduced using the SCons (\url{http://scons.org/}) bu
 
 
 \section{Rooted SPR Neighborhoods}
-Having made the connection between curvature values and access times on the SPR graphs, we now consider them theoretically.
+Having made the connection between curvature values and access times on the SPR graphs, we now consider curvature theoretically.
 In the absence of a bias provided by a likelihood function, curvature for the random walks we consider is entirely determined by the degree of vertices in the graph.
 Thus, in order to provide bounds on curvature, we will begin by bounding differences between degrees.
 
@@ -860,27 +878,11 @@ We now bound the difference between the curvature of uniform random walks $\curv
 	Again, this is at most one fewer tree when $\dspr{T,S}=1$.
 \end{proof}
 
-\subsection{Computational investigation and validation}
-We computed all of the curvatures for pairs of trees with up to seven leaves to confirm our theoretical work with direct calculation as described before.
-\todo{Update once 7 taxon runs have finished}
-
-Indeed we see that for rSPR ... (Figure~\ref{fig:rspr-scatter}). \todo{Chris: can you fill this in?}
-
-\begin{figure}
-	\hspace*{\stretch{1}}
-	\subfigure[5 taxa]{\includegraphics[width=3in]{figs/rspr-upmh-scatter5}}
-	\hspace*{\stretch{2}}
-	\subfigure[6 taxa]{\includegraphics[width=3in]{figs/rspr-upmh-scatter6}}
-	\hspace*{\stretch{1}}
-    \caption{Scatterplot of $\kappa(\MH; T_1,T_2)$ values versus $\dspr{T_1,T_2}$ for the rSPR graph. Distance values randomly perturbed (``jittered'') a small amount to avoid overplotting.}
-	\label{fig:rspr-scatter}
-\end{figure}
-
-
 \section{Conclusion and future work}
 In summary, we have extended knowledge about the the phylogenetic rSPR graph underlying phylogenetic inference beyond previous work concerning graph diameter and vertex degree.
-We done so by developing theoretical and computational frameworks to compute Ricci-Ollivier curvature of the rSPR graph.
+We did so by developing theoretical and computational frameworks to bound and compute Ricci-Ollivier curvature of the rSPR graph.
 We find that curvature, along with degree and distance, determine the early dynamics of hitting times for random walks.
+Moreover, we proved that rSPR graph degree changes depend quadratically on the product of the size of the regrafted subtree and its change in depth and that rSPR treespace tends toward flatness with respect to SPR moves that move small subtrees.
 
 We emphasize that the influence of curvature is small in this setting of equiprobable trees (Fig.~\ref{fig:short-time-kappa-access}) and that the probability of the target node in the stationary distribution is the predominant factor determining hitting times for pairs of trees (Fig.~\ref{fig:long-time-kappa-access}).
 However, it is well known that MCMC takes a long time to approximate real phylogenetic posterior distributions even when the Bayesian credible set is small, and in fact our previous work showed significant graph effects in the mixing time for phylogenetic MCMC for credible sets with hundreds or thousands of trees~\cite{Whidden2015-yi}.
