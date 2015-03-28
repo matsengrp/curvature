@@ -329,6 +329,10 @@ We then compute curvatures for given pairs of trees directly, by using linear pr
 
 This would have required an enormous amount of computation to directly compute curvatures for the $((2n-3)!!)^2$ pairs of trees with $n$ leaves.
 We instead exploited the fact that pairs of trees which are equivalent modulo label renumbering are symmetric in the rSPR graph and therefore guaranteed to have the same curvature.
+For example, because the pairs
+$\{(((1,2),3),4), ((1,2),(3,4))\}$ and
+$\{(((1,4),3),4), ((1,4),(2,3))\}$
+are the same after relabeling, their curvatures are the same.
 We thus directly computed curvature values for one representative pair from each such equivalence class, or \emph{tanglegram} \cite{Venkatachalam2010-zh}; the enumeration methods are described in a manuscript in preparation, and the SAGE \cite{SAGE} and GAP4 \cite{GAP4} code can be found online \cite{tangle}.
 
 We saw a wide variation in curvature values among tanglegrams (Figure~\ref{fig:rspr-scatter}).~\todo{EM: add 7-taxa graph when ready}
@@ -459,11 +463,7 @@ Here, to gain more insight, we used simulation to approximate the entire access 
 As before, calculating these distributions for all pairs of trees would have required a tremendous amount of memory and computational power in order to get good estimates.
 Here again we use the insight that the access time for a pair of trees with a simple random walk does not depend on the actual labeling of those trees, but rather only on their relative labeling.
 Thus rather than enumerate access times between trees, we enumerate times between pairs of trees in a tanglegram.
-For example, because the pairs
-$\{(((1,2),3),4), ((1,2),(3,4))\}$ and
-$\{(((1,4),3),4), ((1,4),(2,3))\}$
-are the same after relabeling, their access times will have identical distributions.
-Thus to calculate the empirical distributions of access times we aggregate all access times for the same tanglegram \cite{gricci, tangle}.
+To calculate the empirical distributions of access times we aggregate all access times for the same tanglegram \cite{gricci, tangle}.
 
 \begin{table}
 \centering
