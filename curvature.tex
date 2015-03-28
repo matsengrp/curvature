@@ -172,13 +172,13 @@ Here the term \emph{random walk} on a space $X$ simply denotes a family of proba
 In this paper, we investigate curvature of the rSPR graph with respect to two random walks and make connections to access times for those random walks.
 We use random walks on the rSPR graph as being a general notion of movement around a graph, modeling phylogenetic MCMC searches.
 For this first effort we investigate random walks defined in terms of the graph itself: the lazy uniform random walk and MCMC sampling from the uniform prior on trees.
-We present a fast new algorithm for computing SPR graphs from a set of trees, reducing the time to do so from $\OhOf{m^2n}$ to $\OhOf{mn^3}$ for a set of $m$ trees with $n$ leaves.
+We present a fast new algorithm for computing rSPR graphs from a set of trees, reducing the time to do so from $\OhOf{m^2n}$ to $\OhOf{mn^3}$ for a set of $m$ trees with $n$ leaves.
 As the full rSPR treespace contains $(2n-3)!!$ trees, this is a significant improvement in practice for exploring large subsets of treespace.
 By exploiting symmetries in the rSPR graph, we were able to calculate all of the curvatures for pairs of trees with up to seven leaves.
-By carefully examining the overlap in SPR moves, we present a new method for computing the degree of a tree in the SPR graph that allows one to select an SPR neighbor uniformly at random in linear-time without explicitly generating the graph.
+By carefully examining the overlap in rSPR moves, we present a new method for computing the degree of a tree in the rSPR graph that allows one to select an rSPR neighbor uniformly at random in linear-time without explicitly generating the graph.
 Using this method to simulate these random walks, we find that the distribution of access times between pairs of trees can be described by distance between the trees, the degrees of the trees, and the curvature.
 By getting a more fine-tuned understanding of the rSPR neighborhood of pairs of vertices, we are able to give bounds on curvatures under these random walks.
-In particular, we present a full characterization of the change in SPR degree that occurs from a given SPR move and find that, contrary to previous assumptions\todo{This is going to need a citation or be taken out}, SPR moves which move large subtrees may have greater graph effects than those that move small subtrees.
+In particular, we present a full characterization of the change in rSPR degree that occurs from a given rSPR move and find that, contrary to previous assumptions\todo{This is going to need a citation or be taken out}, rSPR moves which move large subtrees may have greater graph effects than those that move small subtrees.
 
 
 \section{Preliminaries}
@@ -202,7 +202,7 @@ In particular, we present a full characterization of the change in SPR degree th
 	\caption{(a) An $X$-tree $T$.
 		(b) $T(V)$, where $V = \set{1,2,5}$.
 		(c) $T|V$.
-		(d) An SPR operation transforms $T$ into a new tree $T'$ by \emph{pruning} a \emph{subtree} and \emph{regrafting} it in another location.}
+		(d) An rSPR operation transforms $T$ into a new tree $T'$ by \emph{pruning} a \emph{subtree} and \emph{regrafting} it in another location.}
 	\label{fig:trees}
 \end{figure}
 
@@ -210,7 +210,7 @@ In particular, we present a full characterization of the change in SPR degree th
 	\hspace*{\stretch{1}}
 	\includegraphics[scale=1.25]{figs/two-spr}
 	\hspace*{\stretch{1}}
-	\caption{Two trees differing by two SPR operations that move the grey subtrees.}
+	\caption{Two trees differing by two rSPR operations that move the grey subtrees.}
 	\label{fig:two-spr}
 \end{figure}
 
@@ -239,25 +239,25 @@ A \emph{balanced tree} is a tree such that the sum of the depths of internal nod
 The \emph{least common ancestor} (LCA) of a set $R$ of two or more nodes is the unique node that is an ancestor of each node $r \in R$ and at maximum depth.
 Similarly, the LCA of two or more subtrees is the LCA of their parent nodes.
 
-A \emph{subtree prune-and-regraft} (SPR) operation on an $X$-tree $T$ cuts an edge $e = (x, p_x)$ where $p_x$ denotes the parent of node $x$.
+A (rooted) \emph{subtree prune-and-regraft} (rSPR) operation on an $X$-tree $T$ cuts an edge $e = (x, p_x)$ where $p_x$ denotes the parent of node $x$.
 $T$ is divided into two subtrees $T_x$ and $T_{p_x}$ containing $x$ and $p_x$, respectively.
 Then the operation adds a new node $p'_x$ to $T_{p_x}$ by subdividing an edge of $T_{p_x}$ and adding a new edge $(x, p'_x)$, making $x$ a child of $p'_x$.
 Finally, $p_x$ is suppressed.
 See Figure~\ref{fig:spr} for an example.
-Note that the inclusion of $\rho$ allows for SPR moves that move subtrees to the root of the tree.
+Note that the inclusion of $\rho$ allows for rSPR moves that move subtrees to the root of the tree.
 
-SPR operations give rise to a distance measure between $X$-trees: $\dspr{T_1, T_2}$ is the minimum number of SPR operations required to transform an $X$-tree $T_1$ into $T_2$.
-For example, the trees in Figure~\ref{fig:two-spr} are separated by two SPR operations.
-Moreover, SPR operations naturally give rise to a graph on the set of $X$-trees.
+rSPR operations give rise to a distance measure between $X$-trees: $\dspr{T_1, T_2}$ is the minimum number of rSPR operations required to transform an $X$-tree $T_1$ into $T_2$.
+For example, the trees in Figure~\ref{fig:two-spr} are separated by two rSPR operations.
+Moreover, rSPR operations naturally give rise to a graph on the set of $X$-trees.
 Let $\mathcal{T}_n$ be the set of trees with $n$ leaves and label set $X = \set{1, 2, \ldots n, \rho}$.
-Then the SPR graph $G$ of $\mathcal{T}_n$ is the graph with vertex set $V(G) = \mathcal{T}_n$ and edge set $E(G) = \set{(T,S) \mid \dspr{T,S} = 1, T \in V, S \in V}$.
+Then the rSPR graph $G$ of $\mathcal{T}_n$ is the graph with vertex set $V(G) = \mathcal{T}_n$ and edge set $E(G) = \set{(T,S) \mid \dspr{T,S} = 1, T \in V, S \in V}$.
 Observe that distances in this graph are given by $\dspr{\cdot,\cdot}$.
 
-To avoid confusion between the two types of graph structures considered here, we refer to vertices of the SPR graph as \emph{vertices} and vertices of individual trees as \emph{nodes}.
-Let $N(T)$ be the set of SPR neighbors of a tree $T$ (this does not include $T$).
+To avoid confusion between the two types of graph structures considered here, we refer to vertices of the rSPR graph as \emph{vertices} and vertices of individual trees as \emph{nodes}.
+Let $N(T)$ be the set of rSPR neighbors of a tree $T$ (this does not include $T$).
 For example, the tree $T$ with 4 leaves in Figure~\ref{fig:neighborhood} has 10 neighbors.
-We say that the degree of $T$ is $\degree{T}$, that is, the number of trees which can be obtained from $T$ by a single SPR operation.
-Because we assume that all trees are bifurcating, we use degree to refer only to the degree of SPR graph vertices.
+We say that the degree of $T$ is $\degree{T}$, that is, the number of trees which can be obtained from $T$ by a single rSPR operation.
+Because we assume that all trees are bifurcating, we use degree to refer only to the degree of rSPR graph vertices.
 
 Ollivier-Ricci curvature provides an intuitive formalization for quantifying the shape of a graph with respect to a random walk (or indeed any metric space, see~\cite{Ollivier2009-bw}).
 Let $m_x$ and $m_y$ be probability densities of a specified random walk starting at points $x$ and $y$ of a graph $G = (V,E)$, respectively.
@@ -280,14 +280,14 @@ Curvature thus provides an intuitive measure of the difficulty of moving between
 \label{sec:computing_treespace}
 
 We computed the rSPR treespaces for four to seven leaves.
-This required a fast new algorithm for SPR graph construction, reducing the time required to do so from $\OhOf{m^2 n}$ to $\OhOf{mn^3}$, where $m$ is the number of trees in the graph ($(2n-3)!!$ in this case) and $n$ the number of leaves.
+This required a fast new algorithm for rSPR graph construction, reducing the time required to do so from $\OhOf{m^2 n}$ to $\OhOf{mn^3}$, where $m$ is the number of trees in the graph ($(2n-3)!!$ in this case) and $n$ the number of leaves.
 In previous work~\cite{Whidden2015-yi}, we constructed (unrooted) SPR graphs from subsets of $m$ high probability trees sampled from phylogenetic posteriors to compare mixing and identify graph effects.
 Although the SPR distance (rooted and unrooted) is NP-hard to compute~\cite{bordewich05,hickey2008sdc}, it is fixed-parameter tractable with respect to the distance in the rooted case~\cite{bordewich05}.
-In particular, one can determine in $\OhOf{n}$-time whether two rooted phylogenetic trees are adjacent in the SPR graph ($\OhOf{n^2}$-time for unrooted trees) using the algorithms of Whidden et al.~\cite{whidden2009unifying,whidden2010fast, whidden2013hybridization,Whidden2015-yi}.
+In particular, one can determine in $\OhOf{n}$-time whether two rooted phylogenetic trees are adjacent in the rSPR graph ($\OhOf{n^2}$-time for unrooted trees) using the algorithms of Whidden et al.~\cite{whidden2009unifying,whidden2010fast, whidden2013hybridization,Whidden2015-yi}.
 We applied this method comparing each of the $m$ trees pairwise to identify adjacencies, requiring a total of $\OhOf{m^2n}$-time ($\OhOf{m^2n^2}$-time in the unrooted case).
-However, applying this method to complete SPR graphs, with the $\OhOf{m^2}$ factor where $m = (2n-3)!!$, requires an enormous amount of computation.
+However, applying this method to complete rSPR graphs, with the $\OhOf{m^2}$ factor where $m = (2n-3)!!$, requires an enormous amount of computation.
 
-To quickly compute dense SPR graphs (those containing a significant portion of the full treespace) we can avoid pairwise computations by successively adding trees to the graph:
+To quickly compute dense rSPR graphs (those containing a significant portion of the full treespace) we can avoid pairwise computations by successively adding trees to the graph:
 \begin{enumerate}[label={\arabic*}.]
 	\item Let $G$ be an empty graph
 	\item For each of the $m$ trees in a specified but arbitrary order,
@@ -329,16 +329,16 @@ We then compute curvatures for given pairs of trees directly, by using linear pr
 
 This would have required an enormous amount of computation to directly compute curvatures for the $((2n-3)!!)^2$ pairs of trees with $n$ leaves.
 We instead exploited the fact that pairs of trees which are equivalent modulo label renumbering are symmetric in the rSPR graph and therefore guaranteed to have the same curvature.
-For example, because the pairs
+For example, the pairs
 $\{(((1,2),3),4), ((1,2),(3,4))\}$ and
 $\{(((1,4),3),4), ((1,4),(2,3))\}$
-are the same after relabeling, their curvatures are the same.
+are the same after relabeling, so their curvatures are the same.
 We thus directly computed curvature values for one representative pair from each such equivalence class, or \emph{tanglegram} \cite{Venkatachalam2010-zh}; the enumeration methods are described in a manuscript in preparation, and the SAGE \cite{SAGE} and GAP4 \cite{GAP4} code can be found online \cite{tangle}.
 
 We saw a wide variation in curvature values among tanglegrams (Figure~\ref{fig:rspr-scatter}).~\todo{EM: add 7-taxa graph when ready}
-Curvature values tended to increase with increasing SPR distance.
+Curvature values tended to increase with increasing rSPR distance.
 In addition, their variance decreased with increasing distance.
-Minimum curvature values for a given treespace were observed between neighboring trees, while maximum curvature values were observed between trees at maximum distance or one rSPR move closer than the maximum.
+Neighboring trees had minimum curvature values for a given treespace, and we found maximum curvature values between trees at maximum distance or one rSPR move closer than the maximum.
 This suggests that the increased difficulty of moving between trees in a random walk due to distance may be tempered somewhat by curvature in the highly connected rSPR treespaces.
 
 Larger treespaces tended to have smaller curvature values.
@@ -364,16 +364,16 @@ However, this makes the walk more likely to sample higher degree vertices.
 In contrast, the Metropolis Hastings (MH) random walk with constant likelihood function proposes a move from a tree $T$ to a neighbor tree $S$ uniformly at random and then accepts the move according to the Hastings ratio, $\min\left(1, \frac{\degree{T}}{\degree{S}}\right)$.
 The MH random walk is guaranteed to sample each tree uniformly at random and is therefore representative of a phylogenetic MCMC program sampling trees under a uniform prior.
 
-To efficiently simulate the MH random walk, we developed a linear-time algorithm for proposing SPR moves that does not require the rSPR graph to be explicitly built and stored in memory.
+To efficiently simulate the MH random walk, we developed a linear-time algorithm for proposing rSPR moves that does not require the rSPR graph to be explicitly built and stored in memory.
 A na\"ive approach would require $\OhOf{n^3}$ time---$\OhOf{n}$ time to generate each of the $\OhOf{n^2}$ neighbors of a given tree---and then one could be picked uniformly at random.
-To eliminate an $\OhOf{n^2}$ factor, we developed a deterministic ordering of SPR moves with a one-to-one correspondence to SPR neighbors, as described in the next paragraph.
+To eliminate an $\OhOf{n^2}$ factor, we developed a deterministic ordering of rSPR moves with a one-to-one correspondence to rSPR neighbors, as described in the next paragraph.
 Given such an order, a uniform neighbor can be selected by its index in $\OhOf{n}$ time.
-We note that the recursive formula of Song~\cite{Song2003-gf} for the degree of a tree does not group SPR moves that move a particular subtree, and thus would still require $\OhOf{n^2}$ time to select a specific SPR neighbor by index.
+We note that the recursive formula of Song~\cite{Song2003-gf} for the degree of a tree does not group rSPR moves that move a particular subtree, and thus would still require $\OhOf{n^2}$ time to select a specific rSPR neighbor by index.
 
-Instead, we consider the distribution of SPR moves in terms of the number of nodes contained within a subtree.
+Instead, we consider the distribution of rSPR moves in terms of the number of nodes contained within a subtree.
 Recall that a tree with $n$ leaves has $2n-1$ total nodes (ignoring the artificial $\rho$ node).
 Given a subtree $R$ with $x$ nodes, observe that there are $2n-1 - x$ possible locations to regraft $R$.
-However, some of these moves will result in the same neighboring tree as other SPR moves.
+However, some of these moves will result in the same neighboring tree as other rSPR moves.
 In particular, where a node's edge means the edge connecting the subtree rooted at that node to the rest of the tree:
 \begin{enumerate}
 \item Moving $R$ to its sibling edge results in the same tree, not a neighboring tree,
@@ -383,7 +383,7 @@ In particular, where a node's edge means the edge connecting the subtree rooted 
 \end{enumerate}
 We can thus assign $2n-1-x-4$ moves to any node at a depth greater than 1 (from the original non-$\rho$ root) and $2n-1-x-2$ moves to depth 1 nodes (lacking both an aunt and grandparent).
 Call the portion of the neighborhood of a tree $T$ that can be obtained by moving a subtree $R$ rooted at a node $u$, and that is assigned to $u$, $N(T,u)$.
-In this manner, we achieve an alternative solution for computing the degree of a tree in the SPR graph:
+In this manner, we achieve an alternative solution for computing the degree of a tree in the rSPR graph:
 
 \begin{lemma}
 	\label{lem:compute_degree}
@@ -395,15 +395,15 @@ In this manner, we achieve an alternative solution for computing the degree of a
 		2n - 1 - x - 2 &\text{if depth($u$) $ = 1$ } \\
 		0 &\text{if depth($u$) $ \le 0$ } \\
 	\end{cases}.$$
-	Moreover, each tree of $N(T,u)$ can be obtained by an SPR operation that moves the subtree rooted at $u$.
+	Moreover, each tree of $N(T,u)$ can be obtained by an rSPR operation that moves the subtree rooted at $u$.
 \end{lemma}
 \begin{proof}
 	The statement follows if each of the neighbor assignments are disjoint, that is $N(T,u) \cap N(T,v) = \emptyset$, for all nodes $u$, $v$ of $T$.
 	So, suppose, for the purpose of obtaining a contradiction, that there exist two nodes $u$ and $v$ of $T$ such that there exists a tree $S \in (N(T,u) \cap N(T,v))$.
 	Then $S$ can be obtained from $T$ by moving the subtrees rooted at $u$ or $v$.
 	Call these $U$ and $V$, respectively.
-	This implies that both $T \setminus U = S \setminus U$ and $T \setminus V = S \setminus V$ by the definition of an SPR operation.
-	Then the SPR moves that move $U$ or $V$ to obtain $S$ must be nearest neighbor interchanges (NNIs), that is, SPR moves which move their subtree to one of four locations: their grandparent edge, aunt edge, sibling's left child edge or sibling's right child edge.
+	This implies that both $T \setminus U = S \setminus U$ and $T \setminus V = S \setminus V$ by the definition of an rSPR operation.
+	Then the rSPR moves that move $U$ or $V$ to obtain $S$ must be nearest neighbor interchanges (NNIs), that is, rSPR moves which move their subtree to one of four locations: their grandparent edge, aunt edge, sibling's left child edge or sibling's right child edge.
 	This implies that, without loss of generality, $U$ is moved to its grandparent edge and $V$ to $U's$ sibling (i.e. (iii) above) or $U$ is moved to its aunt edge and $V$ to $U$'s edge (i.e. iv above), a contradiction.
 	Therefore the claim holds.
 \end{proof}
@@ -426,7 +426,7 @@ We can thus apply the following algorithm to select a neighbor uniformly at rand
 
 \begin{lemma}
 	\label{lem:select_random_neighbor}
-	Given a tree $T$, an SPR neighbor of $T$ can be chosen uniformly at random in $\OhOf{n}$-time using $\OhOf{n}$ space.
+	Given a tree $T$, an rSPR neighbor of $T$ can be chosen uniformly at random in $\OhOf{n}$-time using $\OhOf{n}$ space.
 \end{lemma}
 \begin{proof}
 	We apply the above procedure.
@@ -436,18 +436,18 @@ We can thus apply the following algorithm to select a neighbor uniformly at rand
 	We precompute these by (1) labeling each node with its preorder number in a preorder traversal and (2) summing the number of descendant nodes in a postorder traversal and storing the results in an array indexed by preorder number.
 	Both of these traversals require $\OhOf{n}$-time.
 	There are $2n-1$ = $\OhOf{n}$ nodes of $T$, and $\size{N(T,u)}$ can be computed in constant time using the subtree sizes.
-	Moreover, the tree $S$ can be found in $\OhOf{n}$-time by iterating over the edges of $T$ that are not contained within $u$'s subtree to select the corresponding SPR destination.
-	Finally, we require linear time to apply the chosen SPR operation which entails removing a node, adding a node, and updating a constant number of pointers.
+	Moreover, the tree $S$ can be found in $\OhOf{n}$-time by iterating over the edges of $T$ that are not contained within $u$'s subtree to select the corresponding rSPR destination.
+	Finally, we require linear time to apply the chosen rSPR operation which entails removing a node, adding a node, and updating a constant number of pointers.
 	Thus, the for loop requires linear time.
-	By Lemma~\ref{lem:compute_degree} the chosen tree is an SPR neighbor of $T$ and is chosen uniformly at random.
-	Therefore, the procedure uses linear time and space and selects an SPR neighbor of $T$ uniformly at random.
+	By Lemma~\ref{lem:compute_degree} the chosen tree is an rSPR neighbor of $T$ and is chosen uniformly at random.
+	Therefore, the procedure uses linear time and space and selects an rSPR neighbor of $T$ uniformly at random.
 \end{proof}
 
 Observe that this procedure can be easily adapted to explore the full neighborhood of a tree in $\OhOf{n^3}$ time, which we use for Theorem~\ref{thm:construct_graph}.
 We thus have the following corollary:
 
 \begin{corollary}
-	Given a tree $T$, the SPR neighbors of $T$ can be enumerated in $\OhOf{n^3}$-time.
+	Given a tree $T$, the rSPR neighbors of $T$ can be enumerated in $\OhOf{n^3}$-time.
 \end{corollary}
 
 We implemented this procedure in the C++ package \texttt{random\_spr\_walk}~\cite{random_spr_walk}. 
@@ -473,8 +473,8 @@ To calculate the empirical distributions of access times we aggregate all access
 \label{tab:regressionMAT}
 \end{table}
 
-We find that the mean access time between trees $T_1$ and $T_2$ is determined by $\deg(T_1)$ and $\deg(T_2)$ (Table~\ref{tab:regressionMAT}).
-Furthermore, by plotting the distribution of access times between pairs of trees with respect to their distance and curvature hints that smaller $\kappa$ slightly shifts the distribution of access times towards larger access times (Fig.~\ref{fig:short-time-kappa-access}).
+We find that the mean access time between trees $T_1$ and $T_2$ is determined by $\degree{T_1}$ and $\degree{T_2}$ (Table~\ref{tab:regressionMAT}).
+Furthermore, plotting the distribution of access times between pairs of trees with respect to their distance and curvature hints that smaller $\kappa$ slightly shifts the distribution of access times towards larger access times (Fig.~\ref{fig:short-time-kappa-access}).
 We quantify this effect by defining $\delta_1$ to be the difference between the first pair of access time counts such that the second entry in the pair is nonzero.
 For example, $\delta_1$ for distance 1 pairs (green lines in Fig.~\ref{fig:kappa-access}) is the count for time 1 minus the count for time 2, while $\delta_1$ for distance 3 pairs (blue lines in Fig.~\ref{fig:kappa-access}) is the count for time 2 minus the count for time 3.
 Regression finds a clear influence of $\kappa$ on $\delta_1$ (Table~\ref{tab:regressionDelta}).
@@ -507,7 +507,7 @@ The full analysis can be reproduced using the SCons (\url{http://scons.org/}) bu
 
 
 \section{Rooted SPR Neighborhoods}
-Having made the connection between curvature values and access times on the SPR graphs, we now consider curvature theoretically.
+Having made the connection between curvature values and access times on the rSPR graphs, we now consider curvature theoretically.
 In the absence of a bias provided by a likelihood function, curvature for the random walks we consider is entirely determined by the degree of vertices in the graph.
 Thus, in order to provide bounds on curvature, we will begin by bounding differences between degrees.
 
@@ -523,7 +523,7 @@ Thus, in order to provide bounds on curvature, we will begin by bounding differe
     \popQED
 \end{lemma}
 
-We now bound the relative and exact difference in SPR degree between two trees with $n$ leaves.
+We now bound the relative and exact difference in rSPR degree between two trees with $n$ leaves.
 
 \begin{lemma}
 	\label{lem:degree_max_delta}
@@ -563,8 +563,8 @@ See Figure~\ref{fig:spr-degree-change} for an illustration of the Lemma.
 	\hspace*{\stretch{1}}
 	\includegraphics[width=\textwidth]{figs/spr-degree-change}
 	\hspace*{\stretch{1}}
-	\caption{An SPR move labelled as in Lemma~\ref{lem:degree_change}.
-Moving the grey subtree $R$ from its position adjacent to $U$ in tree $T$ to its position adjacent to $V$ in tree $S$ changes the SPR degree by $2\left(k(a-b) + i - j\right)$.}
+	\caption{An rSPR move labelled as in Lemma~\ref{lem:degree_change}.
+Moving the grey subtree $R$ from its position adjacent to $U$ in tree $T$ to its position adjacent to $V$ in tree $S$ changes the rSPR degree by $2\left(k(a-b) + i - j\right)$.}
 	\label{fig:spr-degree-change}
 \end{figure}
 
@@ -580,12 +580,12 @@ $$2\left(k(a-b) + i - j\right).$$
 
 \end{lemma}
 \begin{proof}
-The set of permissible SPR moves changes in four different ways due to the movement of $R$:
+The set of permissible rSPR moves changes in four different ways due to the movement of $R$:
 (i) subtrees that include nodes on the path from $U$ to $L$ may now be moved into $R$ and its newly introduced parent node,
 (ii) subtrees that include nodes on the path from $V$ to $L$ may no longer be moved into $R$ and its parent node,
 (iii) $R$'s parent subtree may now be moved into $U$, and
 (iv) $R$'s parent subtree may no longer be moved into $V$.
-No additional moves are introduced or blocked by the original SPR operation on $R$.
+No additional moves are introduced or blocked by the original rSPR operation on $R$.
 
 Recall that a rooted tree with $k$ leaves has $2(k-1)$ internal edges (recall that we are excluding any ``root edge'' in these calculations).
 In the first case there are $a$ subtrees that can now be moved onto the $2k$ edges in $R$ (including its newly introduced parent edge and one of the newly subdivided root edges of $V$) for a total gain of $2ka$ distinct moves.
@@ -593,11 +593,11 @@ Similarly, we lose $2kb$ moves in the second case.
 In the third case, $R$'s parent subtree may now make $2(i-1)$ moves into $U$.
 Similarly, we lose $2(j-1)$ moves in the fourth case.
 
-The difference in SPR degree is thus $2ka - 2kb + 2(i-1) - 2(j-1)$ as claimed.
+The difference in rSPR degree is thus $2ka - 2kb + 2(i-1) - 2(j-1)$ as claimed.
 \end{proof}
 
-Moreover, we can use these ideas to determine the number of SPR moves that are, in some respects, independent of a given SPR move.
-That is, for two trees $S$ and $T$ differing by a single SPR move, we wish to know the number of SPR moves that are applicable to both trees rather than unique to one of the trees.
+Moreover, we can use these ideas to determine the number of rSPR moves that are, in some respects, independent of a given rSPR move.
+That is, for two trees $S$ and $T$ differing by a single rSPR move, we wish to know the number of rSPR moves that are applicable to both trees rather than unique to one of the trees.
 To formalize this concept, we consider pairs of trees $T' \in N(T)$ and $S' \in S(T)$ such that $\dspr{T',S'} = 1$.
 The number of such ``squares'' involving two adjacent trees will play a key rule in our bounds on curvature, as they push the curvature of those trees towards 0.
 
@@ -608,7 +608,7 @@ $$o := \deg(T) - 2kb - 2(j-1) = \deg(S) - 2ka - 2(i-1)$$
 trees in the neighborhood of $T$ can be paired with $o$ trees in the neighborhood of $S$ such that the pairings are disjoint and $\dspr{T',S'} = 1$ for each $(T',S')$ pair.
 \end{corollary}
 \begin{proof}
-By the same arguments as in the proof of Lemma~\ref{lem:degree_change}, $o$ SPR moves can be applied to $T$ and $S$ with the same source and target nodes.
+By the same arguments as in the proof of Lemma~\ref{lem:degree_change}, $o$ rSPR moves can be applied to $T$ and $S$ with the same source and target nodes.
 For each such $(T',S')$ pair, we can move $R$ in either tree to obtain the other member of the pair.
 \end{proof}
 
@@ -669,7 +669,7 @@ Then $\size{N(T) \cap N(S)} \le 6n - 17$.
 \end{lemma}
 
 \begin{proof}
-	$T$ and $S$ differ by one SPR move that moves a subtree $R$.
+	$T$ and $S$ differ by one rSPR move that moves a subtree $R$.
 	Pick a neighbor $U \in N(T) \cap N(S)$ of both $T$ and $S$ (this intersection is not empty: $T$ and $S$ are different, so $R$ contains at most $n-2$ of the leaves, thus there must be at least one other tree $U$ obtained by moving $R$ in $T$ and $S$).
 	Then either (i) $T$ and $U$ differ in the location of $R$, or (ii) $T$ and $U$ differ in the location of another subtree $Q$.
 	In the latter case, $T|(X \setminus L(Q)) = S|(X \setminus L(Q))$ because $T$ and $S$ differ only in the location of $R$ and $\dspr{T,U} = \dspr{S,U} = 1$.
@@ -696,14 +696,14 @@ For the uniform random walk, $m_T$ is simply the probability measure assigning a
 \begin{proposition}
 Fix a positive integer $k$ and let $R$ be a tree with $k$ leaves.
 Let $\{T_n \mid n > k\}$ be a sequence of phylogenetic trees all containing $R$, and let $\{S_n \mid n > k\}$ be the same sequence $T_n$ but with $R$ cut off and attached at a different location.
-Then $\lim_{n \rightarrow \infty} \curvature{T_n,S_n} = 0$ for the uniform random walk on the SPR graph.
+Then $\lim_{n \rightarrow \infty} \curvature{T_n,S_n} = 0$ for the uniform random walk on the rSPR graph.
 \end{proposition}
 \begin{proof}
 Because $d(T_n, S_n) = 1$, we will prove the proposition by showing that the mass transport term $W_{1,n}$ sits between two bounds, each of which has limit 1 as $n$ goes to infinity.
 
 To start we demonstrate the proposition in the case that $T_n$ and $S_n$ have the same number of neighbors.
 First we claim that $W_{1,n}$ is bounded above by $(\degree{T_n}+\OhOf{kn})/\degree{T_n}$ by exhibiting a mass transport program satisfying that bound.
-Let $(T'_n, S'_n)$ be any of the $o$ pairs of neighbors of $(T_n, S_n)$ which are one SPR move apart as per Corollary~\ref{cor:paired_neighbors}.
+Let $(T'_n, S'_n)$ be any of the $o$ pairs of neighbors of $(T_n, S_n)$ which are one rSPR move apart as per Corollary~\ref{cor:paired_neighbors}.
 We pair these trees in the mass transport.
 There are $\OhOf{kn}$ trees unmatched by this pairing, and we can pair each of them arbitrarily with another tree of distance at most 3.
 Thus, $W_{1,n}$ is bounded above by $(\degree{T_n} + \OhOf{kn}) / \degree{T_n}$.
@@ -795,7 +795,7 @@ Next, we bound the minimum curvature of two adjacent trees.
 
 We further observe that the limit of our curvature lower bound is $-\frac{2}{7}$.
 Complete enumeration with $n \le 7$ show that no pair of trees have curvature less than $-\frac{2}{5}$ and our bound meets or exceeds this value for $n > 7$.
-Moreover, the SPR distance is a metric, so this bounds the curvature for arbitrary pairs of trees (Proposition 19 of~\cite{Ollivier2009-bw}).
+Moreover, the rSPR distance is a metric, so this bounds the curvature for arbitrary pairs of trees (Proposition 19 of~\cite{Ollivier2009-bw}).
 This directly leads to the following Corollary:
 
 \begin{corollary}
@@ -882,7 +882,7 @@ We now bound the difference between the curvature of uniform random walks $\curv
 In summary, we have extended knowledge about the the phylogenetic rSPR graph underlying phylogenetic inference beyond previous work concerning graph diameter and vertex degree.
 We did so by developing theoretical and computational frameworks to bound and compute Ricci-Ollivier curvature of the rSPR graph.
 We find that curvature, along with degree and distance, determine the early dynamics of hitting times for random walks.
-Moreover, we proved that rSPR graph degree changes depend quadratically on the product of the size of the regrafted subtree and its change in depth and that rSPR treespace tends toward flatness with respect to SPR moves that move small subtrees.
+Moreover, we proved that rSPR graph degree changes depend quadratically on the product of the size of the regrafted subtree and its change in depth and that rSPR treespace tends toward flatness with respect to rSPR moves that move small subtrees.
 
 We emphasize that the influence of curvature is small in this setting of equiprobable trees (Fig.~\ref{fig:short-time-kappa-access}) and that the probability of the target node in the stationary distribution is the predominant factor determining hitting times for pairs of trees (Fig.~\ref{fig:long-time-kappa-access}).
 However, it is well known that MCMC takes a long time to approximate real phylogenetic posterior distributions even when the Bayesian credible set is small, and in fact our previous work showed significant graph effects in the mixing time for phylogenetic MCMC for credible sets with hundreds or thousands of trees~\cite{Whidden2015-yi}.
