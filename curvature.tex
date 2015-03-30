@@ -155,7 +155,7 @@ There have been investigations of local maxima, though mainly from the perspecti
 The work on SPR moves in the ML context is primarily found in the literature comparing various SPR variants to one another, usually in the context of comparing one phylogenetic software package to another~\cite{Hordijk2005-dl,Stamatakis2006-yz,Price2010-fi,Guindon2010-lo}.
 We are not aware of any general conclusions concerning hill-climbing on the SPR or related graphs that has come from this work.
 
-Thus the SPR graph is thus very important in determining the degree of success of phylogenetic inference procedures; given this importance still little is known about the rooted or unrooted versions of the SPR graph itself, or random walks thereupon.
+Thus although the SPR graph is thus very important in determining the degree of success of phylogenetic inference procedures, still little is known about the rooted or unrooted versions of the SPR graph itself, or random walks thereupon.
 \cite{Song2003-gf} developed a recursive procedure on a tree to find the degree of the corresponding vertex in the rooted SPR (rSPR) graph, and corresponding bounds on degree.
 \cite{Ding2011-bj} showed that the diameter $\Delta_{\text{rSPR}}$ of the rSPR graph is $n - \Theta(\sqrt n)$, and for the unrooted case they show
 $$ n - 2\ceil{\sqrt{n}} + 1
@@ -166,7 +166,7 @@ We are not aware of any other work investigating large-scale properties of the S
 
 A new approach to quantifying properties of random walks on discrete and continuous spaces has recently been pioneered by Ollivier and colleagues~\cite{Ollivier2009-bw,Joulin2010-jg}.
 They define a notion of curvature which formalizes the notion of to what extent random walking brings points together, and is a generalization of the classical notion of Ricci curvature on manifolds.
-Here the term \emph{random walk} on a space $X$ simply denotes a family of probability measures parameterized by points of $X$, which includes biased walks such as MCMC.
+Here the term \emph{random walk} on a space $X$ simply denotes a family of probability measures parameterized by points of $X$ satisfying a couple of reasonable assumptions, which includes biased walks such as MCMC.
 
 In this paper, we investigate curvature of the rSPR graph with respect to two random walks and connect those results to access times (also known as hitting times) for those random walks.
 For this first effort we investigate random walks defined only in terms of the graph itself: the lazy uniform random walk and MCMC sampling from the uniform prior on trees.
@@ -177,7 +177,7 @@ By carefully examining the overlap in rSPR moves, we present a new method for co
 Using this method to simulate these random walks, we find that the distribution of access times between pairs of trees can be described by distance between the trees, the degrees of the trees, and the curvature.
 By getting a more fine-tuned understanding of the rSPR neighborhood of pairs of vertices, we are able to give bounds on curvatures under these random walks.
 In particular, we present a full characterization of the change in rSPR degree that occurs from a given rSPR move and find that even though they each count as one move, rSPR moves which move large subtrees may have greater graph effects than those that move small subtrees.
-In summary, we extend knowledge about an important graph for phylogenetics, specifically in a way that modeling phylogenetic MCMC search.
+In summary, we extend knowledge about an important graph for phylogenetics, specifically in a way that models phylogenetic MCMC search.
 
 \section{Preliminaries}
 
@@ -284,7 +284,7 @@ In particular, one can determine in $\OhOf{n}$-time whether two rooted phylogene
 We applied this method comparing each of the $m$ trees pairwise to identify adjacencies, requiring a total of $\OhOf{m^2n}$-time ($\OhOf{m^2 n^2}$-time in the unrooted case).
 However, applying this method to complete rSPR graphs, with the $\OhOf{m^2}$ factor where $m = (2n-3)!!$, requires an enormous amount of computation.
 
-To quickly compute dense rSPR graphs (those containing a significant portion of the full rSPR graph) we can avoid pairwise computations by successively adding trees to the graph:
+To quickly compute dense rSPR graphs (those containing a significant portion of the full rSPR graph) we can avoid pairwise computations by simply successively adding trees to the graph:
 \begin{enumerate}[label={\arabic*}.]
 	\item Let $G$ be an empty graph
 	\item For each of the $m$ trees in a specified but arbitrary order,
@@ -304,20 +304,20 @@ To quickly compute dense rSPR graphs (those containing a significant portion of 
 \begin{proof}
 	We implement the graph as an adjacency list with integer-labelled vertices.
 	As described above, the integer labels are simply the order of the input trees.
-	Adding the vertices to the graph requires $\OhOf{m}$-time, as they are added in ascending order to the end of the vertex list.
-	Adding the $\OhOf{mn^2}$ edges to the graph requires $\OhOf{mn^2 \log n}$-time (as the vertex degrees are $\OhOf{n^2}$).
+	Adding the vertices to the graph requires $\OhOf{m}$-time, as they are added in ascending order to the end of the vertex list.\todo{"in ascending order to the end of the vertex list": confused!}
+	Adding the $\OhOf{mn^2}$ edges to the graph requires $\OhOf{mn^2 \log n}$-time (as the vertex degrees are $\OhOf{n^2}$)\todo{sorry, but I don't understand this $\log n$ term from the explanation}.
 	Enumerating the neighbors of $T$ requires $\OhOf{n^3}$-time for each $T$, for a total of $\OhOf{mn^3}$-time.
 	We discuss below, in Section~\ref{sec:random_walks} how to do so efficiently without considering duplicate neighbors.
-	We store the tree to index mappings for current vertices of $G$ in a trie using the $\OhOf{n}$-length Newick representation of the tree.
+	We store the tree to index mappings for current vertices of $G$ in a trie using the $\OhOf{n}$-length Newick \cite{wiki:newick} representation of the tree as a string.
 	These representations are made unique by ordering the tree so that leftmost subtrees contain the smallest alphanumeric label of descendants.
-	This requires only $\OhOf{n}$-time for each tree (i.e. a total of $\OhOf{mn^3}$-time) using a standard nodes and pointers representation of the tree and assuming integer leaf labels (a simple $\OhOf{mn\log n}$ leaf preprocessing step could be applied to extend this procedure to realistic phylogenetic trees).
+	This requires only $\OhOf{n}$-time for each tree (i.e. a total of $\OhOf{mn^3}$-time) using a standard nodes-and-pointers representation of the tree and assuming integer leaf labels (a simple $\OhOf{mn\log n}$ leaf preprocessing step could be applied to extend this procedure to phylogenetic trees with string labels).
 	Similarly, it takes $\OhOf{n}$-time to determine the index of each of the $\OhOf{mn^2}$ $S$'s.
 	Therefore the graph can be constructed in $\OhOf{mn^3}$-time.
 \end{proof}
 This procedure has been implemented in the C++ program \texttt{dense\_spr\_graph} of the software package \texttt{spr\_neighbors}~\cite{spr_neighbors}, which outputs an edge list format graph suitable for input to other software.
-Our fast graph construction procedure reduced the time required to compute the 10,395-vertex 7-taxon rSPR tree space from 2,104.68 seconds to 12.71 seconds on an Intel Core 2 Duo E7500 desktop running Ubuntu 14.04.
-Moreover, although we do not study the 135,135-vertex 8-taxon tree space in this paper, our algorithm required only 303.45 seconds to construct it.
-Constructing the 8-taxon tree space using the previous method required 377,395 seconds (more than 4 days), and that method is infeasible for constructing larger tree spaces.
+The construction procedure reduced the time required to compute the 10,395-vertex 7-taxon rSPR tree space from 2,104.68 seconds to 12.71 seconds on an Intel Core 2 Duo E7500 desktop running Ubuntu 14.04.
+Moreover, although we do not study the 135,135-vertex 8-taxon tree space in this paper, our algorithm required only 303.45 seconds to construct it on the same hardware.
+Constructing the 8-taxon tree space using the previous method required 377,395 seconds (more than 4 days), and is thus method is infeasible for constructing larger rSPR tree graphs.
 Thus, we believe this fast graph construction procedure will itself be useful for further studies of rSPR graph subsets similar to~\cite{Whidden2015-yi}.
 
 \subsection{Computing curvature values}
