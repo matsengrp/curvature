@@ -155,7 +155,7 @@ There have been investigations of local maxima, though mainly from the perspecti
 The work on SPR moves in the ML context is primarily found in the literature comparing various SPR variants to one another, usually in the context of comparing one phylogenetic software package to another~\cite{Hordijk2005-dl,Stamatakis2006-yz,Price2010-fi,Guindon2010-lo}.
 We are not aware of any general conclusions concerning hill-climbing on the SPR or related graphs that has come from this work.
 
-Thus although the SPR graph is thus very important in determining the degree of success of phylogenetic inference procedures, still little is known about the rooted or unrooted versions of the SPR graph itself, or random walks thereupon.
+Although the SPR graph is thus very important in determining the degree of success of phylogenetic inference procedures, still little is known about the rooted or unrooted versions of the SPR graph itself, or random walks thereupon.
 \cite{Song2003-gf} developed a recursive procedure on a tree to find the degree of the corresponding vertex in the rooted SPR (rSPR) graph, and corresponding bounds on degree.
 \cite{Ding2011-bj} showed that the diameter $\Delta_{\text{rSPR}}$ of the rSPR graph is $n - \Theta(\sqrt n)$, and for the unrooted case they show
 $$ n - 2\ceil{\sqrt{n}} + 1
@@ -286,7 +286,7 @@ In particular, one can determine in $\OhOf{n}$-time whether two rooted phylogene
 We applied this method comparing each of the $m$ trees pairwise to identify adjacencies, requiring a total of $\OhOf{m^2n}$-time ($\OhOf{m^2 n^2}$-time in the unrooted case).
 However, applying this method to complete rSPR graphs, with the $\OhOf{m^2}$ factor where $m = (2n-3)!!$, requires an enormous amount of computation.
 
-To quickly compute dense rSPR graphs (those containing a significant portion of the full rSPR graph) we can avoid pairwise computations by simply successively adding trees to the graph:
+To quickly compute dense rSPR graphs (those containing a significant portion of the full rSPR graph) we can avoid pairwise computations by successively adding trees to the graph and efficiently identifying their neighbors:
 \begin{enumerate}[label={\arabic*}.]
 	\item Let $G$ be an empty graph
 	\item For each of the $m$ trees in a specified but arbitrary order,
@@ -304,13 +304,13 @@ To quickly compute dense rSPR graphs (those containing a significant portion of 
 	The subgraph of the rSPR graph induced by a set $\mathcal{T}$ of $m$ trees with $n$ leaves can be constructed in $\OhOf{mn^3}$-time.
 \end{theorem}
 \begin{proof}
-	We implement the graph as an adjacency list with integer-labelled vertices.
+	We implement the graph with an adjacency list representation with integer-labelled vertices that supports $\OhOf{\log n}$ edge insertions and lookups (with e.g. red-black trees~\cite{guibas1978dichromatic}, as the vertex degrees are $\OhOf{n^2}$).
 	As described above, the integer labels are simply the order of the input trees.
-	Adding the vertices to the graph requires $\OhOf{m}$-time, as they are added in ascending order to the end of the vertex list.\todo{"in ascending order to the end of the vertex list": confused!}
-	Adding the $\OhOf{mn^2}$ edges to the graph requires $\OhOf{mn^2 \log n}$-time (as the vertex degrees are $\OhOf{n^2}$)\todo{sorry, but I don't understand this $\log n$ term from the explanation}.
+	Adding the vertices to the graph requires $\OhOf{m}$-time, as they are added in ascending order to the end of the vertex list, which can be stored as a fixed-size array.
+	Adding the $\OhOf{mn^2}$ edges to the graph requires $\OhOf{mn^2 \log n}$-time.
 	Enumerating the neighbors of $T$ requires $\OhOf{n^3}$-time for each $T$, for a total of $\OhOf{mn^3}$-time.
 	We discuss below, in Section~\ref{sec:random_walks} how to do so efficiently without considering duplicate neighbors.
-	We store the tree to index mappings for current vertices of $G$ in a trie using the $\OhOf{n}$-length Newick \cite{wiki:newick} representation of the tree as a string.
+	We store the tree to index mappings for current vertices of $G$ in a trie~\cite{fredkin1960trie} using the $\OhOf{n}$-length Newick \cite{wiki:newick} representation of the tree as a string.
 	These representations are made unique by ordering the tree so that leftmost subtrees contain the smallest alphanumeric label of descendants.
 	This requires only $\OhOf{n}$-time for each tree (i.e. a total of $\OhOf{mn^3}$-time) using a standard nodes-and-pointers representation of the tree and assuming integer leaf labels (a simple $\OhOf{mn\log n}$ leaf preprocessing step could be applied to extend this procedure to phylogenetic trees with string labels).
 	Similarly, it takes $\OhOf{n}$-time to determine the index of each of the $\OhOf{mn^2}$ $S$'s.
@@ -428,7 +428,7 @@ We can thus apply the following algorithm to select a neighbor uniformly at rand
 \end{lemma}
 \begin{proof}
 	We apply the above procedure.
-	We use a standard nodes and pointer representation of the trees, which can be constructed in $\OhOf{n}$-time from a newick string representation and uses linear space in $n$.
+	We use a standard nodes-and-pointers representation of the trees, which can be constructed in $\OhOf{n}$-time from a newick string representation and uses linear space in $n$.
 	We can compute the degree of $T$ in linear time and space using Lemma~\ref{lem:compute_degree}.
 	To efficiently compute $\size{N(T,u)}$ for each node $u$ of $T$, we require the number of nodes $x$ in the subtree rooted at $u$.
 	We precompute these by (1) labeling each node with its preorder number in a preorder traversal and (2) summing the number of descendant nodes in a postorder traversal and storing the results in an array indexed by preorder number.
