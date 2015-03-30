@@ -1,6 +1,7 @@
 # curvature
 
-[FOCS Example](http://arxiv.org/abs/1406.0242v2)
+This is the code and TeX for the paper "Ricci-Ollivier curvature of two random walks on the rooted phylogenetic Subtree-Prune-Regraft graph" by Chris Whidden and Erick Matsen.
+
 
 ## Software dependencies
 
