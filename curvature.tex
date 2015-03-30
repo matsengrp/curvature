@@ -272,8 +272,6 @@ Curvature thus provides an intuitive measure of the difficulty of moving between
 
 \section{Access times of random walks on the rSPR graph can be understood using distance, degree, and curvature}
 
-\todo{Chris, especially given that we are at a place that is not known for its CS, I might suggest putting your results concerning curvature first to emphasize to reviewers that this work is not trivial. That's what they will be scanning for after you convince them that the area is interesting.}
-
 \subsection{Computing rSPR graphs}
 \label{sec:computing_treespace}
 
@@ -367,7 +365,7 @@ To eliminate an $\OhOf{n^2}$ factor, we developed a deterministic ordering of rS
 Given such an order, a uniform neighbor can be selected by its index in $\OhOf{n}$ time.
 We note that the recursive formula of Song~\cite{Song2003-gf} for the degree of a tree does not group rSPR moves that move a particular subtree, and thus would still require $\OhOf{n^2}$ time to select a specific rSPR neighbor by index.
 
-Instead\todo{does this seem like a strange comparison to you?}, we consider the distribution of rSPR moves in terms of the number of nodes contained within a subtree.
+We consider the distribution of rSPR moves in terms of the number of nodes contained within a subtree.
 Recall that a tree with $n$ leaves has $2n-1$ total nodes (ignoring the artificial $\rho$ node).
 Given a subtree $R$ with $x$ nodes, observe that there are $2n-1 - x$ possible locations to regraft $R$.
 However, some of these moves will result in the same neighboring tree as other rSPR moves.
@@ -378,7 +376,7 @@ In particular, where we call the edge connecting the subtree rooted at that node
 \item Moving $R$ to its grandparent edge is the same as moving its aunt to its sibling edge,
 \item Moving $R$ to its aunt edge is the same as moving its aunt to $R$'s edge.
 \end{enumerate}
-\todo{Is it clear that this is an exhaustive list?}
+We prove in Lemma~\ref{lem:compute_degree} that this list is exhaustive.
 We can thus assign $2n-1-x-4$ moves to any node at a depth greater than 1 (from the original non-$\rho$ root) and $2n-1-x-2$ moves to depth 1 nodes (lacking both an aunt and grandparent).
 Call the portion of the neighborhood of a tree $T$ that can be obtained by moving a subtree $R$ rooted at a node $u$, and that is assigned to $u$, $N(T,u)$.
 In this manner, we achieve an alternative solution for computing the degree of a tree in the rSPR graph:
@@ -501,7 +499,7 @@ On the other hand, if the random walk starting from $T_1$ does not quickly arriv
 \label{tab:regressionDelta}
 \end{table}
 
-The analysis generating the can be reproduced by simply invoking the SCons (\url{http://scons.org/}) build tool and evaluating cells in an IPython notebook; instructions are in the repository README file.
+The analysis can be reproduced by invoking the SCons (\url{http://scons.org/}) build tool and evaluating cells in an IPython notebook; instructions are in the repository README file.
 
 
 \section{Rooted SPR Neighborhoods}
