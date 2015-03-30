@@ -272,6 +272,8 @@ Curvature thus provides an intuitive measure of the difficulty of moving between
 
 \section{Access times of random walks on the rSPR graph can be understood using distance, degree, and curvature}
 
+\todo{Chris, especially given that we are at a place that is not known for its CS, I might suggest putting your results concerning curvature first to emphasize to reviewers that this work is not trivial. That's what they will be scanning for after you convince them that the area is interesting.}
+
 \subsection{Computing rSPR graphs}
 \label{sec:computing_treespace}
 
@@ -317,7 +319,7 @@ To quickly compute dense rSPR graphs (those containing a significant portion of 
 This procedure has been implemented in the C++ program \texttt{dense\_spr\_graph} of the software package \texttt{spr\_neighbors}~\cite{spr_neighbors}, which outputs an edge list format graph suitable for input to other software.
 The construction procedure reduced the time required to compute the 10,395-vertex 7-taxon rSPR tree space from 2,104.68 seconds to 12.71 seconds on an Intel Core 2 Duo E7500 desktop running Ubuntu 14.04.
 Moreover, although we do not study the 135,135-vertex 8-taxon tree space in this paper, our algorithm required only 303.45 seconds to construct it on the same hardware.
-Constructing the 8-taxon tree space using the previous method required 377,395 seconds (more than 4 days), and is thus method is infeasible for constructing larger rSPR tree graphs.
+Constructing the 8-taxon tree space using the previous method required 377,395 seconds (more than 4 days), and thus is infeasible for constructing larger rSPR tree graphs.
 Thus, we believe this fast graph construction procedure will itself be useful for further studies of rSPR graph subsets similar to~\cite{Whidden2015-yi}.
 
 \subsection{Computing curvature values}
@@ -365,17 +367,18 @@ To eliminate an $\OhOf{n^2}$ factor, we developed a deterministic ordering of rS
 Given such an order, a uniform neighbor can be selected by its index in $\OhOf{n}$ time.
 We note that the recursive formula of Song~\cite{Song2003-gf} for the degree of a tree does not group rSPR moves that move a particular subtree, and thus would still require $\OhOf{n^2}$ time to select a specific rSPR neighbor by index.
 
-Instead, we consider the distribution of rSPR moves in terms of the number of nodes contained within a subtree.
+Instead\todo{does this seem like a strange comparison to you?}, we consider the distribution of rSPR moves in terms of the number of nodes contained within a subtree.
 Recall that a tree with $n$ leaves has $2n-1$ total nodes (ignoring the artificial $\rho$ node).
 Given a subtree $R$ with $x$ nodes, observe that there are $2n-1 - x$ possible locations to regraft $R$.
 However, some of these moves will result in the same neighboring tree as other rSPR moves.
-In particular, where a node's edge means the edge connecting the subtree rooted at that node to the rest of the tree:
+In particular, where we call the edge connecting the subtree rooted at that node to the rest of the tree the ``node's edge'', we have:
 \begin{enumerate}
 \item Moving $R$ to its sibling edge results in the same tree, not a neighboring tree,
 \item Moving $R$ to its parent edge results in the same tree,
-\item Moving $R$ to its grandparent edge is the same as moving its aunt to its sibling edge
+\item Moving $R$ to its grandparent edge is the same as moving its aunt to its sibling edge,
 \item Moving $R$ to its aunt edge is the same as moving its aunt to $R$'s edge.
 \end{enumerate}
+\todo{Is it clear that this is an exhaustive list?}
 We can thus assign $2n-1-x-4$ moves to any node at a depth greater than 1 (from the original non-$\rho$ root) and $2n-1-x-2$ moves to depth 1 nodes (lacking both an aunt and grandparent).
 Call the portion of the neighborhood of a tree $T$ that can be obtained by moving a subtree $R$ rooted at a node $u$, and that is assigned to $u$, $N(T,u)$.
 In this manner, we achieve an alternative solution for computing the degree of a tree in the rSPR graph:
