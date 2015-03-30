@@ -85,8 +85,11 @@
 %---[ curvature ]---------------------------------------------------------------
 \newcommand{\curvature}[2][]{%
     \ifthenelse{\equal{#1}{}}%
-		{\kappa_n(#2)}%
-		{\kappa_n(#1;#2)}%
+		{\kappa(#2)}%
+		{\kappa_{#1}(#2)}%
+}
+\newcommand{\ric}[1]{
+	ric(#1)%
 }
 
 % uncomment to remove the proofs for length estimates
@@ -177,6 +180,7 @@ By carefully examining the overlap in rSPR moves, we present a new method for co
 Using this method to simulate these random walks, we find that the distribution of access times between pairs of trees can be described by distance between the trees, the degrees of the trees, and the curvature.
 By getting a more fine-tuned understanding of the rSPR neighborhood of pairs of vertices, we are able to give bounds on curvatures under these random walks.
 In particular, we present a full characterization of the change in rSPR degree that occurs from a given rSPR move and find that even though they each count as one move, rSPR moves which move large subtrees may have greater graph effects than those that move small subtrees.
+Finally, we prove that the two competing notions of Ricci-Ollivier curvature (coarse and asymptotic) are closely related when applied to the rSPR graph, differing only by a small factor inversely proportional to the rSPR degrees of the given trees.
 In summary, we extend knowledge about an important graph for phylogenetics, specifically in a way that models phylogenetic MCMC search.
 
 \section{Preliminaries}
@@ -255,19 +259,34 @@ For example, the tree $T$ with 4 leaves in Figure~\ref{fig:neighborhood} has 10 
 We say that the degree of $T$ is $\degree{T}$, that is, the number of trees which can be obtained from $T$ by a single rSPR operation.
 Because we assume that all trees are bifurcating, we use degree to refer only to the degree of rSPR graph vertices.
 
-Ollivier-Ricci curvature provides a rigorous yet intuitive formalization of the shape of a graph with respect to a random walk (or indeed the shape of a variety of metric spaces, see~\cite{Ollivier2009-bw}).
+Ricci-Ollivier curvature provides a rigorous yet intuitive formalization of the shape of a graph with respect to a random walk (or indeed the shape of a variety of metric spaces, see~\cite{Ollivier2009-bw}).
 Let $m_x$ and $m_y$ be probability densities of a specified random walk starting at points $x$ and $y$ of a graph $G = (V,E)$, respectively.
 The Wasserstein distance~\cite{Villani2003-wv} (equivalently $L^1$ transportation, or ``earth movers distance''~\cite{rubner2000earth}) between $m_x$ and $m_y$ is the minimum amount of ``work'' required to move $m_x$ to $m_y$ along edges of the graph, that is
  $$ W_1(m_x, m_y) := \min_{\xi \in \Pi(m_x, m_y)} \sum \dspr{x,y} \xi(x,y),$$
 where $\Pi(m_x, m_y)$ is the set of of assignments of probability from $m_x$ to pairs of vertices in $V \times V$.
 
-The curvature of $x$ and $y$ is then defined as:
+The (coarse) Ricci-Ollivier curvature of $x$ and $y$ is then defined as:
 \begin{equation}
 \curvature{x, y} := 1 - \frac{W_1(m_x, m_y)}{d(x, y)}
 \label{eq:curvatureDef}
 \end{equation}
+We use $\curvature{MH; x,y}$ to indicate curvature with respect to Metropolis-Hastings random walks (described in detail in Section~\ref{sec:random_walks}) rather than uniform random walks.
 Positive curvature implies that $m_x$ and $m_y$ are ``closer'' than $x$ and $y$, zero curvature implies that they are neither closer nor farther, and negative curvature implies that $m_x$ and $m_y$ are on average ``more distant'' than $x$ and $y$.
 Curvature thus provides an intuitive measure of the difficulty of moving between regions of the graph with the given random walk.
+
+Lin et al.~\cite{lin2011ricci} defined a different notion of curvature in terms of lazy random walks which Loisel and Romon~\cite{Loisel2014-hu} dubbed the (asymptotic) Olivier-Ricci curvature.
+The lazy random walk selects a neighbor according to the given distribution, but only travels to the neighbor with probability $p$.
+We denote the coarse curvature of the lazy random walk between two trees $x$ and $y$ by $\curvature[p]{x,y}$.
+For example, $\curvature[\frac{1}{4}]{x,y}$ describes the curvature of the lazy random walk that follows the given distribution with probability $\frac{1}{4}$ and remains stationary with probability $\frac{3}{4}$.
+For the lazy uniform random walk, the mass assignment $m^p_x$ is $x \cup N(x)$, with each neighbor assigned mass $\frac{p}{\degree{x}}$ and $x$ assigned the remaining $1 - p$ mass.
+The (asymptotic) Ricci-Ollivier curvature of $x$ and $y$ is then:
+\begin{equation}
+\ric{x, y} := \lim_{p \rightarrow 0} \frac{\curvature[p]{x,y}}{p}
+\label{eq:curvatureDef}
+\end{equation}
+This definition of curvature is invariant of $p$ for small enough $p$~\cite{Loisel2014-hu} and can be used to avoid parity problems on graphs where the uniform random walk is periodic without choosing a specific laziness parameter (e.g. Ollivier often considered $\curvature[\frac{1}{2}]{x,y}$ for this purpose).
+As we prove in Lemma~\ref{lem:asymptotic} the two notions of rough and asymptotic curvature differ only by a small factor bounded by $\frac{2}{\max(\degree{x}, \degree{y})}$ between adjacent trees and are equal for nonadjacent trees.
+We define $\ric{MH; x, y}$ analogously to $\curvature{MH; x, y}$.
 
 
 \section{Access times of random walks on the rSPR graph can be understood using distance, degree, and curvature}
@@ -322,7 +341,7 @@ Thus, we believe this fast graph construction procedure will itself be useful fo
 
 \subsection{Computing curvature values}
 To compute curvature values, we first used \texttt{dense\_spr\_graph} to compute the rSPR graph for four to seven leaves, as discussed in Section~\ref{sec:computing_treespace}.
-We then compute curvatures for given pairs of trees directly, by using linear programming to compute the minimal mass transport $W_1$ using the SAGE \cite{SAGE} front-end to the GLPK~\cite{glpk} solver; code can be found in \cite{gricci} which grew from the code described in \cite{Loisel2014-hu}.
+We then computed curvatures for given pairs of trees directly, by using linear programming~\cite{Loisel2014-hu} to compute the minimal mass transport $W_1$ using the SAGE \cite{SAGE} front-end to the GLPK~\cite{glpk} solver; code can be found in \cite{gricci} which grew from the code described in \cite{Loisel2014-hu}.
 
 This would have required an enormous amount of computation to directly compute curvatures for the $((2n-3)!!)^2$ pairs of trees with $n$ leaves.
 We instead exploited the fact that pairs of trees which are equivalent modulo label renumbering are symmetric in the rSPR graph and therefore guaranteed to have the same curvature.
@@ -347,7 +366,7 @@ Such pairs are possible bottlenecks in phylogenetic searches which may be exacer
 	\hspace*{\stretch{2}}
 	\subfigure[6 taxa]{\includegraphics[width=3in]{figs/rspr-upmh-scatter6}}
 	\hspace*{\stretch{1}}
-    \caption{Scatterplot of $\kappa(\MH; T_1,T_2)$ values versus $\dspr{T_1,T_2}$ for the rSPR graph. Distance values randomly perturbed (``jittered'') a small amount to avoid overplotting.}
+    \caption{Scatterplot of $\ric{\MH; T_1,T_2}$ values versus $\dspr{T_1,T_2}$ for the rSPR graph. Distance values randomly perturbed (``jittered'') a small amount to avoid overplotting.}
 	\label{fig:rspr-scatter}
 \end{figure}
 
@@ -485,7 +504,7 @@ On the other hand, if the random walk starting from $T_1$ does not quickly arriv
 	\hspace*{\stretch{1}}
     \caption{\
         Distribution of rSPR $\MH$ access times for those pairs of 5-taxon trees with degree 24 that are not simple inclusions of 4-taxon pairs of trees.
-        Color signifies rSPR distance between the trees, with green, orange, and blue signifying distances of 1, 2, and 3, respectively; the saturation of the color shows curvature $\kappa(\MH; \cdot, \cdot)$, such that increased saturation (i.e.\ darker color) indicates a smaller $\kappa$.
+        Color signifies rSPR distance between the trees, with green, orange, and blue signifying distances of 1, 2, and 3, respectively; the saturation of the color shows asymptotic curvature $\ric{\MH; \cdot, \cdot}$, such that increased saturation (i.e.\ darker color) indicates a smaller $\kappa$.
         }
 	\label{fig:kappa-access}
 \end{figure}
@@ -678,7 +697,7 @@ Then $\size{N(T) \cap N(S)} \le 6n - 17$.
 
 
 \section{Curvature}
-For the purposes of this paper, $\kappa_n$ is the Ricci-Ollivier curvature \eqref{eq:curvatureDef} on the $n$-taxon rSPR graph with respect to a specified random walk and $W_{1,n}$ is the corresponding mass transport term from \eqref{eq:curvatureDef}.
+For the purposes of this paper, $\kappa$ is the coarse Ricci-Ollivier curvature \eqref{eq:curvatureDef} on the $n$-taxon rSPR graph with respect to a specified random walk and $W_{1,n}$ is the corresponding mass transport term from \eqref{eq:curvatureDef}.
 
 We first consider properties of the uniform (a.k.a.\ isotropic) random walk on the rSPR graph.
 Assume that the random walk begins at a tree $T$.
@@ -797,55 +816,58 @@ This directly leads to the following Corollary:
 Note that this bound is not tight (at least for small $n$) as it is rarely necessary to transport mass the maximum distance between unpaired trees.
 We also note that the lower bounds in this section do not follow from the more general setting described in \cite{Jost2013-ce}.
 
-We next bound the effect of laziness on curvature.
-The lazy random walk again selects a neighbor uniformly at random, as with the uniform random walk, but only travels to the neighbor with probability $p$.
-We denote the curvature of the lazy random walk between two trees $T$ and $S$ by $\curvature[\ell_p]{T,S}$.
-For example, $\curvature[\ell_{\frac{1}{4}}]{T,S}$ describes the curvature of the lazy random walk that moves with probability $\frac{1}{4}$ and remains stationary with probability $\frac{3}{4}$.
-For the lazy random walk, $m_T$ is now $T \cup N(T)$, with each neighbor assigned mass $\frac{p}{\degree{T}}$ and $T$ assigned the remaining $1 - p$ mass.
-Note that Ollivier defined $\curvature[\ell_p]{T, S} := \left(1 - \frac{W_1(m_T, m_S)}{d(x, y)}\right) / p$~\cite{Ollivier2009-bw}.
-This definition of curvature is invariant of $p$ for small enough $p$ and was used by Ollivier to avoid parity problems on graphs where the uniform random walk is periodic.
-As we now prove, the curvature of the lazy random walk under this definition is closely related to that of the uniform random walk.
+We next bound the difference between the coarse and asymptotic curvatures.
+Recall that $\curvature[p]{T,S}$ is the coarse Ricci-Ollivier curvature between trees $T$ and $S$ with respect to the lazy walk that remains at a given tree with probability $1-p$ and transitions with probability $p$.
+For the lazy uniform random walk, $m_T$ is now $T \cup N(T)$, with each neighbor assigned mass $\frac{p}{\degree{T}}$ and $T$ assigned the remaining $1 - p$ mass.
+The asympototic Ricci-Ollivier curvature $\ric{T,S}$ is $\lim_{p \rightarrow 0} \curvature[p]{T,S} / p$.
+As we now prove, these two notions of curvature differ only by a small factor inversely proportional to the maximum degree of $T$ and $S$.
 
 \begin{lemma}
+\label{lem:asymptotic}
 	Let $T$ and $S$ be rooted phylogenetic trees with $n$ leaves.
 	Then:
 	\begin{enumerate}
-		\item	$\curvature[\ell_p]{T,S} = \curvature{T,S}$, if $\dspr{T,S} > 1$, and
-		\item	$\curvature{T,S} \le \curvature[\ell_p]{T,S} \le \curvature{T,S} + \frac{2}{\max(\degree{T}, \degree{S})}$, if $\dspr{T,S} = 1$.
+		\item	$\ric{T,S} = \curvature{T,S}$, if $\dspr{T,S} > 1$, and
+		\item	$\curvature{T,S} \le \ric{T,S} \le \curvature{T,S} + \frac{2}{\max(\degree{T}, \degree{S})}$, if $\dspr{T,S} = 1$.
+		\item	$\ric{MH; T,S} = \curvature{MH; T,S}$, if $\dspr{T,S} > 1$, and
+		\item	$\curvature{MH; T,S} \le \ric{MH; T,S} \le \curvature{MH; T,S} + \frac{2}{\max(\degree{T}, \degree{S})}$, if $\dspr{T,S} = 1$.
 	\end{enumerate}
 \end{lemma}
 
 \begin{proof}
-	We first prove the lower bound, that is $\curvature{T,S} \le \curvature[\ell_p]{T,S}$.
+	We first prove the lower bound in the uniform case, that is $\curvature{T,S} \le \ric{T,S}$.
 	Let $W_1(T,S)$ be the mass transport cost in the uniform case, and $W_1'(T,S)$ be the same for the lazy case with parameter $p$.
-	Recall that $\curvature{T,S} = \curvature[\ell_1]{T,S} = 1 - \frac{W_1(T,S)}{\dspr{T,S}}$, and $\curvature[\ell_p]{T,S} = (1 - \frac{W_1'(T,S)}{\dspr{T,S}}) / p$.
+	Recall that $\curvature{T,S} = \curvature[\ell_1]{T,S} = 1 - \frac{W_1(T,S)}{\dspr{T,S}}$, and $\curvature[p]{T,S} / p = (1 - \frac{W_1'(T,S)}{\dspr{T,S}}) / p$.
 	Observe that $$W_1'(T,S) \le pW_1(T,S) + (1-p)\dspr{T,S},$$ by the simple mass transport program obtained by treating the mass at $T$ and $S$ as separate from that of the neighbors.
 	Then:
 	\begin{align*}
-		\curvature[\ell_p]{T,S} &= (1 - \frac{W_1'(T,S)}{\dspr{T,S}}) / p \\
+		\curvature[p]{T,S} /p &= (1 - \frac{W_1'(T,S)}{\dspr{T,S}}) / p \\
 		&\ge (1 - \frac{pW_1(T,S) + (1-p)\dspr{T,S}}{\dspr{T,S}}) / p \\
 		&\ge (\frac{1}{p} - \frac{W_1(T,S)}{\dspr{T,S}} - \frac{1-p}{p}) \\
 		&\ge 1 - \frac{W_1(T,S)}{\dspr{T,S}} \\
 		&\ge \curvature{T,S}
 	\end{align*}
+The lower bound in the MH case follows analogously.
 
 	For the upper bound, we observe that $$W_1'(T,S) \ge p(W_1(T,S) + (1-p)\left(\dspr{T,S}\right) - \frac{2}{\max(\degree{T}, \degree{S})},$$ as at most $\frac{1}{\max(\degree{T},\degree{S})}$ of the mass can remain at each of $T$ and $S$, paired with the lazy remainder.
 	The upper bound then follows analogously to the lower bound.
 	Moreover, no mass can remain at $T$ or $S$ when $\dspr{T,S} > 1$, in which case the curvatures are equal.
+Note that the MH distribution similarly assigns at most $\frac{1}{\degree{X}$ to each neighbor $X$ of the given tree.
+The upper bound in the MH case thus follows as well.
 \end{proof}
 
 Next we consider the curvature of the Metropolis-Hastings (MH) random walk sampling the uniform distribution on trees, which we will simply call the MH random walk.
 This random walk proposes a move from a tree $T$ to a neighbor tree $S$ uniformly at random and then accepts the move according to the Hastings ratio, $\min\left(1, \frac{\degree{T}}{\degree{S}}\right)$.
 The mass distribution for the MH random walk thus leaves a portion of mass at the origin tree, proportional to the relative degree difference of its higher degree neighbors.
-We now bound the difference between the curvature of uniform random walks $\curvature{S,T}$, and that of MH random walks, $\curvature[\MH]{S,T}$.
+We now bound the difference between the curvature of uniform random walks $\curvature{S,T}$, and that of MH random walks, $\curvature{\MH; S,T}$.
 
 \begin{lemma}
 	Let $T$ and $S$ be phylogenetic trees with $n$ leaves. Then:
 	$$\curvature{T,S} - \frac{1}{3\dspr{T,S}}
-	\le \curvature[\MH]{T,S}
+	\le \curvature{\MH; T,S}
 	\le \curvature{T,S} + \frac{1}{3\dspr{T,S}}, \text{ and }$$
 	$$\curvature{T,S} - \frac{1}{6}
-	\le \curvature[\MH]{T,S}
+	\le \curvature{\MH; T,S}
 	\le \curvature{T,S} + \frac{1}{6}.$$
 \end{lemma}
 \begin{proof}
@@ -860,7 +882,7 @@ We now bound the difference between the curvature of uniform random walks $\curv
 	Then, $W_1' \le W_1 + \frac{2}{6}$.
 	We now have:
 	\begin{align*}
-		\curvature[\MH]{T,S} & \ge 1 - \frac{W_1 + \frac{1}{3}}{\dspr{T,S}} \\
+		\curvature{\MH; T,S} & \ge 1 - \frac{W_1 + \frac{1}{3}}{\dspr{T,S}} \\
 		& \ge \curvature{T,S} - \frac{1}{3\dspr{T,S}}
 	\end{align*}
 
@@ -876,6 +898,7 @@ In summary, we have learned characteristics of the phylogenetic rSPR graph under
 We did so by developing theoretical and computational frameworks to bound and compute Ricci-Ollivier curvature of the rSPR graph.
 We find that curvature, along with degree and distance, determine the early dynamics of hitting times for random walks.
 Moreover, we proved that rSPR graph degree changes depend quadratically on the product of the size of the regrafted subtree with its change in depth as well as that rSPR graph tends toward flatness with respect to rSPR moves that move asymptotically small subtrees.
+Finally, we proved that the two competing definitions of Ollivier-Ricci curvature, coarse and asymptotic, are closely related with respect to uniform and Metropolis-Hastings walks on the rSPR graph.
 
 We emphasize that the influence of curvature is small in this setting of equiprobable trees (Fig.~\ref{fig:short-time-kappa-access}) and that the probability of the target node in the stationary distribution predominantly determines access times for pairs of trees (Fig.~\ref{fig:long-time-kappa-access}).
 However, it is well known that MCMC takes a long time to approximate real phylogenetic posterior distributions even when the Bayesian credible set is small, and in fact our previous work showed significant graph effects in the mixing time for phylogenetic MCMC for credible sets with hundreds or thousands of trees~\cite{Whidden2015-yi}.
