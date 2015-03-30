@@ -501,7 +501,7 @@ On the other hand, if the random walk starting from $T_1$ does not quickly arriv
 \label{tab:regressionDelta}
 \end{table}
 
-The analysis can be reproduced using the SCons (\url{http://scons.org/}) build tool and an IPython notebook; instructions are in the repository README file.
+The analysis generating the can be reproduced by simply invoking the SCons (\url{http://scons.org/}) build tool and evaluating cells in an IPython notebook; instructions are in the repository README file.
 
 
 \section{Rooted SPR Neighborhoods}
@@ -520,8 +520,7 @@ We begin by bounding differences between degrees, and then continue by enumerati
     \popQED
 \end{lemma}
 
-We now bound the relative and exact difference in rSPR degree between two trees with $n$ leaves.
-
+We now bound the ratio and difference of rSPR degree between two trees with $n$ leaves.
 \begin{lemma}
 	\label{lem:degree_max_delta}
 	Let $T$ and $S$ be rooted phylogenetic trees with $n \ge 3$ leaves, and assume without loss of generality that $\degree{T} \le \degree{S}$.
@@ -590,7 +589,7 @@ Similarly, we lose $2kb$ moves in the second case.
 In the third case, $R$'s parent subtree may now make $2(i-1)$ moves into $U$.
 Similarly, we lose $2(j-1)$ moves in the fourth case.
 
-The difference in rSPR degree is thus $2ka - 2kb + 2(i-1) - 2(j-1)$ as claimed.
+Thus the difference in rSPR degree is $2ka - 2kb + 2(i-1) - 2(j-1)$ as claimed.
 \end{proof}
 
 Moreover, we can use these ideas to determine the number of rSPR moves that are, in some respects, independent of a given rSPR move.
@@ -681,7 +680,7 @@ Then $\size{N(T) \cap N(S)} \le 6n - 17$.
 
 
 \section{Curvature}
-For the purposes of this paper, $\kappa_n$ is the Ricci-Ollivier curvature \eqref{eq:curvatureDef} on the $n$-taxon rSPR graph with respect to a specified random walk and $W_{1,n}$ is the corresponding mass transport term.
+For the purposes of this paper, $\kappa_n$ is the Ricci-Ollivier curvature \eqref{eq:curvatureDef} on the $n$-taxon rSPR graph with respect to a specified random walk and $W_{1,n}$ is the corresponding mass transport term from \eqref{eq:curvatureDef}.
 
 We first consider properties of the uniform (a.k.a.\ isotropic) random walk on the rSPR graph.
 Assume that the random walk begins at a tree $T$.
@@ -718,10 +717,9 @@ We again pair neighbor $T'_n$ of $T$ with neighbor $S'_n$ of $S$ such that $\dsp
 Thus, $W_{1,n}$ is bounded above by $(\degree{T_n} + \OhOf{kn}) / \degree{S_n} = (\degree{S_n} + \OhOf{kn}) / \degree{S_n}$.
 We again bound $W_{1,n}$ from below with $(\degree{T_n} - \OhOf{n}) / \degree{T_n}$ by ignoring the mass in common neighbors of $T_n$ and $S_n$.
 The proposition again follows because $\degree{T_n}$ is quadratic in $n$.
-
 \end{proof}
 
-Next we note a rough bound on the curvature of two trees with respect to their distance.
+Next we note a rough bound on the curvature of two trees with respect to their distance, then obtain a tighter bound on the maximum curvature of two adjacent trees.
 
 \begin{lemma}
 	\label{lem:curvature_distance_bound}
@@ -734,7 +732,6 @@ Next we note a rough bound on the curvature of two trees with respect to their d
 	The lower bound follows similarly.
 \end{proof}
 
-We can obtain a tighter bound on the maximum curvature of two adjacent trees.
 \begin{lemma}
 	The maximum curvature of the uniform random walk between two adjacent trees with $n$ leaves is $\frac{6n-17}{3n^2-13n+14}$.
 \end{lemma}
@@ -802,7 +799,7 @@ This directly leads to the following Corollary:
 Note that this bound is not tight (at least for small $n$) as it is rarely necessary to transport mass the maximum distance between unpaired trees.
 
 We next bound the effect of laziness on curvature.
-The lazy random walk again selects a tree uniformly at random, as with the uniform random walk, but only accepts the move with probability $p$.
+The lazy random walk again selects a neighbor uniformly at random, as with the uniform random walk, but only travels to the neighbor with probability $p$.
 We denote the curvature of the lazy random walk between two trees $T$ and $S$ by $\curvature[\ell_p]{T,S}$.
 For example, $\curvature[\ell_{\frac{1}{4}}]{T,S}$ describes the curvature of the lazy random walk that moves with probability $\frac{1}{4}$ and remains stationary with probability $\frac{3}{4}$.
 For the lazy random walk, $m_T$ is now $T \cup N(T)$, with each neighbor assigned mass $\frac{p}{\degree{T}}$ and $T$ assigned the remaining $1 - p$ mass.
@@ -823,7 +820,7 @@ As we now prove, the curvature of the lazy random walk under this definition is 
 	We first prove the lower bound, that is $\curvature{T,S} \le \curvature[\ell_p]{T,S}$.
 	Let $W_1(T,S)$ be the mass transport cost in the uniform case, and $W_1'(T,S)$ be the same for the lazy case with parameter $p$.
 	Recall that $\curvature{T,S} = \curvature[\ell_1]{T,S} = 1 - \frac{W_1(T,S)}{\dspr{T,S}}$, and $\curvature[\ell_p]{T,S} = (1 - \frac{W_1'(T,S)}{\dspr{T,S}}) / p$.
-	Observe that $$W_1'(T,S) \le pW_1(T,S) + (1-p)\dspr{T,S},$$ by taking an optimal uniform mass assignment spread over $p$ of the mass and moving the remainder from $T$ to $S$ (or vice versa).
+	Observe that $$W_1'(T,S) \le pW_1(T,S) + (1-p)\dspr{T,S},$$ by the simple mass transport program obtained by treating the mass at $T$ and $S$ as separate from that of the neighbors.
 	Then:
 	\begin{align*}
 		\curvature[\ell_p]{T,S} &= (1 - \frac{W_1'(T,S)}{\dspr{T,S}}) / p \\
