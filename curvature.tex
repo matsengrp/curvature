@@ -171,7 +171,7 @@ Here the term \emph{random walk} on a space $X$ simply denotes a family of proba
 In this paper, we investigate curvature of the rSPR graph with respect to two random walks and connect those results to access times (also known as hitting times) for those random walks.
 For this first effort we investigate random walks defined only in terms of the graph itself: the lazy uniform random walk and MCMC sampling from the uniform prior on trees.
 We present a fast new algorithm for computing rSPR graphs from a set of trees, reducing the time to do so from $\OhOf{m^2n}$ to $\OhOf{mn^3}$ for a set of $m$ trees with $n$ leaves.
-As the full rSPR graph contains $(2n-3)!!$ trees, this is a significant improvement in practice for exploring large subsets of graph.
+As the full rSPR graph contains $(2n-3)!!$ trees, this is a significant improvement in practice for exploring large subsets of the graph.
 By exploiting symmetries in the rSPR graph, we were able to calculate all of the curvatures for pairs of trees with up to seven leaves.
 By carefully examining the overlap in rSPR moves, we present a new method for computing the degree of a tree in the rSPR graph that allows one to select an rSPR neighbor uniformly at random in linear-time without explicitly generating the graph.
 Using this method to simulate these random walks, we find that the distribution of access times between pairs of trees can be described by distance between the trees, the degrees of the trees, and the curvature.
@@ -501,7 +501,7 @@ On the other hand, if the random walk starting from $T_1$ does not quickly arriv
 \label{tab:regressionDelta}
 \end{table}
 
-The analysis generating the can be reproduced using the SCons (\url{http://scons.org/}) build tool and an IPython notebook; instructions are in the repository README file.
+The analysis can be reproduced using the SCons (\url{http://scons.org/}) build tool and an IPython notebook; instructions are in the repository README file.
 
 
 \section{Rooted SPR Neighborhoods}
