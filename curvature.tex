@@ -147,39 +147,37 @@ Thus, phylogenetic searches can be viewed as traversing the graph of phylogeneti
 It has become increasingly clear that the structure of the SPR graph plays an important role in determining the accuracy of tree searches.
 We will call these "graph effects"---one can't easily move from one tree to another due to the structure of the graph.
 Researchers have noticed SPR graph effects in MCMC~\cite{Mossel2005-ly,Mossel2006-fo,Ronquist2006-fv,Stefankovic2011-hu}.
-We recently showed that graph structure has a significant effect on MCMC mixing using real data and programs~\cite{Whidden2015-yi}.
-Probabilists have also approached the problem using related frameworks that are more amenable to proving theorems, both for other sets of moves on trees with a finite number of leaves~\cite{Aldous2000-vg,Diaconis2002-gy} or for SPR and related moves on a continuous tree-like object called the compact real tree which formalizes the notion of a tree with infinite leaves\cite{Evans2006-xh,Athreya2014-de}.
+We recently showed that graph structure has a significant effect on MCMC mixing applying a popular inference program to real data~\cite{Whidden2015-yi}.
+Probabilists have also approached the problem using related frameworks that are more amenable to proving theorems, both for other sets of moves on trees with a finite number of leaves~\cite{Aldous2000-vg,Diaconis2002-gy} or for SPR and related moves on a continuous tree-like object which formalizes the notion of a tree with infinite leaves\cite{Evans2006-xh,Athreya2014-de}.
 
-ML also has graph effects, which manifest as local maxima.
-There have been investigations of local maxima, but mainly from the perspective of branch lengths rather than topology~\cite{Fukami1989-fs,Steel1994-pt,Chor2003-wh,Chor2000-ea}.
+Phylogenetic maximum-likelihood (ML) inference is also impacted by graph structure, which can manifest itself as local maxima.
+There have been investigations of local maxima, though mainly from the perspective of branch lengths rather than topology~\cite{Fukami1989-fs,Steel1994-pt,Chor2003-wh,Chor2000-ea}.
 The work on SPR moves in the ML context is primarily found in the literature comparing various SPR variants to one another, usually in the context of comparing one phylogenetic software package to another~\cite{Hordijk2005-dl,Stamatakis2006-yz,Price2010-fi,Guindon2010-lo}.
 We are not aware of any general conclusions concerning hill-climbing on the SPR or related graphs that has come from this work.
 
-The SPR graph is thus very important in phylogenetic inference, and yet still little is known about the rooted or unrooted versions of the SPR graph itself, or random walks thereupon.
+Thus the SPR graph is thus very important in determining the degree of success of phylogenetic inference procedures; given this importance still little is known about the rooted or unrooted versions of the SPR graph itself, or random walks thereupon.
 \cite{Song2003-gf} developed a recursive procedure on a tree to find the degree of the corresponding vertex in the rooted SPR (rSPR) graph, and corresponding bounds on degree.
 \cite{Ding2011-bj} showed that the diameter $\Delta_{\text{rSPR}}$ of the rSPR graph is $n - \Theta(\sqrt n)$, and for the unrooted case they show
 $$ n - 2\ceil{\sqrt{n}} + 1
 \le \Delta_{\text{uSPR}}(n)
 \le n - 3 - \floorV{\frac{\sqrt{n - 2} - 1}{2}}.
 $$
-Despite the centrality of the SPR graph to phylogenetic inference, we are not aware of any other work investigating its properties.
+We are not aware of any other work investigating large-scale properties of the SPR graph.
 
-Recently, a new approach to quantifying properties of discrete and continuous spaces with respect to random walks has been pioneered by Ollivier and colleagues~\cite{Ollivier2009-bw,Joulin2010-jg}.
-They define a notion of curvature on a discrete or continuous case.
-This formalizes the notion of to what extent random walking brings points together, and is a generalization of the classical notion of Ricci curvature on manifolds.
-Here the term \emph{random walk} on a space $X$ simply denotes a family of probability measures parameterized by points of $X$.
+A new approach to quantifying properties of random walks on discrete and continuous spaces has recently been pioneered by Ollivier and colleagues~\cite{Ollivier2009-bw,Joulin2010-jg}.
+They define a notion of curvature which formalizes the notion of to what extent random walking brings points together, and is a generalization of the classical notion of Ricci curvature on manifolds.
+Here the term \emph{random walk} on a space $X$ simply denotes a family of probability measures parameterized by points of $X$, which includes biased walks such as MCMC.
 
-In this paper, we investigate curvature of the rSPR graph with respect to two random walks and make connections to access times for those random walks.
-We use random walks on the rSPR graph as being a general notion of movement around a graph, modeling phylogenetic MCMC searches.
-For this first effort we investigate random walks defined in terms of the graph itself: the lazy uniform random walk and MCMC sampling from the uniform prior on trees.
+In this paper, we investigate curvature of the rSPR graph with respect to two random walks and connect those results to access times (also known as hitting times) for those random walks.
+For this first effort we investigate random walks defined only in terms of the graph itself: the lazy uniform random walk and MCMC sampling from the uniform prior on trees.
 We present a fast new algorithm for computing rSPR graphs from a set of trees, reducing the time to do so from $\OhOf{m^2n}$ to $\OhOf{mn^3}$ for a set of $m$ trees with $n$ leaves.
-As the full rSPR treespace contains $(2n-3)!!$ trees, this is a significant improvement in practice for exploring large subsets of treespace.
+As the full rSPR graph contains $(2n-3)!!$ trees, this is a significant improvement in practice for exploring large subsets of graph.
 By exploiting symmetries in the rSPR graph, we were able to calculate all of the curvatures for pairs of trees with up to seven leaves.
 By carefully examining the overlap in rSPR moves, we present a new method for computing the degree of a tree in the rSPR graph that allows one to select an rSPR neighbor uniformly at random in linear-time without explicitly generating the graph.
 Using this method to simulate these random walks, we find that the distribution of access times between pairs of trees can be described by distance between the trees, the degrees of the trees, and the curvature.
 By getting a more fine-tuned understanding of the rSPR neighborhood of pairs of vertices, we are able to give bounds on curvatures under these random walks.
-In particular, we present a full characterization of the change in rSPR degree that occurs from a given rSPR move and find that, contrary to previous assumptions\todo{This is going to need a citation or be taken out}, rSPR moves which move large subtrees may have greater graph effects than those that move small subtrees.
-
+In particular, we present a full characterization of the change in rSPR degree that occurs from a given rSPR move and find that even though they each count as one move, rSPR moves which move large subtrees may have greater graph effects than those that move small subtrees.
+In summary, we extend knowledge about an important graph for phylogenetics, specifically in a way that modeling phylogenetic MCMC search.
 
 \section{Preliminaries}
 
@@ -223,13 +221,12 @@ In particular, we present a full characterization of the change in rSPR degree t
 \end{figure}
 
 We follow the definitions and notation from~\cite{bordewich05,whidden2013hybridization, Whidden2015-yi}.
-A (rooted binary phylogenetic) $X$-tree is a rooted tree $T$ whose nodes have zero or two children.
-Leaves of $T$ are bijectively labelled with the members of a label set $X$.
+A (rooted binary phylogenetic) $X$-tree is a rooted tree $T$ whose nodes have zero or two children such that the leaves of $T$ are bijectively labelled with the members of a label set $X$.
 As in~\cite{bordewich05,whidden2013hybridization,Whidden2015-yi}, the tree is augmented with a labelled root node $\rho$ and $\rho$ is considered a member of $X$ (Fig.~\ref{fig:x-tree}).
 We generally use $n$ to refer to the number of leaves in an $X$-tree.
 For a subset $V$ of $X$, $T(V)$ is the smallest subtree of $T$ that connects all nodes in $V$ (Fig.~\ref{fig:subtree}).
 The $V$-tree induced by $T$ is the smallest tree $T|V$ that can be obtained from $T(V)$ by suppressing unlabelled nodes with fewer than two children (Fig.~\ref{fig:induced}).
-For the rest of the paper, \textbf{we will assume that all phylogenetic trees are rooted,} and thus that tree inclusion is rooted tree inclusion.
+For the rest of the paper, \textbf{we will assume that all phylogenetic trees are binary and rooted,} and thus that tree inclusion is rooted tree inclusion.
 
 A \emph{parent (sub)tree} of a subtree $U$ is the smallest subtree strictly containing $U$.
 A \emph{parent edge} of a subtree $U$ is the edge connecting $U$ to the rest of the tree.
@@ -242,26 +239,25 @@ Similarly, the LCA of two or more subtrees is the LCA of their parent nodes.
 A (rooted) \emph{subtree prune-and-regraft} (rSPR) operation on an $X$-tree $T$ cuts an edge $e = (x, p_x)$ where $p_x$ denotes the parent of node $x$.
 $T$ is divided into two subtrees $T_x$ and $T_{p_x}$ containing $x$ and $p_x$, respectively.
 Then the operation adds a new node $p'_x$ to $T_{p_x}$ by subdividing an edge of $T_{p_x}$ and adding a new edge $(x, p'_x)$, making $x$ a child of $p'_x$.
-Finally, $p_x$ is suppressed.
+Finally, $p_x$ is suppressed, joining the two edges on either side of that node.
 See Figure~\ref{fig:spr} for an example.
 Note that the inclusion of $\rho$ allows for rSPR moves that move subtrees to the root of the tree.
 
 rSPR operations give rise to a distance measure between $X$-trees: $\dspr{T_1, T_2}$ is the minimum number of rSPR operations required to transform an $X$-tree $T_1$ into $T_2$.
 For example, the trees in Figure~\ref{fig:two-spr} are separated by two rSPR operations.
-Moreover, rSPR operations naturally give rise to a graph on the set of $X$-trees.
+Moreover, rSPR operations naturally give rise to a graph on the set of $X$-trees for which this distance is simply the shortest-path graph distance.
 Let $\mathcal{T}_n$ be the set of trees with $n$ leaves and label set $X = \set{1, 2, \ldots n, \rho}$.
 Then the rSPR graph $G$ of $\mathcal{T}_n$ is the graph with vertex set $V(G) = \mathcal{T}_n$ and edge set $E(G) = \set{(T,S) \mid \dspr{T,S} = 1, T \in V, S \in V}$.
-Observe that distances in this graph are given by $\dspr{\cdot,\cdot}$.
 
-To avoid confusion between the two types of graph structures considered here, we refer to vertices of the rSPR graph as \emph{vertices} and vertices of individual trees as \emph{nodes}.
+To avoid confusion between the two types of graph structures considered here, we refer to vertices of the rSPR graph as \emph{vertices} and vertices of individual trees (i.e.\ leaves and internal nodes) as \emph{nodes}.
 Let $N(T)$ be the set of rSPR neighbors of a tree $T$ (this does not include $T$).
 For example, the tree $T$ with 4 leaves in Figure~\ref{fig:neighborhood} has 10 neighbors.
 We say that the degree of $T$ is $\degree{T}$, that is, the number of trees which can be obtained from $T$ by a single rSPR operation.
 Because we assume that all trees are bifurcating, we use degree to refer only to the degree of rSPR graph vertices.
 
-Ollivier-Ricci curvature provides an intuitive formalization for quantifying the shape of a graph with respect to a random walk (or indeed any metric space, see~\cite{Ollivier2009-bw}).
+Ollivier-Ricci curvature provides a rigorous yet intuitive formalization of the shape of a graph with respect to a random walk (or indeed the shape of a variety of metric spaces, see~\cite{Ollivier2009-bw}).
 Let $m_x$ and $m_y$ be probability densities of a specified random walk starting at points $x$ and $y$ of a graph $G = (V,E)$, respectively.
-The Wasserstein distance~\cite{Villani2003-wv} (equivalently $L^1$ transportation, or ``earth movers distance''~\cite{rubner2000earth}) between $m_x$ and $m_y$ is the minimum amount of ``work'' required to move $m_x$ to $m_y$ following the graph, that is
+The Wasserstein distance~\cite{Villani2003-wv} (equivalently $L^1$ transportation, or ``earth movers distance''~\cite{rubner2000earth}) between $m_x$ and $m_y$ is the minimum amount of ``work'' required to move $m_x$ to $m_y$ along edges of the graph, that is
  $$ W_1(m_x, m_y) := \min_{\xi \in \Pi(m_x, m_y)} \sum \dspr{x,y} \xi(x,y),$$
 where $\Pi(m_x, m_y)$ is the set of of assignments of probability from $m_x$ to pairs of vertices in $V \times V$.
 
@@ -270,21 +266,22 @@ The curvature of $x$ and $y$ is then defined as:
 \curvature{x, y} := 1 - \frac{W_1(m_x, m_y)}{d(x, y)}
 \label{eq:curvatureDef}
 \end{equation}
-Positive curvature implies that $m_x$ and $m_y$ are ``closer'' than $x$ and $y$, zero curvature implies that they are neither closer nor farther, and negative curvature implies that $m_x$ and $m_y$ are on average more distant than $x$ and $y$.
+Positive curvature implies that $m_x$ and $m_y$ are ``closer'' than $x$ and $y$, zero curvature implies that they are neither closer nor farther, and negative curvature implies that $m_x$ and $m_y$ are on average ``more distant'' than $x$ and $y$.
 Curvature thus provides an intuitive measure of the difficulty of moving between regions of the graph with the given random walk.
 
 
 \section{Access times of random walks on the rSPR graph can be understood using distance, degree, and curvature}
 
-\subsection{Computing rSPR treespaces}
+\subsection{Computing rSPR graphs}
 \label{sec:computing_treespace}
 
-We computed the rSPR treespaces for four to seven leaves.
-This required a fast new algorithm for rSPR graph construction, reducing the time required to do so from $\OhOf{m^2 n}$ to $\OhOf{mn^3}$, where $m$ is the number of trees in the graph ($(2n-3)!!$ in this case) and $n$ the number of leaves.
+We computed the rSPR graph explicitly for trees on four to seven leaves.
+This required a fast new algorithm for rSPR graph construction, as previous algorithms required $\OhOf{m^2 n}$ time, where $m$ is the number of trees in the graph ($(2n-3)!!$ in this case) and $n$ the number of leaves.
+Here we reduce that time to $\OhOf{mn^3}$.
 In previous work~\cite{Whidden2015-yi}, we constructed (unrooted) SPR graphs from subsets of $m$ high probability trees sampled from phylogenetic posteriors to compare mixing and identify graph effects.
 Although the SPR distance (rooted and unrooted) is NP-hard to compute~\cite{bordewich05,hickey2008sdc}, it is fixed-parameter tractable with respect to the distance in the rooted case~\cite{bordewich05}.
 In particular, one can determine in $\OhOf{n}$-time whether two rooted phylogenetic trees are adjacent in the rSPR graph ($\OhOf{n^2}$-time for unrooted trees) using the algorithms of Whidden et al.~\cite{whidden2009unifying,whidden2010fast, whidden2013hybridization,Whidden2015-yi}.
-We applied this method comparing each of the $m$ trees pairwise to identify adjacencies, requiring a total of $\OhOf{m^2n}$-time ($\OhOf{m^2n^2}$-time in the unrooted case).
+We applied this method comparing each of the $m$ trees pairwise to identify adjacencies, requiring a total of $\OhOf{m^2n}$-time ($\OhOf{m^2 n^2}$-time in the unrooted case).
 However, applying this method to complete rSPR graphs, with the $\OhOf{m^2}$ factor where $m = (2n-3)!!$, requires an enormous amount of computation.
 
 To quickly compute dense rSPR graphs (those containing a significant portion of the full treespace) we can avoid pairwise computations by successively adding trees to the graph:
@@ -333,17 +330,16 @@ For example, the pairs
 $\{(((1,2),3),4), ((1,2),(3,4))\}$ and
 $\{(((1,4),3),4), ((1,4),(2,3))\}$
 are the same after relabeling, so their curvatures are the same.
-We thus directly computed curvature values for one representative pair from each such equivalence class, or \emph{tanglegram} \cite{Venkatachalam2010-zh}; the enumeration methods are described in a manuscript in preparation, and the SAGE \cite{SAGE} and GAP4 \cite{GAP4} code can be found online \cite{tangle}.
+We thus directly computed curvature values for one representative pair from each such equivalence class, or \emph{tanglegram} \cite{Venkatachalam2010-zh}; the group-theoretic enumeration methods are described in a manuscript in preparation, and the SAGE \cite{SAGE} and GAP4 \cite{GAP4} code can be found online \cite{tangle}.
 
-We saw a wide variation in curvature values among tanglegrams (Figure~\ref{fig:rspr-scatter}).~\todo{EM: add 7-taxa graph when ready}
-Curvature values tended to increase with increasing rSPR distance.
-In addition, their variance decreased with increasing distance.
-Neighboring trees had minimum curvature values for a given treespace, and we found maximum curvature values between trees at maximum distance or one rSPR move closer than the maximum.
-This suggests that the increased difficulty of moving between trees in a random walk due to distance may be tempered somewhat by curvature in the highly connected rSPR treespaces.
+We find a wide variation in curvature values among tanglegrams (Figure~\ref{fig:rspr-scatter}).~\todo{EM: add 7-taxa graph when ready}
+Curvature values tended to increase with increasing rSPR distance, and their variance decreased with increasing distance.
+Neighboring trees had minimum curvature values for a given number of leaves, and we found maximum curvature values between trees at maximum distance or one rSPR move closer than the maximum.
+This suggests that the increased difficulty of moving between trees with a random walk due to distance may be tempered somewhat by curvature in the highly connected rSPR graph.
 
 Larger treespaces tended to have smaller curvature values.
 Indeed, the 7-leaf treespace contained adjacent pairs of trees with negative curvature.
-Such pairs are possible bottlenecks in phylogenetic searches which may be exarcebated by likelihood or branch length constraints.
+Such pairs are possible bottlenecks in phylogenetic searches which may be exacerbated by likelihood or branch length constraints.
 
 \begin{figure}
 	\hspace*{\stretch{1}}
@@ -359,13 +355,12 @@ Such pairs are possible bottlenecks in phylogenetic searches which may be exarce
 \label{sec:random_walks}
 We next explored the correspondence between curvature and graph effects.
 To do so, we first simulated Metropolis-Hastings random walks on the rSPR graphs with up to seven leaves.
-The uniform random walk moves from the current vertex to one of its neighbors uniformly at random.
-However, this makes the walk more likely to sample higher degree vertices.
+The uniform random walk moves from the current vertex to one of its neighbors uniformly at random, which makes this walk more likely to sample higher degree vertices.
 In contrast, the Metropolis Hastings (MH) random walk with constant likelihood function proposes a move from a tree $T$ to a neighbor tree $S$ uniformly at random and then accepts the move according to the Hastings ratio, $\min\left(1, \frac{\degree{T}}{\degree{S}}\right)$.
 The MH random walk is guaranteed to sample each tree uniformly at random and is therefore representative of a phylogenetic MCMC program sampling trees under a uniform prior.
 
 To efficiently simulate the MH random walk, we developed a linear-time algorithm for proposing rSPR moves that does not require the rSPR graph to be explicitly built and stored in memory.
-A na\"ive approach would require $\OhOf{n^3}$ time---$\OhOf{n}$ time to generate each of the $\OhOf{n^2}$ neighbors of a given tree---and then one could be picked uniformly at random.
+A na\"ive approach would require $\OhOf{n^3}$ time: $\OhOf{n}$ time to generate each of the $\OhOf{n^2}$ neighbors of a given tree so that one could be picked uniformly at random.
 To eliminate an $\OhOf{n^2}$ factor, we developed a deterministic ordering of rSPR moves with a one-to-one correspondence to rSPR neighbors, as described in the next paragraph.
 Given such an order, a uniform neighbor can be selected by its index in $\OhOf{n}$ time.
 We note that the recursive formula of Song~\cite{Song2003-gf} for the degree of a tree does not group rSPR moves that move a particular subtree, and thus would still require $\OhOf{n^2}$ time to select a specific rSPR neighbor by index.
@@ -450,20 +445,20 @@ We thus have the following corollary:
 	Given a tree $T$, the rSPR neighbors of $T$ can be enumerated in $\OhOf{n^3}$-time.
 \end{corollary}
 
-We implemented this procedure in the C++ package \texttt{random\_spr\_walk}~\cite{random_spr_walk}. 
+We implemented this procedure in the C++ package \texttt{random\_spr\_walk}~\cite{random_spr_walk}.
 We sampled a 200,000-iteration random walk on the 4-leaf rSPR graph and a 50,000-iteration random walk on the 5-leaf rSPR graph.
 This required XXX and YYY time respectively.~\todo{EM: can you fill in the time this required?}
 
 \subsection{Access time simulation}
 The access time for a pair of vertices in a graph is the (random) number of iterations required to go from one of the vertices to the other in a random walk~\cite{lovasz1993random}; we were interested in the connection between curvature and access time.
-In previous work, we computed mean access times (MAT) between pairs of trees in the MCMC random walks---the mean number of iterations required to move from one tree to the other.
+In previous work, we computed mean access times (MAT) between pairs of trees in the MCMC random walks: the mean number of iterations required to move from one tree to the other.
 We applied this work to demonstrate graph effects in uSPR subgraphs of real MCMC samples using MrBayes~\cite{Whidden2015-yi} using the \texttt{sprspace}~\cite{sprspace} software.
 
 Here, to gain more insight, we used simulation to approximate the entire access time distribution.
 As before, calculating these distributions for all pairs of trees would have required a tremendous amount of memory and computational power in order to get good estimates.
-Here again we use the insight that the access time for a pair of trees with a simple random walk does not depend on the actual labeling of those trees, but rather only on their relative labeling.
+Again we use the insight that the access time for a pair of trees with a simple random walk does not depend on the actual labeling of those trees, but rather only on their relative labeling.
 Thus rather than enumerate access times between trees, we enumerate times between pairs of trees in a tanglegram.
-To calculate the empirical distributions of access times we aggregate all access times for the same tanglegram \cite{gricci, tangle}.
+To calculate the empirical distributions of access times we aggregate all access times for the same tanglegram using our group-theoretic methods \cite{tangle}.
 
 \begin{table}
 \centering
@@ -478,7 +473,7 @@ Furthermore, plotting the distribution of access times between pairs of trees wi
 We quantify this effect by defining $\delta_1$ to be the difference between the first pair of access time counts such that the second entry in the pair is nonzero.
 For example, $\delta_1$ for distance 1 pairs (green lines in Fig.~\ref{fig:kappa-access}) is the count for time 1 minus the count for time 2, while $\delta_1$ for distance 3 pairs (blue lines in Fig.~\ref{fig:kappa-access}) is the count for time 2 minus the count for time 3.
 Regression finds a clear influence of $\kappa$ on $\delta_1$ (Table~\ref{tab:regressionDelta}).
-This confirms the intuitive interpretation of $\kappa(T_1, T_2)$ as quantifying the likelihood of a random walk going from $T_1$ to $T_2$ relatively directly, certainly before the random walk achieves stationarity.
+This confirms the intuitive interpretation of $\kappa(T_1, T_2)$ as quantifying the propensity of a random walk to go from $T_1$ to $T_2$ relatively directly, certainly before the random walk achieves stationarity.
 On the other hand, if the random walk starting from $T_1$ does not quickly arrive at $T_2$ and instead achieves stationarity, the original position of the random walk is forgotten, and the access time is then a standard exponentially distributed waiting time for an event in a Poisson process (Fig.~\ref{fig:long-time-kappa-access}).
 
 \begin{figure}
@@ -488,7 +483,7 @@ On the other hand, if the random walk starting from $T_1$ does not quickly arriv
 	\subfigure[\label{fig:long-time-kappa-access}]{\includegraphics[width=3in]{figs/long-time-kappa-access}}
 	\hspace*{\stretch{1}}
     \caption{\
-        Distribution of rSPR $\MH$ access times for those pairs of 5-taxon trees with degree 24 that are not simple inclusions of 4-taxon pairs of trees.\
+        Distribution of rSPR $\MH$ access times for those pairs of 5-taxon trees with degree 24 that are not simple inclusions of 4-taxon pairs of trees.
         Color signifies rSPR distance between the trees, with green, orange, and blue signifying distances of 1, 2, and 3, respectively; the saturation of the color shows curvature $\kappa(\MH; \cdot, \cdot)$, such that increased saturation (i.e.\ darker color) indicates a smaller $\kappa$.
         }
 	\label{fig:kappa-access}
@@ -503,13 +498,12 @@ On the other hand, if the random walk starting from $T_1$ does not quickly arriv
 \label{tab:regressionDelta}
 \end{table}
 
-The full analysis can be reproduced using the SCons (\url{http://scons.org/}) build tool; instructions are in the repository README file.
+The analysis generating the can be reproduced using the SCons (\url{http://scons.org/}) build tool and an IPython notebook; instructions are in the repository README file.
 
 
 \section{Rooted SPR Neighborhoods}
 Having made the connection between curvature values and access times on the rSPR graphs, we now consider curvature theoretically.
-In the absence of a bias provided by a likelihood function, curvature for the random walks we consider is entirely determined by the degree of vertices in the graph.
-Thus, in order to provide bounds on curvature, we will begin by bounding differences between degrees.
+We begin by bounding differences between degrees, and then continue by enumerating squares and triangles in the rSPR graph.
 
 \begin{lemma}[{Song~\cite{Song2003-gf}}]
     \pushQED{\qed}
@@ -660,7 +654,7 @@ This bound is minimized when $\degree{T}$ is minimized, and recall by Lemma~\ref
 
 
 Next, we bound the number of neighbors shared by two adjacent trees.
-The number of such "triangles" involving two adjacent trees has a key role in determining whether the curvature of two adjacent trees is positive or negative.
+The number of such ``triangles'' involving two adjacent trees has a key role in determining whether the curvature of two adjacent trees is positive or negative.
 
 \begin{lemma}
 	\label{lem:shared_neighbors}
@@ -686,7 +680,7 @@ Then $\size{N(T) \cap N(S)} \le 6n - 17$.
 \section{Curvature}
 For the purposes of this paper, $\kappa_n$ is the Ricci-Ollivier curvature \eqref{eq:curvatureDef} on the $n$-taxon rSPR graph with respect to a specified random walk and $W_{1,n}$ is the corresponding mass transport term.
 
-We first consider properties of the uniform random walk on the rSPR graph.
+We first consider properties of the uniform (a.k.a.\ isotropic) random walk on the rSPR graph.
 Assume that the random walk begins at a tree $T$.
 The uniform random walk selects a tree uniformly at random from $N(T)$.
 We denote the curvature of the uniform random walk between two trees $T$ and $S$ with $\curvature{T,S}$.
@@ -879,17 +873,17 @@ We now bound the difference between the curvature of uniform random walks $\curv
 \end{proof}
 
 \section{Conclusion and future work}
-In summary, we have extended knowledge about the the phylogenetic rSPR graph underlying phylogenetic inference beyond previous work concerning graph diameter and vertex degree.
+In summary, we have learned characteristics of the phylogenetic rSPR graph underlying phylogenetic inference substantially beyond previous work concerning graph diameter and vertex degree.
 We did so by developing theoretical and computational frameworks to bound and compute Ricci-Ollivier curvature of the rSPR graph.
 We find that curvature, along with degree and distance, determine the early dynamics of hitting times for random walks.
-Moreover, we proved that rSPR graph degree changes depend quadratically on the product of the size of the regrafted subtree and its change in depth and that rSPR treespace tends toward flatness with respect to rSPR moves that move small subtrees.
+Moreover, we proved that rSPR graph degree changes depend quadratically on the product of the size of the regrafted subtree with its change in depth as well as that rSPR treespace tends toward flatness with respect to rSPR moves that move asymptotically small subtrees.
 
-We emphasize that the influence of curvature is small in this setting of equiprobable trees (Fig.~\ref{fig:short-time-kappa-access}) and that the probability of the target node in the stationary distribution is the predominant factor determining hitting times for pairs of trees (Fig.~\ref{fig:long-time-kappa-access}).
+We emphasize that the influence of curvature is small in this setting of equiprobable trees (Fig.~\ref{fig:short-time-kappa-access}) and that the probability of the target node in the stationary distribution predominantly determines access times for pairs of trees (Fig.~\ref{fig:long-time-kappa-access}).
 However, it is well known that MCMC takes a long time to approximate real phylogenetic posterior distributions even when the Bayesian credible set is small, and in fact our previous work showed significant graph effects in the mixing time for phylogenetic MCMC for credible sets with hundreds or thousands of trees~\cite{Whidden2015-yi}.
 Thus, our next step will be to investigate curvature of MCMC with a nontrivial likelihood function, which will significantly reduce the effective size of the posterior distribution, and may lead to ``bottlenecks'' like those we have observed in real data.
 We will likely follow previous work \cite{Stefankovic2011-hu} by taking a chain where tree topology likelihoods are maximized across branch length, as the classical phylogenetic likelihood \cite{felsenstein1981evolutionary} requires both branch length and topology.
 
-In addition, we will extend this work from the rooted rSPR graph considered here to the unrooted case, which is more commonly used in phylogenetic search.
+We will extend this work from the rooted rSPR graph considered here to the unrooted case, which is more commonly used in phylogenetic search.
 We will also explore random walks ranked trees~\cite{Song2006-xe} and models of tree space relevant for phylogenetic algorithms such as BEAST \cite{Drummond2012-ek} that infer rooted ``time-trees.''
 Random walks on other discrete structures such as partitions~\cite{Gusfield2002-il} that can be expressed as certain types of trees may also form interesting subjects for future work.
 
