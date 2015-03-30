@@ -322,7 +322,7 @@ Thus, we believe this fast graph construction procedure will itself be useful fo
 
 \subsection{Computing curvature values}
 To compute curvature values, we first used \texttt{dense\_spr\_graph} to compute the rSPR graph for four to seven leaves, as discussed in Section~\ref{sec:computing_treespace}.
-We then compute curvatures for given pairs of trees directly, by using linear programming to compute the minimal mass transport $W_1$ using the SAGE \cite{SAGE} front-end to the GLPK~\cite{glpk} solver; code can be found in \cite{gricci}.
+We then compute curvatures for given pairs of trees directly, by using linear programming to compute the minimal mass transport $W_1$ using the SAGE \cite{SAGE} front-end to the GLPK~\cite{glpk} solver; code can be found in \cite{gricci} which grew from the code described in \cite{Loisel2014-hu}.
 
 This would have required an enormous amount of computation to directly compute curvatures for the $((2n-3)!!)^2$ pairs of trees with $n$ leaves.
 We instead exploited the fact that pairs of trees which are equivalent modulo label renumbering are symmetric in the rSPR graph and therefore guaranteed to have the same curvature.
@@ -717,7 +717,7 @@ We again bound $W_{1,n}$ from below with $(\degree{T_n} - \OhOf{n}) / \degree{T_
 The proposition again follows because $\degree{T_n}$ is quadratic in $n$.
 \end{proof}
 
-Next we note a rough bound on the curvature of two trees with respect to their distance, then obtain a tighter bound on the maximum curvature of two adjacent trees.
+Next we note a simple and rough bound on the curvature of two trees with respect to their distance, then obtain a tighter bound on the maximum curvature of two adjacent trees.
 
 \begin{lemma}
 	\label{lem:curvature_distance_bound}
@@ -833,8 +833,8 @@ As we now prove, the curvature of the lazy random walk under this definition is 
 	Moreover, no mass can remain at $T$ or $S$ when $\dspr{T,S} > 1$, in which case the curvatures are equal.
 \end{proof}
 
-We continue to explore the effect of biased random walks by considering the curvature of Metropolis Hastings random walks.
-The Metropolis Hastings (MH) random walk proposes a move from a tree $T$ to a neighbor tree $S$ uniformly at random and then accepts the move according to the Hastings ratio, $\min\left(1, \frac{\degree{T}}{\degree{S}}\right)$.
+Next we consider the curvature of the Metropolis-Hastings (MH) random walk sampling the uniform distribution on trees, which we will simply call the MH random walk.
+This random walk proposes a move from a tree $T$ to a neighbor tree $S$ uniformly at random and then accepts the move according to the Hastings ratio, $\min\left(1, \frac{\degree{T}}{\degree{S}}\right)$.
 The mass distribution for the MH random walk thus leaves a portion of mass at the origin tree, proportional to the relative degree difference of its higher degree neighbors.
 We now bound the difference between the curvature of uniform random walks $\curvature{S,T}$, and that of MH random walks, $\curvature[\MH]{S,T}$.
 
