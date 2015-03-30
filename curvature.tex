@@ -317,13 +317,13 @@ To quickly compute dense rSPR graphs (those containing a significant portion of 
 	Therefore the graph can be constructed in $\OhOf{mn^3}$-time.
 \end{proof}
 This procedure has been implemented in the C++ program \texttt{dense\_spr\_graph} of the software package \texttt{spr\_neighbors}~\cite{spr_neighbors}, which outputs an edge list format graph suitable for input to other software.
-The construction procedure reduced the time required to compute the 10,395-vertex 7-taxon rSPR tree space from 2,104.68 seconds to 12.71 seconds on an Intel Core 2 Duo E7500 desktop running Ubuntu 14.04.
-Moreover, although we do not study the 135,135-vertex 8-taxon tree space in this paper, our algorithm required only 303.45 seconds to construct it on the same hardware.
-Constructing the 8-taxon tree space using the previous method required 377,395 seconds (more than 4 days), and thus is infeasible for constructing larger rSPR tree graphs.
+The construction procedure reduced the time required to compute the 10,395-vertex 7-taxon rSPR graph from 2,104.68 seconds to 12.71 seconds on an Intel Core 2 Duo E7500 desktop running Ubuntu 14.04.
+Moreover, although we do not study the 135,135-vertex 8-taxon rSPR graph in this paper, our algorithm required only 303.45 seconds to construct it on the same hardware.
+Constructing the 8-taxon rSPR graph using the previous method required 377,395 seconds (more than 4 days), and thus is infeasible for constructing larger rSPR tree graphs.
 Thus, we believe this fast graph construction procedure will itself be useful for further studies of rSPR graph subsets similar to~\cite{Whidden2015-yi}.
 
 \subsection{Computing curvature values}
-To compute curvature values, we first used \texttt{dense\_spr\_graph} to compute the rSPR treespaces for four to seven leaves, as discussed in Section~\ref{sec:computing_treespace}.
+To compute curvature values, we first used \texttt{dense\_spr\_graph} to compute the rSPR graph for four to seven leaves, as discussed in Section~\ref{sec:computing_treespace}.
 We then compute curvatures for given pairs of trees directly, by using linear programming to compute the minimal mass transport $W_1$ using the SAGE \cite{SAGE} front-end to the GLPK~\cite{glpk} solver; code can be found in \cite{gricci}.
 
 This would have required an enormous amount of computation to directly compute curvatures for the $((2n-3)!!)^2$ pairs of trees with $n$ leaves.
@@ -887,7 +887,7 @@ Thus, our next step will be to investigate curvature of MCMC with a nontrivial l
 We will likely follow previous work \cite{Stefankovic2011-hu} by taking a chain where tree topology likelihoods are maximized across branch length, as the classical phylogenetic likelihood \cite{felsenstein1981evolutionary} requires both branch length and topology.
 
 We will extend this work from the rooted rSPR graph considered here to the unrooted case, which is more commonly used in phylogenetic search.
-We will also explore random walks ranked trees~\cite{Song2006-xe} and models of tree space relevant for phylogenetic algorithms such as BEAST \cite{Drummond2012-ek} that infer rooted ``time-trees.''
+We will also explore random walks on ranked trees~\cite{Song2006-xe} and graphical models of tree space relevant for phylogenetic algorithms such as BEAST \cite{Drummond2012-ek} that infer rooted ``time-trees.''
 Random walks on other discrete structures such as partitions~\cite{Gusfield2002-il} that can be expressed as certain types of trees may also form interesting subjects for future work.
 
 
