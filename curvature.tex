@@ -284,7 +284,7 @@ In particular, one can determine in $\OhOf{n}$-time whether two rooted phylogene
 We applied this method comparing each of the $m$ trees pairwise to identify adjacencies, requiring a total of $\OhOf{m^2n}$-time ($\OhOf{m^2 n^2}$-time in the unrooted case).
 However, applying this method to complete rSPR graphs, with the $\OhOf{m^2}$ factor where $m = (2n-3)!!$, requires an enormous amount of computation.
 
-To quickly compute dense rSPR graphs (those containing a significant portion of the full treespace) we can avoid pairwise computations by successively adding trees to the graph:
+To quickly compute dense rSPR graphs (those containing a significant portion of the full rSPR graph) we can avoid pairwise computations by successively adding trees to the graph:
 \begin{enumerate}[label={\arabic*}.]
 	\item Let $G$ be an empty graph
 	\item For each of the $m$ trees in a specified but arbitrary order,
@@ -318,7 +318,7 @@ This procedure has been implemented in the C++ program \texttt{dense\_spr\_graph
 Our fast graph construction procedure reduced the time required to compute the 10,395-vertex 7-taxon rSPR tree space from 2,104.68 seconds to 12.71 seconds on an Intel Core 2 Duo E7500 desktop running Ubuntu 14.04.
 Moreover, although we do not study the 135,135-vertex 8-taxon tree space in this paper, our algorithm required only 303.45 seconds to construct it.
 Constructing the 8-taxon tree space using the previous method required 377,395 seconds (more than 4 days), and that method is infeasible for constructing larger tree spaces.
-Thus, we believe this fast graph construction procedure will itself be useful for further studies of treespace subsets similar to~\cite{Whidden2015-yi}.
+Thus, we believe this fast graph construction procedure will itself be useful for further studies of rSPR graph subsets similar to~\cite{Whidden2015-yi}.
 
 \subsection{Computing curvature values}
 To compute curvature values, we first used \texttt{dense\_spr\_graph} to compute the rSPR treespaces for four to seven leaves, as discussed in Section~\ref{sec:computing_treespace}.
@@ -337,8 +337,8 @@ Curvature values tended to increase with increasing rSPR distance, and their var
 Neighboring trees had minimum curvature values for a given number of leaves, and we found maximum curvature values between trees at maximum distance or one rSPR move closer than the maximum.
 This suggests that the increased difficulty of moving between trees with a random walk due to distance may be tempered somewhat by curvature in the highly connected rSPR graph.
 
-Larger treespaces tended to have smaller curvature values.
-Indeed, the 7-leaf treespace contained adjacent pairs of trees with negative curvature.
+Larger rSPR graphs tended to have smaller curvature values.
+Indeed, the 7-leaf rSPR graph contained adjacent pairs of trees with negative curvature.
 Such pairs are possible bottlenecks in phylogenetic searches which may be exacerbated by likelihood or branch length constraints.
 
 \begin{figure}
@@ -876,7 +876,7 @@ We now bound the difference between the curvature of uniform random walks $\curv
 In summary, we have learned characteristics of the phylogenetic rSPR graph underlying phylogenetic inference substantially beyond previous work concerning graph diameter and vertex degree.
 We did so by developing theoretical and computational frameworks to bound and compute Ricci-Ollivier curvature of the rSPR graph.
 We find that curvature, along with degree and distance, determine the early dynamics of hitting times for random walks.
-Moreover, we proved that rSPR graph degree changes depend quadratically on the product of the size of the regrafted subtree with its change in depth as well as that rSPR treespace tends toward flatness with respect to rSPR moves that move asymptotically small subtrees.
+Moreover, we proved that rSPR graph degree changes depend quadratically on the product of the size of the regrafted subtree with its change in depth as well as that rSPR graph tends toward flatness with respect to rSPR moves that move asymptotically small subtrees.
 
 We emphasize that the influence of curvature is small in this setting of equiprobable trees (Fig.~\ref{fig:short-time-kappa-access}) and that the probability of the target node in the stationary distribution predominantly determines access times for pairs of trees (Fig.~\ref{fig:long-time-kappa-access}).
 However, it is well known that MCMC takes a long time to approximate real phylogenetic posterior distributions even when the Bayesian credible set is small, and in fact our previous work showed significant graph effects in the mixing time for phylogenetic MCMC for credible sets with hundreds or thousands of trees~\cite{Whidden2015-yi}.
