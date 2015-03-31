@@ -8,7 +8,7 @@ env = Environment(ENV=os.environ)
 no_slurm = bool(subprocess.call('which sbatch'.split()))
 
 min_leaves = 5
-max_leaves = 5
+max_leaves = 6
 
 walk_seed = 0
 walk_n_iter = 100
@@ -22,7 +22,7 @@ graphs_dir = 'graphs/'
 scripts_dir = '../scripts/'
 tangles_dir = '../tangle/rooted-symmetric/'
 walks_dir = 'walks/'
-#walks_dir = '6-walks-50K/'
+walks_dir = '6-walks-50K/'
 
 
 # First make graphs and associated files.

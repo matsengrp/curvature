@@ -15,7 +15,7 @@ In addition to [sage](http://sagemath.org/), we depend on the following python p
 
 ## Running analyses
 
-Edit the `SConstruct` file in `analysis` according to needs, and then type `scons` on the command line to run the analyses.
+Edit the `SConstruct` file in `analysis` according to needs, and then type `scons` on the command line in the `analysis` directory to run the analyses.
 
 Additional plotting and regression is performed in the IPython notebook `analysis/plot-and-regress.ipynb`.
 

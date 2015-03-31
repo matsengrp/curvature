@@ -10,9 +10,6 @@ import pickle
 import seaborn as sns
 
 sns.set_style('ticks')
-mpl.rcParams.update({
-    'font.size': 32, 'font.family': 'Lato',
-    'font.weight': 600, 'axes.labelweight': 600})
 
 parser = argparse.ArgumentParser(
     description='plot curvature results',
@@ -35,6 +32,11 @@ df = pickle.load(gzip.open(args.results_path, 'rb'))
 df['dist_jitter'] = df['dist'] + np.random.normal(0, 0.1, size=len(df))
 df['info'] = \
     df['t1_nwk']+'<br/>'+df['t2_nwk']+'<br/>avg_deg: '+map(str, df['avg_deg'])
+
+mpl.rcParams.update({
+    'font.size': 22, 'axes.labelsize': 16, 'xtick.labelsize':14, 'ytick.labelsize':14,
+    'font.family': 'Lato',
+    'font.weight': 600, 'axes.labelweight': 600})
 
 if args.which == 'hexbin':
     p = df.plot(
@@ -65,6 +67,10 @@ p.grid(b=None)
 sns.despine(offset=10)
 p.set_xlabel('kappa')
 p.set_ylabel('distance (jittered)')
+cbar = p.get_figure().get_children()[-1]
+cbar.tick_params(left=False, right=True, labelleft=False, labelright=True)
+cbar.get_yaxis().set_major_locator(mpl.ticker.MultipleLocator(0.25))
+cbar.get_yaxis().labelpad = 25
 
 if args.d3:
     from mpld3 import fig_to_html, plugins
