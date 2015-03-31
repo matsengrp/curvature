@@ -283,8 +283,8 @@ Positive curvature implies that $m_x$ and $m_y$ are ``closer'' than $x$ and $y$,
 Curvature thus provides an intuitive measure of the difficulty of moving between regions of the graph with the given random walk.
 
 Lin et al.~\cite{lin2011ricci} defined a variant definition of curvature in terms of lazy random walks which Loisel and Romon~\cite{Loisel2014-hu} dubbed the \emph{asymptotic Ricci-Olivier curvature}.
-The lazy random walk selects a neighbor according to a given distribution $m$ as before, but only travels to the neighbor with probability $p$.
-Thus the lazy mass assignment $m^p_x$ assigns $p\, m_x$ mass to each neighbor of $x$ and the remaining $1 - p$ mass to $x$.
+The lazy random walk only travels according to $m_x$ with probability $p$ and otherwise stays put.
+Thus the lazy mass assignment $m^p_x$ is the sum of $p\, m_x$ and a point mass of $1 - p$ on $x$.
 We denote the coarse curvature of the $p$-lazy random walk between two vertices $x$ and $y$ with respect to a random walk $m$ by $\curvature[p]{m; x,y}$.
 For example, $\curvature[\frac{1}{4}]{m; x,y}$ describes the curvature of the lazy random walk that follows the given random walk $m$ with probability $\frac{1}{4}$ and remains stationary with probability $\frac{3}{4}$.
 The asymptotic Ricci-Ollivier curvature of $x$ and $y$ is then:
