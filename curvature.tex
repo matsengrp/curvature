@@ -375,7 +375,7 @@ Such pairs are possible bottlenecks in phylogenetic searches which may be exacer
 	\hspace*{\stretch{2}}
 	\subfigure[7 taxa]{\includegraphics[width=3in]{figs/rspr-upmh-scatter7}}
 	\hspace*{\stretch{1}}
-    \caption{Scatterplot of $\curvature{\MH; T_1,T_2}$ values versus $\dspr{T_1,T_2}$ for the rSPR graph. Color displays the average degree of $T_1$ and $T_2$. Distance values randomly perturbed (``jittered'') a small amount to avoid overplotting.}
+    \caption{Scatter plot of $\curvature{\MH; T_1,T_2}$ values versus $\dspr{T_1,T_2}$ for the rSPR graph. Color displays the average degree of $T_1$ and $T_2$. Distance values randomly perturbed (``jittered'') a small amount to avoid superimposed points.}
 	\label{fig:rspr-scatter}
 \end{figure}
 
@@ -454,10 +454,10 @@ We can thus apply the following algorithm to select a neighbor uniformly at rand
 \end{lemma}
 \begin{proof}
 	We apply the above procedure.
-	We use a standard nodes-and-pointers representation of the trees, which can be constructed in $\OhOf{n}$-time from a newick string representation and uses linear space in $n$.
+	We use a standard nodes-and-pointers representation of the trees, which can be constructed in $\OhOf{n}$-time from a Newick string representation and uses linear space in $n$.
 	We can compute the degree of $T$ in linear time and space using Lemma~\ref{lem:compute_degree}.
 	To efficiently compute $\size{N(T,u)}$ for each node $u$ of $T$, we require the number of nodes $x$ in the subtree rooted at $u$.
-	We precompute these by (1) labeling each node with its preorder number in a preorder traversal and (2) summing the number of descendant nodes in a postorder traversal and storing the results in an array indexed by preorder number.
+	We pre-compute these by (1) labeling each node with its preorder number in a preorder traversal and (2) summing the number of descendant nodes in a postorder traversal and storing the results in an array indexed by preorder number.
 	Both of these traversals require $\OhOf{n}$-time.
 	There are $2n-1$ = $\OhOf{n}$ nodes of $T$, and $\size{N(T,u)}$ can be computed in constant time using the subtree sizes.
 	Moreover, the tree $S$ can be found in $\OhOf{n}$-time by iterating over the edges of $T$ that are not contained within $u$'s subtree to select the corresponding rSPR destination.
@@ -827,7 +827,7 @@ We also note that the lower bounds in this section do not follow from the more g
 We next bound the difference between the coarse and asymptotic curvatures.
 Recall that $\curvature[p]{T,S}$ is the coarse Ricci-Ollivier curvature between trees $T$ and $S$ with respect to the lazy walk that remains at a given tree with probability $1-p$ and transitions with probability $p$.
 For the lazy uniform random walk, $m_T$ is now $T \cup N(T)$, with each neighbor assigned mass $\frac{p}{\degree{T}}$ and $T$ assigned the remaining $1 - p$ mass.
-The asympototic Ricci-Ollivier curvature $\ric{T,S}$ is $\lim_{p \rightarrow 0} \curvature[p]{T,S} / p$.
+The asymptotic Ricci-Ollivier curvature $\ric{T,S}$ is $\lim_{p \rightarrow 0} \curvature[p]{T,S} / p$.
 As we now prove, these two notions of curvature differ only by a small factor inversely proportional to the maximum degree of $T$ and $S$.
 
 \begin{lemma}
@@ -894,7 +894,7 @@ We now bound the difference between the curvature of uniform random walks $\curv
 		& \ge \curvature{T,S} - \frac{1}{3\dspr{T,S}}
 	\end{align*}
 
-	In the case that $\dspr{T,S}=1$, the affected mass must be moved through only at most one additonal tree, as $T$ and $S$ are adjacent.
+	In the case that $\dspr{T,S}=1$, the affected mass must be moved through only at most one additional tree, as $T$ and $S$ are adjacent.
 	We thus obtain the lower bound of $\curvature{T,S} - \frac{1}{6}$ in this case.
 
 	We obtain the upper bounds similarly to the lower bounds, by observing that the affected at most $\frac{1}{6}$ of the mass may move through at most two fewer trees (i.e. directly between $T$ and $S$ rather than a pair of neighbors at distance $\dspr{T,S} + 2$ from each other).
