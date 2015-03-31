@@ -3,7 +3,6 @@
 \usepackage{amsmath,amsthm}
 \usepackage{csvsimple}
 \usepackage{ifthen}
-\usepackage{todonotes}
 %\usepackage[notref,notcite]{showkeys} % show keys for eqs, etc.
 %\usepackage[right]{showlabels}
 \usepackage{cite}
@@ -13,10 +12,11 @@
 \usepackage[nomarkers,nofiglist,notablist]{endfloat}
 \let\MYoriglatexcaption\caption
 \renewcommand{\caption}[2][\relax]{\MYoriglatexcaption[#2]{#2}}
-% shift for todonotes
-\usepackage[left=0.5in,right=1.5in,top=1in,bottom=1in,marginparwidth=1.25in]{geometry}
+%\usepackage{todonotes}
+%% shift for todonotes
+%\usepackage[left=0.5in,right=1.5in,top=1in,bottom=1in,marginparwidth=1.25in]{geometry}
 % regular margins
-%\usepackage[margin=1in]{geometry}
+\usepackage[margin=1in]{geometry}
 
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}[theorem]{Lemma}
@@ -360,7 +360,7 @@ $\{(((1,4),3),4), ((1,4),(2,3))\}$
 are the same after relabeling, so their curvatures are the same.
 We thus directly computed curvature values for one representative pair from each such equivalence class, or \emph{tanglegram} \cite{Venkatachalam2010-zh}; the group-theoretic enumeration methods are described in a manuscript in preparation, and the SAGE \cite{SAGE} and GAP4 \cite{GAP4} code can be found online \cite{tangle}.
 
-We find a wide variation in curvature values among tanglegrams (Figure~\ref{fig:rspr-scatter}).~\todo{EM: add 7-taxa graph when ready}
+We find a wide variation in curvature values among tanglegrams (Figure~\ref{fig:rspr-scatter}).
 Curvature values tended to increase with increasing rSPR distance, and their variance decreased with increasing distance.
 Neighboring trees had minimum curvature values for a given number of leaves, and we found maximum curvature values between trees at maximum distance or one rSPR move closer than the maximum.
 This suggests that the increased difficulty of moving between trees with a random walk due to distance may be tempered somewhat by curvature in the highly connected rSPR graph.
