@@ -214,7 +214,9 @@ The automated computational analysis code can be found at \url{https://github.co
 	\hspace*{\stretch{1}}
 	\includegraphics[scale=1.25]{figs/two-spr}
 	\hspace*{\stretch{1}}
-	\caption{Two trees differing by two rSPR operations that move the grey subtrees.}
+	\caption{\
+    Two rSPR operations, each of which moves one grey subtree.
+    The leftmost and rightmost trees are rSPR distance two apart.}
 	\label{fig:two-spr}
 \end{figure}
 
@@ -287,7 +289,7 @@ For example, $\curvature[\frac{1}{4}]{m; x,y}$ describes the curvature of the la
 The asymptotic Ricci-Ollivier curvature of $x$ and $y$ is then:
 \begin{equation}
 \ric{m; x, y} := \lim_{p \rightarrow 0} \frac{\curvature[p]{m; x,y}}{p}
-\label{eq:curvatureDef}
+\label{eq:asympCurvatureDef}
 \end{equation}
 As above for $\kappa$, we use $\ric{x, y}$ as shorthand for $\ric{m; x, y}$ when $m$ is the uniform lazy random walk, and $\ric{\MH; x, y}$ when $m$ is the Metropolis-Hastings random walk sampling the uniform distribution (Section~\ref{sec:random_walks}).
 This definition of curvature is invariant of $p$ for small enough $p$~\cite{Loisel2014-hu} and can be used to avoid parity problems on graphs where the uniform random walk is periodic without choosing a specific laziness parameter (e.g. Ollivier often considered $\curvature[\frac{1}{2}]{x,y}$ for this purpose).
@@ -833,8 +835,8 @@ As we now prove, these two notions of curvature differ only by a small factor in
 	\begin{enumerate}
 		\item	$\ric{T,S} = \curvature{T,S}$, if $\dspr{T,S} > 1$, and
 		\item	$\curvature{T,S} \le \ric{T,S} \le \curvature{T,S} + \frac{2}{\max(\degree{T}, \degree{S})}$, if $\dspr{T,S} = 1$.
-		\item	$\ric{MH; T,S} = \curvature{MH; T,S}$, if $\dspr{T,S} > 1$, and
-		\item	$\curvature{MH; T,S} \le \ric{MH; T,S} \le \curvature{MH; T,S} + \frac{2}{\max(\degree{T}, \degree{S})}$, if $\dspr{T,S} = 1$.
+		\item	$\ric{\MH; T,S} = \curvature{\MH; T,S}$, if $\dspr{T,S} > 1$, and
+		\item	$\curvature{\MH; T,S} \le \ric{\MH; T,S} \le \curvature{\MH; T,S} + \frac{2}{\max(\degree{T}, \degree{S})}$, if $\dspr{T,S} = 1$.
 	\end{enumerate}
 \end{lemma}
 
@@ -845,11 +847,11 @@ As we now prove, these two notions of curvature differ only by a small factor in
 	Observe that $$W_1'(T,S) \le pW_1(T,S) + (1-p)\dspr{T,S},$$ by the simple mass transport program obtained by treating the mass at $T$ and $S$ as separate from that of the neighbors.
 	Then:
 	\begin{align*}
-		\curvature[p]{T,S} /p &= (1 - \frac{W_1'(T,S)}{\dspr{T,S}}) / p \\
-		&\ge (1 - \frac{pW_1(T,S) + (1-p)\dspr{T,S}}{\dspr{T,S}}) / p \\
-		&\ge (\frac{1}{p} - \frac{W_1(T,S)}{\dspr{T,S}} - \frac{1-p}{p}) \\
-		&\ge 1 - \frac{W_1(T,S)}{\dspr{T,S}} \\
-		&\ge \curvature{T,S}
+		\curvature[p]{T,S} /p &= \left. \left(1 - \frac{W_1'(T,S)}{\dspr{T,S}}\right) \right/ p \\
+		&\ge \left. \left(1 - \frac{pW_1(T,S) + (1-p)\dspr{T,S}}{\dspr{T,S}}\right) \right/ p \\
+		&= \left(\frac{1}{p} - \frac{W_1(T,S)}{\dspr{T,S}} - \frac{1-p}{p}\right) \\
+		&= 1 - \frac{W_1(T,S)}{\dspr{T,S}} \\
+		&= \curvature{T,S}
 	\end{align*}
 The lower bound in the MH case follows analogously.
 
