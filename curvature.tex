@@ -269,8 +269,8 @@ For a more rigorous presentation in the more general setting of a Polish metric 
 
 Let $m_x$ and $m_y$ be probability densities of the position of a specified random walk after a fixed period of time starting at points $x$ and $y$ of a graph $G = (V,E)$, respectively.
 The transportation distance~\cite{Villani2003-wv} (equivalently Wasserstein distance, or ``earth movers distance''~\cite{rubner2000earth}) between $m_x$ and $m_y$ is the minimum amount of ``work'' required to move $m_x$ to $m_y$ along edges of the graph, that is
-$$ W_1(m_x, m_y) := \min_{\xi \in \Pi(m_x, m_y)} \sum_{\{z,w\} \subset V} \dspr{z,w} \xi(z,w),$$
-where $\Pi(m_x, m_y)$ is the set of mass transport programs moving the mass in $m_x$ to the configuration described by $m_y$ (more formally, a density on $V \times V$ which is $m_x$ after projecting on the first component and $m_y$ after projecting on the second).
+$$ W_1(m_x, m_y) := \min_{\xi \in \Pi(m_x, m_y)} \sum_{\{z,w\} \subset V} d(z,w) \xi(z,w),$$
+where $d(z,w)$ is the graph shortest-path distance ($\dspr{z,w}$ in our case) and $\Pi(m_x, m_y)$ is the set of mass transport programs moving the mass in $m_x$ to the configuration described by $m_y$ (more formally, a density on $V \times V$ which is $m_x$ after projecting on the first component and $m_y$ after projecting on the second).
 
 The \emph{coarse Ricci-Ollivier curvature} of $x$ and $y$ is then defined as:
 \begin{equation}
