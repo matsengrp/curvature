@@ -172,7 +172,7 @@ They define a notion of curvature which formalizes the notion of to what extent 
 Here the term \emph{random walk} on a space $X$ simply denotes a family of probability measures parameterized by points of $X$ satisfying a couple of reasonable assumptions, which includes biased walks such as MCMC.
 
 In this paper, we investigate curvature of the rSPR graph with respect to two random walks and connect those results to access times (also known as hitting times) for those random walks.
-For this first effort we investigate random walks defined only in terms of the graph itself: the lazy uniform random walk and MCMC sampling from the uniform prior on trees.
+For this first effort we investigate random walks defined only in terms of the graph itself: the uniform random walk and MCMC sampling from the uniform prior on trees.
 We present a fast new algorithm for computing rSPR graphs from a set of trees, reducing the time to do so from $\OhOf{m^2n}$ to $\OhOf{mn^3}$ for a set of $m$ trees with $n$ leaves.
 As the full rSPR graph contains $(2n-3)!!$ trees, this is a significant improvement in practice for exploring large subsets of the graph.
 By exploiting symmetries in the rSPR graph, we were able to calculate all of the curvatures for pairs of trees with up to seven leaves.
@@ -357,7 +357,7 @@ This would have required an enormous amount of computation to directly compute c
 We instead exploited the fact that pairs of trees which are equivalent modulo label renumbering are symmetric in the rSPR graph and therefore guaranteed to have the same curvature.
 For example, the pairs
 $\{(((1,2),3),4), ((1,2),(3,4))\}$ and
-$\{(((1,4),3),4), ((1,4),(2,3))\}$
+$\{(((1,4),2),3), ((1,4),(2,3))\}$
 are the same after relabeling, so their curvatures are the same.
 We thus directly computed curvature values for one representative pair from each such equivalence class, or \emph{tanglegram} \cite{Venkatachalam2010-zh}; the group-theoretic enumeration methods are described in a manuscript in preparation, and the SAGE \cite{SAGE} and GAP4 \cite{GAP4} code can be found online \cite{tangle}.
 
@@ -621,7 +621,7 @@ Thus the difference in rSPR degree is $2ka - 2kb + 2(i-1) - 2(j-1)$ as claimed.
 Moreover, we can use these ideas to determine the number of rSPR moves that are, in some respects, independent of a given rSPR move.
 That is, for two trees $S$ and $T$ differing by a single rSPR move, we wish to know the number of rSPR moves that are applicable to both trees rather than unique to one of the trees.
 To formalize this concept, we consider pairs of trees $T' \in N(T)$ and $S' \in S(T)$ such that $\dspr{T',S'} = 1$.
-The number of such ``squares'' involving two adjacent trees will play a key rule in our bounds on curvature, as they push the curvature of those trees towards 0.
+The number of such ``squares'' involving two adjacent trees will play a key role in our bounds on curvature, as they push the curvature of those trees towards 0.
 
 \begin{corollary}
 \label{cor:paired_neighbors}
@@ -845,7 +845,7 @@ As we now prove, these two notions of curvature differ only by a small factor in
 
 \begin{proof}
 	We first prove the lower bound in the uniform case, that is $\curvature{T,S} \le \ric{T,S}$.
-	Let $W_1(T,S)$ be the mass transport cost in the uniform case, and $W_1'(T,S)$ be the same for the lazy case with parameter $p$.
+	Let $W_1(T,S)$ be the mass transport cost in the uniform case, and $W_1'(T,S)$ be the same for the lazy uniform case with parameter $p$.
 	Recall that $\curvature{T,S} = \curvature[\ell_1]{T,S} = 1 - \frac{W_1(T,S)}{\dspr{T,S}}$, and $\curvature[p]{T,S} / p = (1 - \frac{W_1'(T,S)}{\dspr{T,S}}) / p$.
 	Observe that $$W_1'(T,S) \le pW_1(T,S) + (1-p)\dspr{T,S},$$ by the simple mass transport program obtained by treating the mass at $T$ and $S$ as separate from that of the neighbors.
 	Then:
