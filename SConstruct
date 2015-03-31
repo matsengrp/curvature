@@ -4,19 +4,22 @@ import os
 VariantDir('_build', src_dir='.')
 
 env = Environment(ENV=os.environ)
-inkscape = Builder(
+inkscape_pdf = Builder(
     action = 'inkscape --without-gui --export-area-drawing --export-pdf=$TARGET $SOURCE')
-env['BUILDERS']['Inkscape'] = inkscape
+inkscape_png = Builder(
+    action = 'inkscape --without-gui --export-area-drawing --export-dpi 300 --export-png=$TARGET $SOURCE')
+
+env['BUILDERS']['InkscapePng'] = inkscape_png
 env['BUILDERS']['Latexdiff'] = Builder(action = 'latexdiff $SOURCES > $TARGET')
 env['BUILDERS']['Copier'] = Builder(action = Copy('$TARGET', '$SOURCE'))
 
-figure_pdfs = [env.Inkscape(target="figs/" + os.path.basename(svg).replace('.svg','.pdf'), source=svg)
+figure_pngs = [env.InkscapePng(target="figs/" + os.path.basename(svg).replace('.svg','.png'), source=svg)
                for svg in glob.glob('prefigs/*.svg')]
 
 pdfs = [env.Copier(target = '_build/' + os.path.basename(pdf), source = pdf)
         for pdf in glob.glob('figures/*.pdf')]
 
-#Depends(Flatten([pdfs]), Flatten([figure_pdfs]))
+#Depends(Flatten([pdfs]), Flatten([figure_pngs]))
 
 curvature=env.PDF(target='_build/curvature.pdf',source='curvature.tex')
 
