@@ -34,7 +34,7 @@ df['info'] = \
     df['t1_nwk']+'<br/>'+df['t2_nwk']+'<br/>avg_deg: '+map(str, df['avg_deg'])
 
 mpl.rcParams.update({
-    'font.size': 22, 'axes.labelsize': 16, 'xtick.labelsize':14, 'ytick.labelsize':14,
+    'font.size': 26, 'axes.labelsize': 26, 'xtick.labelsize':20, 'ytick.labelsize':20,
     'font.family': 'Lato',
     'font.weight': 600, 'axes.labelweight': 600})
 

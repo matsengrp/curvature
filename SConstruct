@@ -10,8 +10,8 @@ env['BUILDERS']['Inkscape'] = inkscape
 env['BUILDERS']['Latexdiff'] = Builder(action = 'latexdiff $SOURCES > $TARGET')
 env['BUILDERS']['Copier'] = Builder(action = Copy('$TARGET', '$SOURCE'))
 
-#figure_pdfs = [env.Inkscape(target="figs/" + os.path.basename(svg).replace('.svg','.pdf'), source=svg)
-#               for svg in glob.glob('prefigs/*.svg')]
+figure_pdfs = [env.Inkscape(target="figs/" + os.path.basename(svg).replace('.svg','.pdf'), source=svg)
+               for svg in glob.glob('prefigs/*.svg')]
 
 pdfs = [env.Copier(target = '_build/' + os.path.basename(pdf), source = pdf)
         for pdf in glob.glob('figures/*.pdf')]

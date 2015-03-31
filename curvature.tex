@@ -180,7 +180,7 @@ By carefully examining the overlap in rSPR moves, we present a new method for co
 Using this method to simulate these random walks, we find that the distribution of access times between pairs of trees can be described by distance between the trees, the degrees of the trees, and the curvature.
 By getting a more fine-tuned understanding of the rSPR neighborhood of pairs of vertices, we are able to give bounds on curvatures under these random walks.
 In particular, we present a full characterization of the change in rSPR degree that occurs from a given rSPR move and find that even though they each count as one move, rSPR moves which move large subtrees may have greater graph effects than those that move small subtrees.
-Finally, we prove that the two competing notions of Ricci-Ollivier curvature (coarse and asymptotic) are closely related when applied to the rSPR graph, differing only by a small factor inversely proportional to the rSPR degrees of the given trees.
+Finally, we prove that the two related notions of Ricci-Ollivier curvature (coarse and asymptotic) are close, and in fact identical in the limit of many taxa, when applied to the rSPR graph.
 In summary, we extend knowledge about an important graph for phylogenetics, specifically in a way that models phylogenetic MCMC search.
 
 The automated computational analysis code can be found at \url{https://github.com/matsengrp/curvature}.
@@ -268,7 +268,7 @@ The Wasserstein distance~\cite{Villani2003-wv} (equivalently $L^1$ transportatio
  $$ W_1(m_x, m_y) := \min_{\xi \in \Pi(m_x, m_y)} \sum \dspr{x,y} \xi(x,y),$$
 where $\Pi(m_x, m_y)$ is the set of of assignments of probability from $m_x$ to pairs of vertices in $V \times V$.
 
-The (coarse) Ricci-Ollivier curvature of $x$ and $y$ is then defined as:
+The \emph{coarse} Ricci-Ollivier curvature of $x$ and $y$ is then defined as:
 \begin{equation}
 \curvature{x, y} := 1 - \frac{W_1(m_x, m_y)}{d(x, y)}
 \label{eq:curvatureDef}
@@ -277,9 +277,9 @@ We use $\curvature{MH; x,y}$ to indicate curvature with respect to Metropolis-Ha
 Positive curvature implies that $m_x$ and $m_y$ are ``closer'' than $x$ and $y$, zero curvature implies that they are neither closer nor farther, and negative curvature implies that $m_x$ and $m_y$ are on average ``more distant'' than $x$ and $y$.
 Curvature thus provides an intuitive measure of the difficulty of moving between regions of the graph with the given random walk.
 
-Lin et al.~\cite{lin2011ricci} defined a different notion of curvature in terms of lazy random walks which Loisel and Romon~\cite{Loisel2014-hu} dubbed the (asymptotic) Olivier-Ricci curvature.
+Lin et al.~\cite{lin2011ricci} defined a different notion of curvature in terms of lazy random walks which Loisel and Romon~\cite{Loisel2014-hu} dubbed the \emph{asymptotic} Olivier-Ricci curvature.
 The lazy random walk selects a neighbor according to the given distribution, but only travels to the neighbor with probability $p$.
-We denote the coarse curvature of the lazy random walk between two trees $x$ and $y$ by $\curvature[p]{x,y}$.
+We denote the coarse curvature of the lazy random walk between two vertices $x$ and $y$ by $\curvature[p]{x,y}$.
 For example, $\curvature[\frac{1}{4}]{x,y}$ describes the curvature of the lazy random walk that follows the given distribution with probability $\frac{1}{4}$ and remains stationary with probability $\frac{3}{4}$.
 For the lazy uniform random walk, the mass assignment $m^p_x$ is $x \cup N(x)$, with each neighbor assigned mass $\frac{p}{\degree{x}}$ and $x$ assigned the remaining $1 - p$ mass.
 The (asymptotic) Ricci-Ollivier curvature of $x$ and $y$ is then:
@@ -288,7 +288,7 @@ The (asymptotic) Ricci-Ollivier curvature of $x$ and $y$ is then:
 \label{eq:curvatureDef}
 \end{equation}
 This definition of curvature is invariant of $p$ for small enough $p$~\cite{Loisel2014-hu} and can be used to avoid parity problems on graphs where the uniform random walk is periodic without choosing a specific laziness parameter (e.g. Ollivier often considered $\curvature[\frac{1}{2}]{x,y}$ for this purpose).
-As we prove in Lemma~\ref{lem:asymptotic} the two notions of rough and asymptotic curvature differ only by a small factor bounded by $\frac{2}{\max(\degree{x}, \degree{y})}$ between adjacent trees and are equal for nonadjacent trees.
+As we prove in Lemma~\ref{lem:asymptotic} the two notions of rough and asymptotic curvature differ only by a small factor bounded by $\frac{2}{\max(\degree{x}, \degree{y})}$ between adjacent vertices and are equal for nonadjacent vertices.
 We define $\ric{MH; x, y}$ analogously to $\curvature{MH; x, y}$.
 
 
@@ -900,7 +900,7 @@ In summary, we have learned characteristics of the phylogenetic rSPR graph under
 We did so by developing theoretical and computational frameworks to bound and compute Ricci-Ollivier curvature of the rSPR graph.
 We find that curvature, along with degree and distance, determine the early dynamics of hitting times for random walks.
 Moreover, we proved that rSPR graph degree changes depend quadratically on the product of the size of the regrafted subtree with its change in depth as well as that rSPR graph tends toward flatness with respect to rSPR moves that move asymptotically small subtrees.
-Finally, we proved that the two competing definitions of Ollivier-Ricci curvature, coarse and asymptotic, are closely related with respect to uniform and Metropolis-Hastings walks on the rSPR graph.
+Finally, we proved that the coarse and asymptotic definitions of Ollivier-Ricci curvature, coarse and asymptotic, are closely related with respect to uniform and Metropolis-Hastings walks on the rSPR graph.
 
 We emphasize that the influence of curvature is small in this setting of equiprobable trees (Fig.~\ref{fig:short-time-kappa-access}) and that the probability of the target node in the stationary distribution predominantly determines access times for pairs of trees (Fig.~\ref{fig:long-time-kappa-access}).
 However, it is well known that MCMC takes a long time to approximate real phylogenetic posterior distributions even when the Bayesian credible set is small, and in fact our previous work showed significant graph effects in the mixing time for phylogenetic MCMC for credible sets with hundreds or thousands of trees~\cite{Whidden2015-yi}.
