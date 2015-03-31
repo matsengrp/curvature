@@ -844,8 +844,8 @@ As we now prove, these two notions of curvature differ only by a small factor in
 \begin{proof}
 	We first prove the lower bound in the uniform case, that is $\curvature{T,S} \le \ric{T,S}$.
 	Let $W_1(T,S)$ be the mass transport cost in the uniform case, and $W_1'(T,S)$ be the same for the lazy uniform case with parameter $p$.
-	Recall that $\curvature{T,S} = \curvature[1]{T,S} = 1 - \frac{W_1(T,S)}{\dspr{T,S}}$, and $\curvature[p]{T,S} / p = (1 - \frac{W_1'(T,S)}{\dspr{T,S}}) / p$.
-	Observe that $$W_1'(T,S) \le pW_1(T,S) + (1-p)\dspr{T,S},$$ by the simple mass transport program obtained by treating the mass at $T$ and $S$ as separate from that of the neighbors.
+	Recall that $\curvature{T,S} = \curvature[1]{T,S} = 1 - \frac{W_1(T,S)}{\dspr{T,S}}$, and $\curvature[p]{T,S} / p = \left. \left(1 - \frac{W_1'(T,S)}{\dspr{T,S}}\right) \right/ p$.
+	Observe that $$W_1'(T,S) \le pW_1(T,S) + (1-p) \, \dspr{T,S},$$ by the simple mass transport program obtained by treating the mass at $T$ and $S$ as separate from that of the neighbors.
 	Then:
 	\begin{align*}
 		\curvature[p]{T,S} /p &= \left. \left(1 - \frac{W_1'(T,S)}{\dspr{T,S}}\right) \right/ p \\
@@ -855,7 +855,7 @@ As we now prove, these two notions of curvature differ only by a small factor in
 		&= \curvature{T,S}.
 	\end{align*}
 
-	For the upper bound, we observe that $$W_1'(T,S) \ge p W_1(T,S) + (1-p) \, \dspr{T,S} - \frac{2}{\max(\degree{T}, \degree{S})},$$ as at most $\frac{1}{\max(\degree{T},\degree{S})}$ of the mass can remain at each of $T$ and $S$, paired with the lazy remainder.
+	For the upper bound, we observe that $$W_1'(T,S) \ge p W_1(T,S) + (1-p) \, \dspr{T,S} - \frac{2}{\max(\degree{T}, \degree{S})},$$ as at most $1 / \max(\degree{T},\degree{S})$ of the mass can remain at each of $T$ and $S$, paired with the lazy remainder.
 	The upper bound then follows analogously to the lower bound.
 	Moreover, no mass can remain at $T$ or $S$ when $\dspr{T,S} > 1$, in which case the curvatures are equal.
 \end{proof}
