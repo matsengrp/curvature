@@ -863,7 +863,7 @@ As we now prove, these two notions of curvature differ only by a small factor in
 Next we consider the curvature of the Metropolis-Hastings (MH) random walk sampling the uniform distribution on trees, which we will simply call the MH random walk.
 This random walk proposes a move from a tree $T$ to a neighbor tree $S$ uniformly at random and then accepts the move according to the Hastings ratio, $\min\left(1, \frac{\degree{T}}{\degree{S}}\right)$.
 The mass distribution for the MH random walk thus leaves a portion of mass at the origin tree, proportional to the relative degree difference of its higher degree neighbors.
-The same statement and proof of Lemma~\ref{lem:asymptotic} works with $\curvature{T,S}$ replaced by the MH random walk curvature $\curvature{\MH; T,S}$.
+The same statement and proof of Lemma~\ref{lem:asymptotic} works with $\curvature{T,S}$ and $\ric{T,S}$ replaced by the MH random walk curvatures $\curvature{\MH; T,S}$ and $\ric{\MH; T,S}$, respectively.
 We now bound the difference between the curvature of the uniform random walk $\curvature{T,S}$ and that of the MH random walk $\curvature{\MH; T,S}$.
 
 \begin{lemma}
