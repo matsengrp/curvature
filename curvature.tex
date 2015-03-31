@@ -328,6 +328,8 @@ To quickly compute dense rSPR graphs (those containing a significant portion of 
 	The subgraph of the rSPR graph induced by a set $\mathcal{T}$ of $m$ trees with $n$ leaves can be constructed in $\OhOf{mn^3}$-time.
 \end{theorem}
 \begin{proof}
+	The correctness of the procedure follows by induction on the number of trees already processed, $i$, by observing that the procedure has constructed the subgraph of vertices $1, 2,  \ldots i$ and will construct the subgraph of vertices $1, 2, \ldots i+1$.
+
 	We implement the graph with an adjacency list representation with integer-labelled vertices that supports $\OhOf{\log n}$ edge insertions and lookups (with e.g. red-black trees~\cite{guibas1978dichromatic}, as the vertex degrees are $\OhOf{n^2}$).
 	As described above, the integer labels are simply the order of the input trees.
 	Adding the vertices to the graph requires $\OhOf{m}$-time, as they are added in ascending order to the end of the vertex list, which can be stored as a fixed-size array.
