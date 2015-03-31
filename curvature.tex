@@ -881,7 +881,13 @@ We now bound the difference between the curvature of the uniform random walk $\c
 	Thus, the Hastings ratio is always $\ge \frac{5}{6}$.
 	This implies that at most $\frac{1}{6}$ of the mass remains at tree $T$ in the mass distribution.
 	Let $W_1(T,S)$ be the cost of an optimal mass transport for the uniform random walk from $T$ to $S$, and $W_1'(T,S)$ the cost for the MH random walk.
+	Moreover, let $m_T(z)$ and $m_S(w)$ be the mass assigned for the uniform random walk and $m'_T(z)$ and $m'_S(w)$ be the mass assigned for the MH random walk, for each vertex $z \in N(T)$ and $w \in N(S)$.
 	We construct an upper bound on $W_1'(T,S)$ by moving mass according to $W_1$ where possible, and moving the remainder either from $T$ to $S$, from $T$ to a neighbor of $S$, or from a neighbor of $T$ to $S$.
+	That is, for each $W_1$ assignment $\xi(z,w)$, we send $\xi'(z,w) = \xi(z,w) \min\left(\frac{m'_T(z)}{m_T(z)}, \frac{m'_S(w)}{m_S(w)}\right)$ of the mass from $z$ to $w$.
+	The remaining $\xi(z,w) - \xi'(z,w)$ of the mass is moved from $T$ to $S$, $T$ to $w$, and $z$ to $S$ in the respective proportions 
+	$\xi(z,w) \max\left(\frac{m'_T(z)}{m_T(z)}, \frac{m'_S(w)}{m_S(w)}\right) - \xi'(z,w)$,
+	$\xi(z,w) \min\left(0, \frac{m'_T(z)}{m_T(z)} - \frac{m'_S(w)}{m_S(w)}\right)$, and,
+	$\xi(z,w) \min\left(0, \frac{m'_S(w)}{m_S(w)} - \frac{m'_T(w)}{m_T(w)}\right)$.
 	The maximum possible mass that is not moved according to $W_1$ is $\frac{1}{6}$.
 	Moreover, the affected mass must be moved through at most two additional trees.
 	Then, $W_1' \le W_1 + \frac{2}{6}$.
