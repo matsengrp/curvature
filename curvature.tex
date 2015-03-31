@@ -264,7 +264,7 @@ Because we assume that all trees are bifurcating, we use degree to refer only to
 Ricci-Ollivier curvature provides a rigorous yet intuitive formalization of the shape of a graph with respect to a random walk (or indeed the shape of a variety of metric spaces, see~\cite{Ollivier2009-bw}).
 Let $m_x$ and $m_y$ be probability densities of a specified random walk starting at points $x$ and $y$ of a graph $G = (V,E)$, respectively.
 The Wasserstein distance~\cite{Villani2003-wv} (equivalently $L^1$ transportation, or ``earth movers distance''~\cite{rubner2000earth}) between $m_x$ and $m_y$ is the minimum amount of ``work'' required to move $m_x$ to $m_y$ along edges of the graph, that is
- $$ W_1(m_x, m_y) := \min_{\xi \in \Pi(m_x, m_y)} \sum \dspr{x,y} \xi(x,y),$$
+ $$ W_1(m_x, m_y) := \min_{\xi \in \Pi(m_x, m_y)} \sum \dspr{z,w} \xi(z,w),$$
 where $\Pi(m_x, m_y)$ is the set of of assignments of probability from $m_x$ to pairs of vertices in $V \times V$.
 
 The \emph{coarse} Ricci-Ollivier curvature of $x$ and $y$ is then defined as:
