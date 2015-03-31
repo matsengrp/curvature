@@ -878,10 +878,10 @@ We now bound the difference between the curvature of the uniform random walk $\c
 \begin{proof}
 	We first prove the lower bound.
 	By Lemma~\ref{lem:degree_max_delta_adjacent}, the quotient of degrees for two adjacent trees $\ge \frac{5}{6}$.
-	Thus, the hastings ratio is always $\ge \frac{5}{6}$.
+	Thus, the Hastings ratio is always $\ge \frac{5}{6}$.
 	This implies that at most $\frac{1}{6}$ of the mass remains at tree $T$ in the mass distribution.
-	Let $W_1(T,S)$ be the cost of an optimal mass transport for the uniform random walk from $T$ to $S$.
-	We construct an upper bound on $W_1'(T,S)$ for the MH random walk by moving mass according to $W_1$ where possible, and moving the remainder either from $T$ to $S$, $T$ to a neighbor of $S$, or from $T$'s neighbors to $S$.
+	Let $W_1(T,S)$ be the cost of an optimal mass transport for the uniform random walk from $T$ to $S$, and $W_1'(T,S)$ the cost for the MH random walk.
+	We construct an upper bound on $W_1'(T,S)$ by moving mass according to $W_1$ where possible, and moving the remainder either from $T$ to $S$, from $T$ to a neighbor of $S$, or from a neighbor of $T$ to $S$.
 	The maximum possible mass that is not moved according to $W_1$ is $\frac{1}{6}$.
 	Moreover, the affected mass must be moved through at most two additional trees.
 	Then, $W_1' \le W_1 + \frac{2}{6}$.
@@ -899,7 +899,7 @@ We now bound the difference between the curvature of the uniform random walk $\c
 \end{proof}
 
 \section{Conclusion and future work}
-In summary, we have advanced understanding of the phylogenetic rSPR graph underlying phylogenetic inference substantially beyond what was previously known concerning graph diameter and vertex degree.
+In summary, we have advanced understanding of the phylogenetic rSPR graph substantially beyond what was previously known, which concerned graph diameter and vertex degree.
 We did so by developing the first theoretical and computational frameworks to bound and compute Ricci-Ollivier curvature of the rSPR graph.
 We found that curvature, along with degree and distance, determine the early dynamics of hitting times for random walks.
 Moreover, we proved that rSPR graph degree changes depend quadratically on the product of the size of the regrafted subtree with its change in depth, as well as that the rSPR graph tends toward flatness with respect to rSPR moves that move asymptotically small subtrees.
