@@ -837,38 +837,34 @@ As we now prove, these two notions of curvature differ only by a small factor in
 	Then:
 	\begin{enumerate}
 		\item	$\ric{T,S} = \curvature{T,S}$, if $\dspr{T,S} > 1$,
-		\item	$\curvature{T,S} \le \ric{T,S} \le \curvature{T,S} + \frac{2}{\max(\degree{T}, \degree{S})}$, if $\dspr{T,S} = 1$,
-		\item	$\ric{\MH; T,S} = \curvature{\MH; T,S}$, if $\dspr{T,S} > 1$, and
-		\item	$\curvature{\MH; T,S} \le \ric{\MH; T,S} \le \curvature{\MH; T,S} + \frac{2}{\max(\degree{T}, \degree{S})}$, if $\dspr{T,S} = 1$.
+		\item	$\curvature{T,S} \le \ric{T,S} \le \curvature{T,S} + \frac{2}{\max(\degree{T}, \degree{S})}$, if $\dspr{T,S} = 1$.
 	\end{enumerate}
 \end{lemma}
 
 \begin{proof}
 	We first prove the lower bound in the uniform case, that is $\curvature{T,S} \le \ric{T,S}$.
 	Let $W_1(T,S)$ be the mass transport cost in the uniform case, and $W_1'(T,S)$ be the same for the lazy uniform case with parameter $p$.
-	Recall that $\curvature{T,S} = \curvature[\ell_1]{T,S} = 1 - \frac{W_1(T,S)}{\dspr{T,S}}$, and $\curvature[p]{T,S} / p = (1 - \frac{W_1'(T,S)}{\dspr{T,S}}) / p$.
+	Recall that $\curvature{T,S} = \curvature[1]{T,S} = 1 - \frac{W_1(T,S)}{\dspr{T,S}}$, and $\curvature[p]{T,S} / p = (1 - \frac{W_1'(T,S)}{\dspr{T,S}}) / p$.
 	Observe that $$W_1'(T,S) \le pW_1(T,S) + (1-p)\dspr{T,S},$$ by the simple mass transport program obtained by treating the mass at $T$ and $S$ as separate from that of the neighbors.
 	Then:
 	\begin{align*}
 		\curvature[p]{T,S} /p &= \left. \left(1 - \frac{W_1'(T,S)}{\dspr{T,S}}\right) \right/ p \\
 		&\ge \left. \left(1 - \frac{pW_1(T,S) + (1-p)\dspr{T,S}}{\dspr{T,S}}\right) \right/ p \\
-		&= \left(\frac{1}{p} - \frac{W_1(T,S)}{\dspr{T,S}} - \frac{1-p}{p}\right) \\
+		&= \frac{1}{p} - \frac{W_1(T,S)}{\dspr{T,S}} - \frac{1-p}{p} \\
 		&= 1 - \frac{W_1(T,S)}{\dspr{T,S}} \\
-		&= \curvature{T,S}
+		&= \curvature{T,S}.
 	\end{align*}
-The lower bound in the MH case follows analogously.
 
-	For the upper bound, we observe that $$W_1'(T,S) \ge p(W_1(T,S) + (1-p)\left(\dspr{T,S}\right) - \frac{2}{\max(\degree{T}, \degree{S})},$$ as at most $\frac{1}{\max(\degree{T},\degree{S})}$ of the mass can remain at each of $T$ and $S$, paired with the lazy remainder.
+	For the upper bound, we observe that $$W_1'(T,S) \ge p W_1(T,S) + (1-p) \, \dspr{T,S} - \frac{2}{\max(\degree{T}, \degree{S})},$$ as at most $\frac{1}{\max(\degree{T},\degree{S})}$ of the mass can remain at each of $T$ and $S$, paired with the lazy remainder.
 	The upper bound then follows analogously to the lower bound.
 	Moreover, no mass can remain at $T$ or $S$ when $\dspr{T,S} > 1$, in which case the curvatures are equal.
-Note that the MH distribution similarly assigns at most $\frac{1}{\degree{X}}$ to each neighbor $X$ of the given tree.
-The upper bound in the MH case thus follows as well.
 \end{proof}
 
 Next we consider the curvature of the Metropolis-Hastings (MH) random walk sampling the uniform distribution on trees, which we will simply call the MH random walk.
 This random walk proposes a move from a tree $T$ to a neighbor tree $S$ uniformly at random and then accepts the move according to the Hastings ratio, $\min\left(1, \frac{\degree{T}}{\degree{S}}\right)$.
 The mass distribution for the MH random walk thus leaves a portion of mass at the origin tree, proportional to the relative degree difference of its higher degree neighbors.
-We now bound the difference between the curvature of uniform random walks $\curvature{S,T}$, and that of MH random walks, $\curvature{\MH; S,T}$.
+The same statement and proof of Lemma~\ref{lem:asymptotic} works with $\curvature{T,S}$ replaced by the MH random walk curvature $\curvature{\MH; T,S}$.
+We now bound the difference between the curvature of the uniform random walk $\curvature{T,S}$ and that of the MH random walk $\curvature{\MH; T,S}$.
 
 \begin{lemma}
 	Let $T$ and $S$ be phylogenetic trees with $n$ leaves. Then:
