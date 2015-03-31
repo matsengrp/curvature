@@ -100,7 +100,7 @@
 
 
 \begin{document}
-\title{Ricci-Ollivier Curvature of two Random Walks on the Rooted Phylogenetic Subtree-Prune-Regraft Graph}
+\title{Ricci-Ollivier Curvature of the Rooted Phylogenetic Subtree-Prune-Regraft Graph}
 
 \author{
 	\IEEEauthorblockN{Christopher Whidden}
@@ -122,13 +122,12 @@
 \begin{abstract}
 Statistical phylogenetic inference methods use tree rearrangement operations to perform either hill-climbing local search or Markov chain Monte Carlo across tree topologies.
 The canonical class of such moves are the subtree-prune-regraft (SPR) moves that remove a subtree and reattach it somewhere else via the cut edge of the subtree.
-Phylogenetic trees and such moves naturally form the vertices and edges of a graph, such that tree search algorithms perform a (potentially stochastic) traversal of the SPR graph.
+Phylogenetic trees and such moves naturally form the vertices and edges of a graph, such that tree search algorithms perform a (potentially stochastic) traversal of this \emph{SPR graph}.
 Despite the centrality of such graphs in phylogenetic inference, rather little is known about their large-scale properties.
-In this paper we learn about the rooted-tree version of the graph, known as the rSPR graph, by calculating the recently-developed notion of Ricci-Ollivier curvature for pairs of vertices in the rSPR graph with respect to two simple random walks on the rSPR graph.
-This notion of curvature is especially relevant to stochastic search on the graph.
+In this paper we learn about the rooted-tree version of the graph, known as the rSPR graph, by calculating the Ricci-Ollivier curvature for pairs of vertices in the rSPR graph with respect to two simple random walks on the rSPR graph.
 By proving theorems and direct calculation with novel algorithms, we find a remarkable diversity of different curvatures on the rSPR graph for pairs of vertices separated by the same distance.
-We confirm using simulation that degree and curvature have the expected impact on mean access time distributions.
-This indicates significant structure of the graph beyond that which which was previously understood in terms of pairwise distances and vertex degrees; a greater understanding of curvature could ultimately lead to improved strategies for tree search.
+We confirm using simulation that degree and curvature have the expected impact on mean access time distributions, demonstrating relevance of these curvature results to stochastic tree search.
+This indicates significant structure of the rSPR graph beyond that which which was previously understood in terms of pairwise distances and vertex degrees; a greater understanding of curvature could ultimately lead to improved strategies for tree search.
 \end{abstract}
 
 \pagebreak
@@ -273,7 +272,7 @@ The \emph{coarse} Ricci-Ollivier curvature of $x$ and $y$ is then defined as:
 \curvature{x, y} := 1 - \frac{W_1(m_x, m_y)}{d(x, y)}
 \label{eq:curvatureDef}
 \end{equation}
-We use $\curvature{MH; x,y}$ to indicate curvature with respect to Metropolis-Hastings random walks (described in detail in Section~\ref{sec:random_walks}) rather than uniform random walks.
+We use $\curvature{\MH; x,y}$ to indicate curvature with respect to Metropolis-Hastings random walks (described in detail in Section~\ref{sec:random_walks}) rather than uniform random walks.
 Positive curvature implies that $m_x$ and $m_y$ are ``closer'' than $x$ and $y$, zero curvature implies that they are neither closer nor farther, and negative curvature implies that $m_x$ and $m_y$ are on average ``more distant'' than $x$ and $y$.
 Curvature thus provides an intuitive measure of the difficulty of moving between regions of the graph with the given random walk.
 
@@ -289,7 +288,7 @@ The (asymptotic) Ricci-Ollivier curvature of $x$ and $y$ is then:
 \end{equation}
 This definition of curvature is invariant of $p$ for small enough $p$~\cite{Loisel2014-hu} and can be used to avoid parity problems on graphs where the uniform random walk is periodic without choosing a specific laziness parameter (e.g. Ollivier often considered $\curvature[\frac{1}{2}]{x,y}$ for this purpose).
 As we prove in Lemma~\ref{lem:asymptotic} the two notions of rough and asymptotic curvature differ only by a small factor bounded by $\frac{2}{\max(\degree{x}, \degree{y})}$ between adjacent vertices and are equal for nonadjacent vertices.
-We define $\ric{MH; x, y}$ analogously to $\curvature{MH; x, y}$.
+We define $\ric{\MH; x, y}$ analogously to $\curvature{\MH; x, y}$.
 
 
 \section{Access times of random walks on the rSPR graph can be understood using distance, degree, and curvature}
@@ -520,7 +519,7 @@ On the other hand, if the random walk starting from $T_1$ does not quickly arriv
 \label{tab:regressionDelta}
 \end{table}
 
-The analysis can be reproduced by invoking the SCons (\url{http://scons.org/}) build tool and evaluating cells in an IPython notebook; instructions are in the repository README file.
+The analysis can be reproduced by invoking the SCons (\url{http://scons.org/}) build tool and running the cells in an IPython notebook; instructions are in the repository README file.
 
 
 \section{Rooted SPR Neighborhoods}
@@ -896,18 +895,22 @@ We now bound the difference between the curvature of uniform random walks $\curv
 \end{proof}
 
 \section{Conclusion and future work}
-In summary, we have learned characteristics of the phylogenetic rSPR graph underlying phylogenetic inference substantially beyond previous work concerning graph diameter and vertex degree.
-We did so by developing theoretical and computational frameworks to bound and compute Ricci-Ollivier curvature of the rSPR graph.
-We find that curvature, along with degree and distance, determine the early dynamics of hitting times for random walks.
-Moreover, we proved that rSPR graph degree changes depend quadratically on the product of the size of the regrafted subtree with its change in depth as well as that rSPR graph tends toward flatness with respect to rSPR moves that move asymptotically small subtrees.
-Finally, we proved that the coarse and asymptotic definitions of Ollivier-Ricci curvature, coarse and asymptotic, are closely related with respect to uniform and Metropolis-Hastings walks on the rSPR graph.
+In summary, we have advanced understanding of the phylogenetic rSPR graph underlying phylogenetic inference substantially beyond what was previously known concerning graph diameter and vertex degree.
+We did so by developing the first theoretical and computational frameworks to bound and compute Ricci-Ollivier curvature of the rSPR graph.
+We found that curvature, along with degree and distance, determine the early dynamics of hitting times for random walks.
+Moreover, we proved that rSPR graph degree changes depend quadratically on the product of the size of the regrafted subtree with its change in depth, as well as that rSPR graph tends toward flatness with respect to rSPR moves that move asymptotically small subtrees.
+Finally, we proved that the coarse and asymptotic definitions of Ollivier-Ricci curvature are closely related with respect to uniform and Metropolis-Hastings walks on the rSPR graph.
 
-We emphasize that the influence of curvature is small in this setting of equiprobable trees (Fig.~\ref{fig:short-time-kappa-access}) and that the probability of the target node in the stationary distribution predominantly determines access times for pairs of trees (Fig.~\ref{fig:long-time-kappa-access}).
-However, it is well known that MCMC takes a long time to approximate real phylogenetic posterior distributions even when the Bayesian credible set is small, and in fact our previous work showed significant graph effects in the mixing time for phylogenetic MCMC for credible sets with hundreds or thousands of trees~\cite{Whidden2015-yi}.
-Thus, our next step will be to investigate curvature of MCMC with a nontrivial likelihood function, which will significantly reduce the effective size of the posterior distribution, and may lead to ``bottlenecks'' like those we have observed in real data.
-We will likely follow previous work \cite{Stefankovic2011-hu} by taking a chain where tree topology likelihoods are maximized across branch length, as the classical phylogenetic likelihood \cite{felsenstein1981evolutionary} requires both branch length and topology.
+In this data-free setting the stationary distribution is, unlike with real data, quite evenly spread over all trees.
+Correspondingly, we found that the influence of curvature is small in this case (Fig.~\ref{fig:short-time-kappa-access}) and that the probability of the target node in the stationary distribution predominantly determines access times for pairs of trees (Fig.~\ref{fig:long-time-kappa-access}).
+However, it is well known that MCMC takes a long time to approximate real phylogenetic posterior distributions even when the Bayesian credible set is small, and in fact our previous work showed significant graph effects in the mixing time for phylogenetic MCMC for credible sets that had tens, hundreds or thousands of trees~\cite{Whidden2015-yi}.
+Thus, our next step will be to investigate curvature of MCMC with nontrivial likelihood functions, which will significantly reduce the posterior distribution to a more realistic effective size, and in certain cases will lead to ``bottlenecks'' like those we have observed in real data.
+In those cases the curvature between two trees at either end of a bottleneck will describe how difficult it is to traverse the bottleneck.
+Indeed, in both the setting of challenging real data and in simulation with a nontrivial likelihood function, the stationary distribution takes a long time to achieve, and thus the curvature will have a substantially greater impact on the overall hitting times rather than being a short prelude to waiting for a Poisson process event as it is here (Fig.~\ref{fig:kappa-access}).
+% We will likely follow previous work \cite{Stefankovic2011-hu} by taking a chain where tree topology likelihoods are maximized across branch length, as the classical phylogenetic likelihood \cite{felsenstein1981evolutionary} requires both branch length and topology.
 
-We will extend this work from the rooted rSPR graph considered here to the unrooted case, which is more commonly used in phylogenetic search.
+Now that we have established the foundations of using curvature to understand graphs relevant for phylogenetic inference, we will extend this work in several directions in addition to adding a nontrivial likelihood function as just described.
+We will next consider the case of unrooted SPR, which is more commonly used in phylogenetic search.
 We will also explore random walks on ranked trees~\cite{Song2006-xe} and graphical models of tree space relevant for phylogenetic algorithms such as BEAST \cite{Drummond2012-ek} that infer rooted ``time-trees.''
 Random walks on other discrete structures such as partitions~\cite{Gusfield2002-il} that can be expressed as certain types of trees may also form interesting subjects for future work.
 
