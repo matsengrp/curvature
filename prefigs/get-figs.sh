@@ -1,5 +1,3 @@
-for graph in nni rspr; do
-    for i in ../analysis/6-walks-50K/$graph/upmh/scatter*svg; do
-        cp $i $graph-upmh-$(basename $i)
-    done
+for i in ../analysis/6-walks-50K/rspr/upmh/scatter*svg ../analysis/7-walks-5K/rspr/upmh/scatter7.svg; do
+    cp $i rspr-upmh-$(basename $i)
 done
