@@ -312,13 +312,13 @@ However, applying this method to complete rSPR graphs, with the $\OhOf{m^2}$ fac
 
 To quickly compute dense rSPR graphs (those containing a significant portion of the full rSPR graph) we can avoid pairwise computations by successively adding trees to the graph and efficiently identifying their neighbors:
 \begin{enumerate}[label={\arabic*}.]
-	\item Let $G$ be an empty graph
-	\item For each of the $m$ trees in a specified but arbitrary order,
+	\item Let $G$ be an empty graph.
+	\item For each of the $m$ trees in a specified but arbitrary order:
 		\begin{enumerate}
-			\item Add a vertex $i$ to the graph representing the current tree $T$ where $i$ is $T$'s order index
-			\item For each of the $\OhOf{n^2}$ neighbors of $T$
+			\item Add a vertex $i$ to the graph representing the current tree $T$ where $i$ is $T$'s order index.
+			\item For each of the $\OhOf{n^2}$ neighbors of $T$:
 				\begin{enumerate}
-					\item If the current neighbor $S$'s index is in $G$ then add an edge $(j,i)$ to the graph, where $j$ is $S$'s order index
+					\item If the current neighbor $S$'s index is in $G$ then add an edge $(j,i)$ to the graph, where $j$ is $S$'s order index.
 				\end{enumerate}
 		\end{enumerate}
 \end{enumerate}
@@ -399,7 +399,7 @@ In particular, where we call the edge connecting the subtree rooted at that node
 \begin{enumerate}
 \item Moving $R$ to its sibling edge results in the same tree, not a neighboring tree,
 \item Moving $R$ to its parent edge results in the same tree,
-\item Moving $R$ to its grandparent edge is the same as moving its aunt to its sibling edge,
+\item Moving $R$ to its grandparent edge is the same as moving its aunt to its sibling edge, and
 \item Moving $R$ to its aunt edge is the same as moving its aunt to $R$'s edge.
 \end{enumerate}
 We prove in Lemma~\ref{lem:compute_degree} that this list is exhaustive.
@@ -435,15 +435,15 @@ In particular, this formulation groups moves that move the same subtree.
 We can thus apply the following algorithm to select a neighbor uniformly at random for a tree $T$:
 
 \begin{enumerate}[label={\arabic*}.]
-	\item	compute the degree of $T$, $\degree{T}$.
-	\item pick a random integer $r$ in the range $[1,\degree{T}]$
-	\item label each node $u$ of $T$ by its preorder number and compute the number of nodes in the subtree rooted at each $u$.
-\item for each tree node $u$ and while $r > 0$
+	\item	Compute the degree of $T$, $\degree{T}$.
+	\item Pick a random integer $r$ in the range $[1,\degree{T}]$.
+	\item Label each node $u$ of $T$ by its preorder number and compute the number of nodes in the subtree rooted at each $u$.
+\item For each tree node $u$ and while $r > 0$:
 	\begin{enumerate}
-		\item decrease $r$ by $\size{N(T,u)}$
-		\item if $r < 0$, let $S$ be the $\abs{r}$ member of $N(T,u)$ and terminate the for loop
+		\item Decrease $r$ by $\size{N(T,u)}$.
+		\item If $r < 0$, let $S$ be the $\abs{r}$ member of $N(T,u)$ and terminate the for loop.
 	\end{enumerate}
-\item return the neighbor $S$
+\item Return the neighbor $S$.
 \end{enumerate}
 
 \begin{lemma}
@@ -637,7 +637,7 @@ We can now use Lemma~\ref{lem:degree_change} to improve the bounds in Lemma~\ref
 	Let $T$ and $S$ be rooted phylogenetic trees with $n \ge 3$ leaves, such that $\degree{T} \le \degree{S}$ and $\dspr{T,S} = 1$.
 	Then:
 	\begin{enumerate}
-		\item $\degree{S} - \degree{T} \le 2\floor{\frac{n-2}{2}}\ceil{\frac{n-2}{2}} \le \frac{1}{2} (n-2)^2 $.
+		\item $\degree{S} - \degree{T} \le 2\floor{\frac{n-2}{2}}\ceil{\frac{n-2}{2}} \le \frac{1}{2} (n-2)^2 $,
 		\item $\frac{\degree{T}}{\degree{S}} \ge \frac{5}{6}$, $\forall n \ge 4$, and
 		\item $\lim_{n\rightarrow\infty}\frac{\degree{T}}{\degree{S}} =  \frac{6}{7}$.
 	\end{enumerate}
@@ -779,8 +779,8 @@ We thus conjecture the following:
 	Let $k_n$ be the maximum curvature of the uniform random walk on trees of $n$ leaves.
 	Then:
 	\begin{enumerate}
-		\item $k_n \le \frac{2}{\Delta_{\text{rSPR}}(n)-1}$.
-		\item $\lim_{n\rightarrow\infty} k_n  = \frac{2}{\Delta_{\text{rSPR}}(n)-1}$
+		\item $k_n \le \frac{2}{\Delta_{\text{rSPR}}(n)-1}$, and
+		\item $\lim_{n\rightarrow\infty} k_n  = \frac{2}{\Delta_{\text{rSPR}}(n)-1}$.
 	\end{enumerate}
 \end{conjecture}
 Proving or disproving this conjecture would go a long way toward understanding the effects of relative distance on curvature.
@@ -833,8 +833,8 @@ As we now prove, these two notions of curvature differ only by a small factor in
 	Let $T$ and $S$ be rooted phylogenetic trees with $n$ leaves.
 	Then:
 	\begin{enumerate}
-		\item	$\ric{T,S} = \curvature{T,S}$, if $\dspr{T,S} > 1$, and
-		\item	$\curvature{T,S} \le \ric{T,S} \le \curvature{T,S} + \frac{2}{\max(\degree{T}, \degree{S})}$, if $\dspr{T,S} = 1$.
+		\item	$\ric{T,S} = \curvature{T,S}$, if $\dspr{T,S} > 1$,
+		\item	$\curvature{T,S} \le \ric{T,S} \le \curvature{T,S} + \frac{2}{\max(\degree{T}, \degree{S})}$, if $\dspr{T,S} = 1$,
 		\item	$\ric{\MH; T,S} = \curvature{\MH; T,S}$, if $\dspr{T,S} > 1$, and
 		\item	$\curvature{\MH; T,S} \le \ric{\MH; T,S} \le \curvature{\MH; T,S} + \frac{2}{\max(\degree{T}, \degree{S})}$, if $\dspr{T,S} = 1$.
 	\end{enumerate}
