@@ -261,13 +261,16 @@ For example, the tree $T$ with 4 leaves in Figure~\ref{fig:neighborhood} has 10 
 We say that the degree of $T$ is $\degree{T}$, that is, the number of trees which can be obtained from $T$ by a single rSPR operation.
 Because we assume that all trees are bifurcating, we use degree to refer only to the degree of rSPR graph vertices.
 
-Ricci-Ollivier curvature provides a rigorous yet intuitive formalization of the shape of a graph with respect to a random walk (or indeed the shape of a variety of metric spaces, see~\cite{Ollivier2009-bw}).
-Let $m_x$ and $m_y$ be probability densities of a specified random walk starting at points $x$ and $y$ of a graph $G = (V,E)$, respectively.
-The Wasserstein distance~\cite{Villani2003-wv} (equivalently $L^1$ transportation, or ``earth movers distance''~\cite{rubner2000earth}) between $m_x$ and $m_y$ is the minimum amount of ``work'' required to move $m_x$ to $m_y$ along edges of the graph, that is
- $$ W_1(m_x, m_y) := \min_{\xi \in \Pi(m_x, m_y)} \sum \dspr{z,w} \xi(z,w),$$
-where $\Pi(m_x, m_y)$ is the set of of assignments of probability from $m_x$ to pairs of vertices in $V \times V$.
+Ricci-Ollivier curvature provides a rigorous yet intuitive formalization of the shape of a metric space with respect to a random walk.
+For the purposes of this paper, we will specialize to that space being a graph equipped with the shortest-path distance, and we will describe curvature intuitively.
+For a more rigorous presentation in the more general setting of a Polish metric space, see~\cite{Ollivier2009-bw} or the survey~\cite{Ollivier2010-ao}.
 
-The \emph{coarse} Ricci-Ollivier curvature of $x$ and $y$ is then defined as:
+Let $m_x$ and $m_y$ be probability densities of the position of a specified random walk after a fixed period of time starting at points $x$ and $y$ of a graph $G = (V,E)$, respectively.
+The Wasserstein distance~\cite{Villani2003-wv} (equivalently $L^1$ transportation, or ``earth movers distance''~\cite{rubner2000earth}) between $m_x$ and $m_y$ is the minimum amount of ``work'' required to move $m_x$ to $m_y$ along edges of the graph, that is
+ $$ W_1(m_x, m_y) := \min_{\xi \in \Pi(m_x, m_y)} \sum_{\{z,w\} \subset V} \dspr{z,w} \xi(z,w),$$
+where $\Pi(m_x, m_y)$ is the set of mass transport programs moving the mass in $m_x$ to the configuration described by $m_y$ (more formally, a density on $V \times V$ which is $m_x$ after projecting on the first component and $m_y$ after projecting on the second).
+
+The \emph{coarse Ricci-Ollivier curvature} of $x$ and $y$ is then defined as:
 \begin{equation}
 \curvature{x, y} := 1 - \frac{W_1(m_x, m_y)}{d(x, y)}
 \label{eq:curvatureDef}
@@ -276,12 +279,12 @@ We use $\curvature{\MH; x,y}$ to indicate curvature with respect to Metropolis-H
 Positive curvature implies that $m_x$ and $m_y$ are ``closer'' than $x$ and $y$, zero curvature implies that they are neither closer nor farther, and negative curvature implies that $m_x$ and $m_y$ are on average ``more distant'' than $x$ and $y$.
 Curvature thus provides an intuitive measure of the difficulty of moving between regions of the graph with the given random walk.
 
-Lin et al.~\cite{lin2011ricci} defined a different notion of curvature in terms of lazy random walks which Loisel and Romon~\cite{Loisel2014-hu} dubbed the \emph{asymptotic} Olivier-Ricci curvature.
+Lin et al.~\cite{lin2011ricci} defined a different notion of curvature in terms of lazy random walks which Loisel and Romon~\cite{Loisel2014-hu} dubbed the \emph{asymptotic Ricci-Olivier curvature}.
 The lazy random walk selects a neighbor according to the given distribution, but only travels to the neighbor with probability $p$.
 We denote the coarse curvature of the lazy random walk between two vertices $x$ and $y$ by $\curvature[p]{x,y}$.
 For example, $\curvature[\frac{1}{4}]{x,y}$ describes the curvature of the lazy random walk that follows the given distribution with probability $\frac{1}{4}$ and remains stationary with probability $\frac{3}{4}$.
 For the lazy uniform random walk, the mass assignment $m^p_x$ is $x \cup N(x)$, with each neighbor assigned mass $\frac{p}{\degree{x}}$ and $x$ assigned the remaining $1 - p$ mass.
-The (asymptotic) Ricci-Ollivier curvature of $x$ and $y$ is then:
+The asymptotic Ricci-Ollivier curvature of $x$ and $y$ is then:
 \begin{equation}
 \ric{x, y} := \lim_{p \rightarrow 0} \frac{\curvature[p]{x,y}}{p}
 \label{eq:curvatureDef}
@@ -899,7 +902,7 @@ In summary, we have advanced understanding of the phylogenetic rSPR graph underl
 We did so by developing the first theoretical and computational frameworks to bound and compute Ricci-Ollivier curvature of the rSPR graph.
 We found that curvature, along with degree and distance, determine the early dynamics of hitting times for random walks.
 Moreover, we proved that rSPR graph degree changes depend quadratically on the product of the size of the regrafted subtree with its change in depth, as well as that rSPR graph tends toward flatness with respect to rSPR moves that move asymptotically small subtrees.
-Finally, we proved that the coarse and asymptotic definitions of Ollivier-Ricci curvature are closely related with respect to uniform and Metropolis-Hastings walks on the rSPR graph.
+Finally, we proved that the coarse and asymptotic definitions of Ricci-Ollivier curvature are closely related with respect to uniform and Metropolis-Hastings walks on the rSPR graph.
 
 In this data-free setting the stationary distribution is, unlike with real data, quite evenly spread over all trees.
 Correspondingly, we found that the influence of curvature is small in this case (Fig.~\ref{fig:short-time-kappa-access}) and that the probability of the target node in the stationary distribution predominantly determines access times for pairs of trees (Fig.~\ref{fig:long-time-kappa-access}).
