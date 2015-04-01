@@ -33,7 +33,14 @@
 \newcommand{\TT}{\mathcal T}
 \newcommand{\MH}{\operatorname{MH}}
 
-\newcommand{\cuttable}[1]{#1} % In case we need to be succinct for limits.
+\newcommand{\cuttable}[2][]{% In case we need to be succinct for limits.
+    \ifthenelse{\equal{#1}{}}%
+		{}%
+		{#1}%
+% replace with these lines for the full version.
+%		{#2}%
+%		{#2}%
+}
 
 %---[ Parenthesization ]--------------------------------------------------------
 
@@ -343,6 +350,7 @@ To quickly compute dense rSPR graphs (those containing a significant portion of 
 	Similarly, it takes $\OhOf{n}$-time to determine the index of each of the $\OhOf{mn^2}$ $S$'s.
 	Therefore the graph can be constructed in $\OhOf{mn^3}$-time.
 \end{proof}
+
 This procedure has been implemented in the C++ program \texttt{dense\_spr\_graph} of the software package \texttt{spr\_neighbors}~\cite{spr_neighbors}, which outputs an edge list format graph suitable for input to other software.
 The construction procedure reduced the time required to compute the 10,395-vertex 7-taxon rSPR graph from 2,104.68 seconds to 12.71 seconds on an Intel Core 2 Duo E7500 desktop running Ubuntu 14.04.
 Moreover, although we do not study the 135,135-vertex 8-taxon rSPR graph in this paper, our algorithm required only 303.45 seconds to construct it on the same hardware.
@@ -422,6 +430,7 @@ In this manner, we achieve an alternative solution for computing the degree of a
 	\end{cases}.$$
 	Moreover, each tree of $N(T,u)$ can be obtained by an rSPR operation that moves the subtree rooted at $u$.
 \end{lemma}
+\cuttable{
 \begin{proof}
 	The statement follows if each of the neighbor assignments are disjoint, that is $N(T,u) \cap N(T,v) = \emptyset$, for all nodes $u$, $v$ of $T$.
 	So, suppose, for the purpose of obtaining a contradiction, that there exist two nodes $u$ and $v$ of $T$ such that there exists a tree $S \in (N(T,u) \cap N(T,v))$.
@@ -432,6 +441,7 @@ In this manner, we achieve an alternative solution for computing the degree of a
 	This implies that, without loss of generality, $U$ is moved to its grandparent edge and $V$ to $U's$ sibling (i.e. (iii) above) or $U$ is moved to its aunt edge and $V$ to $U$'s edge (i.e. iv above), a contradiction.
 	Therefore the claim holds.
 \end{proof}
+}
 
 
 In particular, this formulation groups moves that move the same subtree.
@@ -556,6 +566,7 @@ We now bound the ratio and difference of rSPR degree between two trees with $n$ 
 		\item $\degree{S} - \degree{T} \le n^2 - 5n + 6$.
 	\end{enumerate}
 \end{lemma}
+\cuttable{
 \begin{proof}
 	To prove (i), we simply note from Lemma~\ref{lem:degree_extremes} that the ladder tree achieves the minimum degree, and the balanced tree achieves the maximum degree:
 	\begin{align*}
@@ -576,6 +587,7 @@ We now bound the ratio and difference of rSPR degree between two trees with $n$ 
 		=\ &n^2 - 5n + 6.
 	\end{align*}
 \end{proof}
+}
 
 We can improve these bounds in the case of adjacent trees.
 To do so, we require the following lemma that characterizes exactly how the degree of a tree changes after an rSPR operation.
@@ -629,10 +641,12 @@ Continuing with the setting and notation in Lemma~\ref{lem:degree_change}, at le
 $$o := \deg(T) - 2kb - 2(j-1) = \deg(S) - 2ka - 2(i-1)$$
 trees in the neighborhood of $T$ can be paired with $o$ trees in the neighborhood of $S$ such that the pairings are disjoint and $\dspr{T',S'} = 1$ for each $(T',S')$ pair.
 \end{corollary}
+\cuttable{
 \begin{proof}
 By the same arguments as in the proof of Lemma~\ref{lem:degree_change}, $o$ rSPR moves can be applied to $T$ and $S$ with the same source and target nodes.
 For each such $(T',S')$ pair, we can move $R$ in either tree to obtain the other member of the pair.
 \end{proof}
+}
 
 We can now use Lemma~\ref{lem:degree_change} to improve the bounds in Lemma~\ref{lem:degree_max_delta} for the case of two adjacent trees.
 \begin{lemma}
@@ -645,6 +659,7 @@ We can now use Lemma~\ref{lem:degree_change} to improve the bounds in Lemma~\ref
 		\item $\lim_{n\rightarrow\infty}\frac{\degree{T}}{\degree{S}} =  \frac{6}{7}$.
 	\end{enumerate}
 \end{lemma}
+\cuttable{
 \begin{proof}
 	We first prove (i).
 	By Lemma~\ref{lem:degree_change}, $\degree{S} - \degree{T} = 2(k(a-b) + i - j)$.
@@ -679,6 +694,7 @@ This bound is minimized when $\degree{T}$ is minimized, and recall by Lemma~\ref
     % 3.5*16 - 15*4 + 16 = 12
 
 \end{proof}
+}
 
 
 Next, we bound the number of neighbors shared by two adjacent trees.
@@ -690,6 +706,7 @@ Let $T$ and $S$ be rooted $X$-trees such that $\dspr{T,S} = 1$.
 Then $\size{N(T) \cap N(S)} \le 6n - 17$.
 \end{lemma}
 
+\cuttable{
 \begin{proof}
 	$T$ and $S$ differ by one rSPR move that moves a subtree $R$.
 	Pick a neighbor $U \in N(T) \cap N(S)$ of both $T$ and $S$ (this intersection is not empty: $T$ and $S$ are different, so $R$ contains at most $n-2$ of the leaves, thus there must be at least one other tree $U$ obtained by moving $R$ in $T$ and $S$).
@@ -702,6 +719,7 @@ Then $\size{N(T) \cap N(S)} \le 6n - 17$.
 	The number of shared neighbors is thus at most $3(2n-6) + 1 = 6n-17$.
 	Note that this bound is tight when, for example, $T$ and $S$ are ladders with a different configuration of 3 leaves at maximum depth.
 \end{proof}
+}
 
 
 
@@ -720,6 +738,7 @@ Fix a positive integer $k$ and let $R$ be a tree with $k$ leaves.
 Let $\{T_n \mid n > k\}$ be a sequence of phylogenetic trees all containing $R$, and let $\{S_n \mid n > k\}$ be the same sequence $T_n$ but with $R$ cut off and attached at a different location.
 Then $\lim_{n \rightarrow \infty} \curvature{T_n,S_n} = 0$ for the uniform random walk on the rSPR graph.
 \end{proposition}
+\cuttable{
 \begin{proof}
 Because $d(T_n, S_n) = 1$, we will prove the proposition by showing that the mass transport term $W_{1,n}$ sits between two bounds, each of which has limit 1 as $n$ goes to infinity.
 
@@ -744,6 +763,7 @@ Thus, $W_{1,n}$ is bounded above by $(\degree{T_n} + \OhOf{kn}) / \degree{S_n} =
 We again bound $W_{1,n}$ from below with $(\degree{T_n} - \OhOf{n}) / \degree{T_n}$ by ignoring the mass in common neighbors of $T_n$ and $S_n$.
 The proposition again follows because $\degree{T_n}$ is quadratic in $n$.
 \end{proof}
+}
 
 Next we note a simple and rough bound on the curvature of two trees with respect to their distance, then obtain a tighter bound on the maximum curvature of two adjacent trees.
 
@@ -752,15 +772,18 @@ Next we note a simple and rough bound on the curvature of two trees with respect
 	Let $T$ and $S$ be two trees. Then:
 	$$ \frac{-2}{\dspr{T,S}} \le \curvature{T,S} \le \frac{2}{\dspr{T,S}} .$$
 \end{lemma}
+\cuttable{
 \begin{proof}
 	Observe that the distance between neighbors of $T$ and $S$ is bounded between $\dspr{T,S} - 2$ and $\dspr{T,S} + 2$.
 	For the curvature upper bound, we then have $\curvature{T,S} \le 1 - \frac{\dspr{T,S} - 2}{\dspr{T,S}} = \frac{2}{\dspr{T,S}}$.
 	The lower bound follows similarly.
 \end{proof}
+}
 
 \begin{lemma}
 	The maximum curvature of the uniform random walk between two adjacent trees with $n$ leaves is $\frac{6n-17}{3n^2-13n+14}$.
 \end{lemma}
+\cuttable{
 \begin{proof}
 The maximum curvature between adjacent trees $T$ and $S$ occurs when their neighborhoods have maximum overlap and all other tree pairs are at distance 1.
 By Lemma~\ref{lem:shared_neighbors} the maximum overlap is $6n-17$.
@@ -770,6 +793,7 @@ This is minimized when $\degree{T}=\degree{S}$ are as small as possible, that is
 
 The maximum curvature is thus $1 - \frac{\degree{T} - (6n-17)}{\degree{T}} = \frac{6n - 17}{\degree{T}}= \frac{6n-17}{3n^2-13n+14}$.
 \end{proof}
+}
 This bound is tight and has been verified computationally for $n \le 7$.
 
 It is more difficult to obtain a closer bound on the maximum curvature of nonadjacent trees.
@@ -794,6 +818,7 @@ Next, we bound the minimum curvature of two adjacent trees.
 	The curvature of the uniform random walk between two adjacent trees with $n$ leaves is at least
 	$$\frac{-n^2 + 2n}{3.5n^2 - 15n + 16}.$$
 \end{lemma}
+\cuttable{
 \begin{proof}
     In light of Corollary \ref{cor:paired_neighbors}, the optimal mass transport cost is maximized (and therefore curvature minimized) across adjacent trees $T$ and $S$ by a combination of two effects: trees that cannot be paired at distance $1$ and mass that must be moved between unpaired trees due to differing degrees of $T$ and $S$.
 		As we will show, these effects can be optimized simultaneously.
@@ -812,6 +837,7 @@ Next, we bound the minimum curvature of two adjacent trees.
 	$$\frac{\frac{1}{2}n^2 - n}{3.5n^2 - 15n + 16}.$$
 	The claim follows from multiplying this value by $-2$.
 \end{proof}
+}
 
 We further observe that the limit of our curvature lower bound is $-\frac{2}{7}$.
 Complete enumeration with $n \le 7$ show that no pair of trees have curvature less than $-\frac{2}{5}$ and our bound meets or exceeds this value for $n > 7$.
@@ -841,6 +867,7 @@ As we now prove, these two notions of curvature differ only by a small factor in
 	\end{enumerate}
 \end{lemma}
 
+\cuttable{
 \begin{proof}
 	We first prove the lower bound in the uniform case, that is $\curvature{T,S} \le \ric{T,S}$.
 	Let $W_1(T,S)$ be the mass transport cost in the uniform case, and $W_1'(T,S)$ be the same for the lazy uniform case with parameter $p$.
@@ -859,6 +886,7 @@ As we now prove, these two notions of curvature differ only by a small factor in
 	The upper bound then follows analogously to the lower bound.
 	Moreover, no mass can remain at $T$ or $S$ when $\dspr{T,S} > 1$, in which case the curvatures are equal.
 \end{proof}
+}
 
 Next we consider the curvature of the Metropolis-Hastings (MH) random walk sampling the uniform distribution on trees, which we will simply call the MH random walk.
 This random walk proposes a move from a tree $T$ to a neighbor tree $S$ uniformly at random and then accepts the move according to the Hastings ratio, $\min\left(1, \frac{\degree{T}}{\degree{S}}\right)$.
@@ -875,6 +903,7 @@ We now bound the difference between the curvature of the uniform random walk $\c
 	\le \curvature{\MH; T,S}
 	\le \curvature{T,S} + \frac{1}{6}.$$
 \end{lemma}
+\cuttable{
 \begin{proof}
 	We first prove the lower bound.
 	By Lemma~\ref{lem:degree_max_delta_adjacent}, the quotient of degrees for two adjacent trees $\ge \frac{5}{6}$.
@@ -903,6 +932,7 @@ We now bound the difference between the curvature of the uniform random walk $\c
 	We obtain the upper bounds similarly to the lower bounds, by observing that the affected at most $\frac{1}{6}$ of the mass may move through at most two fewer trees (i.e. directly between $T$ and $S$ rather than a pair of neighbors at distance $\dspr{T,S} + 2$ from each other).
 	Again, this is at most one fewer tree when $\dspr{T,S}=1$.
 \end{proof}
+}
 
 \section{Conclusion and future work}
 In summary, we have advanced understanding of the phylogenetic rSPR graph substantially beyond what was previously known, which concerned graph diameter and vertex degree.
