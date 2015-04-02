@@ -151,7 +151,7 @@ Within this framework researchers typically choose either a Bayesian approach, i
 
 In order to get accurate such estimates, MCMC samplers must sufficiently explore the collection of trees, or heuristic local search algorithms must find a way to the ML tree, avoiding and escaping local peaks.
 In both settings, one needs a means of describing the trees that are ``near'' to the current tree.
-Phylogenetic search algorithms typically explore the collection of trees by rearranging subtrees with subtree prune-and-regraft (SPR) moves (Figure~\ref{fig:spr}) or the subset of SPR moves called nearest neighbor interchanges (NNI)~\cite{robinson1971comparison}.
+Phylogenetic search algorithms typically explore the collection of trees by rearranging subtrees with subtree-prune-regraft (SPR) moves (Figure~\ref{fig:spr}) or the subset of SPR moves called nearest neighbor interchanges (NNI)~\cite{robinson1971comparison}.
 Thus, phylogenetic searches can be viewed as traversing the graph of phylogenetic trees induced by SPR adjacencies---the \emph{SPR graph}.
 
 It has become increasingly clear that the structure of the SPR graph plays an important role in determining the accuracy of tree searches.
@@ -253,7 +253,7 @@ A \emph{balanced tree} is a tree such that the sum of the depths of internal nod
 The \emph{least common ancestor} (LCA) of a set $R$ of two or more nodes is the unique node that is an ancestor of each node $r \in R$ and at maximum depth.
 Similarly, the LCA of two or more subtrees is the LCA of their parent nodes.
 
-A (rooted) \emph{subtree prune-and-regraft} (rSPR) operation on an $X$-tree $T$ cuts an edge $e = (x, p_x)$ where $p_x$ denotes the parent of node $x$.
+A (rooted) \emph{subtree-prune-regraft} (rSPR) operation on an $X$-tree $T$ cuts an edge $e = (x, p_x)$ where $p_x$ denotes the parent of node $x$.
 $T$ is divided into two subtrees $T_x$ and $T_{p_x}$ containing $x$ and $p_x$, respectively.
 Then the operation adds a new node $p'_x$ to $T_{p_x}$ by subdividing an edge of $T_{p_x}$ and adding a new edge $(x, p'_x)$, making $x$ a child of $p'_x$.
 Finally, $p_x$ is suppressed\cuttable{, joining the two edges on either side of that node}.
@@ -355,14 +355,14 @@ To quickly compute dense rSPR graphs (those containing a significant portion of 
 This procedure has been implemented in the C++ program \texttt{dense\_spr\_graph} of the software package \texttt{spr\_neighbors}~\cite{spr_neighbors}, which outputs an edge list format graph suitable for input to other software.
 The construction procedure reduced the time required to compute the 10,395-vertex 7-taxon rSPR graph from 2,104.68 seconds to 12.71 seconds on an Intel Core 2 Duo E7500 desktop running Ubuntu 14.04.
 Moreover, although we do not study the 135,135-vertex 8-taxon rSPR graph in this paper, our algorithm required only 303.45 seconds to construct it on the same hardware.
-Constructing the 8-taxon rSPR graph using the previous method required 377,395 seconds (more than 4 days), and thus is infeasible for constructing larger rSPR tree graphs.
-Thus, we believe this fast graph construction procedure will itself be useful for further studies of rSPR graph subsets similar to~\cite{Whidden2015-yi}.
+Constructing the 8-taxon rSPR graph using the previous method required 377,395 seconds (more than 4 days), and thus that method is infeasible for constructing larger rSPR tree graphs.
+Thus, we believe our fast graph construction procedure will itself be useful for further studies of rSPR graph subsets similar to~\cite{Whidden2015-yi}.
 
 \subsection{Computing curvature values}
 To compute curvature values, we first \cuttable[computed]{used \texttt{dense\_spr\_graph} to compute} the rSPR graph for four to seven leaves, as discussed in Section~\ref{sec:computing_treespace}.
 We then computed curvatures for given pairs of trees directly, by using linear programming~\cite{Loisel2014-hu} to compute the minimal mass transport $W_1$ using the SAGE \cite{SAGE} front-end to the GLPK~\cite{glpk} solver; code can be found in \cite{gricci} which grew from the code described in \cite{Loisel2014-hu}.
 
-This would have required an enormous amount of computation to directly compute curvatures for the $((2n-3)!!)^2$ pairs of trees with $n$ leaves.
+This would have required an enormous amount of computation to directly compute curvatures for the $((2n-3)!!)^2$ pairs of trees with $n$ leaves, even for the small values of $n$ we consider here.
 We instead exploited the fact that pairs of trees which are equivalent modulo label renumbering are symmetric in the rSPR graph and therefore guaranteed to have the same curvature.
 For example, the pairs
 $\{(((1,2),3),4), ((1,2),(3,4))\}$ and
@@ -542,6 +542,7 @@ The analysis can be reproduced by invoking the SCons (\url{http://scons.org/}) b
 
 
 \section{Rooted SPR Neighborhoods}
+\label{sec:neighborhoods}
 Having made the connection between curvature values and access times on the rSPR graphs, we now consider curvature theoretically.
 We begin by bounding differences between degrees, and then continue by enumerating squares and triangles in the rSPR graph.
 
@@ -727,12 +728,12 @@ Then $\size{N(T) \cap N(S)} \le 6n - 17$.
 \section{Curvature}
 For the purposes of this paper, $\kappa$ is the coarse Ricci-Ollivier curvature \eqref{eq:curvatureDef} on the $n$-taxon rSPR graph with respect to a specified random walk and $W_{1,n}$ is the corresponding mass transport term from \eqref{eq:curvatureDef}.
 
-We first consider properties of the uniform (a.k.a.\ isotropic) random walk on the rSPR graph.
-Assume that the random walk begins at a tree $T$.
-The uniform random walk selects a tree uniformly at random from $N(T)$.
+We first consider properties of the uniform \cuttable{(a.k.a.\ isotropic)} random walk on the rSPR graph.
+Recall that the uniform random walk begins at a tree $T$ and selects a tree uniformly at random from $N(T)$.
 \cuttable{We denote the coarse curvature of the uniform random walk between two trees $T$ and $S$ with $\curvature{T,S}$.}
 Recall that \cuttable[the coarse uniform random walk curvature ]{}$\curvature{T, S} := 1 - \frac{W_1(m_T, m_S)}{d(T, S)}$.
 For the uniform random walk, $m_T$ \cuttable[assigns]{is simply the probability measure assigning} a mass of $\frac{1}{\degree{T}}$ to each of $T$'s neighbors.
+Our results follow from the lemmas of Section~\ref{sec:neighborhoods}.
 
 \begin{proposition}
 Fix a positive integer $k$ and let $R$ be a tree with $k$ leaves.
