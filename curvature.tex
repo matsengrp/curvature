@@ -730,7 +730,7 @@ For the purposes of this paper, $\kappa$ is the coarse Ricci-Ollivier curvature 
 We first consider properties of the uniform (a.k.a.\ isotropic) random walk on the rSPR graph.
 Assume that the random walk begins at a tree $T$.
 The uniform random walk selects a tree uniformly at random from $N(T)$.
-\cuttable{We denote the curvature of the uniform random walk between two trees $T$ and $S$ with $\curvature{T,S}$.}
+\cuttable{We denote the coarse curvature of the uniform random walk between two trees $T$ and $S$ with $\curvature{T,S}$.}
 Recall that \cuttable[the coarse uniform random walk curvature ]{}$\curvature{T, S} := 1 - \frac{W_1(m_T, m_S)}{d(T, S)}$.
 For the uniform random walk, $m_T$ \cuttable[assigns]{is simply the probability measure assigning} a mass of $\frac{1}{\degree{T}}$ to each of $T$'s neighbors.
 
@@ -890,7 +890,7 @@ The asymptotic Ricci-Ollivier curvature $\ric{T,S}$ is $\lim_{p \rightarrow 0} \
 }
 
 We now bound the difference between the curvature of the uniform random walk $\curvature{T,S}$ and that of the Metropolis-Hastings (MH) random walk $\curvature{\MH; T,S}$.
-Recall that this random walk proposes a move from a tree $T$ to a neighbor tree $S$ uniformly at random and then accepts the move according to the Hastings ratio, $\min\left(1, \frac{\degree{T}}{\degree{S}}\right)$.
+Recall that this random walk proposes a move from a tree $T$ to a neighbor tree $S$ uniformly at random and then accepts the move according to the Hastings ratio, \cuttable{which in this case is }$\min\left(1, \frac{\degree{T}}{\degree{S}}\right)$.
 The mass distribution \cuttable{for the MH random walk }thus leaves a portion of mass at the origin tree, proportional to the relative degree difference of its higher degree neighbors.
 Note that \cuttable{the same statement and proof of }Lemma~\ref{lem:asymptotic} holds with $\curvature{T,S}$ and $\ric{T,S}$ replaced by the MH curvatures $\curvature{\MH; T,S}$ and $\ric{\MH; T,S}$, respectively.
 
@@ -913,7 +913,7 @@ Note that \cuttable{the same statement and proof of }Lemma~\ref{lem:asymptotic} 
 	Moreover, let $m_T(z)$ and $m_S(w)$ be the mass assigned for the uniform random walk and $m'_T(z)$ and $m'_S(w)$ be the mass assigned for the MH random walk, for each vertex $z \in N(T)$ and $w \in N(S)$.
 	We construct an upper bound on $W_1'(T,S)$ by moving mass according to $W_1$ where possible, and moving the remainder either from $T$ to $S$, from $T$ to a neighbor of $S$, or from a neighbor of $T$ to $S$.
 	That is, for each $W_1$ assignment $\xi(z,w)$, we send $\xi'(z,w) = \xi(z,w) \min\left(\frac{m'_T(z)}{m_T(z)}, \frac{m'_S(w)}{m_S(w)}\right)$ of the mass from $z$ to $w$.
-	The remaining $\xi(z,w) - \xi'(z,w)$ of the mass is moved from $T$ to $S$, $T$ to $w$, and $z$ to $S$ in the respective proportions 
+	The remaining $\xi(z,w) - \xi'(z,w)$ of the mass is moved from $T$ to $S$, $T$ to $w$, and $z$ to $S$ in the respective proportions
 	$\xi(z,w) \max\left(\frac{m'_T(z)}{m_T(z)}, \frac{m'_S(w)}{m_S(w)}\right) - \xi'(z,w)$,
 	$\xi(z,w) \min\left(0, \frac{m'_T(z)}{m_T(z)} - \frac{m'_S(w)}{m_S(w)}\right)$, and,
 	$\xi(z,w) \min\left(0, \frac{m'_S(w)}{m_S(w)} - \frac{m'_T(w)}{m_T(w)}\right)$.
@@ -949,7 +949,7 @@ Thus, our next step will be to investigate curvature of MCMC with nontrivial lik
 \cuttable{Indeed, in both the setting of challenging real data and in simulation with a nontrivial likelihood function, the stationary distribution takes a long time to achieve, and thus the curvature will have a substantially greater impact on the overall hitting times rather than being a short prelude to waiting for a Poisson process event as it is here (Fig.~\ref{fig:kappa-access}).}
 % We will likely follow previous work \cite{Stefankovic2011-hu} by taking a chain where tree topology likelihoods are maximized across branch length, as the classical phylogenetic likelihood \cite{felsenstein1981evolutionary} requires both branch length and topology.
 
-Now that we have established the foundations of using curvature to understand graphs relevant for phylogenetic inference, \cuttable[many graph structures remain to be explored including NNI graphs, unrooted SPR graphs, graphs of ranked trees~\cite{Song2006-xe}, graphs of BEAST~\cite{Drummond2012-ek} rooted ``time-trees'', and random walks on other discrete structures such as partitions~\cite{Gusfield2002-il} that can be expressed as trees.]{we will extend this work in several directions in addition to adding a nontrivial likelihood function as just described.
+Now that we have established the foundations of using curvature to understand graphs relevant for phylogenetic inference, \cuttable[many graph structures remain to be explored including NNI graphs, unrooted SPR graphs, graphs of ranked trees~\cite{Song2006-xe}, graphs of BEAST~\cite{Drummond2012-ek} rooted ``time-trees,'' and random walks on other discrete structures such as partitions~\cite{Gusfield2002-il} that can be expressed as trees.]{we will extend this work in several directions in addition to adding a nontrivial likelihood function as just described.
 We will next consider the case of unrooted SPR, which is more commonly used in phylogenetic search.
 We will also explore random walks on ranked trees~\cite{Song2006-xe} and graphical models of tree space relevant for phylogenetic algorithms such as BEAST \cite{Drummond2012-ek} that infer rooted ``time-trees.''
 Random walks on other discrete structures such as partitions~\cite{Gusfield2002-il} that can be expressed as certain types of trees may also form interesting subjects for future work.}
