@@ -1,11 +1,11 @@
 # curvature
 
-This is the code and TeX for the paper "Ricci-Ollivier curvature of two random walks on the rooted phylogenetic Subtree-Prune-Regraft graph" by Chris Whidden and Erick Matsen.
+This is the text and code for the paper [Ricci-Ollivier curvature of the rooted phylogenetic Subtree-Prune-Regraft graph](http://arxiv.org/abs/1504.00304) by Chris Whidden and Erick Matsen.
 
 
 ## Software dependencies
 
-In addition to [sage](http://sagemath.org/), we depend on the following python packages,
+In addition to [Sage](http://sagemath.org/), we depend on the following python packages:
 
 * `scons`
 * `matplotlib`
