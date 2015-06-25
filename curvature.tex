@@ -128,14 +128,16 @@
 \IEEEpeerreviewmaketitle
 
 \begin{abstract}
-Statistical phylogenetic inference methods use tree rearrangement operations to perform either hill-climbing local search or Markov chain Monte Carlo across tree topologies.
-The canonical class of such moves are the subtree-prune-regraft (SPR) moves that remove a subtree and reattach it somewhere else via the cut edge of the subtree.
-Phylogenetic trees and such moves naturally form the vertices and edges of a graph, such that tree search algorithms perform a (potentially stochastic) traversal of this \emph{SPR graph}.
-Despite the centrality of such graphs in phylogenetic inference, rather little is known about their large-scale properties.
-In this paper we learn about the rooted-tree version of the graph, known as the rSPR graph, by calculating the Ricci-Ollivier curvature for pairs of vertices in the rSPR graph with respect to two simple random walks on the rSPR graph.
-By proving theorems and direct calculation with novel algorithms, we find a remarkable diversity of different curvatures on the rSPR graph for pairs of vertices separated by the same distance.
-We confirm using simulation that degree and curvature have the expected impact on mean access time distributions, demonstrating relevance of these curvature results to stochastic tree search.
-This indicates significant structure of the rSPR graph beyond that which was previously understood in terms of pairwise distances and vertex degrees; a greater understanding of curvature could ultimately lead to improved strategies for tree search.
+Statistical phylogenetic inference methods use subtree-prune-regraft (SPR) tree rearrangement operations to perform Markov chain Monte Carlo across tree topologies.
+These methods are known to mix quickly in the absence of sequence data and other parameters such as branch lengths, but may become stuck in the local optima of  multi-modal posterior distributions induced by such parameters.
+To begin bridging the gap between these models, we developed a framework for computing the Ricci-Ollivier curvature, a formalism of the difficulty in moving between graph nodes via stochastic traversal, of the \emph{rSPR graph} induced by the simple uniform case on rooted trees.
+To do so, we required fast algorithms for constructing and sampling these graphs, reducing the time required to compute an rSPR graph from $O(m^2n)$-time to $O(mn^3)$, where $m$ is the (often large) number of trees in the graph and $n$ their number of leaves, and reducing the time required to select an SPR neighbor of a tree uniformly at random to $O(n)$ time. 
+
+We confirmed using simulation that mean access time distributions depend on degree and curvature, demonstrating the relevance of these curvature results to stochastic tree search.
+Surprisingly, we observed negative curvature for some tree pairs, indicating tree space bottlenecks even in this simplest case.
+Finally, we developed a closed form solution to characterize how the number of SPR neighbors of a tree changes after an SPR operation is applied to that tree, and used this to bound the earth mover's distance between tree neighborhoods and thereby obtain bounds on curvature.
+Our results suggest that bottlenecks are caused by rapid degree changes, which have little effect on mixing times in this well connected space but may be more problematic in real posterior distributions.
+
 \end{abstract}
 
 \pagebreak
@@ -148,22 +150,21 @@ The likelihood function in this setting is the likelihood of generating the obse
 The lengths of the branches of the phylogenetic tree give the ``time'' parameter in the CTMC, where the generated sequence accrues mutations, typically in an IID manner across sites.
 Thus likelihood-based phylogenetics gives an optimality criterion that comes from both branch length and topology.
 Within this framework researchers typically choose either a Bayesian approach, in which an algorithm (typically Markov chain Monte Carlo or MCMC) approximates the posterior distribution of trees and their associated parameters, or a maximum likelihood (ML) approach, in which an algorithm searches across tree topologies and continuous parameters in order to find the combination with the highest likelihood.
+We focus on the Bayesian approach in this paper, but note that our observations will likely have ramifications for the ML approach as well.
 
-In order to get accurate such estimates, MCMC samplers must sufficiently explore the collection of trees, or heuristic local search algorithms must find a way to the ML tree, avoiding and escaping local peaks.
-In both settings, one needs a means of describing the trees that are ``near'' to the current tree.
-Phylogenetic search algorithms typically explore the collection of trees by rearranging subtrees with subtree-prune-regraft (SPR) moves (Figure~\ref{fig:spr}) or the subset of SPR moves called nearest neighbor interchanges (NNI)~\cite{robinson1971comparison}.
+In order to get accurate such estimates, MCMC samplers must sufficiently explore the collection of trees.
+Phylogenetic search algorithms typically attempt to do so through a combination of modifications to the continuous parameters and tree topology.
+Topology changes have been identified as the main limiting factor of Bayesian MCMC algorithms~\cite{lakner2008efficiency,hohna2012guided}, as other parameters cannot be accurately estimated if the topology distribution is not accurately sampled.
+Commonly used phylogenetics software packages such as MrBayes~\cite{Ronquist2012-hi} and BEAST~\cite{bouckaert2014beast} rearrange subtrees via subtree-prune-regraft (SPR) moves (Figure~\ref{fig:spr}) or the subset of SPR moves called nearest neighbor interchanges (NNI)~\cite{robinson1971comparison}.
 Thus, phylogenetic searches can be viewed as traversing the graph of phylogenetic trees induced by SPR adjacencies---the \emph{SPR graph}.
 
 It has become increasingly clear that the structure of the SPR graph plays an important role in determining the accuracy of tree searches.
 We will call these "graph effects"---one can't easily move from one tree to another due to the structure of the graph.
-Researchers have noticed SPR graph effects in MCMC~\cite{Mossel2005-ly,Mossel2006-fo,Ronquist2006-fv,Stefankovic2011-hu}.
-We recently showed that graph structure has a significant effect on MCMC mixing applying a popular inference program to real data~\cite{Whidden2015-yi}.
+Researchers have identified theoretical SPR graph effects in MCMC previously~\cite{Mossel2005-ly,Mossel2006-fo,Ronquist2006-fv,Stefankovic2011-hu}.
 Probabilists have also approached the problem using related frameworks that are more amenable to proving theorems, both for other sets of moves on trees with a finite number of leaves~\cite{Aldous2000-vg,Diaconis2002-gy} or for SPR and related moves on a continuous tree-like object which formalizes the notion of a tree with infinite leaves\cite{Evans2006-xh,Athreya2014-de}.
-
-Phylogenetic maximum-likelihood (ML) inference is also impacted by graph structure, which can manifest itself as local maxima.
-There have been investigations of local maxima, though mainly from the perspective of branch lengths rather than topology~\cite{Fukami1989-fs,Steel1994-pt,Chor2003-wh,Chor2000-ea}.
-The work on SPR moves in the ML context is primarily found in the literature comparing various SPR variants to one another, usually in the context of comparing one phylogenetic software package to another~\cite{Hordijk2005-dl,Stamatakis2006-yz,Price2010-fi,Guindon2010-lo}.
-We are not aware of any general conclusions concerning hill-climbing on the SPR or related graphs that has come from this work.
+In particular, the simple case of sampling the uniform topology distribution without continuous parameters via SPR operations is known to mix quickly~\cite{spade2014note}.
+However, despite indications of graph effects on real data~\cite{beiko2006searching, lakner2008efficiency} the lack of sufficient computational tools for examining phylogenetic posteriors in terms of SPR operations made it difficult to study such effects.
+By developing the first such tools, we recently showed that graph structure has a significant effect on MCMC mixing with MrBayes applied to real data~\cite{Whidden2015-yi}, and that multimodal posteriors are common and separated by "bottlenecks" of specific classes of SPR moves.
 
 Although the SPR graph is thus very important in determining the degree of success of phylogenetic inference procedures, still little is known about the rooted or unrooted versions of the SPR graph itself, or random walks thereupon.
 \cite{Song2003-gf} developed a recursive procedure on a tree to find the degree of the corresponding vertex in the rooted SPR (rSPR) graph, and corresponding bounds on degree.
@@ -172,22 +173,37 @@ $$ n - 2\ceil{\sqrt{n}} + 1
 \le \Delta_{\text{uSPR}}(n)
 \le n - 3 - \floorV{\frac{\sqrt{n - 2} - 1}{2}}.
 $$
-We are not aware of any other work investigating large-scale properties of the SPR graph.
+We are not aware of any work investigating properties of the SPR graph beyond local neighborhoods of trees.
+Again, this stems primarily from a lack of sufficient computational tools.
+Indeed, even computing the distance between topologies in terms of SPR operations (rooted and unrooted) is NP-hard~\cite{bordewich05,hickey2008sdc}.
+Fortunately, it is fixed-parameter tractable with respect to the distance in the rooted case~\cite{bordewich05} and efficient fixed-parameter algorithms have recently been developed~\cite{whidden2013hybridization,Whidden2015-yi} that have begun to allow such investigation. 
 
-A new approach to quantifying properties of random walks on discrete and continuous spaces has recently been pioneered by Ollivier and colleagues~\cite{Ollivier2009-bw,Joulin2010-jg}.
+A new approach to quantifying properties of random walks has recently been pioneered by Ollivier and colleagues~\cite{Ollivier2009-bw,Joulin2010-jg}.
 They define a notion of curvature which formalizes the notion of to what extent random walking brings points together, and is a generalization of the classical notion of Ricci curvature on manifolds.
+For discrete graphs, this is determined by the ratio of the earth mover's distance~\cite{rubner2000earth} between neighborhoods of a pair of vertices and the distance between the vertices.
 Here the term \emph{random walk} on a space $X$ simply denotes a family of probability measures parameterized by points of $X$ satisfying a couple of reasonable assumptions, which includes biased walks such as MCMC.
 
 In this paper, we investigate curvature of the rSPR graph with respect to two random walks and connect those results to access times (also known as hitting times) for those random walks.
 For this first effort we investigate random walks defined only in terms of the graph itself: the uniform random walk and MCMC sampling from the uniform prior on trees.
+Our algorithms and methods can be easily extended to study more complicated distributions with non-uniform topology probabilities.
+
+We required several new computational tools. 
 We present a fast new algorithm for computing rSPR graphs from a set of trees, reducing the time to do so from $\OhOf{m^2n}$ to $\OhOf{mn^3}$ for a set of $m$ trees with $n$ leaves.
-As the full rSPR graph contains $(2n-3)!!$ trees, this is a significant improvement in practice for exploring large subsets of the graph.
+As the full rSPR graph on trees with $n$ leaves contains $(2n-3)!!$ trees, this is a significant improvement in practice for exploring large subsets of the graph (or, as we do here, the full graph for small numbers of leaves).
 By exploiting symmetries in the rSPR graph, we were able to calculate all of the curvatures for pairs of trees with up to seven leaves.
 By carefully examining the overlap in rSPR moves, we present a new method for computing the degree of a tree in the rSPR graph that allows one to select an rSPR neighbor uniformly at random in linear-time without explicitly generating the graph.
-Using this method to simulate these random walks, we find that the distribution of access times between pairs of trees can be described by distance between the trees, the degrees of the trees, and the curvature.
-By getting a more fine-tuned understanding of the rSPR neighborhood of pairs of vertices, we are able to give bounds on curvatures under these random walks.
+This is a major improvement over the sampling methods used in current software programs such as MrBayes which do not sample SPR moves uniformly.
+
+Using our methods to simulate these random walks, we found that the distribution of access times between pairs of trees can be described by distance between the trees, the degrees of the trees, and the curvature.
+Moreover, we found that rSPR graphs with 6 or more leaves have tree pairs with negative curvature, corresponding to bottlenecks.
+This is a surprising result, as the Markov chain in this simple case is known to mix rapidly~\cite{spade2014note}. 
+
+In response, we considered properties of the graph analytically.
+By getting a more fine-tuned understanding of the rSPR neighborhood of pairs of vertices, we are able to give bounds on the earth mover's distance in this context and thus curvatures under these random walks.
 In particular, we present a full characterization of the change in rSPR degree that occurs from a given rSPR move and find that even though they each count as one move, rSPR moves which move large subtrees may have greater graph effects than those that move small subtrees.
-Finally, we prove that the two related notions of Ricci-Ollivier curvature (coarse and asymptotic) are close, and in fact identical in the limit of many taxa, when applied to the rSPR graph.
+Pairs of trees separated by such moves correspond to the "bottlenecks" identified in our simulation results.
+These pairs occur infrequently in these well-connected graphs, thus allowing the Markov chain to mix rapidly.
+However, they may be more problematic in real posterior distributions where the majority of probability is spread over a relatively small number of trees~\cite{Whidden2015-yi}. 
 In summary, we extend knowledge about an important graph for phylogenetics, specifically in a way that models phylogenetic MCMC search.
 
 The automated computational analysis code can be found at \url{https://github.com/matsengrp/curvature}.
