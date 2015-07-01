@@ -10,6 +10,7 @@
 \usepackage{url}
 \usepackage{subfigure}
 \usepackage{graphicx}
+\usepackage{todonotes}
 \usepackage[nomarkers,nofiglist,notablist]{endfloat}
 \let\MYoriglatexcaption\caption
 \renewcommand{\caption}[2][\relax]{\MYoriglatexcaption[#2]{#2}}
@@ -320,21 +321,23 @@ As above for $\kappa$, we use $\ric{x, y}$ as shorthand for $\ric{m; x, y}$ when
 This definition of curvature is invariant of $p$ for small enough $p$~\cite{Loisel2014-hu} and can be used to avoid parity problems on graphs where the uniform random walk is periodic without choosing a specific laziness parameter (e.g. Ollivier often considered $\curvature[\frac{1}{2}]{x,y}$ for this purpose).
 As we prove in Lemma~\ref{lem:asymptotic}, the two notions of rough and asymptotic curvature differ only by a small factor bounded by $\frac{2}{\max(\degree{x}, \degree{y})}$ between adjacent vertices and are equal for nonadjacent vertices.
 
-\section{Access times of random walks on the rSPR graph can be understood using distance, degree, and curvature}
+\section{Efficient algorithms for computing and sampling the rSPR graph}
 
-\subsection{Computing rSPR graphs}
+\subsection{Computing the rSPR graph on $n$ leaves in $\OhOf{mn^3}$-time}
 \label{sec:computing_treespace}
 
-We computed the rSPR graph explicitly for trees on four to seven leaves.
-This required a fast new algorithm for rSPR graph construction, as previous algorithms required $\OhOf{m^2 n}$ time, where $m$ is the number of trees in the graph ($(2n-3)!!$ in this case) and $n$ the number of leaves.
+To study the full rSPR graph for a fixed number of leaves it is necessary to have an efficient means of constructing it.
+The previous best algorithm for this problem requires $\OhOf{m^2 n}$ time, where $m$ is the number of trees in the graph and $n$ the number of leaves~\cite{Whidden2015-yi}.
 Here we reduce that time to $\OhOf{mn^3}$.
+Note that for the full rSPR graph, $m$ is the rapidly growing function $(2n-3)!!$, that is, $3 \cdot 5 \cdot \ldots \cdot (2n-3)$, and this is therefore a significant improvement.
+
 In previous work~\cite{Whidden2015-yi}, we constructed (unrooted) SPR graphs from subsets of $m$ high probability trees sampled from phylogenetic posteriors to compare mixing and identify graph effects.
 Although the SPR distance (rooted and unrooted) is NP-hard to compute~\cite{bordewich05,hickey2008sdc}, it is fixed-parameter tractable with respect to the distance in the rooted case~\cite{bordewich05}.
 In particular, one can determine in $\OhOf{n}$-time whether two rooted phylogenetic trees are adjacent in the rSPR graph ($\OhOf{n^2}$-time for unrooted trees) using the algorithms of Whidden et al.~\cite{whidden2009unifying,whidden2010fast, whidden2013hybridization,Whidden2015-yi}.
 We applied this method comparing each of the $m$ trees pairwise to identify adjacencies, requiring a total of $\OhOf{m^2n}$-time ($\OhOf{m^2 n^2}$-time in the unrooted case).
-However, applying this method to complete rSPR graphs, with the $\OhOf{m^2}$ factor where $m = (2n-3)!!$, requires an enormous amount of computation.
+However, this method is infeasible when applied to construct graphs with 7 or more leaves, due to the rapidly growing $\OhOf{m^2}$ factor.
 
-To quickly compute dense rSPR graphs (those containing a significant portion of the full rSPR graph) we avoid pairwise computations by successively adding trees to the graph and \cuttable{efficiently }identifying their neighbors:
+To quickly compute dense rSPR graphs (those containing a significant portion of the full rSPR graph) we avoid pairwise computations by successively adding trees to the graph and \cuttable{efficiently }identifying their neighbors: \todo{make this more concrete and CSy, push the proofs to the supplemental material.}
 \begin{enumerate}[label={\arabic*}.]
 	\item Let $G$ be an empty graph.
 	\item For each of the $m$ trees in a specified but arbitrary order:
@@ -373,36 +376,6 @@ Moreover, although we do not study the 135,135-vertex 8-taxon rSPR graph in this
 Constructing the 8-taxon rSPR graph using the previous method required 377,395 seconds (more than 4 days), and thus that method is infeasible for constructing larger rSPR tree graphs.
 Thus, we believe our fast graph construction procedure will itself be useful for further studies of rSPR graph subsets similar to~\cite{Whidden2015-yi}.
 
-\subsection{Computing curvature values}
-To compute curvature values, we first \cuttable[computed]{used \texttt{dense\_spr\_graph} to compute} the rSPR graph for four to seven leaves, as discussed in Section~\ref{sec:computing_treespace}.
-We then computed curvatures for given pairs of trees directly, by using linear programming~\cite{Loisel2014-hu} to compute the minimal mass transport $W_1$ using the SAGE \cite{SAGE} front-end to the GLPK~\cite{glpk} solver; code can be found in \cite{gricci} which grew from the code described in \cite{Loisel2014-hu}.
-
-This would have required an enormous amount of computation to directly compute curvatures for the $((2n-3)!!)^2$ pairs of trees with $n$ leaves, even for the small values of $n$ we consider here.
-We instead exploited the fact that pairs of trees which are equivalent modulo label renumbering are symmetric in the rSPR graph and therefore guaranteed to have the same curvature.
-For example, the pairs
-$\{(((1,2),3),4), ((1,2),(3,4))\}$ and
-$\{(((1,4),2),3), ((1,4),(2,3))\}$
-are the same after relabeling, so their curvatures are the same.
-We thus directly computed curvature values for one representative pair from each such equivalence class, or \emph{tanglegram} \cite{Venkatachalam2010-zh}; the group-theoretic enumeration methods are described in a manuscript in preparation, and the SAGE \cite{SAGE} and GAP4 \cite{GAP4} code can be found online \cite{tangle}.
-
-We find a wide variation in curvature values among tanglegrams (Figure~\ref{fig:rspr-scatter}).
-Curvature values tended to increase with increasing rSPR distance, and their variance decreased with increasing distance.
-Neighboring trees had minimum curvature values for a given number of leaves, and we found maximum curvature values between trees at maximum distance or one rSPR move closer than the maximum.
-This suggests that the increased difficulty of moving between trees with a random walk due to distance may be tempered somewhat by curvature in the highly connected rSPR graph.
-
-Larger rSPR graphs tended to have smaller curvature values.
-Indeed, the 7-leaf rSPR graph contained adjacent pairs of trees with negative curvature.
-Such pairs are possible bottlenecks in phylogenetic searches which may be exacerbated by likelihood or branch length constraints.
-
-\begin{figure}
-	\hspace*{\stretch{1}}
-	\subfigure[6 taxa]{\includegraphics[width=3in]{figs/rspr-upmh-scatter6}}
-	\hspace*{\stretch{2}}
-	\subfigure[7 taxa]{\includegraphics[width=3in]{figs/rspr-upmh-scatter7}}
-	\hspace*{\stretch{1}}
-    \caption{Scatter plot of $\curvature{\MH; T_1,T_2}$ values versus $\dspr{T_1,T_2}$ for the rSPR graph. Color displays the average degree of $T_1$ and $T_2$. Distance values randomly perturbed (``jittered'') a small amount to avoid superimposed points.}
-	\label{fig:rspr-scatter}
-\end{figure}
 
 \subsection{Simulating random walks on the rSPR graph}
 \label{sec:random_walks}
@@ -503,6 +476,39 @@ We thus have the following corollary:
 
 We implemented this procedure in the C++ package \texttt{random\_spr\_walk}~\cite{random_spr_walk}.
 We sampled \cuttable{a }200,000\cuttable{-iteration} random walk\cuttable[ iterations]{} on the 4-leaf rSPR graph and \cuttable{a }50,000-iteration\cuttable[s]{ random walk} on the 5-leaf rSPR graph.
+
+\section{Access times of random walks on the rSPR graph can be understood using distance, degree, and curvature}
+
+\subsection{Computing curvature values}
+To compute curvature values, we first \cuttable[computed]{used \texttt{dense\_spr\_graph} to compute} the rSPR graph for four to seven leaves, as discussed in Section~\ref{sec:computing_treespace}.
+We then computed curvatures for given pairs of trees directly, by using linear programming~\cite{Loisel2014-hu} to compute the minimal mass transport $W_1$ using the SAGE \cite{SAGE} front-end to the GLPK~\cite{glpk} solver; code can be found in \cite{gricci} which grew from the code described in \cite{Loisel2014-hu}.
+
+This would have required an enormous amount of computation to directly compute curvatures for the $((2n-3)!!)^2$ pairs of trees with $n$ leaves, even for the small values of $n$ we consider here.
+We instead exploited the fact that pairs of trees which are equivalent modulo label renumbering are symmetric in the rSPR graph and therefore guaranteed to have the same curvature.
+For example, the pairs
+$\{(((1,2),3),4), ((1,2),(3,4))\}$ and
+$\{(((1,4),2),3), ((1,4),(2,3))\}$
+are the same after relabeling, so their curvatures are the same.
+We thus directly computed curvature values for one representative pair from each such equivalence class, or \emph{tanglegram} \cite{Venkatachalam2010-zh}; the group-theoretic enumeration methods are described in a manuscript in preparation, and the SAGE \cite{SAGE} and GAP4 \cite{GAP4} code can be found online \cite{tangle}.
+
+We find a wide variation in curvature values among tanglegrams (Figure~\ref{fig:rspr-scatter}).
+Curvature values tended to increase with increasing rSPR distance, and their variance decreased with increasing distance.
+Neighboring trees had minimum curvature values for a given number of leaves, and we found maximum curvature values between trees at maximum distance or one rSPR move closer than the maximum.
+This suggests that the increased difficulty of moving between trees with a random walk due to distance may be tempered somewhat by curvature in the highly connected rSPR graph.
+
+Larger rSPR graphs tended to have smaller curvature values.
+Indeed, the 7-leaf rSPR graph contained adjacent pairs of trees with negative curvature.
+Such pairs are possible bottlenecks in phylogenetic searches which may be exacerbated by likelihood or branch length constraints.
+
+\begin{figure}
+	\hspace*{\stretch{1}}
+	\subfigure[6 taxa]{\includegraphics[width=3in]{figs/rspr-upmh-scatter6}}
+	\hspace*{\stretch{2}}
+	\subfigure[7 taxa]{\includegraphics[width=3in]{figs/rspr-upmh-scatter7}}
+	\hspace*{\stretch{1}}
+    \caption{Scatter plot of $\curvature{\MH; T_1,T_2}$ values versus $\dspr{T_1,T_2}$ for the rSPR graph. Color displays the average degree of $T_1$ and $T_2$. Distance values randomly perturbed (``jittered'') a small amount to avoid superimposed points.}
+	\label{fig:rspr-scatter}
+\end{figure}
 
 \subsection{Access time simulation}
 The access time for a pair of vertices in a graph is the (random) number of iterations required to go from one of the vertices to the other in a random walk~\cite{lovasz1993random}; we were interested in the connection between curvature and access time.
@@ -750,16 +756,16 @@ Recall that \cuttable[the coarse uniform random walk curvature ]{}$\curvature{T,
 For the uniform random walk, $m_T$ \cuttable[assigns]{is simply the probability measure assigning} a mass of $\frac{1}{\degree{T}}$ to each of $T$'s neighbors.
 Our results follow from the lemmas of Section~\ref{sec:neighborhoods}.
 
-\begin{proposition}
+\begin{theorem}
 Fix a positive integer $k$ and let $R$ be a tree with $k$ leaves.
 Let $\{T_n \mid n > k\}$ be a sequence of phylogenetic trees all containing $R$, and let $\{S_n \mid n > k\}$ be the same sequence $T_n$ but with $R$ cut off and attached at a different location.
 Then $\lim_{n \rightarrow \infty} \curvature{T_n,S_n} = 0$\cuttable{ for the uniform random walk on the rSPR graph}.
-\end{proposition}
+\end{theorem}
 \cuttable{
 \begin{proof}
-Because $d(T_n, S_n) = 1$, we will prove the proposition by showing that the mass transport term $W_{1,n}$ sits between two bounds, each of which has limit 1 as $n$ goes to infinity.
+Because $d(T_n, S_n) = 1$, we will prove the theorem by showing that the mass transport term $W_{1,n}$ sits between two bounds, each of which has limit 1 as $n$ goes to infinity.
 
-To start we demonstrate the proposition in the case that $T_n$ and $S_n$ have the same number of neighbors.
+To start we demonstrate the theorem in the case that $T_n$ and $S_n$ have the same number of neighbors.
 First we claim that $W_{1,n}$ is bounded above by $(\degree{T_n}+\OhOf{kn})/\degree{T_n}$ by exhibiting a mass transport program satisfying that bound.
 Let $(T'_n, S'_n)$ be any of the $o$ pairs of neighbors of $(T_n, S_n)$ which are one rSPR move apart as per Corollary~\ref{cor:paired_neighbors}.
 We pair these trees in the mass transport.
@@ -771,14 +777,14 @@ By ignoring these trees we get a lower bound of $(\degree{T_n} - (\OhOf{n}))/\de
 
 The desired control of $W_{1,n}$ is thus obtained because $\degree{T_n}$ is quadratic in $n$.
 
-Now we prove the proposition when the number of neighbors differ.
+Now we prove the theorem when the number of neighbors differ.
 Assume without loss of generality that $\degree{T_n} < \degree{S_n}$.
 By Lemma~\ref{lem:degree_change}, $\degree{S_n} - \degree{T_n} = 2(k(a-b) + i - j)$, where each of $\{a,b,i,j\}$ is less than $n$.
 Thus, $\degree{S_n} - \degree{T_n} = \OhOf{kn}$.
 We again pair neighbor $T'_n$ of $T$ with neighbor $S'_n$ of $S$ such that $\dspr{T'_n, S'_n}=1$ but, as $\degree{T_n} < \degree{S_n}$ we can only account for at most $\degree{T_n} / \degree{S_n}$ of the mass directly and may have to move the $(\degree{S_n} - \degree{T_n}) / \degree{S_n}$ remainder to trees a distance at most 3.
 Thus, $W_{1,n}$ is bounded above by $(\degree{T_n} + \OhOf{kn}) / \degree{S_n} = (\degree{S_n} + \OhOf{kn}) / \degree{S_n}$.
 We again bound $W_{1,n}$ from below with $(\degree{T_n} - \OhOf{n}) / \degree{T_n}$ by ignoring the mass in common neighbors of $T_n$ and $S_n$.
-The proposition again follows because $\degree{T_n}$ is quadratic in $n$.
+The theorem again follows because $\degree{T_n}$ is quadratic in $n$.
 \end{proof}
 }
 
