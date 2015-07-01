@@ -321,15 +321,15 @@ As above for $\kappa$, we use $\ric{x, y}$ as shorthand for $\ric{m; x, y}$ when
 This definition of curvature is invariant of $p$ for small enough $p$~\cite{Loisel2014-hu} and can be used to avoid parity problems on graphs where the uniform random walk is periodic without choosing a specific laziness parameter (e.g. Ollivier often considered $\curvature[\frac{1}{2}]{x,y}$ for this purpose).
 As we prove in Lemma~\ref{lem:asymptotic}, the two notions of rough and asymptotic curvature differ only by a small factor bounded by $\frac{2}{\max(\degree{x}, \degree{y})}$ between adjacent vertices and are equal for nonadjacent vertices.
 
-\section{Efficient algorithms for computing and sampling the rSPR graph}
+\section{Efficient algorithms for computing and sampling rSPR graphs}
 
-\subsection{Computing the rSPR graph on $n$ leaves in $\OhOf{mn^3}$-time}
+\subsection{Computing the rSPR graph of $m$ trees with $n$ leaves in $\OhOf{mn^3}$-time}
 \label{sec:computing_treespace}
 
 To study the full rSPR graph for a fixed number of leaves it is necessary to have an efficient means of constructing it.
 The previous best algorithm for this problem requires $\OhOf{m^2 n}$ time, where $m$ is the number of trees in the graph and $n$ the number of leaves~\cite{Whidden2015-yi}.
 Here we reduce that time to $\OhOf{mn^3}$.
-Note that for the full rSPR graph, $m$ is the rapidly growing function $(2n-3)!!$, that is, $3 \cdot 5 \cdot \ldots \cdot (2n-3)$, and this is therefore a significant improvement.
+Note that for the full rSPR graph, $m$ is the rapidly growing function $(2n-3)!!$, that is, $3 \cdot 5 \cdot \ldots \cdot (2n-3)$, and this is therefore a significant improvement in practice, as we demonstrate below.
 
 In previous work~\cite{Whidden2015-yi}, we constructed (unrooted) SPR graphs from subsets of $m$ high probability trees sampled from phylogenetic posteriors to compare mixing and identify graph effects.
 Although the SPR distance (rooted and unrooted) is NP-hard to compute~\cite{bordewich05,hickey2008sdc}, it is fixed-parameter tractable with respect to the distance in the rooted case~\cite{bordewich05}.
@@ -337,16 +337,30 @@ In particular, one can determine in $\OhOf{n}$-time whether two rooted phylogene
 We applied this method comparing each of the $m$ trees pairwise to identify adjacencies, requiring a total of $\OhOf{m^2n}$-time ($\OhOf{m^2 n^2}$-time in the unrooted case).
 However, this method is infeasible when applied to construct graphs with 7 or more leaves, due to the rapidly growing $\OhOf{m^2}$ factor.
 
-To quickly compute dense rSPR graphs (those containing a significant portion of the full rSPR graph) we avoid pairwise computations by successively adding trees to the graph and \cuttable{efficiently }identifying their neighbors: \todo{make this more concrete and CSy, push the proofs to the supplemental material.}
+The key to our efficient algorithm for quickly computing dense rSPR graphs (those containing a significant portion of the full rSPR graph) lies in avoiding the pairwise comparison of non-adjacent trees and thereby shaving off an $\OhOf{m}$ factor.
+The input to our algorithm is a set $\mathcal{T}$ of phylogenetic trees in the $\OhOf{n}$-length Newick \cite{wiki:newick} representation of each tree as a string.
+These representations are made unique by ordering each tree so that leftmost subtrees contain the smallest alphanumeric label of descendants.
+We construct a mapping from each tree $T_i$ to its order index in this list $i$.
+We then begin with an empty graph $G$.
+For each tree $T_i$, we first add a vertex $i$ to the graph and then use Corollary~\ref{cor:enumerate_neighbors} to enumerate the $\OhOf{n^2}$ neighbors of $T_i$ in the rSPR graph in $\OhOf{n^3}$-time. 
+This efficient enumeration procedure is the key step required to achieve our desired running time of $\OhOf{mn^3}$.
+We use the tree to index mappings to determine whether these trees already reside in the tree and, if so, add an edge in the graph from $T_i$ to each such neighbor $T_j$.
+The high-level steps are as follows, and we show in Theorem~\ref{thm:construct_graph} that this algorithm is correct and can be implemented to run in the stated time.
+
+\textsc{Construct-rSPR-Graph($\mathcal{T}$)}
 \begin{enumerate}[label={\arabic*}.]
 	\item Let $G$ be an empty graph.
-	\item For each of the $m$ trees in a specified but arbitrary order:
+	\item Let $M$ be a mapping from trees to integers.
+	\item Let $i = 0$.
+	\item For each of the $m$ trees:
 		\begin{enumerate}
-			\item Add a vertex $i$ to the graph representing the current tree $T$ where $i$ is $T$'s order index.
-			\item For each of the $\OhOf{n^2}$ neighbors of $T$:
+			\item Add a vertex $i$ to $G$ representing the current tree $T_i$.
+			\item Add $T_i \rightarrow i$ to $M$.
+			\item For each of the $\OhOf{n^2}$ neighbors of $T_i$, enumerated using \textsc{Enumerate-rSPR-Neighbors($T_i$)}:
 				\begin{enumerate}
-					\item If the current neighbor $S$'s index is in $G$ then add an edge $(j,i)$ to the graph, where $j$ is $S$'s order index.
+					\item If the current neighbor $T_j$ is in $M$ then add an edge $(i,M[T_j])$ to $G$.
 				\end{enumerate}
+		\item $i = i + 1$.
 		\end{enumerate}
 \end{enumerate}
 
@@ -361,21 +375,19 @@ To quickly compute dense rSPR graphs (those containing a significant portion of 
 	As described above, the integer labels are simply the order of the input trees.
 	Adding the vertices to the graph requires $\OhOf{m}$-time, as they are added in ascending order to the end of the vertex list, which can be stored as a fixed-size array.
 	Adding the $\OhOf{mn^2}$ edges to the graph requires $\OhOf{mn^2 \log n}$-time.
-	Enumerating the neighbors of $T$ requires $\OhOf{n^3}$-time for each $T$, for a total of $\OhOf{mn^3}$-time.
+	Enumerating the neighbors of $T_i$ requires $\OhOf{n^3}$-time for each $T_i$, for a total of $\OhOf{mn^3}$-time.
 	We discuss below, in Section~\ref{sec:random_walks} how to do so efficiently without considering duplicate neighbors.
-	We store the tree to index mappings for current vertices of $G$ in a trie~\cite{fredkin1960trie} using the $\OhOf{n}$-length Newick \cite{wiki:newick} representation of the tree as a string.
-	These representations are made unique by ordering the tree so that leftmost subtrees contain the smallest alphanumeric label of descendants.
+	We store the tree to index mappings for current vertices of $G$ in a trie~\cite{fredkin1960trie} using Newick representation.
 	This requires only $\OhOf{n}$-time for each tree (i.e. a total of $\OhOf{mn^3}$-time) using a standard nodes-and-pointers representation of the tree and assuming integer leaf labels (a simple $\OhOf{mn\log n}$ leaf preprocessing step could be applied to extend this procedure to phylogenetic trees with string labels).
-	Similarly, it takes $\OhOf{n}$-time to determine the index of each of the $\OhOf{mn^2}$ $S$'s.
-	Therefore the graph can be constructed in $\OhOf{mn^3}$-time.
+	Similarly, it takes $\OhOf{n}$-time to determine the index of each of the $\OhOf{mn^2}$ considered neighbors.
+	Therefore the graph can be constructed in $\OhOf{mn^3}$-time, as claimed.
 \end{proof}
 
-This procedure has been implemented in the C++ program \texttt{dense\_spr\_graph} of the software package \texttt{spr\_neighbors}~\cite{spr_neighbors}, which outputs an edge list format graph suitable for input to other software.
+We implemented this procedure in the C++ program \texttt{dense\_spr\_graph} of the software package \texttt{spr\_neighbors}~\cite{spr_neighbors}, which outputs an edge list format graph suitable for input to other software.
 The construction procedure reduced the time required to compute the 10,395-vertex 7-taxon rSPR graph from 2,104.68 seconds to 12.71 seconds on an Intel Core 2 Duo E7500 desktop running Ubuntu 14.04.
 Moreover, although we do not study the 135,135-vertex 8-taxon rSPR graph in this paper, our algorithm required only 303.45 seconds to construct it on the same hardware.
 Constructing the 8-taxon rSPR graph using the previous method required 377,395 seconds (more than 4 days), and thus that method is infeasible for constructing larger rSPR tree graphs.
-Thus, we believe our fast graph construction procedure will itself be useful for further studies of rSPR graph subsets similar to~\cite{Whidden2015-yi}.
-
+Thus, we believe our fast graph construction procedure will itself be useful for further studies of rSPR graph subsets similar to~\cite{Whidden2015-yi}, as the algorithm can construct rSPR graphs for any given subset of trees.
 
 \subsection{Simulating random walks on the rSPR graph}
 \label{sec:random_walks}
@@ -471,6 +483,7 @@ Observe that this procedure can be easily adapted to explore the full neighborho
 We thus have the following corollary:
 
 \begin{corollary}
+\label{cor:enumerate_neighbors}
 	The rSPR neighbors of a tree $T$ can be enumerated in $\OhOf{n^3}$-time.
 \end{corollary}
 
