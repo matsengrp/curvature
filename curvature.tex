@@ -443,7 +443,7 @@ In this manner, we achieve an alternative solution for computing the degree of a
 }
 
 
-In particular, this formulation implies a total ordering of rSPR moves such thatevery move moving the same subtree $R$ forms a contiguous subsequence.
+In particular, this formulation implies a total ordering of rSPR moves such that every move moving the same subtree $R$ forms a contiguous subsequence.
 We can thus apply the following algorithm to select a neighbor uniformly at random for a tree $T$:
 
 
@@ -578,8 +578,9 @@ The analysis can be reproduced by invoking the SCons (\url{http://scons.org/}) b
 
 \section{Rooted SPR Neighborhoods}
 \label{sec:neighborhoods}
-Having made the connection between curvature values and access times on the rSPR graphs, we now consider curvature theoretically.
-We begin by bounding differences between degrees, and then continue by enumerating squares and triangles in the rSPR graph.
+Having made the connection between curvature values and access times on rSPR graphs, we now consider curvature theoretically.
+We begin by bounding differences between degrees, and then continue by considering features relevant to the earth mover's distance that we call "squares" and "triangles" in the rSPR graph.
+Many of our results in this section follow from a characterization of the change in degree and distribution of permissible rSPR moves after an rSPR move is applied.
 
 \begin{lemma}[{Song~\cite{Song2003-gf}}]
 \cuttable{    \pushQED{\qed}}
@@ -852,6 +853,7 @@ Proving or disproving this conjecture would go a long way toward understanding t
 Next, we bound the minimum curvature of two adjacent trees.
 
 \begin{lemma}
+\label{lem:curvature_lower_bound}
 	The curvature of the uniform random walk between adjacent trees with $n$ leaves is at least
 	$$\frac{-n^2 + 2n}{3.5n^2 - 15n + 16}.$$
 \end{lemma}
@@ -887,6 +889,7 @@ This directly leads to the following Corollary:
 
 Note that this bound is not tight (at least for small $n$)\cuttable{ as it is rarely necessary to transport mass the maximum distance between unpaired trees}.
 \cuttable{We also note that the lower bounds in this section do not follow from the more general setting described in \cite{Jost2013-ce}.}
+However, we note that the pair of trees used in the proof of Lemma~\ref{lem:curvature_lower_bound} will always have negative curvature, for all $n \ge 7$.
 
 We next bound the difference between the coarse and asymptotic curvatures.
 Recall that $\curvature[p]{T,S}$ is the coarse Ricci-Ollivier curvature between trees $T$ and $S$ with respect to the lazy walk that remains at a given tree with probability $1-p$ and transitions with probability $p$.
@@ -980,7 +983,7 @@ Finally, we proved that the coarse and asymptotic definitions of Ricci-Ollivier 
 In this data-free setting the stationary distribution is, unlike with real data, quite evenly spread over all trees.
 Correspondingly, we found that the influence of curvature is small in this case (Fig.~\ref{fig:short-time-kappa-access}) and that the probability of the target node in the stationary distribution predominantly determines access times for pairs of trees (Fig.~\ref{fig:long-time-kappa-access}).
 However, it is well known that MCMC takes a long time to approximate real phylogenetic posterior distributions even when the Bayesian credible set is small, and in fact our previous work showed significant graph effects in the mixing time for phylogenetic MCMC for credible sets that had tens, hundreds or thousands of trees~\cite{Whidden2015-yi}.
-Thus, our next step will be to investigate curvature of MCMC with nontrivial likelihood functions, which will \cuttable{significantly }reduce the posterior distribution to a more realistic effective size, and \cuttable{in certain cases }will lead to ``bottlenecks'' like those we have observed in real data.
+Thus, our next step will be to investigate curvature of MCMC with nontrivial likelihood functions, which will \cuttable{significantly }reduce the posterior distribution to a more realistic effective size, and \cuttable{in certain cases }will lead to significant ``bottlenecks'' like those we have observed in real data.
 \cuttable[T]{In those cases t}he curvature between \cuttable{two }trees at either end of a bottleneck will describe how difficult it is to traverse\cuttable{ the bottleneck}.
 \cuttable{Indeed, in both the setting of challenging real data and in simulation with a nontrivial likelihood function, the stationary distribution takes a long time to achieve, and thus the curvature will have a substantially greater impact on the overall hitting times rather than being a short prelude to waiting for a Poisson process event as it is here (Fig.~\ref{fig:kappa-access}).}
 % We will likely follow previous work \cite{Stefankovic2011-hu} by taking a chain where tree topology likelihoods are maximized across branch length, as the classical phylogenetic likelihood \cite{felsenstein1981evolutionary} requires both branch length and topology.
