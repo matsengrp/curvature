@@ -391,8 +391,6 @@ Thus, we believe our fast graph construction procedure will itself be useful for
 
 \subsection{Simulating random walks on the rSPR graph}
 \label{sec:random_walks}
-We next explored the correspondence between curvature and graph effects.
-To do so, we first simulated Metropolis-Hastings random walks on the rSPR graphs with up to seven leaves.
 The uniform random walk moves from the current vertex to one of its neighbors uniformly at random, which makes this walk more likely to sample higher degree vertices.
 In contrast, the Metropolis Hastings (MH) random walk with constant likelihood function proposes a move from a tree $T$ to a neighbor tree $S$ uniformly at random and then accepts the move according to the Hastings ratio, $\min\left(1, \frac{\degree{T}}{\degree{S}}\right)$.
 The MH random walk is guaranteed to sample each tree uniformly at random and is therefore representative of a phylogenetic MCMC program sampling trees under a uniform prior.
@@ -414,7 +412,7 @@ In particular, where we call the edge connecting the subtree rooted at that node
 \item Moving $R$ to its grandparent edge is the same as moving its aunt to its sibling edge, and
 \item Moving $R$ to its aunt edge is the same as moving its aunt to $R$'s edge.
 \end{enumerate}
-We prove in Lemma~\ref{lem:compute_degree} that this list is exhaustive.
+We prove in Lemma~\ref{lem:compute_degree} that this list is exhaustive, that is each other pair of $R$ and destination edge $e$ results in a unique rSPR neighbor.
 We can thus assign $2n-1-x-4$ moves to any node at a depth greater than 1 (from the original non-$\rho$ root) and $2n-1-x-2$ moves to depth 1 nodes (lacking both an aunt and grandparent).
 Call the portion of the neighborhood of a tree $T$ that can be obtained by moving a subtree $R$ rooted at a node $u$, and that is assigned to $u$, $N(T,u)$.
 In this manner, we achieve an alternative solution for computing the degree of a tree in the rSPR graph:
@@ -439,17 +437,20 @@ In this manner, we achieve an alternative solution for computing the degree of a
 	Call these $U$ and $V$, respectively.
 	This implies that both $T \setminus U = S \setminus U$ and $T \setminus V = S \setminus V$ by the definition of an rSPR operation.
 	Then the rSPR moves that move $U$ or $V$ to obtain $S$ must be nearest neighbor interchanges (NNIs), that is, rSPR moves which move their subtree to one of four locations: their grandparent edge, aunt edge, sibling's left child edge or sibling's right child edge.
-	This implies that, without loss of generality, $U$ is moved to its grandparent edge and $V$ to $U's$ sibling (i.e. (iii) above) or $U$ is moved to its aunt edge and $V$ to $U$'s edge (i.e. iv above), a contradiction.
+	This implies that, without loss of generality, $U$ is moved to its grandparent edge and $V$ to $U's$ sibling (i.e. (iii) above) or $U$ is moved to its aunt edge and $V$ to $U$'s edge (i.e. (iv) above), a contradiction.
 	Therefore the claim holds.
 \end{proof}
 }
 
 
-In particular, this formulation groups moves that move the same subtree.
+In particular, this formulation implies a total ordering of rSPR moves such thatevery move moving the same subtree $R$ forms a contiguous subsequence.
 We can thus apply the following algorithm to select a neighbor uniformly at random for a tree $T$:
 
+
+\vspace{1em}
+\textsc{Select-rSPR-Neighbor($T$)}
 \begin{enumerate}[label={\arabic*}.]
-	\item	Compute the degree of $T$, $\degree{T}$.
+	\item	Compute the degree of $T$, $\degree{T}$ using Lemma~\ref{lem:compute_degree}.
 	\item Pick a random integer $r$ in the range $[1,\degree{T}]$.
 	\item Label each node $u$ of $T$ by its preorder number and compute the number of nodes in the subtree rooted at each $u$.
 \item For each tree node $u$ and while $r > 0$:
@@ -479,7 +480,7 @@ We can thus apply the following algorithm to select a neighbor uniformly at rand
 	Therefore, the procedure uses linear time and space and \cuttable[is correct]{selects an rSPR neighbor of $T$ uniformly at random}.
 \end{proof}
 
-Observe that this procedure can be easily adapted to explore the full neighborhood of a tree in $\OhOf{n^3}$ time, which we use for Theorem~\ref{thm:construct_graph}.
+Observe that this procedure can be easily adapted to explore the full neighborhood of a tree in $\OhOf{n^3}$ time, which we use for Theorem~\ref{thm:construct_graph}. We call the resulting procedure \textsc{Enumerate-rSPR-Neighbors($T$)}.
 We thus have the following corollary:
 
 \begin{corollary}
