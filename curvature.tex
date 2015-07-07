@@ -132,12 +132,14 @@ The structure of the graph induced by tree rearrangement operations is an import
 Indeed, topology changes, and SPR rearrangements in particular, have been identified as a primary limiting factor of phylogenetic MCMC algorithms.
 As mixing properties of phylogenetic MCMC algorithms with a nontrivial likelihood function are difficult to characterize analytically, we were motivated to take the different strategy of characterizing the properties of the \emph{rSPR graph} in greater detail.
 
-In this paper, we investigate the rSPR graph in a new way: by calculating Ricci-Ollivier curvature with respect to two simple random walks.
-We exactly calculate the curvature for all pairs of rooted trees up to seven leaves, finding that the curvature varies substantially across pairs of trees in the graph separated by the same distance, thus indicating significant structure to the graph beyond that seen by pairwise distance.
-This calculation requires fast new algorithms for constructing and sampling these graphs, reducing the time required to compute an rSPR graph from $O(m^2n)$-time to $O(mn^3)$, where $m$ is the (often large) number of trees in the graph and $n$ their number of leaves, and reducing the time required to select an SPR neighbor of a tree uniformly at random to $O(n)$ time.
-We also develop a closed form solution to characterize how the number of SPR neighbors of a tree changes after an SPR operation is applied to that tree.
-This gives bounds on the curvature, as well as a flatness-in-the-limit theorem for pairs of trees differentiated by moving an asymptotically small subtree.
-We also confirm using simulation that mean access time distributions depend on distance, degree, and curvature, showing the relevance of these curvature results to stochastic tree search.
+In this paper, we investigate the rSPR graph in a new way: by calculating Ricci-Ollivier curvature with respect to uniform and Metropolis-Hastings random walks.
+We confirmed using simulation that mean access time distributions depend on distance, degree, and curvature, showing the relevance of these curvature results to stochastic tree search.
+These calculations require fast new algorithms for constructing and sampling these graphs, reducing the time required to compute an rSPR graph from $O(m^2n)$-time to $O(mn^3)$, where $m$ is the (often large) number of trees in the graph and $n$ their number of leaves, and reducing the time required to select an SPR neighbor of a tree uniformly at random to $O(n)$ time.
+We then develop a closed form solution to characterize how the number of SPR neighbors of a tree changes after an SPR operation is applied to that tree.
+This gives bounds on the curvature, as well as a flatness-in-the-limit theorem indicating that paths of small topology changes are easy to traverse.
+However, we find that large topology changes induce paths that are difficult to traverse stochastically, and which may be diagnosed by pairs of trees with negative curvature.
+Our results suggest that, although these difficult to traverse regions do not impede mixing in this simple well-connected space, they may manifest as bottlenecks in the much smaller credible sets induced by phylogenetic posteriors with a likelihood function.
+
 \end{abstract}
 
 \pagebreak
