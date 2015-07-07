@@ -126,15 +126,15 @@
 \IEEEpeerreviewmaketitle
 
 \begin{abstract}
-Statistical phylogenetic inference methods use subtree-prune-regraft (SPR) tree rearrangement operations to perform Markov chain Monte Carlo across tree topologies.
-These methods are known to mix quickly in the absence of sequence data and other parameters such as branch lengths, but may become stuck in the local optima of  multi-modal posterior distributions induced by such parameters.
-To begin bridging the gap between these models, we developed a framework for computing the Ricci-Ollivier curvature, a formalism of the difficulty in moving between graph nodes via stochastic traversal, of the \emph{rSPR graph} induced by the simple uniform case on rooted trees.
-To do so, we required fast algorithms for constructing and sampling these graphs, reducing the time required to compute an rSPR graph from $O(m^2n)$-time to $O(mn^3)$, where $m$ is the (often large) number of trees in the graph and $n$ their number of leaves, and reducing the time required to select an SPR neighbor of a tree uniformly at random to $O(n)$ time. 
-
-We confirmed using simulation that mean access time distributions depend on degree and curvature, demonstrating the relevance of these curvature results to stochastic tree search.
-Surprisingly, we observed negative curvature for some tree pairs, indicating tree space bottlenecks even in this simplest case.
-Finally, we developed a closed form solution to characterize how the number of SPR neighbors of a tree changes after an SPR operation is applied to that tree, and used this to bound the earth mover's distance between tree neighborhoods and thereby obtain bounds on curvature.
-Our results suggest that bottlenecks are caused by rapid degree changes, which have little effect on mixing times in this well connected space but may be more problematic in real posterior distributions.
+Statistical phylogenetic inference methods use tree rearrangement operations such as subtree-prune-regraft (SPR) to perform Markov chain Monte Carlo (MCMC) across tree topologies.
+These methods are known to mix quickly in the absence of sequence data and other parameters such as branch lengths, but may become stuck in the local optima of multi-modal posterior distributions induced by such parameters.
+The structure of the underlying graph is an important determinant of the mixing properties of MCMC, and as such we are motivated to characterize the structure of this graph in greater detail.
+To do so, we calculated the Ricci-Ollivier curvature of the \emph{rSPR graph} for all pairs of rooted trees up to seven leaves with respect to two simple random walks.
+We found that the curvature varies substantially across pairs of trees in the graph separated by the same distance, indicating significant structure to the graph beyond that seen by pairwise distance.
+This required fast algorithms for constructing and sampling these graphs, reducing the time required to compute an rSPR graph from $O(m^2n)$-time to $O(mn^3)$, where $m$ is the (often large) number of trees in the graph and $n$ their number of leaves, and reducing the time required to select an SPR neighbor of a tree uniformly at random to $O(n)$ time.
+We also developed a closed form solution to characterize how the number of SPR neighbors of a tree changes after an SPR operation is applied to that tree.
+This gave bounds on the curvature, as well as a flatness-in-the-limit theorem for pairs of trees differentiated by moving an asymptotically small subtree.
+We also confirmed using simulation that mean access time distributions depend on distance, degree, and curvature, confirming the relevance of these curvature results to stochastic tree search.
 
 \end{abstract}
 
