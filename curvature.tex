@@ -192,7 +192,7 @@ We present a fast new algorithm for computing rSPR graphs from a set of trees, r
 As the full rSPR graph on trees with $n$ leaves contains $(2n-3)!!$ trees, this is a significant improvement in practice for exploring large subsets of the graph (or, as we do here, the full graph for small numbers of leaves).
 By exploiting symmetries in the rSPR graph, we were able to calculate all of the curvatures for pairs of trees with up to seven leaves.
 By carefully examining the overlap in rSPR moves, we present a new method for computing the degree of a tree in the rSPR graph that allows one to select an rSPR neighbor uniformly at random in linear-time without explicitly generating the graph.
-This is a major improvement over the sampling methods used in current software programs such as MrBayes which do not propose SPR moves uniformly.
+This stands in contrast to the sampling methods used in current software such as MrBayes, which do not propose SPR moves uniformly.
 
 Using our methods to simulate these random walks, we found that the distribution of access times between pairs of trees can be described by distance between the trees, the degrees of the trees, and the curvature.
 Moreover, we found that rSPR graphs with 7 or more leaves have tree pairs with negative curvature, corresponding to paths that are difficult to traverse stochastically.
@@ -292,7 +292,7 @@ Ricci-Ollivier curvature provides a rigorous yet intuitive formalization of the 
 For the purposes of this paper, we will specialize to that space being a graph equipped with the shortest-path distance.
 For a more rigorous presentation in the more general setting of a Polish metric space, see~\cite{Ollivier2009-bw} or the survey~\cite{Ollivier2010-ao}.
 
-Let $m_x$ and $m_y$ be probability densities of the position of a specified random walk after one iteration of MCMC, starting at points $x$ and $y$ of a graph $G = (V,E)$, respectively.
+Let $m_x$ and $m_y$ be probability densities of the position of a specified random walk after one step of the random walk, starting at points $x$ and $y$ of a graph $G = (V,E)$, respectively.
 The transportation distance~\cite{Villani2003-wv} (equivalently Wasserstein distance, or ``earth movers distance''~\cite{rubner2000earth}) between $m_x$ and $m_y$ is the minimum amount of ``work'' required to move $m_x$ to $m_y$ along edges of the graph, that is
 $$ W_1(m_x, m_y) := \min_{\xi \in \Pi(m_x, m_y)} \sum_{\{z,w\} \subset V} d(z,w) \xi(z,w),$$
 where $d(z,w)$ is the graph shortest-path distance ($\dspr{z,w}$ in our case) and $\Pi(m_x, m_y)$ is the set of mass transport programs moving the mass in $m_x$ to the configuration described by $m_y$\cuttable{ (more formally, a density on $V \times V$ which is $m_x$ after projecting on the first component and $m_y$ after projecting on the second)}.
@@ -341,10 +341,10 @@ The key to our efficient algorithm for quickly computing dense rSPR graphs (thos
 The input to our algorithm is a set $\mathcal{T}$ of phylogenetic trees in the $\OhOf{n}$-length Newick \cite{wiki:newick} representation of each tree as a string.
 These representations are made unique by ordering each tree so that leftmost subtrees contain the smallest alphanumeric label of descendants.
 We construct a mapping from each tree $T_i$ to its order index in this list $i$.
-We then begin with an empty graph $G$.
+Begin with an empty graph $G$.
 For each tree $T_i$, we first add a vertex $i$ to the graph and then use Corollary~\ref{cor:enumerate_neighbors} to enumerate the $\OhOf{n^2}$ neighbors of $T_i$ in the rSPR graph in $\OhOf{n^3}$-time.
 This efficient enumeration procedure is the key step required to achieve our desired running time of $\OhOf{mn^3}$.
-We use the tree to index mappings to determine whether these trees already reside in the tree and, if so, add an edge in the graph from $T_i$ to each such neighbor $T_j$.
+We use the tree to index mappings to determine whether these trees are already vertices of the graph and, if so, add an edge in the graph from $T_i$ to each such neighbor $T_j$.
 The high-level steps are as follows, and we show in Theorem~\ref{thm:construct_graph} that this algorithm is correct and can be implemented to run in the stated time.
 
 \textsc{Construct-rSPR-Graph($\mathcal{T}$)}
@@ -470,12 +470,12 @@ We thus directly computed curvature values for one representative pair from each
 
 We find a wide variation in curvature values among tanglegrams (Figure~\ref{fig:rspr-scatter}).
 Curvature values tended to increase with increasing rSPR distance, and their variance decreased with increasing distance.
-Neighboring trees had minimum curvature values for a given number of leaves, and we found maximum curvature values between trees at maximum distance or one rSPR move closer than the maximum.
-This suggests that the increased difficulty of moving between trees with a random walk due to distance may be tempered somewhat by curvature in the highly connected rSPR graph.
+Neighboring trees achieved minimum curvature values for a given number of leaves, and we found maximum curvature values between trees at maximum distance or one rSPR move closer than the maximum.
+This suggests that the increased difficulty of moving between trees with a random walk due to distance may be tempered somewhat by larger curvature in the highly connected rSPR graph.
 
 Larger rSPR graphs tended to have smaller curvature values.
 Indeed, the 7-leaf rSPR graph contained adjacent pairs of trees with negative curvature.
-Such pairs are possible bottlenecks in phylogenetic searches which may be exacerbated by likelihood or branch length constraints.
+Such pairs indicate difficult paths for phylogenetic searches, which may be exacerbated by likelihood or branch length constraints.
 
 \begin{figure}
 	\hspace*{\stretch{1}}
