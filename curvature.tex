@@ -173,13 +173,13 @@ $$ n - 2\ceil{\sqrt{n}} + 1
 \le \Delta_{\text{uSPR}}(n)
 \le n - 3 - \floorV{\frac{\sqrt{n - 2} - 1}{2}}.
 $$
-We are not aware of any further work investigating properties of the SPR graph, which this stems primarily from a lack of sufficient computational tools.
+We are not aware of any further work investigating properties of the SPR graph, which stems primarily from a lack of sufficient computational tools.
 Indeed, even computing the distance between topologies in terms of SPR operations (rooted and unrooted) is NP-hard~\cite{bordewich05,hickey2008sdc}.
 Fortunately, it is fixed-parameter tractable with respect to the distance in the rooted case~\cite{bordewich05} and efficient fixed-parameter algorithms have recently been developed~\cite{whidden2013hybridization,Whidden2015-yi} and begun to allow such investigation.
 
 Ollivier and colleagues recently pioneered a new approach to calculating Ricci curvature on a general type of metric space, including graphs~\cite{Ollivier2009-bw,Joulin2010-jg}.
 In this framework, local information about the metric space is given by a random walk (rather than a Riemann tensor) such that their notion of curvature formalizes the notion of to what extent random walking brings points together.
-Applying the framework to Brownian motion on a manifold gives back of the classical definition of Ricci curvature.
+Applying the framework to Brownian motion on a manifold gives back the classical definition of Ricci curvature.
 For discrete graphs, curvature is determined by the ratio of the earth mover's distance~\cite{rubner2000earth} between neighborhoods of a pair of vertices and the distance between the vertices.
 Here the term \emph{random walk} on a space $X$ simply denotes a family of probability measures parameterized by points of $X$ satisfying a couple of reasonable assumptions, which includes biased walks such as MCMC.
 
