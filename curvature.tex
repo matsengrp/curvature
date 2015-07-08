@@ -178,14 +178,14 @@ Indeed, even computing the distance between topologies in terms of SPR operation
 Fortunately, it is fixed-parameter tractable with respect to the distance in the rooted case~\cite{bordewich05} and efficient fixed-parameter algorithms have recently been developed~\cite{whidden2013hybridization,Whidden2015-yi} and begun to allow such investigation.
 
 Ollivier and colleagues recently pioneered a new approach to calculating Ricci curvature on a general type of metric space, including graphs~\cite{Ollivier2009-bw,Joulin2010-jg}.
-In this framework, local information about the metric space is given by a random walk (rather than a Riemann tensor) such that their notion of \emph{curvature} formalizes the notion of to what extent random walking brings points together.
-Applying the framework to Brownian motion on a manifold returns us back of the classical definition of Ricci curvature.
-For discrete graphs, this is determined by the ratio of the earth mover's distance~\cite{rubner2000earth} between neighborhoods of a pair of vertices and the distance between the vertices.
+In this framework, local information about the metric space is given by a random walk (rather than a Riemann tensor) such that their notion of curvature formalizes the notion of to what extent random walking brings points together.
+Applying the framework to Brownian motion on a manifold gives back of the classical definition of Ricci curvature.
+For discrete graphs, curvature is determined by the ratio of the earth mover's distance~\cite{rubner2000earth} between neighborhoods of a pair of vertices and the distance between the vertices.
 Here the term \emph{random walk} on a space $X$ simply denotes a family of probability measures parameterized by points of $X$ satisfying a couple of reasonable assumptions, which includes biased walks such as MCMC.
 
 In this paper, we investigate curvature of the rSPR graph with respect to two random walks and connect those results to access times (also known as hitting times) for those random walks.
-For this first effort we investigate random walks defined only in terms of the graph itself: the uniform random walk and MCMC sampling from the uniform prior on trees.
-Our algorithms and methods can be easily extended to study more complicated distributions with non-uniform topology probabilities.
+Our explicit focus here is to investigate random walks defined only in terms of the graph itself: the uniform random walk and MCMC sampling from the uniform prior on trees.
+In future work, we will extend these methods to study more complicated distributions with non-uniform topology probabilities.
 
 We required several new computational tools.
 We present a fast new algorithm for computing rSPR graphs from a set of trees, reducing the time to do so from $\OhOf{m^2n}$ to $\OhOf{mn^3}$ for a set of $m$ trees with $n$ leaves.
@@ -195,13 +195,13 @@ By carefully examining the overlap in rSPR moves, we present a new method for co
 This is a major improvement over the sampling methods used in current software programs such as MrBayes which do not propose SPR moves uniformly.
 
 Using our methods to simulate these random walks, we found that the distribution of access times between pairs of trees can be described by distance between the trees, the degrees of the trees, and the curvature.
-Moreover, we found that rSPR graphs with 7 or more leaves have tree pairs with negative curvature, corresponding to bottlenecks.
+Moreover, we found that rSPR graphs with 7 or more leaves have tree pairs with negative curvature, corresponding to paths that are difficult to traverse stochastically.
 This is a surprising result, as the Markov chain in this simple case is known to mix rapidly~\cite{spade2014note}.
 
 In response, we considered properties of the graph analytically.
 By getting a more fine-tuned understanding of the rSPR neighborhood of pairs of vertices, we are able to give bounds on the earth mover's distance in this context and thus curvatures under these random walks.
 In particular, we present a full characterization of the change in rSPR degree that occurs from a given rSPR move and find that even though they each count as one move, rSPR moves which modify large subtrees may have greater graph effects than those that move small subtrees.
-Pairs of trees separated by such moves correspond to the ``bottlenecks" identified in our simulation results.
+Pairs of trees separated by such moves correspond to the pairs with negative curvature identified in our simulation results.
 These pairs occur infrequently in these well-connected graphs, thus allowing the Markov chain to mix rapidly.
 However, they may be more problematic in real posterior distributions where the majority of probability is spread over a relatively small number of trees~\cite{Whidden2015-yi}.
 In summary, we extend knowledge about an important graph for phylogenetics, specifically in a way that models phylogenetic MCMC search.
@@ -299,11 +299,12 @@ where $d(z,w)$ is the graph shortest-path distance ($\dspr{z,w}$ in our case) an
 
 The \emph{coarse Ricci-Ollivier curvature} of $x$ and $y$ is then defined as:
 \begin{equation}
-\curvature{m; x, y} := 1 - \frac{W_1(m_x, m_y)}{d(x, y)}
+\curvature{m; x, y} := 1 - \frac{W_1(m_x, m_y)}{d(x, y)}.
 \label{eq:curvatureDef}
 \end{equation}
-For the purposes of this paper, we will use $\curvature{x,y}$ to denote the curvature of the simple (uniform choice of neighbor) random walk, and use $\curvature{\MH; x,y}$ to indicate curvature with respect to the Metropolis-Hastings random walk sampling the uniform distribution (described in detail in Section~\ref{sec:random_walks}).
-Positive curvature implies that the neighborhoods $m_x$ and $m_y$ are ``closer'' than $x$ and $y$, zero curvature implies that they are neither closer nor farther, and negative curvature implies that $m_x$ and $m_y$ are \cuttable{on average }``more distant'' than $x$ and $y$.
+For the purposes of this paper, ``curvature'' without further specification will refer to \eqref{eq:curvatureDef}.
+We will use $\curvature{x,y}$ to denote the curvature of the simple (uniform choice of neighbor) random walk, and use $\curvature{\MH; x,y}$ to indicate curvature with respect to the Metropolis-Hastings random walk sampling the uniform distribution (described in detail in Section~\ref{sec:random_walks}).
+Positive curvature implies that the neighborhoods $m_x$ and $m_y$ are closer in transportation distance than point masses at $x$ and $y$, zero curvature implies that they are neither closer nor farther, and negative curvature implies that $m_x$ and $m_y$ are more distant than point masses at $x$ and $y$.
 Curvature thus provides an intuitive measure of the difficulty of moving between regions of the graph with \cuttable[a]{the given} random walk.
 
 Lin et al.~\cite{lin2011ricci} defined a variant definition of curvature in terms of lazy random walks which Loisel and Romon~\cite{Loisel2014-hu} dubbed the \emph{asymptotic Ricci-Olivier curvature}.
@@ -317,7 +318,7 @@ The asymptotic Ricci-Ollivier curvature of $x$ and $y$ is then:
 \label{eq:asympCurvatureDef}
 \end{equation}
 As above for $\kappa$, we use $\ric{x, y}$ as shorthand for $\ric{m; x, y}$ when $m$ is the uniform lazy random walk, and $\ric{\MH; x, y}$ when $m$ is the Metropolis-Hastings random walk sampling the uniform distribution (Section~\ref{sec:random_walks}).
-This definition of curvature is invariant of $p$ for small enough $p$~\cite{Loisel2014-hu} and can be used to avoid parity problems on graphs where the uniform random walk is periodic without choosing a specific laziness parameter (e.g. Ollivier often considered $\curvature[\frac{1}{2}]{x,y}$ for this purpose).
+This definition of curvature is invariant of $p$ for small $p$~\cite{Loisel2014-hu} and can be used to avoid parity problems on graphs where the uniform random walk is periodic without choosing a specific laziness parameter (e.g. Ollivier often considered $\curvature[\frac{1}{2}]{x,y}$ for this purpose).
 As we prove in Lemma~\ref{lem:asymptotic}, the two notions of rough and asymptotic curvature differ only by a small factor bounded by $\frac{2}{\max(\degree{x}, \degree{y})}$ between adjacent vertices and are equal for nonadjacent vertices.
 
 \section{Efficient algorithms for computing and sampling rSPR graphs}
