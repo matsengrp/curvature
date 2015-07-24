@@ -124,7 +124,7 @@ Statistical phylogenetic inference methods use tree rearrangement operations suc
 These methods are known to mix quickly in the absence of sequence data and other parameters such as branch lengths, but may become stuck in the local optima of multi-modal posterior distributions for real data induced by such parameters.
 The structure of the graph induced by tree rearrangement operations is an important determinant of the mixing properties of MCMC.
 Indeed, topology changes, and SPR rearrangements in particular, have been identified as a primary limiting factor of phylogenetic MCMC algorithms.
-As mixing properties of phylogenetic MCMC algorithms with a nontrivial likelihood function are difficult to characterize analytically, we were motivated to take the different strategy of characterizing the properties of the underlying \emph{rSPR graph} in greater detail.
+As mixing properties of phylogenetic MCMC algorithms with a nontrivial likelihood function are difficult to characterize analytically, we were motivated to take the different strategy of characterizing the properties of the underlying \emph{rSPR graph} in greater~detail.
 
 In this paper, we investigate the rSPR graph in a new way: by calculating Ricci-Ollivier curvature with respect to uniform and Metropolis-Hastings random walks.
 We confirm using simulation that mean access time distributions depend on distance, degree, and curvature, showing the relevance of these curvature results to stochastic tree search.
@@ -155,11 +155,11 @@ Commonly used phylogenetics software packages such as MrBayes~\cite{Ronquist2012
 Thus, phylogenetic searches can be viewed as traversing the \emph{SPR graph}: the graph with phylogenetic trees as vertices and SPR adjacencies as edges.
 
 It has become increasingly clear that the structure of the SPR graph plays an important role in determining the accuracy of tree searches.
-We will call these ``graph effects", whereby one can't easily move from one tree to another due to the structure of the graph.
-Researchers have previously identified SPR graph effects in MCMC with pathological data~\cite{Mossel2005-ly,Mossel2006-fo,Ronquist2006-fv}, contrasting with fast mixing identified with exceptionally well-behaved data~\cite{Stefankovic2011-hu}.
+Researchers have previously identified slow mixing in MCMC with pathological data~\cite{Mossel2005-ly,Mossel2006-fo,Ronquist2006-fv}, contrasting with fast mixing identified with exceptionally well-behaved data~\cite{Stefankovic2011-hu}.
 Probabilists have also approached the problem using related frameworks that are more amenable to proving theorems, both for other sets of moves on trees with a finite number of leaves~\cite{Aldous2000-vg,Diaconis2002-gy} or for SPR and related moves on a continuous tree-like object which formalizes the notion of a tree with infinite leaves~\cite{Evans2006-xh,Athreya2014-de}.
-In particular, the simple case of sampling the uniform topology distribution without continuous parameters via SPR operations is known to mix quickly~\cite{spade2014note}.
-However, despite indications of graph effects on real data~\cite{beiko2006searching, lakner2008efficiency} the lack of sufficient computational tools for examining phylogenetic posteriors in terms of SPR operations has made it difficult to study graph effects.
+In particular, the simple case of sampling the uniform topology distribution without continuous parameters via (slightly modified) SPR operations is known to mix quickly~\cite{spade2014note}.
+Studies on real data~\cite{beiko2006searching, lakner2008efficiency}, however, have identified posteriors which are difficult to sample using MCMC.
+Previously, the lack of sufficient computational tools for examining phylogenetic posteriors in terms of SPR operations made it difficult to determine the cause of these difficulties.
 By developing the first such tools, we recently showed that graph structure has a significant effect on MCMC mixing with MrBayes applied to real data~\cite{Whidden2015-yi}, and that multimodal posteriors are common and separated by ``bottlenecks" of specific classes of SPR moves.
 
 Although the SPR graph is thus very important in determining the success of phylogenetic inference procedures, still little is known about the rooted or unrooted versions of the SPR graph itself.
@@ -196,7 +196,7 @@ This is a surprising result, as the Markov chain in this simple case is known to
 
 In response, we considered properties of the graph analytically.
 By getting a more fine-tuned understanding of the rSPR neighborhood of pairs of vertices, we are able to give bounds on the earth mover's distance in this context and thus curvatures under these random walks.
-In particular, we present a full characterization of the change in rSPR degree that occurs from a given rSPR move and find that even though they each count as one move, rSPR moves which modify large subtrees may have greater graph effects than those that move small subtrees.
+In particular, we present a full characterization of the change in rSPR degree that occurs from a given rSPR move and find that even though they each count as one move, rSPR moves which modify large subtrees are less likely to be explored during these random walks.
 Pairs of trees separated by such moves correspond to the pairs with negative curvature identified in our simulation results.
 These pairs occur infrequently in these well-connected graphs, thus allowing the Markov chain to mix rapidly.
 However, they may be more problematic in real posterior distributions where the majority of probability is spread over a relatively small number of trees~\cite{Whidden2015-yi}.
@@ -327,7 +327,7 @@ The previous best algorithm for this problem requires $\OhOf{m^2 n}$ time, where
 Here we reduce that time to $\OhOf{mn^3}$.
 Note that for the full rSPR graph, $m$ is the rapidly growing function $(2n-3)!!$, that is, $3 \cdot 5 \cdot \ldots \cdot (2n-3)$, and this is therefore a significant improvement in practice, as we demonstrate below.
 
-In previous work~\cite{Whidden2015-yi}, we constructed (unrooted) SPR graphs from subsets of $m$ high probability trees sampled from phylogenetic posteriors to compare mixing and identify graph effects.
+In previous work~\cite{Whidden2015-yi}, we constructed (unrooted) SPR graphs from subsets of $m$ high probability trees sampled from phylogenetic posteriors to compare mixing and identify local maxima.
 Although the SPR distance (rooted and unrooted) is NP-hard to compute~\cite{bordewich05,hickey2008sdc}, it is fixed-parameter tractable with respect to the distance in the rooted case~\cite{bordewich05}.
 In particular, one can determine in $\OhOf{n}$-time whether two rooted phylogenetic trees are adjacent in the rSPR graph ($\OhOf{n^2}$-time for unrooted trees) using the algorithms of Whidden et al.~\cite{whidden2009unifying,whidden2010fast, whidden2013hybridization,Whidden2015-yi}.
 We applied this method comparing each of the $m$ trees pairwise to identify adjacencies, requiring a total of $\OhOf{m^2n}$-time ($\OhOf{m^2 n^2}$-time in the unrooted case).
@@ -486,7 +486,7 @@ Such pairs indicate difficult paths for phylogenetic searches, which may be exac
 \subsection{Access time simulation}
 The access time for a pair of vertices in a graph is the (random) number of iterations required to go from one of the vertices to the other in a random walk~\cite{lovasz1993random}; we were interested in the connection between curvature and access time.
 In previous work, we computed mean access times (MAT) between pairs of trees in  MCMC random walks: the mean number of iterations required to move from one tree to the other.
-We applied this work to demonstrate graph effects of real MCMC posteriors sampled with MrBayes~\cite{Whidden2015-yi} using \texttt{sprspace}~\cite{sprspace}.
+We applied this work to demonstrate the influence of SPR graph structure on real MCMC posteriors sampled with MrBayes~\cite{Whidden2015-yi} using \texttt{sprspace}~\cite{sprspace}.
 
 Here, to gain more insight, we used simulation to approximate the entire access time distribution.
 Again we use the insight that the access time for a pair of trees with a simple random walk does not depend on the actual labeling of those trees, but rather only on their relative labeling.
@@ -495,7 +495,7 @@ To calculate the empirical distributions of access times we aggregate all access
 
 \begin{table}
 \centering
-\caption{p-values for ordinary least squares linear multiple regression of rSPR mean access time against degree and distance (two-tailed $t$-test of regression coefficient).}
+\caption{p-values for ordinary least squares linear multiple regression of rSPR mean access time against degree and distance (two-tailed $t$-test of regression coefficient). The p-values for 7 taxa are smaller than the machine precision used to calculate them.}
 \csvautotabular{tables/mean-access.csv}}
 \label{tab:regressionMAT}
 \end{table}
@@ -731,7 +731,7 @@ Finally, we proved that the coarse and asymptotic definitions of Ricci-Ollivier 
 
 In this data-free setting the stationary distribution is, unlike with real data, quite evenly spread over all trees.
 Correspondingly, we found that the influence of curvature is small in this case (Fig.~\ref{fig:short-time-kappa-access}) and that the probability of the target node in the stationary distribution predominantly determines access times for pairs of trees (Fig.~\ref{fig:long-time-kappa-access}).
-However, it is well known that MCMC takes a long time to approximate real phylogenetic posterior distributions even when the Bayesian credible set is small, and in fact our previous work showed significant graph effects in the mixing time for phylogenetic MCMC for credible sets that had tens, hundreds or thousands of trees~\cite{Whidden2015-yi}.
+However, it is well known that MCMC takes a long time to approximate real phylogenetic posterior distributions even when the Bayesian credible set is small, and in fact our previous work showed significant SPR graph influence on the mixing time for phylogenetic MCMC for credible sets that had tens, hundreds or thousands of trees~\cite{Whidden2015-yi}.
 Thus, our next step will be to investigate curvature of MCMC with nontrivial likelihood functions, which will \cuttable{significantly }reduce the posterior distribution to a more realistic effective size, and \cuttable{in certain cases }will lead to significant ``bottlenecks'' like those we have observed in real data.
 \cuttable[T]{In those cases t}he curvature between \cuttable{two }trees at either end of a bottleneck will describe how difficult it is to traverse\cuttable{ the bottleneck}.
 \cuttable{Indeed, in both the setting of challenging real data and in simulation with a nontrivial likelihood function, the stationary distribution takes a long time to achieve, and thus the curvature will have a substantially greater impact on the overall hitting times rather than being a short prelude to waiting for a Poisson process event as it is here (Fig.~\ref{fig:kappa-access}).}
