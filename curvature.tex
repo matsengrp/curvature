@@ -496,7 +496,7 @@ To calculate the empirical distributions of access times we aggregate all access
 \begin{table}
 \centering
 \caption{p-values for ordinary least squares linear multiple regression of rSPR mean access time against degree and distance (two-tailed $t$-test of regression coefficient). The p-values for 7 taxa are smaller than the machine precision used to calculate them.}
-\csvautotabular{tables/mean-access.csv}}
+\csvautotabular{tables/mean-access.csv}
 \label{tab:regressionMAT}
 \end{table}
 
@@ -525,7 +525,7 @@ On the other hand, if the random walk starting from $T_1$ does not quickly arriv
 \begin{table}
 \centering
 \caption{p-values for ordinary least squares linear multiple regression of rSPR $\delta_1$ against degree, distance, and $\kappa$ (two-tailed $t$-test of regression coefficient).}
-\csvautotabular{tables/delta1.csv}}
+\csvautotabular{tables/delta1.csv}
 \label{tab:regressionDelta}
 \end{table}
 
@@ -783,7 +783,7 @@ This work was funded by National Science Foundation award 1223057.
 	Call these $U$ and $V$, respectively.
 	This implies that both $T \setminus U = S \setminus U$ and $T \setminus V = S \setminus V$ by the definition of an rSPR operation.
 	Then the rSPR moves that move $U$ or $V$ to obtain $S$ must be nearest neighbor interchanges (NNIs), that is, rSPR moves which move their subtree to one of four locations: their grandparent edge, aunt edge, sibling's left child edge or sibling's right child edge.
-	This implies that, without loss of generality, $U$ is moved to its grandparent edge and $V$ to $U's$ sibling (i.e. (iii) above) or $U$ is moved to its aunt edge and $V$ to $U$'s edge (i.e. (iv) above), a contradiction.
+	This implies that, without loss of generality, $U$ is moved to its grandparent edge and $V$ to $U's$ sibling (move type (iii)) or $U$ is moved to its aunt edge and $V$ to $U$'s edge (move type (iv)), a contradiction.
 	Therefore the claim holds.
 \end{proof}
 
