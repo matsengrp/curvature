@@ -191,15 +191,11 @@ By carefully examining the overlap in rSPR moves, we present a new method for co
 This stands in contrast to the sampling methods used in current software such as MrBayes, which do not propose SPR moves uniformly.
 
 Using our methods to simulate these random walks, we found that the distribution of access times between pairs of trees can be described by distance between the trees, the degrees of the trees, and the curvature.
-Moreover, we found that rSPR graphs with 7 or more leaves have tree pairs with negative curvature, corresponding to paths that are difficult to traverse stochastically.
-This is a surprising result, as the Markov chain in this simple case is known to mix rapidly~\cite{spade2014note}.
-
-In response, we considered properties of the graph analytically.
+Moreover, we found that rSPR graphs with 7 or more leaves have tree pairs with negative curvature, corresponding to paths that are difficult to traverse stochastically in the period before reaching stationarity.
 By getting a more fine-tuned understanding of the rSPR neighborhood of pairs of vertices, we are able to give bounds on the earth mover's distance in this context and thus curvatures under these random walks.
 In particular, we present a full characterization of the change in rSPR degree that occurs from a given rSPR move and find that even though they each count as one move, rSPR moves which modify large subtrees are less likely to be explored during these random walks.
 Pairs of trees separated by such moves correspond to the pairs with negative curvature identified in our simulation results.
-These pairs occur infrequently in these well-connected graphs, thus allowing the Markov chain to mix rapidly.
-However, they may be more problematic in real posterior distributions where the majority of probability is spread over a relatively small number of trees~\cite{Whidden2015-yi}.
+These pairs occur infrequently in these well-connected graphs, however, they may be more problematic in real posterior distributions where the majority of probability is spread over a relatively small number of trees~\cite{Whidden2015-yi}.
 In summary, we extend knowledge about an important graph for phylogenetics, specifically in a way that models phylogenetic MCMC search.
 
 The automated computational analysis code can be found at \url{https://github.com/matsengrp/curvature}.
