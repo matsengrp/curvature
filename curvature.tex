@@ -318,7 +318,7 @@ As we prove in Lemma~\ref{lem:asymptotic}, the notions of rough and asymptotic c
 \subsection{Computing the rSPR graph of $m$ trees with $n$ leaves in $\OhOf{mn^3}$-time}
 \label{sec:computing_treespace}
 
-To study the full rSPR graph for a fixed number of leaves it is necessary to have an efficient means of constructing it.
+It is necessary to have an efficient means of constructing the full rSPR graph for a fixed number of leaves in order to study it.
 The previous best algorithm for this problem requires $\OhOf{m^2 n}$ time, where $m$ is the number of trees in the graph and $n$ the number of leaves~\cite{Whidden2015-yi}.
 Here we reduce that time to $\OhOf{mn^3}$.
 Note that for the full rSPR graph, $m$ is the rapidly growing function $(2n-3)!!$, that is, $3 \cdot 5 \cdot \ldots \cdot (2n-3)$, and this is therefore a significant improvement in practice, as we demonstrate below.
@@ -719,7 +719,7 @@ Note that \cuttable{the same statement and proof of }Lemma~\ref{lem:asymptotic} 
 \end{restatable}
 
 \section{Conclusion and future work}
-In summary, we have advanced understanding of the phylogenetic rSPR graph substantially beyond what was previously known, which concerned graph diameter and vertex degree.
+In summary, we have gone beyond graph diameter and vertex degree to substantially advance understanding of the phylogenetic rSPR graph.
 We did so by developing the first theoretical and computational frameworks to bound and compute Ricci-Ollivier curvature of the rSPR graph.
 We found that curvature, along with degree and distance, determine the early dynamics of hitting times for random walks.
 Moreover, we proved that rSPR graph degree changes depend quadratically on the product of the size of the regrafted subtree with its change in depth, as well as that the rSPR graph tends toward flatness with respect to rSPR moves that move asymptotically small subtrees.
