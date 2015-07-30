@@ -122,9 +122,7 @@
 \begin{abstract}
 Statistical phylogenetic inference methods use tree rearrangement operations such as subtree-prune-regraft (SPR) to perform Markov chain Monte Carlo (MCMC) across tree topologies.
 These methods are known to mix quickly in the absence of sequence data and other parameters such as branch lengths, but may become stuck in the local optima of multi-modal posterior distributions for real data induced by such parameters.
-The structure of the graph induced by tree rearrangement operations is an important determinant of the mixing properties of MCMC.
-Indeed, topology changes, and SPR rearrangements in particular, have been identified as a primary limiting factor of phylogenetic MCMC algorithms.
-As mixing properties of phylogenetic MCMC algorithms with a nontrivial likelihood function are difficult to characterize analytically, we were motivated to take the different strategy of characterizing the properties of the underlying \emph{rSPR graph} in greater~detail.
+The structure of the graph induced by tree rearrangement operations is an important determinant of the mixing properties of MCMC, motivating study of the underlying \emph{rSPR graph} in greater~detail.
 
 In this paper, we investigate the rSPR graph in a new way: by calculating Ricci-Ollivier curvature with respect to uniform and Metropolis-Hastings random walks.
 We confirm using simulation that mean access time distributions depend on distance, degree, and curvature, showing the relevance of these curvature results to stochastic tree search.
@@ -133,7 +131,7 @@ We then develop a closed form solution to characterize how the number of SPR nei
 This gives bounds on the curvature, as well as a flatness-in-the-limit theorem indicating that paths of small topology changes are easy to traverse.
 However, we find that large topology changes (i.e. moving a large subtree) gives pairs of trees with negative curvature.
 Although these pairs of trees with negative curvature do not impede mixing in this simple well-connected space, they may manifest as bottlenecks in the much smaller credible sets induced by phylogenetic posteriors with a likelihood function.
-
+This work extends our knowledge of the rSPR graph, in particular properties that are relevant for investigation of random search on the rSPR graph.
 \end{abstract}
 
 \maketitle
@@ -288,7 +286,7 @@ For a more rigorous presentation in the more general setting of a Polish metric 
 Let $m_x$ and $m_y$ be probability densities of the position of a specified random walk after one step of the random walk, starting at points $x$ and $y$ of a graph $G = (V,E)$, respectively.
 The transportation distance~\cite{Villani2003-wv} (equivalently Wasserstein distance, or ``earth movers distance''~\cite{rubner2000earth}) between $m_x$ and $m_y$ is the minimum amount of ``work'' required to move $m_x$ to $m_y$ along edges of the graph, that is
 $$ W_1(m_x, m_y) := \min_{\xi \in \Pi(m_x, m_y)} \sum_{\{z,w\} \subset V} d(z,w) \xi(z,w),$$
-where $d(z,w)$ is the graph shortest-path distance ($\dspr{z,w}$ in our case) and $\Pi(m_x, m_y)$ is the set of mass transport programs moving the mass in $m_x$ to the configuration described by $m_y$\cuttable{ (more formally, a density on $V \times V$ which is $m_x$ after projecting on the first component and $m_y$ after projecting on the second)}.
+where $d(z,w)$ is the graph shortest-path distance ($\dspr{z,w}$ in our case) and $\Pi(m_x, m_y)$ is the set of densities on $V \times V$ that are $m_x$ after projecting on the first component and $m_y$ after projecting on the second.
 
 The \emph{coarse Ricci-Ollivier curvature} of $x$ and $y$ is then defined as:
 \begin{equation}
