@@ -2,4 +2,4 @@ variable,5 taxa,6 taxa,7 taxa
 $T_1$ degree,9.376e-05,2.944e-07,5.51e-09
 $T_2$ degree,0.2366,0.1432,0.1687
 $d_{\operatorname{rSPR}}$,5.151e-06,0.0007557,3.276e-23
-$\kappa$ (uniform prior MH),4.462e-06,1.436e-22,1.459e-46
+$\kappa$(MH),4.462e-06,1.436e-22,1.459e-46

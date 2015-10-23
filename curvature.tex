@@ -13,7 +13,8 @@
 \usepackage{subfigure}
 \usepackage{graphicx}
 \usepackage{todonotes}
-\usepackage[nomarkers,nofiglist,notablist]{endfloat}
+\usepackage{url}
+%\usepackage[nomarkers,nofiglist,notablist]{endfloat}
 \let\MYoriglatexcaption\caption
 \renewcommand{\caption}[2][\relax]{\MYoriglatexcaption[#2]{#2}}
 %\usepackage{todonotes}
@@ -103,10 +104,10 @@
 	\operatorname{ric}(#1)%
 }
 
+\setlist{noitemsep}
 
 \begin{document}
 
-\setlist{noitemsep}
 
 \title{Ricci-Ollivier Curvature of the Rooted Phylogenetic Subtree-Prune-Regraft Graph\thanks{This work was funded by National Science Foundation award 1223057. Chris Whidden is a Simons Foundation Fellow of the Life Sciences Research Foundation.}}
 
@@ -186,21 +187,7 @@ By exploiting symmetries in the rSPR graph, we were able to calculate all of the
 By carefully examining the overlap in rSPR moves, we present a new method for computing the degree of a tree in the rSPR graph that allows one to select an rSPR neighbor uniformly at random in linear-time without explicitly generating the graph.
 This stands in contrast to the sampling methods used in current software such as MrBayes, which do not propose SPR moves uniformly.
 
-Using our methods to simulate these random walks, we found that the distribution of access times between pairs of trees can be described by distance between the trees, the degrees of the trees, and the curvature.
-Moreover, we found that rSPR graphs for trees with 7 or more leaves have tree pairs with negative curvature, corresponding to direct paths that are difficult to traverse stochastically.
-By getting a more fine-tuned understanding of the rSPR neighborhood of pairs of vertices, we are able to give bounds on the earth mover's distance in this context and thus curvatures under these random walks.
-In particular, we present a full characterization of the change in rSPR degree that occurs from a given rSPR move and find that even though they each count as one move, rSPR moves which modify large subtrees are less likely to be explored during these random walks.
-Pairs of trees separated by such moves correspond to the pairs with negative curvature identified in our simulation results.
-These pairs occur infrequently in these well-connected graphs, however, they may be more problematic in real posterior distributions where the majority of probability is spread over a relatively small number of trees~\cite{Whidden2015-yi}.
-In summary, we extend knowledge about an important graph for phylogenetics, specifically in a way that models phylogenetic MCMC search.
-
-The automated computational analysis code can be found at \url{https://github.com/matsengrp/curvature}.
-\cuttable[Figures, tables, and proofs of our theorems and lemmas can be found in the appendix.]
-
-
-\section{Preliminaries}
-
-\begin{figure}
+\begin{figure*}[t]
 	\hspace*{\stretch{1}}
 	\subfigure[\label{fig:x-tree}]{\includegraphics[scale=1.25]{figs/x-tree}}
 	\hspace*{\stretch{2}}
@@ -221,9 +208,25 @@ The automated computational analysis code can be found at \url{https://github.co
 		(c) $T|V$.
 		(d) An rSPR operation transforms $T$ into a new tree $T'$ by \emph{pruning} a \emph{subtree} and \emph{regrafting} it in another location.}
 	\label{fig:trees}
-\end{figure}
+\end{figure*}
 
-\begin{figure}
+
+
+Using our methods to simulate these random walks, we found that the distribution of access times between pairs of trees can be described by distance between the trees, the degrees of the trees, and the curvature.
+Moreover, we found that rSPR graphs for trees with 7 or more leaves have tree pairs with negative curvature, corresponding to direct paths that are difficult to traverse stochastically.
+By getting a more fine-tuned understanding of the rSPR neighborhood of pairs of vertices, we are able to give bounds on the earth mover's distance in this context and thus curvatures under these random walks.
+In particular, we present a full characterization of the change in rSPR degree that occurs from a given rSPR move and find that even though they each count as one move, rSPR moves which modify large subtrees are less likely to be explored during these random walks.
+Pairs of trees separated by such moves correspond to the pairs with negative curvature identified in our simulation results.
+These pairs occur infrequently in these well-connected graphs, however, they may be more problematic in real posterior distributions where the majority of probability is spread over a relatively small number of trees~\cite{Whidden2015-yi}.
+In summary, we extend knowledge about an important graph for phylogenetics, specifically in a way that models phylogenetic MCMC search.
+
+The automated computational analysis code can be found at \url{https://github.com/matsengrp/curvature}.
+\cuttable[Figures, tables, and proofs of our theorems and lemmas can be found in the appendix.]
+
+
+\section{Preliminaries}
+
+\begin{figure*}
 	\hspace*{\stretch{1}}
 	\includegraphics[scale=1.25]{figs/two-spr}
 	\hspace*{\stretch{1}}
@@ -231,15 +234,8 @@ The automated computational analysis code can be found at \url{https://github.co
     Two rSPR operations, each of which moves one grey subtree.
     The leftmost and rightmost trees are rSPR distance two apart.}
 	\label{fig:two-spr}
-\end{figure}
+\end{figure*}
 
-\begin{figure}
-	\hspace*{\stretch{1}}
-	\includegraphics[width=0.6\textwidth]{figs/neighborhood}
-	\hspace*{\stretch{1}}
-	\caption{The neighborhood of an $X$-tree $T$ with 4 leaves, showing connections between neighbors.}
-	\label{fig:neighborhood}
-\end{figure}
 
 We follow the definitions and notation from~\cite{bordewich05,whidden2013hybridization, Whidden2015-yi}.
 A (rooted binary phylogenetic) $X$-tree is a rooted tree $T$ whose nodes have zero or two children such that the leaves of $T$ are bijectively labelled with the members of a label set $X$.
@@ -248,6 +244,7 @@ We generally use $n$ to refer to the number of leaves in an $X$-tree.
 For a subset $V$ of $X$, $T(V)$ is the smallest subtree of $T$ that connects all nodes in $V$ (Fig.~\ref{fig:subtree}).
 The $V$-tree induced by $T$ is the smallest tree $T|V$ that can be obtained from $T(V)$ by suppressing unlabelled nodes with fewer than two children (Fig.~\ref{fig:induced}).
 For the rest of the paper, \textbf{we will assume that all phylogenetic trees are binary and rooted}\cuttable{, and thus that tree inclusion is rooted tree inclusion}.
+
 
 A \emph{parent (sub)tree} of a subtree $U$ is the smallest subtree strictly containing $U$.
 A \emph{parent edge} of a subtree $U$ is the edge connecting $U$ to the rest of the tree.
@@ -282,12 +279,14 @@ For a more rigorous presentation in the more general setting of a Polish metric 
 
 Let $m_x$ and $m_y$ be probability densities of the position of a specified random walk after one step of the random walk, starting at points $x$ and $y$ of a graph $G = (V,E)$, respectively.
 The transportation distance~\cite{Villani2003-wv} (equivalently Wasserstein distance, or ``earth movers distance''~\cite{rubner2000earth}) between $m_x$ and $m_y$ is the minimum amount of ``work'' required to move $m_x$ to $m_y$ along edges of the graph, that is
+\vspace{-0.5em}
 \begin{equation}
 W_1(m_x, m_y) := \min_{\xi \in \Pi(m_x, m_y)} \sum_{\{z,w\} \subset V} d(z,w) \xi(z,w),
 \end{equation}
 where $d(z,w)$ is the graph shortest-path distance ($\dspr{z,w}$ in our case) and $\Pi(m_x, m_y)$ is the set of densities on $V \times V$ that are $m_x$ after projecting on the first component and $m_y$ after projecting on the second.
 
 The \emph{coarse Ricci-Ollivier curvature} of $x$ and $y$ is then defined as:
+\vspace{-0.5em}
 \begin{equation}
 \curvature{m; x, y} := 1 - \frac{W_1(m_x, m_y)}{d(x, y)}.
 \label{eq:curvatureDef}
@@ -296,6 +295,16 @@ For the purposes of this paper, ``curvature'' without further specification will
 We will use $\curvature{x,y}$ to denote the curvature of the simple (uniform choice of neighbor) random walk, and use $\curvature{\MH; x,y}$ to indicate curvature with respect to the Metropolis-Hastings random walk sampling the uniform distribution (described in detail in Section~\ref{sec:random_walks}).
 Positive curvature implies that the neighborhoods $m_x$ and $m_y$ are closer in transportation distance than point masses at $x$ and $y$, zero curvature implies that they are neither closer nor farther, and negative curvature implies that $m_x$ and $m_y$ are more distant than point masses at $x$ and $y$.
 Curvature thus provides an intuitive measure of the difficulty of moving between regions of the graph with \cuttable[a]{the given} random walk.
+\begin{figure}[!h]
+	\hspace*{\stretch{1}}
+	\includegraphics[width=0.5\textwidth]{figs/neighborhood}
+	\hspace*{\stretch{1}}
+	\caption{The neighborhood of an $X$-tree $T$ with 4 leaves, showing connections between neighbors.}
+	\label{fig:neighborhood}
+\end{figure}
+\vspace{0.1em} 
+
+\pagebreak
 
 Lin et al.~\cite{lin2011ricci} defined a variant definition of curvature in terms of lazy random walks which Loisel and Romon~\cite{Loisel2014-hu} dubbed the \emph{asymptotic Ricci-Olivier curvature}.
 The lazy random walk only travels according to $m_x$ with probability $p$ and otherwise stays put.
@@ -429,6 +438,17 @@ We can thus apply the following algorithm to select a neighbor uniformly at rand
 \item Return the neighbor $S$.
 \end{enumerate}
 
+\begin{figure*}
+	\hspace*{\stretch{1}}
+	\subfigure[6 taxa]{\includegraphics[width=3in]{figs/rspr-upmh-scatter6}}
+	\hspace*{\stretch{2}}
+	\subfigure[7 taxa]{\includegraphics[width=3in]{figs/rspr-upmh-scatter7}}
+	\hspace*{\stretch{1}}
+    \caption{Scatter plot of $\curvature{\MH; T_1,T_2}$ values versus $\dspr{T_1,T_2}$ for the rSPR graph. Color displays the average degree of $T_1$ and $T_2$. Distance values randomly perturbed (``jittered'') a small amount to avoid superimposed points.}
+	\label{fig:rspr-scatter}
+\end{figure*}
+
+
 \begin{restatable}{lem}{selectrandomneighbor}
 	\label{lem:select_random_neighbor}
 	An rSPR neighbor of a tree $T$ can be chosen uniformly at random in $\OhOf{n}$-time\cuttable{ using $\OhOf{n}$ space}.
@@ -468,15 +488,20 @@ Larger rSPR graphs tended to have smaller curvature values.
 Indeed, the 7-leaf rSPR graph contained adjacent pairs of trees with negative curvature.
 Such pairs indicate difficult paths for phylogenetic searches, which may be exacerbated by likelihood or branch length constraints.
 
-\begin{figure}
+\begin{figure*}
 	\hspace*{\stretch{1}}
-	\subfigure[6 taxa]{\includegraphics[width=3in]{figs/rspr-upmh-scatter6}}
+	\subfigure[\label{fig:short-time-kappa-access}]{\includegraphics[width=3in]{figs/short-time-kappa-access}}
 	\hspace*{\stretch{2}}
-	\subfigure[7 taxa]{\includegraphics[width=3in]{figs/rspr-upmh-scatter7}}
+	\subfigure[\label{fig:long-time-kappa-access}]{\includegraphics[width=3in]{figs/long-time-kappa-access}}
 	\hspace*{\stretch{1}}
-    \caption{Scatter plot of $\curvature{\MH; T_1,T_2}$ values versus $\dspr{T_1,T_2}$ for the rSPR graph. Color displays the average degree of $T_1$ and $T_2$. Distance values randomly perturbed (``jittered'') a small amount to avoid superimposed points.}
-	\label{fig:rspr-scatter}
-\end{figure}
+    \caption{\
+        Distribution of rSPR $\MH$ access times for those pairs of 5-taxon trees with degree 24 that are not simple inclusions of 4-taxon pairs of trees.
+        Color signifies rSPR distance between the trees, with green, orange, and blue signifying distances of 1, 2, and 3, respectively; the saturation of the color shows coarse curvature $\curvature{\MH; \cdot, \cdot}$, such that increased saturation (i.e.\ darker color) indicates a smaller $\kappa$.
+        }
+	\label{fig:kappa-access}
+\end{figure*}
+
+
 
 \subsection{Access time simulation.}
 The access time for a pair of vertices in a graph is the (random) number of iterations required to go from one of the vertices to the other in a random walk~\cite{lovasz1993random}; we were interested in the connection between curvature and access time.
@@ -503,26 +528,24 @@ Regression finds a clear influence of $\kappa$ on $\delta_1$ (Table~\ref{tab:reg
 This confirms the intuitive interpretation of $\kappa(T_1, T_2)$ as quantifying the propensity of a random walk to go from $T_1$ to $T_2$ relatively directly, certainly before the random walk achieves stationarity.
 On the other hand, if the random walk starting from $T_1$ does not quickly arrive at $T_2$\cuttable{ and instead achieves stationarity}, the original position of the random walk is forgotten, and the access time is then a standard exponentially distributed waiting time for an event in a Poisson process (Fig.~\ref{fig:long-time-kappa-access}).
 
-\begin{figure}
-	\hspace*{\stretch{1}}
-	\subfigure[\label{fig:short-time-kappa-access}]{\includegraphics[width=3in]{figs/short-time-kappa-access}}
-	\hspace*{\stretch{2}}
-	\subfigure[\label{fig:long-time-kappa-access}]{\includegraphics[width=3in]{figs/long-time-kappa-access}}
-	\hspace*{\stretch{1}}
-    \caption{\
-        Distribution of rSPR $\MH$ access times for those pairs of 5-taxon trees with degree 24 that are not simple inclusions of 4-taxon pairs of trees.
-        Color signifies rSPR distance between the trees, with green, orange, and blue signifying distances of 1, 2, and 3, respectively; the saturation of the color shows coarse curvature $\curvature{\MH; \cdot, \cdot}$, such that increased saturation (i.e.\ darker color) indicates a smaller $\kappa$.
-        }
-	\label{fig:kappa-access}
-\end{figure}
-
-
 \begin{table}
 \centering
 \caption{p-values for ordinary least squares linear multiple regression of rSPR $\delta_1$ against degree, distance, and $\kappa$ (two-tailed $t$-test of regression coefficient).}
 \csvautotabular{tables/delta1.csv}
 \label{tab:regressionDelta}
+\vspace{2em}
 \end{table}
+
+
+\begin{figure*}
+	\hspace*{\stretch{1}}
+	\includegraphics[width=0.8\textwidth]{figs/spr-degree-change}
+	\hspace*{\stretch{1}}
+	\caption{An rSPR move labelled as in Lemma~\ref{lem:degree_change}.
+Moving the grey subtree $R$ from its position adjacent to $U$ in tree $T$ to its position adjacent to $V$ in tree $S$ changes the rSPR degree by $2\left(k(a-b) + i - j\right)$.}
+	\label{fig:spr-degree-change}
+\end{figure*}
+
 
 The analysis can be reproduced by invoking the SCons (\url{http://scons.org/}) build tool and running the cells in an IPython notebook; instructions are in the repository README file.
 
@@ -536,7 +559,7 @@ Many of our results in this section follow from a characterization of the change
 \begin{lem}[{Song~\cite{Song2003-gf}}]
 \cuttable{    \pushQED{\qed}}
 	\label{lem:degree_extremes}
-	Let $T$ be a tree with $n$ leaves. Then
+	For a tree $T$ with $n$ leaves:
 	\begin{enumerate}
 		\item $\degree{T} = 3n^2 - 13n + 14$, if $T$ is a ladder tree,
 		\item $\degree{T} = 4(n-2)^2 - 2 \sum_{m=1}^{n-2} \floor{\log_2(m+1)}$, if $T$ is a balanced tree, and
@@ -559,15 +582,6 @@ We now bound the ratio and difference of rSPR degree between two trees with $n$ 
 We can improve these bounds in the case of adjacent trees.
 To do so, we \cuttable{require the following lemma that }characterize\cuttable{s} exactly how the degree of a tree changes after an rSPR operation.
 See Figure~\ref{fig:spr-degree-change} for an illustration.
-
-\begin{figure}
-	\hspace*{\stretch{1}}
-	\includegraphics[width=\textwidth]{figs/spr-degree-change}
-	\hspace*{\stretch{1}}
-	\caption{An rSPR move labelled as in Lemma~\ref{lem:degree_change}.
-Moving the grey subtree $R$ from its position adjacent to $U$ in tree $T$ to its position adjacent to $V$ in tree $S$ changes the rSPR degree by $2\left(k(a-b) + i - j\right)$.}
-	\label{fig:spr-degree-change}
-\end{figure}
 
 \begin{restatable}{lem}{degreechange}
 \label{lem:degree_change}
@@ -653,14 +667,14 @@ However, our experiments with $n \le 7$ suggest that maximum curvature tends to 
 Indeed, for $5 \le n \le 7$ the maximum curvature is obtained by pairs of trees at one less than the maximum distance.
 Moreover, nearly all of the neighbors of these pairs approach each either.
 We thus conjecture the following:
-\begin{conjecture}
+\begin{conj}
 	Let $k_n$ be the maximum curvature between two trees with $n$-leaves.
 	Then:
 	\begin{enumerate}
 		\item $k_n \le \frac{2}{\Delta_{\text{rSPR}}(n)-1}$, and
 		\item $ k_n \sim \frac{2}{\Delta_{\text{rSPR}}(n)-1}$.
 	\end{enumerate}
-\end{conjecture}
+\end{conj}
 Proving or disproving this conjecture would go a long way toward understanding the effects of relative distance on curvature.
 \cuttable[W]{However, w}e suspect that this will require a \cuttable[new]{greater} understanding of the distribution of tree neighborhoods with respect to one another\cuttable{ than is currently known}.
 Next, we bound the minimum curvature of two adjacent trees.
@@ -709,9 +723,12 @@ Note that \cuttable{the same statement and proof of }Lemma~\ref{lem:asymptotic} 
 \begin{restatable}{lem}{mhcurvature}
 	\label{lem:mh_curvature}
 	Let $T$ and $S$ be trees with $n$ leaves. Then:
-	$$\curvature{T,S} - \frac{1}{3\dspr{T,S}}
-	\le \curvature{\MH; T,S}
-	\le \curvature{T,S} + \frac{1}{3\dspr{T,S}}, \text{ and }.$$
+	\begin{align*}
+	\curvature{T,S} - \frac{1}{3\dspr{T,S}}
+	&\le \curvature{\MH; T,S} \\
+	\curvature{\MH; T,S}
+	&\le \curvature{T,S} + \frac{1}{3\dspr{T,S}},\text{ and }
+\end{align*}
 	$$\curvature{T,S} - 1/6
 	\le \curvature{\MH; T,S}
 	\le \curvature{T,S} + 1/6$$
@@ -742,12 +759,8 @@ Random walks on other discrete structures such as partitions~\cite{Gusfield2002-
 The authors would like to thank Alex Gavruskin, Vladimir Minin, and Bianca Viray for helpful discussions.
 They are also grateful to the authors of the SAGE and GAP4 software, especially Alexander Hulpke.
 
-\pagebreak
-
-\bibliographystyle{IEEEtran}
+\bibliographystyle{siam}
 \bibliography{curvature}
-
-\pagebreak
 
 \appendix
 
@@ -857,11 +870,18 @@ For each such $(T',S')$ pair, we can move $R$ in either tree to obtain the other
 	If the subtree of $k$ leaves is moved to the root, then we do not need to exclude the target branch from $k$ and $a$, gaining an additional leaf to balance the product $ka$ at the cost of increasing $j$.
 	This corresponds to moving the bottom subtree of $\floor{\frac{n}{2}}$ or $\ceil{\frac{n}{2}}$ leaves in a ladder tree to the root.
 	Namely, we have $2(ka + 1 - j)$, where $j = n - k = a + 1$.
+	Let ${\Delta}N = \degree{S} - \degree{T}$.
 	If we move the additional leaf, we have:
-$$\degree{S} - \degree{T} \le 2\left(\ceilXXL{\frac{n}{2}}\floorV{\frac{n-2}{2}}  + 1 - \left(\floorV{\frac{n-2}{2}} + 1\right)\right) = 2\floorV{\frac{n-2}{2}}\ceilV{\frac{n-2}{2}}$$
+	\begin{align*}
+		{\Delta}N &\le 2\left(\ceilXXL{\frac{n}{2}}\floorV{\frac{n-2}{2}}  + 1 - \left(\floorV{\frac{n-2}{2}} + 1\right)\right) \\
+		&= 2\floorV{\frac{n-2}{2}}\ceilV{\frac{n-2}{2}}
+	\end{align*}
 like before.
 Similarly, if we do not move the additional leaf, we also have:
-$$\degree{S} - \degree{T} \le 2 \left(\ceilV{\frac{n-2}{2}}\floorXXL{\frac{n}{2}} +1 -  \left(\ceilV{\frac{n-2}{2}} + 1\right)\right) = 2\floorV{\frac{n-2}{2}}\ceilV{\frac{n-2}{2}},$$
+\begin{align*}
+	{\Delta}N &\le 2 \left(\ceilV{\frac{n-2}{2}}\floorXXL{\frac{n}{2}} +1 -  \left(\ceilV{\frac{n-2}{2}} + 1\right)\right) \\
+&= 2\floorV{\frac{n-2}{2}}\ceilV{\frac{n-2}{2}},
+\end{align*}
 proving (i).
 
 The relative change in degree, $\frac{\degree{T}}{\degree{S}}$, can also be written as $\frac{\degree{T}}{\degree{T} + (\degree{S} - \degree{T})}$.
@@ -965,14 +985,18 @@ The maximum curvature is thus $1 - \frac{\degree{T} - (6n-17)}{\degree{T}} = \fr
 	Observe that $$W_1'(T,S) \le pW_1(T,S) + (1-p) \, \dspr{T,S},$$ by the simple mass transport program obtained by treating the mass at $T$ and $S$ as separate from that of the neighbors.
 	Then:
 	\begin{align*}
-		\curvature[p]{T,S} /p &= \left. \left(1 - \frac{W_1'(T,S)}{\dspr{T,S}}\right) \right/ p \\
+		\frac{\curvature[p]{T,S}}{p} &= \left. \left(1 - \frac{W_1'(T,S)}{\dspr{T,S}}\right) \right/ p \\
 		&\ge \left. \left(1 - \frac{pW_1(T,S) + (1-p)\dspr{T,S}}{\dspr{T,S}}\right) \right/ p \\
 		&= \frac{1}{p} - \frac{W_1(T,S)}{\dspr{T,S}} - \frac{1-p}{p} \\
 		&= 1 - \frac{W_1(T,S)}{\dspr{T,S}} \\
 		&= \curvature{T,S}.
 	\end{align*}
 
-	For the upper bound, we observe that $$W_1'(T,S) \ge p W_1(T,S) + (1-p) \, \dspr{T,S} - \frac{2}{\max(\degree{T}, \degree{S})},$$ as at most $1 / \max(\degree{T},\degree{S})$ of the mass can remain at each of $T$ and $S$, paired with the lazy remainder.
+	For the upper bound, we observe that $W_1'(T,S) \ge$
+	\begin{align*}
+		p &W_1(T,S) + (1-p) \, \dspr{T,S} - \frac{2}{\max(\degree{T}, \degree{S})},
+	\end{align*}
+	as at most $1 / \max(\degree{T},\degree{S})$ of the mass can remain at each of $T$ and $S$, paired with the lazy remainder.
 	The upper bound then follows analogously to the lower bound.
 	Moreover, no mass can remain at $T$ or $S$ when $\dspr{T,S} > 1$, in which case the curvatures are equal.
 \end{proof}
