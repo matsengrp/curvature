@@ -313,7 +313,7 @@ We denote the coarse curvature of the $p$-lazy random walk between two vertices 
 For example, $\curvature[1/4]{m; x,y}$ describes the curvature of the lazy random walk that follows the given random walk $m$ with probability $1/4$ and remains stationary with probability $3/4$.
 The asymptotic Ricci-Ollivier curvature of $x$ and $y$ is then:
 \begin{equation}
-\ric{m; x, y} := \lim_{p \rightarrow 0} \frac{\curvature[p]{m; x,y}}{p}
+\ric{m; x, y} := \lim_{p \rightarrow 0} \frac{\curvature[p]{m; x,y}}{p} .
 \label{eq:asympCurvatureDef}
 \end{equation}
 As above for $\kappa$, we use $\ric{x, y}$ as shorthand for $\ric{m; x, y}$ when $m$ is the uniform lazy random walk, and $\ric{\MH; x, y}$ when $m$ is the Metropolis-Hastings random walk sampling the uniform distribution (Section~\ref{sec:random_walks}).
@@ -731,7 +731,7 @@ Note that \cuttable{the same statement and proof of }Lemma~\ref{lem:asymptotic} 
 \end{align*}
 	$$\curvature{T,S} - 1/6
 	\le \curvature{\MH; T,S}
-	\le \curvature{T,S} + 1/6$$
+	\le \curvature{T,S} + 1/6 .$$ 
 \end{restatable}
 
 \section{Conclusion and future work}
@@ -818,17 +818,17 @@ They are also grateful to the authors of the SAGE and GAP4 software, especially 
 		\ge\ &\frac{3n^2 - 13n + 12}{4(n-2)^2 - 2(n-2)} \\
 		\cuttable{= \ &\frac{3n^2 - 13n + 12}{4n^2 - 16n + 16 - 2(n-2)} \\}
 		= \ &\frac{3n^2 - 13n + 12}{4n^2 - 18n + 20} \\
-		\cuttable{\ge\ &\frac{3n^2 - 13n + 12}{4n^2 - 17\frac{1}{3}n + 18} &\forall n \ge 3 \\}
+		\cuttable{\ge\ &\frac{3n^2 - 13n + 12}{4n^2 - 17\frac{1}{3}n + 18} &\forall n \ge 3, \\}
 	\end{align*}
 	which is greater than 3/4 when $n \ge 3$.
     Similarly for (ii):
 	\begin{align*}
-		\cuttable{\degree{S} - \degree{T}
-		\le\ &(4(n-2)^2 - 2 \sum_{m=1}^{n-2} \floor{\log_2(m+1)})
-		- (3n^2 - 13n + 14) \\}
-		\le\ &(4(n-2)^2 - 2(n-2)) - (3n^2 - 13n + 14) \\
+		{\Delta}N &= \degree{S} - \degree{T} \\
+		&\le\ (4(n-2)^2 - 2 \sum_{m=1}^{n-2} \floor{\log_2(m+1)}) \\
+		&\ \ \ \ \ \ \ \ - (3n^2 - 13n + 14) \\
+		&\le\ (4(n-2)^2 - 2(n-2)) - (3n^2 - 13n + 14) \\
 		\cuttable{=\ &4n^2 - 16n + 16 - 2n +4 - 3n^2 + 13n - 14 \\}
-		=\ &n^2 - 5n + 6.
+		&=\ n^2 - 5n + 6.
 	\end{align*}
 \end{proof}
 
@@ -874,7 +874,7 @@ For each such $(T',S')$ pair, we can move $R$ in either tree to obtain the other
 	If we move the additional leaf, we have:
 	\begin{align*}
 		{\Delta}N &\le 2\left(\ceilXXL{\frac{n}{2}}\floorV{\frac{n-2}{2}}  + 1 - \left(\floorV{\frac{n-2}{2}} + 1\right)\right) \\
-		&= 2\floorV{\frac{n-2}{2}}\ceilV{\frac{n-2}{2}}
+		&= 2\floorV{\frac{n-2}{2}}\ceilV{\frac{n-2}{2}},
 	\end{align*}
 like before.
 Similarly, if we do not move the additional leaf, we also have:
@@ -1021,7 +1021,7 @@ The maximum curvature is thus $1 - \frac{\degree{T} - (6n-17)}{\degree{T}} = \fr
 	We now have:
 	\begin{align*}
 		\curvature{\MH; T,S} & \ge 1 - \frac{W_1 + \frac{1}{3}}{\dspr{T,S}} \\
-		& \ge \curvature{T,S} - \frac{1}{3\dspr{T,S}}
+		& \ge \curvature{T,S} - \frac{1}{3\dspr{T,S}}.
 	\end{align*}
 
 	In the case that $\dspr{T,S}=1$, the affected mass must be moved through only at most one additional tree, as $T$ and $S$ are adjacent.
