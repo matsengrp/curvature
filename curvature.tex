@@ -106,6 +106,11 @@
 
 \setlist{noitemsep}
 
+% number of paired neighbors
+\newcommand{\overlap}{%
+	\gamma
+}
+
 \begin{document}
 
 
@@ -120,7 +125,7 @@ Frederick A Matsen IV\footnotemark[2]}
 
 \begin{abstract}
 Statistical phylogenetic inference methods use tree rearrangement operations such as subtree-prune-regraft (SPR) to perform Markov chain Monte Carlo (MCMC) across tree topologies.
-These methods are known to mix quickly in the absence of sequence data and other parameters such as branch lengths, but may become stuck in the local optima of multi-modal posterior distributions for real data induced by such parameters.
+These methods are known to mix quickly when sampling from the simple uniform distribution of trees but may become stuck in the local optima of multi-modal posterior distributions for real data induced by non-uniform likelihoods.
 The structure of the graph induced by tree rearrangement operations is an important determinant of the mixing properties of MCMC, motivating study of the underlying \emph{rSPR graph} in greater~detail.
 
 In this paper, we investigate the rSPR graph in a new way: by calculating Ricci-Ollivier curvature with respect to uniform and Metropolis-Hastings random walks.
@@ -130,7 +135,7 @@ We then develop a closed form solution to characterize how the number of SPR nei
 This gives bounds on the curvature, as well as a flatness-in-the-limit theorem indicating that paths of small topology changes are easy to traverse.
 However, we find that large topology changes (i.e. moving a large subtree) gives pairs of trees with negative curvature.
 Although these pairs of trees with negative curvature do not impede mixing in this simple well-connected space, they may manifest as bottlenecks in the much smaller credible sets induced by phylogenetic posteriors with a likelihood function.
-This work extends our knowledge of the rSPR graph, in particular properties that are relevant for investigation of random search on the rSPR graph.
+This work extends our knowledge of the rSPR graph, in particular properties that are relevant for investigation of sampling the rSPR graph.
 
 \end{abstract}
 
@@ -151,7 +156,7 @@ Thus, phylogenetic searches can be viewed as traversing the \emph{SPR graph}: th
 
 It has become increasingly clear that the structure of the SPR graph plays an important role in determining the accuracy of tree searches.
 Researchers have previously identified slow mixing in MCMC with pathological data~\cite{Mossel2005-ly,Mossel2006-fo,Ronquist2006-fv}.
-On the other hand, fast mixing has been identified with exceptionally well-behaved data~\cite{Stefankovic2011-hu} or with no data~\cite{spade2014note}.
+On the other hand, fast mixing has been identified with exceptionally well-behaved data~\cite{Stefankovic2011-hu} or with a uniform distribution~\cite{spade2014note}.
 % Probabilists have also approached the problem using related frameworks that are more amenable to proving theorems, both for other sets of moves on trees with a finite number of leaves~\cite{Aldous2000-vg,Diaconis2002-gy} or for SPR and related moves on a continuous tree-like object which formalizes the notion of a tree with infinite leaves~\cite{Evans2006-xh,Athreya2014-de}.
 Studies on real data~\cite{beiko2006searching, lakner2008efficiency}, however, have identified posteriors which are difficult to sample using MCMC.
 Previously, the lack of sufficient computational tools for examining phylogenetic posteriors in terms of SPR operations made it difficult to determine the cause of these difficulties.
@@ -182,7 +187,7 @@ In future work, we will extend these methods to study more complicated distribut
 
 We required several new computational tools.
 We present a fast new algorithm for computing rSPR graphs from a set of trees, reducing the time to do so from $\OhOf{m^2n}$ to $\OhOf{mn^3}$ for a set of $m$ trees with $n$ leaves.
-As the full rSPR graph on trees with $n$ leaves contains $(2n-3)!!$ trees, this is a significant improvement in practice for exploring large subsets of the graph (or, as we do here, the full graph for small numbers of leaves).
+As the full rSPR graph on trees with $n$ leaves contains $(2n-3)!! = 3 \cdot 5 \cdot \ldots \cdot (2n-3)$ trees, this is a significant improvement in practice for exploring large subsets of the graph (or, as we do here, the full graph for small numbers of leaves).
 By exploiting symmetries in the rSPR graph, we were able to calculate all of the curvatures for pairs of trees with up to seven leaves.
 By carefully examining the overlap in rSPR moves, we present a new method for computing the degree of a tree in the rSPR graph that allows one to select an rSPR neighbor uniformly at random in linear-time without explicitly generating the graph.
 This stands in contrast to the sampling methods used in current software such as MrBayes, which do not propose SPR moves uniformly.
@@ -318,14 +323,14 @@ The asymptotic Ricci-Ollivier curvature of $x$ and $y$ is then:
 \end{equation}
 As above for $\kappa$, we use $\ric{x, y}$ as shorthand for $\ric{m; x, y}$ when $m$ is the uniform lazy random walk, and $\ric{\MH; x, y}$ when $m$ is the Metropolis-Hastings random walk sampling the uniform distribution (Section~\ref{sec:random_walks}).
 This definition of curvature is invariant of $p$ for small $p$~\cite{Loisel2014-hu} and can be used to avoid parity problems on graphs where the uniform random walk is periodic without choosing a specific laziness parameter (e.g. Ollivier often considered $\curvature[\frac{1}{2}]{x,y}$ for this purpose).
-As we prove in Lemma~\ref{lem:asymptotic}, the notions of rough and asymptotic curvature differ only by a small factor bounded by $\frac{2}{\max(\degree{x}, \degree{y})}$ between adjacent vertices and are equal for nonadjacent vertices.
+As we prove in Lemma~\ref{lem:asymptotic}, the notions of coarse and asymptotic curvature differ only by a small factor bounded by $\frac{2}{\max(\degree{x}, \degree{y})}$ between adjacent vertices and are equal for nonadjacent vertices.
 
 \section{Efficient algorithms for computing and sampling rSPR graphs}
 
 \subsection{Computing the rSPR graph of $m$ trees with $n$ leaves in $\OhOf{mn^3}$-time.}
 \label{sec:computing_treespace}
 
-It is necessary to have an efficient means of constructing the full rSPR graph for a fixed number of leaves in order to study it.
+It is necessary to have an efficient method of constructing the full rSPR graph for a fixed number of leaves in order to study it.
 The previous best algorithm for this problem requires $\OhOf{m^2 n}$ time, where $m$ is the number of trees in the graph and $n$ the number of leaves~\cite{Whidden2015-yi}.
 Here we reduce that time to $\OhOf{mn^3}$.
 Note that for the full rSPR graph, $m$ is the rapidly growing function $(2n-3)!!$, that is, $3 \cdot 5 \cdot \ldots \cdot (2n-3)$, and this is therefore a significant improvement in practice, as we demonstrate below.
@@ -341,7 +346,7 @@ The input to our algorithm is a set $\mathcal{T}$ of phylogenetic trees in the $
 These representations are made unique by ordering each tree so that leftmost subtrees contain the smallest alphanumeric label of descendants.
 We construct a mapping from each tree $T_i$ to its order index in this list $i$.
 Begin with an empty graph $G$.
-For each tree $T_i$, we first add a vertex $i$ to the graph and then use Corollary~\ref{cor:enumerate_neighbors} to enumerate the $\OhOf{n^2}$ neighbors of $T_i$ in the rSPR graph in $\OhOf{n^3}$-time.
+For each tree $T_i$, we first add a vertex $i$ to the graph and then use Corollary~\ref{cor:enumerate_neighbors} below to enumerate the $\OhOf{n^2}$ neighbors of $T_i$ in the rSPR graph in $\OhOf{n^3}$-time.
 This efficient enumeration procedure is the key step required to achieve our desired running time of $\OhOf{mn^3}$.
 We use the tree to index mappings to determine whether these trees are already vertices of the graph and, if so, add an edge in the graph from $T_i$ to each such neighbor $T_j$.
 The high-level steps are as follows, and we show in Theorem~\ref{thm:construct_graph} that this algorithm is correct and can be implemented to run in the stated time.
@@ -603,7 +608,7 @@ The number of such ``squares'' involving two adjacent trees will play a key role
 \begin{restatable}{cor}{pairedneighbors}
 \label{cor:paired_neighbors}
 Continuing with the setting and notation in Lemma~\ref{lem:degree_change}, at least
-$$o := \deg(T) - 2kb - 2(j-1) = \deg(S) - 2ka - 2(i-1)$$
+$$\overlap := \deg(T) - 2kb - 2(j-1) = \deg(S) - 2ka - 2(i-1)$$
 trees in the neighborhood of $T$ can be paired with $o$ trees in the neighborhood of $S$ such that the pairings are disjoint and $\dspr{T',S'} = 1$ for each $(T',S')$ pair.
 \end{restatable}
 
@@ -852,7 +857,7 @@ Thus the difference in rSPR degree is $2ka - 2kb + 2(i-1) - 2(j-1)$ as claimed.
 
 \pairedneighbors*
 \begin{proof}
-By the same arguments as in the proof of Lemma~\ref{lem:degree_change}, $o$ rSPR moves can be applied to $T$ and $S$ with the same source and target nodes.
+By the same arguments as in the proof of Lemma~\ref{lem:degree_change}, $\overlap$ rSPR moves can be applied to $T$ and $S$ with the same source and target nodes.
 For each such $(T',S')$ pair, we can move $R$ in either tree to obtain the other member of the pair.
 \end{proof}
 
@@ -919,7 +924,7 @@ Because $d(T_n, S_n) = 1$, we will prove the theorem by showing that the mass tr
 
 To start we demonstrate the theorem in the case that $T_n$ and $S_n$ have the same number of neighbors.
 First we claim that $W_{1,n}$ is bounded above by $(\degree{T_n}+\OhOf{kn})/\degree{T_n}$ by exhibiting a mass transport program satisfying that bound.
-Let $(T'_n, S'_n)$ be any of the $o$ pairs of neighbors of $(T_n, S_n)$ which are one rSPR move apart as per Corollary~\ref{cor:paired_neighbors}.
+Let $(T'_n, S'_n)$ be any of the $\overlap$ pairs of neighbors of $(T_n, S_n)$ which are one rSPR move apart as per Corollary~\ref{cor:paired_neighbors}.
 We pair these trees in the mass transport.
 There are $\OhOf{kn}$ trees unmatched by this pairing, and we can pair each of them arbitrarily with another tree of distance at most 3.
 Thus, $W_{1,n}$ is bounded above by $(\degree{T_n} + \OhOf{kn}) / \degree{T_n}$.
@@ -966,7 +971,7 @@ The maximum curvature is thus $1 - \frac{\degree{T} - (6n-17)}{\degree{T}} = \fr
 	This gives a lower bound of $1 - (1 + 2m) / 1) = -2m$ on the curvature.
 
 	By Lemmas~\ref{lem:degree_change} and~\ref{lem:degree_max_delta_adjacent}, the latter effect is maximized when the relative degree change is maximized.
-	By Corollary~\ref{cor:paired_neighbors}, there are at most $o := \degree{T} -2ka - 2(i-1)$ paired trees, bounding the former effect.
+	By Corollary~\ref{cor:paired_neighbors}, there are at most $\overlap := \degree{T} -2ka - 2(i-1)$ paired trees, bounding the former effect.
 	We now construct a pair of trees that maximizes both effects.
 	Let $S$ be the ladder tree with degree $3n^2 - 13n + 14$ and $T$ be the adjacent tree constructed by moving the lower $\floor{\frac{n}{2}}$ leaves of $S$ to the root.
 	$T$ has degree at most $3.5n^2 -15n + 16$.
