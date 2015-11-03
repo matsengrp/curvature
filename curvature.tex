@@ -226,8 +226,6 @@ These pairs occur infrequently in these well-connected graphs, however, they may
 In summary, we extend knowledge about an important graph for phylogenetics, specifically in a way that models phylogenetic MCMC search.
 
 The automated computational analysis code can be found at \url{https://github.com/matsengrp/curvature}.
-\cuttable[Figures, tables, and proofs of our theorems and lemmas can be found in the appendix.]
-
 
 \section{Preliminaries}
 
@@ -248,7 +246,7 @@ As in~\cite{bordewich05,whidden2013hybridization,Whidden2015-yi}, the tree is au
 We generally use $n$ to refer to the number of leaves in an $X$-tree.
 For a subset $V$ of $X$, $T(V)$ is the smallest subtree of $T$ that connects all nodes in $V$ (Fig.~\ref{fig:subtree}).
 The $V$-tree induced by $T$ is the smallest tree $T|V$ that can be obtained from $T(V)$ by suppressing unlabelled nodes with fewer than two children (Fig.~\ref{fig:induced}).
-For the rest of the paper, \textbf{we will assume that all phylogenetic trees are binary and rooted}\cuttable{, and thus that tree inclusion is rooted tree inclusion}.
+For the rest of the paper, \textbf{we will assume that all phylogenetic trees are binary and rooted}, and that tree inclusion is rooted tree inclusion.
 
 
 A \emph{parent (sub)tree} of a subtree $U$ is the smallest subtree strictly containing $U$.
@@ -262,7 +260,7 @@ Similarly, the LCA of two or more subtrees is the LCA of their parent nodes.
 A (rooted) \emph{subtree-prune-regraft} (rSPR) operation on an $X$-tree $T$ cuts an edge $e = (x, p_x)$ where $p_x$ denotes the parent of node $x$.
 $T$ is divided into two subtrees $T_x$ and $T_{p_x}$ containing $x$ and $p_x$, respectively.
 Then the operation adds a new node $p'_x$ to $T_{p_x}$ by subdividing an edge of $T_{p_x}$ and adding a new edge $(x, p'_x)$, making $x$ a child of $p'_x$.
-Finally, $p_x$ is suppressed\cuttable{, joining the two edges on either side of that node}.
+Finally, $p_x$ is suppressed, joining the two edges on either side of that node.
 See Figure~\ref{fig:spr} for an example.
 The inclusion of $\rho$ allows for rSPR moves which move subtrees to the root of the tree.
 
@@ -299,7 +297,7 @@ The \emph{coarse Ricci-Ollivier curvature} of $x$ and $y$ is then defined as:
 For the purposes of this paper, ``curvature'' without further specification will refer to \eqref{eq:curvatureDef}.
 We will use $\curvature{x,y}$ to denote the curvature of the simple (uniform choice of neighbor) random walk, and use $\curvature{\MH; x,y}$ to indicate curvature with respect to the Metropolis-Hastings random walk sampling the uniform distribution (described in detail in Section~\ref{sec:random_walks}).
 Positive curvature implies that the neighborhoods $m_x$ and $m_y$ are closer in transportation distance than point masses at $x$ and $y$, zero curvature implies that they are neither closer nor farther, and negative curvature implies that $m_x$ and $m_y$ are more distant than point masses at $x$ and $y$.
-Curvature thus provides an intuitive measure of the difficulty of moving between regions of the graph with \cuttable[a]{the given} random walk.
+Curvature thus provides an intuitive measure of the difficulty of moving between regions of the graph with the given random walk.
 \begin{figure}[!h]
 	\hspace*{\stretch{1}}
 	\includegraphics[width=0.5\textwidth]{figs/neighborhood}
@@ -456,7 +454,7 @@ We can thus apply the following algorithm to select a neighbor uniformly at rand
 
 \begin{restatable}{lem}{selectrandomneighbor}
 	\label{lem:select_random_neighbor}
-	An rSPR neighbor of a tree $T$ can be chosen uniformly at random in $\OhOf{n}$-time\cuttable{ using $\OhOf{n}$ space}.
+	An rSPR neighbor of a tree $T$ can be chosen uniformly at random in $\OhOf{n}$-time using $\OhOf{n}$ space.
 \end{restatable}
 
 Observe that this procedure can be easily adapted to explore the full neighborhood of a tree in $\OhOf{n^3}$ time, which we use for Theorem~\ref{thm:construct_graph}. We call the resulting procedure \textsc{Enumerate-rSPR-Neighbors($T$)}.
@@ -468,12 +466,12 @@ We thus have the following corollary:
 \end{cor}
 
 We implemented this procedure in the C++ package \texttt{random\_spr\_walk}~\cite{random_spr_walk}.
-We sampled \cuttable{a }200,000\cuttable{-iteration} random walk\cuttable[ iterations]{} on the 4-leaf rSPR graph and \cuttable{a }50,000-iteration\cuttable[s]{ random walk} on the 5-leaf rSPR graph.
+We sampled a 200,000-iteration random walk on the 4-leaf rSPR graph and a 50,000-iteration random walk on the 5-leaf rSPR graph.
 
 \section{Access times of random walks on the rSPR graph can be understood using distance, degree, and curvature}
 
 \subsection{Computing curvature values.}
-To compute curvature values, we first \cuttable[computed]{used \texttt{dense\_spr\_graph} to compute} the rSPR graph for four to seven leaves, as discussed in Section~\ref{sec:computing_treespace}.
+To compute curvature values, we first used \texttt{dense\_spr\_graph} to compute the rSPR graph for four to seven leaves, as discussed in Section~\ref{sec:computing_treespace}.
 We then computed curvatures for given pairs of trees directly, by using linear programming~\cite{Loisel2014-hu} to compute the minimal mass transport $W_1$ using the SAGE \cite{SAGE} front-end to the GLPK~\cite{glpk} solver; code can be found in \cite{gricci} which grew from the code described in \cite{Loisel2014-hu}.
 
 This would have required an enormous amount of computation to directly compute curvatures for the $((2n-3)!!)^2$ pairs of trees with $n$ leaves, even for the small values of $n$ we consider here.
@@ -513,11 +511,6 @@ The access time for a pair of vertices in a graph is the (random) number of iter
 In previous work, we computed mean access times (MAT) between pairs of trees in  MCMC random walks: the mean number of iterations required to move from one tree to the other.
 We applied this work to demonstrate the influence of SPR graph structure on real MCMC posteriors sampled with MrBayes~\cite{Whidden2015-yi} using \texttt{sprspace}~\cite{sprspace}.
 
-Here, to gain more insight, we used simulation to approximate the entire access time distribution.
-Again we use the insight that the access time for a pair of trees with a simple random walk does not depend on the actual labeling of those trees, but rather only on their relative labeling.
-Thus rather than enumerate access times between trees, which would have required a tremendous amount of memory and computational power to obtain accurate estimates, we enumerate times between pairs of trees in a tanglegram.
-To calculate the empirical distributions of access times we aggregate all access times for the same tanglegram using \cuttable{our }group-theoretic methods \cite{tangle}.
-
 \begin{table}
 \centering
 \caption{p-values for ordinary least squares linear multiple regression of rSPR mean access time against degree and distance (two-tailed $t$-test of regression coefficient). The p-values for 7 taxa are smaller than the machine precision used to calculate them.}
@@ -525,13 +518,10 @@ To calculate the empirical distributions of access times we aggregate all access
 \label{tab:regressionMAT}
 \end{table}
 
-We find that the mean access time between trees $T_1$ and $T_2$ is determined by $\degree{T_1}$ and $\degree{T_2}$ (Table~\ref{tab:regressionMAT}).
-Furthermore, plotting the distribution of access times between pairs of trees with respect to their distance and curvature hints that smaller $\kappa$ slightly shifts the distribution of access times towards larger access times (Fig.~\ref{fig:short-time-kappa-access}).
-We quantify this effect by defining $\delta_1$ to be the difference between the first pair of access time counts such that the second entry in the pair is nonzero.
-For example, $\delta_1$ for distance 1 pairs (green lines in Fig.~\ref{fig:kappa-access}) is the count for time 1 minus the count for time 2, while $\delta_1$ for distance 3 pairs (blue lines\cuttable{ in Fig.~\ref{fig:kappa-access}}) is the count for time 2 minus the count for time 3.
-Regression finds a clear influence of $\kappa$ on $\delta_1$ (Table~\ref{tab:regressionDelta}).
-This confirms the intuitive interpretation of $\kappa(T_1, T_2)$ as quantifying the propensity of a random walk to go from $T_1$ to $T_2$ relatively directly, certainly before the random walk achieves stationarity.
-On the other hand, if the random walk starting from $T_1$ does not quickly arrive at $T_2$\cuttable{ and instead achieves stationarity}, the original position of the random walk is forgotten, and the access time is then a standard exponentially distributed waiting time for an event in a Poisson process (Fig.~\ref{fig:long-time-kappa-access}).
+Here, to gain more insight, we used simulation to approximate the entire access time distribution.
+Again we use the insight that the access time for a pair of trees with a simple random walk does not depend on the actual labeling of those trees, but rather only on their relative labeling.
+Thus rather than enumerate access times between trees, which would have required a tremendous amount of memory and computational power to obtain accurate estimates, we enumerate times between pairs of trees in a tanglegram.
+To calculate the empirical distributions of access times we aggregate all access times for the same tanglegram using our group-theoretic methods \cite{tangle}.
 
 \begin{table}
 \centering
@@ -540,6 +530,15 @@ On the other hand, if the random walk starting from $T_1$ does not quickly arriv
 \label{tab:regressionDelta}
 \vspace{2em}
 \end{table}
+
+
+We find that the mean access time between trees $T_1$ and $T_2$ is determined by $\degree{T_1}$ and $\degree{T_2}$ (Table~\ref{tab:regressionMAT}).
+Furthermore, plotting the distribution of access times between pairs of trees with respect to their distance and curvature hints that smaller $\kappa$ slightly shifts the distribution of access times towards larger access times (Fig.~\ref{fig:short-time-kappa-access}).
+We quantify this effect by defining $\delta_1$ to be the difference between the first pair of access time counts such that the second entry in the pair is nonzero.
+For example, $\delta_1$ for distance 1 pairs (green lines in Fig.~\ref{fig:kappa-access}) is the count for time 1 minus the count for time 2, while $\delta_1$ for distance 3 pairs (blue lines in Fig.~\ref{fig:kappa-access}) is the count for time 2 minus the count for time 3.
+Regression finds a clear influence of $\kappa$ on $\delta_1$ (Table~\ref{tab:regressionDelta}).
+This confirms the intuitive interpretation of $\kappa(T_1, T_2)$ as quantifying the propensity of a random walk to go from $T_1$ to $T_2$ relatively directly, certainly before the random walk achieves stationarity.
+On the other hand, if the random walk starting from $T_1$ does not quickly arrive at $T_2$ and instead achieves stationarity, the original position of the random walk is forgotten, and the access time is then a standard exponentially distributed waiting time for an event in a Poisson process (Fig.~\ref{fig:long-time-kappa-access}).
 
 
 \begin{figure*}
@@ -585,7 +584,7 @@ We now bound the ratio and difference of rSPR degree between two trees with $n$ 
 \end{restatable}
 
 We can improve these bounds in the case of adjacent trees.
-To do so, we \cuttable{require the following lemma that }characterize\cuttable{s} exactly how the degree of a tree changes after an rSPR operation.
+To do so, we require the following lemma that characterizes how the degree of a tree changes after an rSPR operation.
 See Figure~\ref{fig:spr-degree-change} for an illustration.
 
 \begin{restatable}{lem}{degreechange}
@@ -626,7 +625,7 @@ We can now use Lemma~\ref{lem:degree_change} to improve the bounds in Lemma~\ref
 
 
 Next, we bound the number of neighbors shared by two adjacent trees.
-The number of such ``triangles'' involving two adjacent trees has a key role in determining whether \cuttable[their]{the} curvature \cuttable{of two adjacent trees }is positive or negative.
+The number of such ``triangles'' involving two adjacent trees has a key role in determining whether their curvature is positive or negative.
 
 \begin{restatable}{lem}{sharedneighbors}
 	\label{lem:shared_neighbors}
@@ -638,18 +637,17 @@ Then $\size{N(T) \cap N(S)} \le 6n - 17$.
 
 
 \section{Curvature}
-We now consider properties of the uniform \cuttable{(a.k.a.\ isotropic)} random walk on the $n$-leaf rSPR graph.
+We now consider properties of the uniform (a.k.a.\ isotropic) random walk on the $n$-leaf rSPR graph.
 Recall that the uniform random walk begins at a tree $T$ and moves to a tree uniformly at random from $N(T)$.
-\cuttable{We denote the coarse curvature of the uniform random walk between two trees $T$ and $S$ with $\curvature{T,S}$.}
-Recall that \cuttable[the coarse uniform random walk curvature ]{}$\curvature{T, S} := 1 - \frac{W_1(m_T, m_S)}{d(T, S)}$, where $W_{1,n}$ is the mass transport term \eqref{eq:curvatureDef}.
-For the uniform random walk, $m_T$ \cuttable[assigns]{is simply the probability measure assigning} a mass of $\frac{1}{\degree{T}}$ to each of $T$'s neighbors.
+Recall that the coarse uniform random walk curvature between two trees $T$ and $S$ is $\curvature{T, S} := 1 - \frac{W_1(m_T, m_S)}{d(T, S)}$, where $W_{1,n}$ is the mass transport term \eqref{eq:curvatureDef}.
+For the uniform random walk, $m_T$ is the probability measure assigning a mass of $\frac{1}{\degree{T}}$ to each of $T$'s neighbors.
 Our results follow from the lemmas of Section~\ref{sec:neighborhoods}.
 
 \begin{restatable}{thm}{flatcurvature}
 \label{thm:flat_curvature}
 Fix a positive integer $k$ and let $R$ be a tree with $k$ leaves.
 Let $\{T_n \mid n > k\}$ be a sequence of trees all containing $R$, and let $\{S_n \mid n > k\}$ be the same sequence $T_n$ but with $R$ cut off and attached at a different location.
-Then $\lim_{n \rightarrow \infty} \curvature{T_n,S_n} = 0$\cuttable{ for the uniform random walk on the rSPR graph}.
+Then $\lim_{n \rightarrow \infty} \curvature{T_n,S_n} = 0$ for the uniform random walk on the rSPR graph.
 \end{restatable}
 
 Next we note a simple and rough bound on the curvature of two trees with respect to their distance, then obtain a tighter bound on the maximum curvature of two adjacent trees.
@@ -681,7 +679,7 @@ We thus conjecture the following:
 	\end{enumerate}
 \end{conj}
 Proving or disproving this conjecture would go a long way toward understanding the effects of relative distance on curvature.
-\cuttable[W]{However, w}e suspect that this will require a \cuttable[new]{greater} understanding of the distribution of tree neighborhoods with respect to one another\cuttable{ than is currently known}.
+However, we suspect that this will require a greater understanding of the distribution of tree neighborhoods with respect to one another than is currently known.
 Next, we bound the minimum curvature of two adjacent trees.
 
 \begin{restatable}{lem}{curvaturelowerbound}
@@ -699,15 +697,15 @@ This directly leads to the following Corollary:
 	The curvature between two trees is at least $-\frac{2}{5}$.
 \end{cor}
 
-Note that this bound is not tight (at least for small $n$)\cuttable{ as it is rarely necessary to transport mass the maximum distance between unpaired trees}.
-\cuttable{We also note that the lower bounds in this section do not follow from the more general setting described in \cite{Jost2013-ce}.}
-However, we note that the pair of trees used in the proof of Lemma~\ref{lem:curvature_lower_bound} will always have negative curvature, for all $n \ge 7$.
+Note that this bound is not tight (at least for small $n$) as it is rarely necessary to transport mass the maximum distance between unpaired trees.
+We also note that the lower bounds in this section do not follow from the more general setting described in \cite{Jost2013-ce}.
+However, the pair of trees used in the proof of Lemma~\ref{lem:curvature_lower_bound} will always have negative curvature, for all $n \ge 7$.
 
 We next bound the difference between the coarse and asymptotic curvatures.
-Recall that $\curvature[p]{T,S}$ is the coarse Ricci-Ollivier curvature between trees $T$ and $S$ with respect to the lazy walk that \cuttable{remains at a given tree with probability $1-p$ and }moves with probability $p$.
+Recall that $\curvature[p]{T,S}$ is the coarse Ricci-Ollivier curvature between trees $T$ and $S$ with respect to the lazy walk that remains at a given tree with probability $1-p$ and moves with probability $p$.
 For the lazy uniform random walk, $m_T$ is now $T \cup N(T)$, with each neighbor assigned mass $\frac{p}{\degree{T}}$ and $T$ assigned the remaining $1 - p$ mass.
 The asymptotic Ricci-Ollivier curvature $\ric{T,S}$ is $\lim_{p \rightarrow 0} \curvature[p]{T,S} / p$.
-\cuttable[T]{As we now prove, t}hese two notions of curvature differ only by a small factor inversely proportional to the maximum degree of $T$ and $S$\cuttable[:]{.}
+As we now prove, these two notions of curvature differ only by a small factor inversely proportional to the maximum degree of $T$ and $S$.
 
 \begin{restatable}{lem}{asymptotic}
 \label{lem:asymptotic}
@@ -721,9 +719,9 @@ The asymptotic Ricci-Ollivier curvature $\ric{T,S}$ is $\lim_{p \rightarrow 0} \
 
 
 Finally, we bound the difference between the curvature of the uniform random walk $\curvature{T,S}$ and that of the Metropolis-Hastings (MH) random walk $\curvature{\MH; T,S}$.
-Recall that this random walk proposes a move from a tree $T$ to a neighbor tree $S$ uniformly at random and then accepts the move according to the Hastings ratio, \cuttable{which in this case is }$\min\left(1, \frac{\degree{T}}{\degree{S}}\right)$.
-The mass distribution \cuttable{for the MH random walk }thus leaves a portion of mass at the origin tree, proportional to the relative degree difference of its higher degree neighbors.
-Note that \cuttable{the same statement and proof of }Lemma~\ref{lem:asymptotic} holds with $\curvature{T,S}$ and $\ric{T,S}$ replaced by the MH curvatures $\curvature{\MH; T,S}$ and $\ric{\MH; T,S}$, respectively.
+Recall that this random walk proposes a move from a tree $T$ to a neighbor tree $S$ uniformly at random and then accepts the move according to the Hastings ratio, which in this case is $\min\left(1, \frac{\degree{T}}{\degree{S}}\right)$.
+The mass distribution for the MH random walk thus leaves a portion of mass at the origin tree, proportional to the relative degree difference of its higher degree neighbors.
+Note that the same statement and proof of Lemma~\ref{lem:asymptotic} holds with $\curvature{T,S}$ and $\ric{T,S}$ replaced by the MH curvatures $\curvature{\MH; T,S}$ and $\ric{\MH; T,S}$, respectively.
 
 \begin{restatable}{lem}{mhcurvature}
 	\label{lem:mh_curvature}
@@ -749,15 +747,16 @@ Finally, we proved that the coarse and asymptotic definitions of Ricci-Ollivier 
 In this data-free setting the stationary distribution is, unlike with real data, quite evenly spread over all trees.
 Correspondingly, we found that the influence of curvature is small in this case (Fig.~\ref{fig:short-time-kappa-access}) and that the probability of the target node in the stationary distribution predominantly determines access times for pairs of trees (Fig.~\ref{fig:long-time-kappa-access}).
 However, it is well known that MCMC takes a long time to approximate real phylogenetic posterior distributions even when the Bayesian credible set is small, and in fact our previous work showed significant SPR graph influence on the mixing time for phylogenetic MCMC for credible sets that had tens, hundreds or thousands of trees~\cite{Whidden2015-yi}.
-Thus, our next step will be to investigate curvature of MCMC with nontrivial likelihood functions, which will \cuttable{significantly }reduce the posterior distribution to a more realistic effective size, and \cuttable{in certain cases }will lead to significant ``bottlenecks'' like those we have observed in real data.
-\cuttable[T]{In those cases t}he curvature between \cuttable{two }trees at either end of a bottleneck will describe how difficult it is to traverse\cuttable{ the bottleneck}.
-\cuttable{Indeed, in both the setting of challenging real data and in simulation with a nontrivial likelihood function, the stationary distribution takes a long time to achieve, and thus the curvature will have a substantially greater impact on the overall hitting times rather than being a short prelude to waiting for a Poisson process event as it is here (Fig.~\ref{fig:kappa-access}).}
+Thus, our next step will be to investigate curvature of MCMC with nontrivial likelihood functions, which will reduce the posterior distribution to a more realistic effective size, and in certain cases will lead to significant ``bottlenecks'' like those we have observed in real data.
+In those cases the curvature between two trees at either end of a bottleneck will describe how difficult it is to traverse the bottleneck.
+%\cuttable{Indeed, in both the setting of challenging real data and in simulation with a nontrivial likelihood function, the stationary distribution takes a long time to achieve, and thus the curvature will have a substantially greater impact on the overall hitting times rather than being a short prelude to waiting for a Poisson process event as it is here (Fig.~\ref{fig:kappa-access}).}
 % We will likely follow previous work \cite{Stefankovic2011-hu} by taking a chain where tree topology likelihoods are maximized across branch length, as the classical phylogenetic likelihood \cite{felsenstein1981evolutionary} requires both branch length and topology.
 
-Now that we have established the foundations of using curvature to understand graphs relevant for phylogenetic inference, \cuttable[many graph structures remain to be explored including NNI graphs, unrooted SPR graphs, graphs of ranked trees~\cite{Song2006-xe}, graphs of BEAST~\cite{Drummond2012-ek} rooted ``time-trees,'' and random walks on other discrete structures such as partitions~\cite{Gusfield2002-il} that can be expressed as trees.]{we will extend this work in several directions in addition to adding a nontrivial likelihood function as just described.
-We will next consider the case of unrooted SPR, which is more commonly used in phylogenetic search.
-We will also explore random walks on ranked trees~\cite{Song2006-xe} and graphical models of tree space relevant for phylogenetic algorithms such as BEAST \cite{Drummond2012-ek} that infer rooted ``time-trees.''
-Random walks on other discrete structures such as partitions~\cite{Gusfield2002-il} that can be expressed as certain types of trees may also form interesting subjects for future work.}
+Now that we have established the foundations of using curvature to understand graphs relevant for phylogenetic inference, many graph structures remain to be explored including NNI graphs, unrooted SPR graphs, graphs of ranked trees~\cite{Song2006-xe}, graphs of BEAST~\cite{Drummond2012-ek} rooted ``time-trees,'' and random walks on other discrete structures such as partitions~\cite{Gusfield2002-il} that can be expressed as trees.
+%{we will extend this work in several directions in addition to adding a nontrivial likelihood function as just described.
+%We will next consider the case of unrooted SPR, which is more commonly used in phylogenetic search.
+%We will also explore random walks on ranked trees~\cite{Song2006-xe} and graphical models of tree space relevant for phylogenetic algorithms such as BEAST \cite{Drummond2012-ek} that infer rooted ``time-trees.''
+%Random walks on other discrete structures such as partitions~\cite{Gusfield2002-il} that can be expressed as certain types of trees may also form interesting subjects for future work.}
 
 
 \section{Acknowledgements}
@@ -812,7 +811,7 @@ They are also grateful to the authors of the SAGE and GAP4 software, especially 
 	Finally, we require linear time to apply the chosen rSPR operation which entails removing a node, adding a node, and updating a constant number of pointers.
 	Thus, the for loop requires linear time.
 	By Lemma~\ref{lem:compute_degree} the chosen tree is an rSPR neighbor of $T$ and is chosen uniformly at random.
-	Therefore, the procedure uses linear time and space and \cuttable[is correct]{selects an rSPR neighbor of $T$ uniformly at random}.
+	Therefore, the procedure uses linear time and space and selects an rSPR neighbor of $T$ uniformly at random.
 \end{proof}
 
 \degreemaxdelta*
@@ -821,9 +820,9 @@ They are also grateful to the authors of the SAGE and GAP4 software, especially 
 	\begin{align*}
 		\frac{\degree{T}}{\degree{S}} \ge\ &\frac{3n^2 - 13n + 14}{4(n-2)^2 - 2 \sum_{m=1}^{n-2} \floor{\log_2(m+1)}} \\
 		\ge\ &\frac{3n^2 - 13n + 12}{4(n-2)^2 - 2(n-2)} \\
-		\cuttable{= \ &\frac{3n^2 - 13n + 12}{4n^2 - 16n + 16 - 2(n-2)} \\}
+		= \ &\frac{3n^2 - 13n + 12}{4n^2 - 16n + 16 - 2(n-2)} \\
 		= \ &\frac{3n^2 - 13n + 12}{4n^2 - 18n + 20} \\
-		\cuttable{\ge\ &\frac{3n^2 - 13n + 12}{4n^2 - 17\frac{1}{3}n + 18} &\forall n \ge 3, \\}
+		\ge\ &\frac{3n^2 - 13n + 12}{4n^2 - 17\frac{1}{3}n + 18} &\forall n \ge 3, \\
 	\end{align*}
 	which is greater than 3/4 when $n \ge 3$.
     Similarly for (ii):
@@ -832,7 +831,7 @@ They are also grateful to the authors of the SAGE and GAP4 software, especially 
 		&\le\ (4(n-2)^2 - 2 \sum_{m=1}^{n-2} \floor{\log_2(m+1)}) \\
 		&\ \ \ \ \ \ \ \ - (3n^2 - 13n + 14) \\
 		&\le\ (4(n-2)^2 - 2(n-2)) - (3n^2 - 13n + 14) \\
-		\cuttable{=\ &4n^2 - 16n + 16 - 2n +4 - 3n^2 + 13n - 14 \\}
+		=\ &4n^2 - 16n + 16 - 2n +4 - 3n^2 + 13n - 14 \\
 		&=\ n^2 - 5n + 6.
 	\end{align*}
 \end{proof}
@@ -844,9 +843,9 @@ The set of permissible rSPR moves changes in four different ways due to the move
 (ii) subtrees that include nodes on the path from $V$ to $L$ may no longer be moved into $R$ and its parent node,
 (iii) $R$'s parent subtree may now be moved into $U$, and
 (iv) $R$'s parent subtree may no longer be moved into $V$.
-No additional moves are introduced or blocked\cuttable{ by the original rSPR operation on $R$}.
+No additional moves are introduced or blocked by the original rSPR operation on $R$.
 
-Recall that a rooted tree with $k$ leaves has $2(k-1)$ internal edges\cuttable{(recall that we are excluding any ``root edge'' in these calculations)}.
+Recall that a rooted tree with $k$ leaves has $2(k-1)$ internal edges(recall that we are excluding any ``root edge'' in these calculations).
 In the first case there are $a$ subtrees that can now be moved onto the $2k$ edges in $R$ (including its newly introduced parent edge and one of the newly subdivided root edges of $V$) for a total gain of $2ka$ distinct moves.
 Similarly, we lose $2kb$ moves in the second case.
 In the third case, $R$'s parent subtree may now make $2(i-1)$ moves into $U$.
