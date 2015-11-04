@@ -226,6 +226,8 @@ These pairs occur infrequently in these well-connected graphs, however, they may
 In summary, we extend knowledge about an important graph for phylogenetics, specifically in a way that models phylogenetic MCMC search.
 
 The automated computational analysis code can be found at \url{https://github.com/matsengrp/curvature}.
+Selected proofs of our theorems and lemmas can be found in the appendix.
+Proofs omitted for space can be found in~\cite{curvature_arxiv}.
 
 \section{Preliminaries}
 
@@ -297,15 +299,15 @@ The \emph{coarse Ricci-Ollivier curvature} of $x$ and $y$ is then defined as:
 For the purposes of this paper, ``curvature'' without further specification will refer to \eqref{eq:curvatureDef}.
 We will use $\curvature{x,y}$ to denote the curvature of the simple (uniform choice of neighbor) random walk, and use $\curvature{\MH; x,y}$ to indicate curvature with respect to the Metropolis-Hastings random walk sampling the uniform distribution (described in detail in Section~\ref{sec:random_walks}).
 Positive curvature implies that the neighborhoods $m_x$ and $m_y$ are closer in transportation distance than point masses at $x$ and $y$, zero curvature implies that they are neither closer nor farther, and negative curvature implies that $m_x$ and $m_y$ are more distant than point masses at $x$ and $y$.
-Curvature thus provides an intuitive measure of the difficulty of moving between regions of the graph with the given random walk.
+Curvature thus provides an intuitive measure of the difficulty of moving between regions of the graph with a random walk.
 \begin{figure}[!h]
 	\hspace*{\stretch{1}}
-	\includegraphics[width=0.5\textwidth]{figs/neighborhood}
+	\includegraphics[width=0.43\textwidth]{figs/neighborhood}
 	\hspace*{\stretch{1}}
-	\caption{The neighborhood of an $X$-tree $T$ with 4 leaves, showing connections between neighbors.}
+	\caption{The neighborhood of an $X$-tree $T$ with 4 leaves, showing connections with $T$ and between neighbors.}
 	\label{fig:neighborhood}
 \end{figure}
-\vspace{0.1em} 
+\vspace{0.1em}
 
 \pagebreak
 
@@ -763,12 +765,14 @@ Now that we have established the foundations of using curvature to understand gr
 The authors would like to thank Alex Gavruskin, Vladimir Minin, and Bianca Viray for helpful discussions.
 They are also grateful to the authors of the SAGE and GAP4 software, especially Alexander Hulpke.
 
+\footnotesize
 \bibliographystyle{siam}
 \bibliography{curvature}
+\normalsize
 
 \appendix
 
-\section{Supplementary Proofs}
+\section{Selected Proofs}
 
 \constructgraph*
 \begin{proof}
@@ -814,6 +818,7 @@ They are also grateful to the authors of the SAGE and GAP4 software, especially 
 	Therefore, the procedure uses linear time and space and selects an rSPR neighbor of $T$ uniformly at random.
 \end{proof}
 
+\cuttable{
 \degreemaxdelta*
 \begin{proof}
 	To prove (i), we simply note from Lemma~\ref{lem:degree_extremes} that the ladder tree achieves the minimum degree, and the balanced tree achieves the maximum degree:
@@ -835,7 +840,9 @@ They are also grateful to the authors of the SAGE and GAP4 software, especially 
 		&=\ n^2 - 5n + 6.
 	\end{align*}
 \end{proof}
+}
 
+\cuttable{
 \degreechange*
 \begin{proof}
 The set of permissible rSPR moves changes in four different ways due to the movement of $R$:
@@ -853,12 +860,15 @@ Similarly, we lose $2(j-1)$ moves in the fourth case.
 
 Thus the difference in rSPR degree is $2ka - 2kb + 2(i-1) - 2(j-1)$ as claimed.
 \end{proof}
+}
 
+\cuttable{
 \pairedneighbors*
 \begin{proof}
 By the same arguments as in the proof of Lemma~\ref{lem:degree_change}, $\overlap$ rSPR moves can be applied to $T$ and $S$ with the same source and target nodes.
 For each such $(T',S')$ pair, we can move $R$ in either tree to obtain the other member of the pair.
 \end{proof}
+}
 
 \degreemaxdeltaadjacent*
 \begin{proof}
@@ -875,6 +885,10 @@ For each such $(T',S')$ pair, we can move $R$ in either tree to obtain the other
 	This corresponds to moving the bottom subtree of $\floor{\frac{n}{2}}$ or $\ceil{\frac{n}{2}}$ leaves in a ladder tree to the root.
 	Namely, we have $2(ka + 1 - j)$, where $j = n - k = a + 1$.
 	Let ${\Delta}N = \degree{S} - \degree{T}$.
+	\cuttable[
+		In both cases we have
+		$${\Delta}N \le 2\floorV{\frac{n-2}{2}}\ceilV{\frac{n-2}{2}},$$
+	]{
 	If we move the additional leaf, we have:
 	\begin{align*}
 		{\Delta}N &\le 2\left(\ceilXXL{\frac{n}{2}}\floorV{\frac{n-2}{2}}  + 1 - \left(\floorV{\frac{n-2}{2}} + 1\right)\right) \\
@@ -886,6 +900,7 @@ Similarly, if we do not move the additional leaf, we also have:
 	{\Delta}N &\le 2 \left(\ceilV{\frac{n-2}{2}}\floorXXL{\frac{n}{2}} +1 -  \left(\ceilV{\frac{n-2}{2}} + 1\right)\right) \\
 &= 2\floorV{\frac{n-2}{2}}\ceilV{\frac{n-2}{2}},
 \end{align*}
+}
 proving (i).
 
 The relative change in degree, $\frac{\degree{T}}{\degree{S}}$, can also be written as $\frac{\degree{T}}{\degree{T} + (\degree{S} - \degree{T})}$.
@@ -943,13 +958,16 @@ We again bound $W_{1,n}$ from below with $(\degree{T_n} - \OhOf{n}) / \degree{T_
 The theorem again follows because $\degree{T_n}$ is quadratic in $n$.
 \end{proof}
 
+\cuttable{
 \curvaturedistancebound*
 \begin{proof}
 	Observe that the distance between neighbors of $T$ and $S$ is bounded between $\dspr{T,S} - 2$ and $\dspr{T,S} + 2$.
 	For the curvature upper bound, we then have $\curvature{T,S} \le 1 - \frac{\dspr{T,S} - 2}{\dspr{T,S}} = \frac{2}{\dspr{T,S}}$.
 	The lower bound follows similarly.
 \end{proof}
+}
 
+\cuttable{
 \maxadjacentcurvature*
 \begin{proof}
 The maximum curvature between adjacent trees $T$ and $S$ occurs when their neighborhoods have maximum overlap and all other tree pairs are at distance 1.
@@ -960,6 +978,7 @@ This is minimized when $\degree{T}=\degree{S}$ are as small as possible, that is
 
 The maximum curvature is thus $1 - \frac{\degree{T} - (6n-17)}{\degree{T}} = \frac{6n - 17}{\degree{T}}= \frac{6n-17}{3n^2-13n+14}$.
 \end{proof}
+}
 
 \curvaturelowerbound*
 \begin{proof}
@@ -991,7 +1010,7 @@ The maximum curvature is thus $1 - \frac{\degree{T} - (6n-17)}{\degree{T}} = \fr
 	\begin{align*}
 		\frac{\curvature[p]{T,S}}{p} &= \left. \left(1 - \frac{W_1'(T,S)}{\dspr{T,S}}\right) \right/ p \\
 		&\ge \left. \left(1 - \frac{pW_1(T,S) + (1-p)\dspr{T,S}}{\dspr{T,S}}\right) \right/ p \\
-		&= \frac{1}{p} - \frac{W_1(T,S)}{\dspr{T,S}} - \frac{1-p}{p} \\
+		\cuttable{		&= \frac{1}{p} - \frac{W_1(T,S)}{\dspr{T,S}} - \frac{1-p}{p} \\}
 		&= 1 - \frac{W_1(T,S)}{\dspr{T,S}} \\
 		&= \curvature{T,S}.
 	\end{align*}
@@ -1005,6 +1024,7 @@ The maximum curvature is thus $1 - \frac{\degree{T} - (6n-17)}{\degree{T}} = \fr
 	Moreover, no mass can remain at $T$ or $S$ when $\dspr{T,S} > 1$, in which case the curvatures are equal.
 \end{proof}
 
+\cuttable{
 \mhcurvature*
 \begin{proof}
 	We first prove the lower bound.
@@ -1034,6 +1054,7 @@ The maximum curvature is thus $1 - \frac{\degree{T} - (6n-17)}{\degree{T}} = \fr
 	We obtain the upper bounds similarly to the lower bounds, by observing that the affected at most $\frac{1}{6}$ of the mass may move through at most two fewer trees (i.e. directly between $T$ and $S$ rather than a pair of neighbors at distance $\dspr{T,S} + 2$ from each other).
 	Again, this is at most one fewer tree when $\dspr{T,S}=1$.
 \end{proof}
+}
 
 \end{document}
 
