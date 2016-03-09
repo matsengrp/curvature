@@ -611,7 +611,6 @@ We begin by bounding differences between degrees, and then continue by consideri
 Many of our results in this section follow from a characterization of the change in degree and distribution of permissible rSPR moves after an rSPR move is applied.
 
 \begin{lem}[{Song~\citep{Song2003-gf}}]
-\cuttable{    \pushQED{\qed}}
 	\label{lem:degree_extremes}
 	For a tree $T$ with $n$ leaves:
 	\begin{enumerate}
@@ -619,7 +618,6 @@ Many of our results in this section follow from a characterization of the change
 		\item $\degree{T} = 4(n-2)^2 - 2 \sum_{m=1}^{n-2} \floor{\log_2(m+1)}$, if $T$ is a balanced tree, and
 		\item  $3n^2 - 13n + 14 \le \degree{T} \le 4(n-2)^2 - 2 \sum_{m=1}^{n-2} \floor{\log_2(m+1)}$, otherwise.
 	\end{enumerate}
-\cuttable{    \popQED}
 \end{lem}
 
 We now bound the ratio and difference of rSPR degree between two trees with $n$ leaves.
@@ -726,10 +724,6 @@ We can now use Lemma~\ref{lem:degree_change} to improve the bounds in Lemma~\ref
 	This corresponds to moving the bottom subtree of $\floor{\frac{n}{2}}$ or $\ceil{\frac{n}{2}}$ leaves in a ladder tree to the root.
 	Namely, we have $2(ka + 1 - j)$, where $j = n - k = a + 1$.
 	Let ${\Delta}N = \degree{S} - \degree{T}$.
-	\cuttable[
-		In both cases we have
-		$${\Delta}N \le 2\floorV{\frac{n-2}{2}}\ceilV{\frac{n-2}{2}},$$
-	]{
 	If we move the additional leaf, we have:
 	\begin{align*}
 		{\Delta}N &\le 2\left(\ceilXXL{\frac{n}{2}}\floorV{\frac{n-2}{2}}  + 1 - \left(\floorV{\frac{n-2}{2}} + 1\right)\right) \\
@@ -741,7 +735,6 @@ Similarly, if we do not move the additional leaf, we also have:
 	{\Delta}N &\le 2 \left(\ceilV{\frac{n-2}{2}}\floorXXL{\frac{n}{2}} +1 -  \left(\ceilV{\frac{n-2}{2}} + 1\right)\right) \\
 &= 2\floorV{\frac{n-2}{2}}\ceilV{\frac{n-2}{2}},
 \end{align*}
-}
 proving (i).
 
 The relative change in degree, $\frac{\degree{T}}{\degree{S}}$, can also be written as $\frac{\degree{T}}{\degree{T} + (\degree{S} - \degree{T})}$.
@@ -934,7 +927,7 @@ As we now prove, these two notions of curvature differ only by a small factor in
 	\begin{align*}
 		\frac{\curvature[p]{T,S}}{p} &= \left. \left(1 - \frac{W_1'(T,S)}{\dspr{T,S}}\right) \right/ p \\
 		&\ge \left. \left(1 - \frac{pW_1(T,S) + (1-p)\dspr{T,S}}{\dspr{T,S}}\right) \right/ p \\
-		\cuttable{		&= \frac{1}{p} - \frac{W_1(T,S)}{\dspr{T,S}} - \frac{1-p}{p} \\}
+		&= \frac{1}{p} - \frac{W_1(T,S)}{\dspr{T,S}} - \frac{1-p}{p} \\
 		&= 1 - \frac{W_1(T,S)}{\dspr{T,S}} \\
 		&= \curvature{T,S}.
 	\end{align*}
@@ -1010,19 +1003,21 @@ Correspondingly, we found that the influence of curvature is small in this case 
 However, it is well known that MCMC takes a long time to approximate real phylogenetic posterior distributions even when the Bayesian credible set is small, and in fact our previous work showed significant SPR graph influence on the mixing time for phylogenetic MCMC for credible sets that had tens, hundreds or thousands of trees~\citep{Whidden2015-yi}.
 Thus, our next step will be to investigate curvature of MCMC with nontrivial likelihood functions, which will reduce the posterior distribution to a more realistic effective size, and in certain cases will lead to significant ``bottlenecks'' like those we have observed in real data.
 In those cases the curvature between two trees at either end of a bottleneck will describe how difficult it is to traverse the bottleneck.
-%\cuttable{Indeed, in both the setting of challenging real data and in simulation with a nontrivial likelihood function, the stationary distribution takes a long time to achieve, and thus the curvature will have a substantially greater impact on the overall hitting times rather than being a short prelude to waiting for a Poisson process event as it is here (Fig.~\ref{fig:kappa-access}).}
-% We will likely follow previous work \citep{Stefankovic2011-hu} by taking a chain where tree topology likelihoods are maximized across branch length, as the classical phylogenetic likelihood \citep{felsenstein1981evolutionary} requires both branch length and topology.
+Indeed, in both the setting of challenging real data and in simulation with a nontrivial likelihood function, the stationary distribution takes a long time to achieve, and thus the curvature will have a substantially greater impact on the overall hitting times rather than being a short prelude to waiting for a Poisson process event as it is here (Fig.~\ref{fig:kappa-access}).
+One avenue of exploration will be to follow previous work \citep{Stefankovic2011-hu} by taking a chain where tree topology likelihoods are maximized across branch length, as the classical phylogenetic likelihood \citep{felsenstein1981evolutionary} requires both branch length and topology.
 
-Now that we have established the foundations of using curvature to understand graphs relevant for phylogenetic inference, many graph structures remain to be explored including NNI graphs, unrooted SPR graphs, graphs of ranked trees~\citep{Song2006-xe}, graphs of BEAST~\citep{Drummond2012-ek} rooted ``time-trees,'' and random walks on other discrete structures such as partitions~\citep{Gusfield2002-il} that can be expressed as trees.
-%{we will extend this work in several directions in addition to adding a nontrivial likelihood function as just described.
-%We will next consider the case of unrooted SPR, which is more commonly used in phylogenetic search.
-%We will also explore random walks on ranked trees~\citep{Song2006-xe} and graphical models of tree space relevant for phylogenetic algorithms such as BEAST \citep{Drummond2012-ek} that infer rooted ``time-trees.''
-%Random walks on other discrete structures such as partitions~\citep{Gusfield2002-il} that can be expressed as certain types of trees may also form interesting subjects for future work.}
+One could extend this work in several directions in addition to adding a nontrivial likelihood function as just described.
+Now that we have established the foundations of using curvature to understand graphs relevant for phylogenetic inference, many graph structures remain to be explored.
+In particular, the case of unrooted SPR, which is also commonly used in phylogenetic search, is an obvious next step.
+One could also explore random walks on ranked trees~\citep{Song2006-xe} and graphical models of tree space relevant for phylogenetic algorithms such as BEAST \citep{Drummond2012-ek} that infer rooted ``time-trees.''
+Random walks on other discrete structures such as partitions~\citep{Gusfield2002-il} that can be expressed as certain types of trees may also form interesting subjects for future work.
 
 
 \section{Acknowledgements}
 The authors would like to thank Alex Gavruskin, Vladimir Minin, and Bianca Viray for helpful discussions.
 They are also grateful to the authors of the SAGE and GAP4 software, especially Alexander Hulpke.
+A preliminary version of this work appeared in the 2016 Proceedings of the Thirteenth Workshop on Analytic Algorithmics and Combinatorics (ANALCO).
+The authors would like to thank the conference organizers, reviewers, and attendees for helpful comments and discussions that greatly improved this full version of our work.
 
 \bibliographystyle{elsarticle-num}
 \bibliography{curvature}
