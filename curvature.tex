@@ -279,6 +279,15 @@ Finally, $p_x$ is suppressed, joining the two edges on either side of that node.
 See Figure~\ref{fig:spr} for an example.
 The inclusion of $\rho$ allows for rSPR moves which move subtrees to the root of the tree.
 
+\begin{figure}
+	\hspace*{\stretch{1}}
+	\subfigure[\label{fig:4-taxa-treespace}]{\includegraphics[width=0.55\textwidth]{figs/4-taxa-treespace}}
+	\hspace*{\stretch{2}}
+	\subfigure[\label{fig:neighborhood}]{\includegraphics[width=0.4\textwidth]{figs/neighborhood}}
+	\hspace*{\stretch{1}}
+	\caption{(a) The rSPR graph of $X$-trees with 4 leaves. (b) The neighborhood of an $X$-tree $T$ with 4 leaves, showing connections with $T$ and between neighbors.}
+\end{figure}
+
 rSPR operations give rise to a distance measure between $X$-trees: $\dspr{T_1, T_2}$ is the minimum number of rSPR operations required to transform an $X$-tree $T_1$ into $T_2$.
 For example, the trees in Figure~\ref{fig:two-spr} are separated by two rSPR operations.
 Moreover, rSPR operations naturally give rise to a graph on the set of $X$-trees for which this distance is simply the shortest-path graph distance.
@@ -314,14 +323,6 @@ For the purposes of this paper, ``curvature'' without further specification will
 We will use $\curvature{x,y}$ to denote the curvature of the simple (uniform choice of neighbor) random walk, and use $\curvature{\MH; x,y}$ to indicate curvature with respect to the Metropolis-Hastings random walk sampling the uniform distribution (described in detail in Section~\ref{sec:random_walks}).
 Positive curvature implies that the neighborhoods $m_x$ and $m_y$ are closer in transportation distance than point masses at $x$ and $y$, zero curvature implies that they are neither closer nor farther, and negative curvature implies that $m_x$ and $m_y$ are more distant than point masses at $x$ and $y$.
 Curvature thus provides an intuitive measure of the difficulty of moving between regions of the graph with a random walk.
-\begin{figure}
-	\hspace*{\stretch{1}}
-	\subfigure[\label{fig:4-taxa-treespace}]{\includegraphics[width=0.55\textwidth]{figs/4-taxa-treespace}}
-	\hspace*{\stretch{2}}
-	\subfigure[\label{fig:neighborhood}]{\includegraphics[width=0.4\textwidth]{figs/neighborhood}}
-	\hspace*{\stretch{1}}
-	\caption{(a) The rSPR graph of $X$-trees with 4 leaves. (b) The neighborhood of an $X$-tree $T$ with 4 leaves, showing connections with $T$ and between neighbors.}
-\end{figure}
 
 Lin et al.~\citep{lin2011ricci} defined a variant definition of curvature in terms of lazy random walks which Loisel and Romon~\citep{Loisel2014-hu} dubbed the \emph{asymptotic Ricci-Olivier curvature}.
 The lazy random walk only travels according to $m_x$ with probability $p$ and otherwise stays put.
@@ -476,16 +477,6 @@ We can thus apply the following algorithm to select a neighbor uniformly at rand
 \item Return the neighbor $S$.
 \end{enumerate}
 
-\begin{figure*}
-	\hspace*{\stretch{1}}
-	\subfigure[6 taxa]{\includegraphics[width=3in]{figs/rspr-upmh-scatter6}}
-	\hspace*{\stretch{2}}
-	\subfigure[7 taxa]{\includegraphics[width=3in]{figs/rspr-upmh-scatter7}}
-	\hspace*{\stretch{1}}
-    \caption{Scatter plot of $\curvature{\MH; T_1,T_2}$ values versus $\dspr{T_1,T_2}$ for the rSPR graph. Color displays the average degree of $T_1$ and $T_2$. Distance values randomly perturbed (``jittered'') a small amount to avoid superimposed points.}
-	\label{fig:rspr-scatter}
-\end{figure*}
-
 
 \begin{lem}
 	\label{lem:select_random_neighbor}
@@ -531,6 +522,16 @@ $\{(((1,4),2),3), ((1,4),(2,3))\}$
 are the same after relabeling, so their curvatures are the same.
 We thus directly computed curvature values for one representative pair from each such equivalence class, or \emph{tanglegram} \citep{Venkatachalam2010-zh}; the group-theoretic enumeration methods are described in a manuscript in preparation, and the SAGE \citep{SAGE} and GAP4 \citep{GAP4} code is at \citep{tangle}.
 
+\begin{figure*}
+	\hspace*{\stretch{1}}
+	\subfigure[6 taxa]{\includegraphics[width=2.3in]{figs/rspr-upmh-scatter6}}
+	\hspace*{\stretch{2}}
+	\subfigure[7 taxa]{\includegraphics[width=2.3in]{figs/rspr-upmh-scatter7}}
+	\hspace*{\stretch{1}}
+    \caption{Scatter plot of $\curvature{\MH; T_1,T_2}$ values versus $\dspr{T_1,T_2}$ for the rSPR graph. Color displays the average degree of $T_1$ and $T_2$. Distance values randomly perturbed (``jittered'') a small amount to avoid superimposed points.}
+	\label{fig:rspr-scatter}
+\end{figure*}
+
 We find a wide variation in curvature among tanglegrams (Figure~\ref{fig:rspr-scatter}).
 Curvature values tended to increase with increasing rSPR distance, and their variance decreased with increasing distance.
 Neighboring trees achieved minimum curvature values for a given number of leaves, and we found maximum curvature values between trees at maximum distance or one rSPR move closer than the maximum.
@@ -539,21 +540,6 @@ This suggests that the increased difficulty of moving between trees with a rando
 Larger rSPR graphs tended to have smaller curvature values.
 Indeed, the 7-leaf rSPR graph contained adjacent pairs of trees with negative curvature.
 Such pairs indicate difficult paths for phylogenetic searches, which may be exacerbated by likelihood or branch length constraints.
-
-\begin{figure*}
-	\hspace*{\stretch{1}}
-	\subfigure[\label{fig:short-time-kappa-access}]{\includegraphics[width=3in]{figs/short-time-kappa-access}}
-	\hspace*{\stretch{2}}
-	\subfigure[\label{fig:long-time-kappa-access}]{\includegraphics[width=3in]{figs/long-time-kappa-access}}
-	\hspace*{\stretch{1}}
-    \caption{\
-        Distribution of rSPR $\MH$ access times for those pairs of 5-taxon trees with degree 24 that are not simple inclusions of 4-taxon pairs of trees.
-        Color signifies rSPR distance between the trees, with green, orange, and blue signifying distances of 1, 2, and 3, respectively; the saturation of the color shows coarse curvature $\curvature{\MH; \cdot, \cdot}$, such that increased saturation (i.e.\ darker color) indicates a smaller $\kappa$.
-        }
-	\label{fig:kappa-access}
-\end{figure*}
-
-
 
 \subsection{Access time simulation.}
 The access time for a pair of vertices in a graph is the (random) number of iterations required to go from one of the vertices to the other in a random walk~\citep{lovasz1993random}; we were interested in the connection between curvature and access time.
@@ -580,6 +566,18 @@ To calculate the empirical distributions of access times we aggregate all access
 \vspace{2em}
 \end{table}
 
+\begin{figure*}
+	\hspace*{\stretch{1}}
+	\subfigure[\label{fig:short-time-kappa-access}]{\includegraphics[width=2.3in]{figs/short-time-kappa-access}}
+	\hspace*{\stretch{2}}
+	\subfigure[\label{fig:long-time-kappa-access}]{\includegraphics[width=2.3in]{figs/long-time-kappa-access}}
+	\hspace*{\stretch{1}}
+    \caption{\
+        Distribution of rSPR $\MH$ access times for those pairs of 5-taxon trees with degree 24 that are not simple inclusions of 4-taxon pairs of trees.
+        Color signifies rSPR distance between the trees, with green, orange, and blue signifying distances of 1, 2, and 3, respectively; the saturation of the color shows coarse curvature $\curvature{\MH; \cdot, \cdot}$, such that increased saturation (i.e.\ darker color) indicates a smaller $\kappa$.
+        }
+	\label{fig:kappa-access}
+\end{figure*}
 
 We find that the mean access time between trees $T_1$ and $T_2$ is determined by $\degree{T_1}$ and $\degree{T_2}$ (Table~\ref{tab:regressionMAT}).
 Furthermore, plotting the distribution of access times between pairs of trees with respect to their distance and curvature hints that smaller $\kappa$ slightly shifts the distribution of access times towards larger access times (Fig.~\ref{fig:short-time-kappa-access}).
@@ -589,15 +587,6 @@ Regression finds a clear influence of $\kappa$ on $\delta_1$ (Table~\ref{tab:reg
 This confirms the intuitive interpretation of $\kappa(T_1, T_2)$ as quantifying the propensity of a random walk to go from $T_1$ to $T_2$ relatively directly, certainly before the random walk achieves stationarity.
 On the other hand, if the random walk starting from $T_1$ does not quickly arrive at $T_2$ and instead achieves stationarity, the original position of the random walk is forgotten, and the access time is then a standard exponentially distributed waiting time for an event in a Poisson process (Fig.~\ref{fig:long-time-kappa-access}).
 
-
-\begin{figure*}
-	\hspace*{\stretch{1}}
-	\includegraphics[width=0.8\textwidth]{figs/spr-degree-change}
-	\hspace*{\stretch{1}}
-	\caption{An rSPR move labelled as in Lemma~\ref{lem:degree_change}.
-Moving the grey subtree $R$ from its position adjacent to $U$ in tree $T$ to its position adjacent to $V$ in tree $S$ changes the rSPR degree by $2\left(k(a-b) + i - j\right)$.}
-	\label{fig:spr-degree-change}
-\end{figure*}
 
 
 The analysis can be reproduced by invoking the SCons (\url{http://scons.org/}) build tool and running the cells in an IPython notebook; instructions are in the repository README file.
@@ -618,6 +607,7 @@ Many of our results in this section follow from a characterization of the change
 		\item  $3n^2 - 13n + 14 \le \degree{T} \le 4(n-2)^2 - 2 \sum_{m=1}^{n-2} \floor{\log_2(m+1)}$, otherwise.
 	\end{enumerate}
 \end{lem}
+
 
 We now bound the ratio and difference of rSPR degree between two trees with $n$ leaves.
 \begin{lem}
@@ -649,6 +639,16 @@ We now bound the ratio and difference of rSPR degree between two trees with $n$ 
 		&=\ n^2 - 5n + 6.
 	\end{align*}
 \end{proof}
+
+\begin{figure*}
+	\hspace*{\stretch{1}}
+	\includegraphics[width=0.8\textwidth]{figs/spr-degree-change}
+	\hspace*{\stretch{1}}
+	\caption{An rSPR move labelled as in Lemma~\ref{lem:degree_change}.
+Moving the grey subtree $R$ from its position adjacent to $U$ in tree $T$ to its position adjacent to $V$ in tree $S$ changes the rSPR degree by $2\left(k(a-b) + i - j\right)$.}
+	\label{fig:spr-degree-change}
+\end{figure*}
+
 
 We can improve these bounds in the case of adjacent trees.
 To do so, we require the following lemma that characterizes how the degree of a tree changes after an rSPR operation.
