@@ -284,6 +284,7 @@ For example, the trees in Figure~\ref{fig:two-spr} are separated by two rSPR ope
 Moreover, rSPR operations naturally give rise to a graph on the set of $X$-trees for which this distance is simply the shortest-path graph distance.
 Let $\mathcal{T}_n$ be the set of trees with $n$ leaves and label set $X = \set{1, 2, \ldots n, \rho}$.
 Then the rSPR graph $G$ of $\mathcal{T}_n$ is the graph with vertex set $V(G) = \mathcal{T}_n$ and edge set $E(G) = \set{(T,S) \mid \dspr{T,S} = 1, T \in V, S \in V}$.
+Figure~\ref{fig:4-taxa-treespace} illustrates the rSPR graph of 4-leaf trees.
 
 To avoid confusion between the two types of graph structures considered here, we refer to vertices of the rSPR graph as \emph{vertices} and vertices of individual trees (i.e.\ leaves and internal nodes) as \emph{nodes}.
 Let $N(T)$ be the set of rSPR neighbors of a tree $T$ (this does not include $T$).
@@ -313,12 +314,13 @@ For the purposes of this paper, ``curvature'' without further specification will
 We will use $\curvature{x,y}$ to denote the curvature of the simple (uniform choice of neighbor) random walk, and use $\curvature{\MH; x,y}$ to indicate curvature with respect to the Metropolis-Hastings random walk sampling the uniform distribution (described in detail in Section~\ref{sec:random_walks}).
 Positive curvature implies that the neighborhoods $m_x$ and $m_y$ are closer in transportation distance than point masses at $x$ and $y$, zero curvature implies that they are neither closer nor farther, and negative curvature implies that $m_x$ and $m_y$ are more distant than point masses at $x$ and $y$.
 Curvature thus provides an intuitive measure of the difficulty of moving between regions of the graph with a random walk.
-\begin{figure}[!h]
+\begin{figure}
 	\hspace*{\stretch{1}}
-	\includegraphics[width=0.43\textwidth]{figs/neighborhood}
+	\subfigure[\label{fig:4-taxa-treespace}]{\includegraphics[width=0.55\textwidth]{figs/4-taxa-treespace}}
+	\hspace*{\stretch{2}}
+	\subfigure[\label{fig:neighborhood}]{\includegraphics[width=0.4\textwidth]{figs/neighborhood}}
 	\hspace*{\stretch{1}}
-	\caption{The neighborhood of an $X$-tree $T$ with 4 leaves, showing connections with $T$ and between neighbors.}
-	\label{fig:neighborhood}
+	\caption{(a) The rSPR graph of $X$-trees with 4 leaves. (b) The neighborhood of an $X$-tree $T$ with 4 leaves, showing connections with $T$ and between neighbors.}
 \end{figure}
 
 Lin et al.~\citep{lin2011ricci} defined a variant definition of curvature in terms of lazy random walks which Loisel and Romon~\citep{Loisel2014-hu} dubbed the \emph{asymptotic Ricci-Olivier curvature}.
