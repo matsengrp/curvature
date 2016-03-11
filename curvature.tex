@@ -599,8 +599,14 @@ The analysis can be reproduced by invoking the SCons (\url{http://scons.org/}) b
 \section{Rooted SPR Neighborhoods}
 \label{sec:neighborhoods}
 Having made the connection between curvature values and access times on rSPR graphs, we now consider curvature theoretically.
+In this section we consider properties of neighborhoods of trees in rSPR graphs.
+We will use these properties to bound curvature values in Section~\ref{sec:curvature}.
+
 We begin by bounding differences between degrees, and then continue by considering features relevant to the earth mover's distance that we call ``squares" and ``triangles" in the rSPR graph.
 Many of our results in this section follow from a characterization of the change in degree and distribution of permissible rSPR moves after an rSPR move is applied.
+
+Our first lemma of this section comes from Song, who characterized the degrees of ladder trees and balanced trees, and showed that the degrees of all other trees fall between these two extremes.
+Note that every tree degree is quadratic with respect to the number of leaves in the tree.
 
 \begin{lem}[{Song~\citep{Song2003-gf}}]
 	\label{lem:degree_extremes}
@@ -612,8 +618,8 @@ Many of our results in this section follow from a characterization of the change
 	\end{enumerate}
 \end{lem}
 
+We can apply Lemma~\ref{lem:degree_extremes} to bound the ratio and difference of rSPR degree between any two arbitrary trees with $n$ leaves:
 
-We now bound the ratio and difference of rSPR degree between two trees with $n$ leaves.
 \begin{lem}
 	\label{lem:degree_max_delta}
 	Let $T$,$S$ be trees with $n \ge 3$ leaves, and assume w.l.o.g. that $\degree{T} \le \degree{S}$.
@@ -653,9 +659,10 @@ Moving the grey subtree $R$ from its position adjacent to $U$ in tree $T$ to its
 	\label{fig:spr-degree-change}
 \end{figure*}
 
-
-We can improve these bounds in the case of adjacent trees.
-To do so, we require the following lemma that characterizes how the degree of a tree changes after an rSPR operation.
+Pairs of trees that are close in the graph can not achieve these extreme degree differences.
+In our next lemma, we characterize how the degree of a tree changes after an rSPR operation.
+We show that the magnitude of the degree change depends solely on the size of the subtree to be moved, the difference between the depths of its original and new locations, and the size of its original and new neighboring subtrees.
+This relation allows us to improve the degree bounds between adjacent trees.
 See Figure~\ref{fig:spr-degree-change} for an illustration.
 
 \begin{lem}
@@ -686,10 +693,11 @@ Similarly, we lose $2(j-1)$ moves in the fourth case.
 Thus the difference in rSPR degree is $2ka - 2kb + 2(i-1) - 2(j-1)$ as claimed.
 \end{proof}
 
+
 Moreover, we can use these ideas to determine the number of rSPR moves that are, in some respects, independent of a given rSPR move.
 That is, for two trees $S$ and $T$ differing by a single rSPR move, we wish to know the number of rSPR moves that are applicable to both trees rather than unique to one of the trees.
 To formalize this concept, consider pairs of trees $T' \in N(T)$ and $S' \in S(T)$ such that $\dspr{T',S'} = 1$.
-The number of such ``squares'' involving two adjacent trees will play a key role in our curvature bounds, as they push the curvature of those trees towards 0.
+The number of such ``squares'' involving two adjacent trees will play a key role in our curvature bounds, as they signify pairs of matched paths that help push the curvature of those trees towards 0.
 
 \begin{cor}
 \label{cor:paired_neighbors}
@@ -702,7 +710,12 @@ By the same arguments as in the proof of Lemma~\ref{lem:degree_change}, $\overla
 For each such $(T',S')$ pair, we can move $R$ in either tree to obtain the other member of the pair.
 \end{proof}
 
-We can now use Lemma~\ref{lem:degree_change} to improve the bounds in Lemma~\ref{lem:degree_max_delta} for two adjacent trees.
+We now use Lemma~\ref{lem:degree_change} to improve the degree change bounds in Lemma~\ref{lem:degree_max_delta} for two adjacent trees.
+Surprisingly, we found that the degree change between two adjacent trees may be quadratic in $n$, that is of the same order as the degree itself.
+This maximum degree change occurs when a large subtree experiences a large depth change.\todo{Can we generalize this to more distant (but necessarily still close trees)?
+Idea: consider the moves induced by an AF, solve for max cumulative degree change.
+If so, add it and suggest a better version of this as future work in the conclusion.}
+
 \begin{lem}
 	\label{lem:degree_max_delta_adjacent}
 	Let $T$, $S$ be trees with $n \ge 3$ leaves, s.t. $\degree{T} \le \degree{S}$ and $\dspr{T,S} = 1$.
@@ -756,9 +769,10 @@ This bound is minimized when $\degree{T}$ is minimized, and recall by Lemma~\ref
 \end{proof}
 
 
-
-Next, we bound the number of neighbors shared by two adjacent trees.
-The number of such ``triangles'' involving two adjacent trees has a key role in determining whether their curvature is positive or negative.
+In our final lemma of this section, we bound the number of neighbors shared by two adjacent trees.
+The number of such ``triangles'' involving two adjacent trees has a key role in determining whether their curvature is positive, as mass assigned to a shared neighbor may not require a mass transport cost.
+We show that the maximum number of shared neighbors is linear in the number of leaves.
+In other words, only a small proportion of any two neighborhoods are shared and the relative size of shared neighborhoods grows much more slowly than the quadratic scaling of total neighborhood sizes.
 
 \begin{lem}
 	\label{lem:shared_neighbors}
@@ -782,6 +796,7 @@ Then $\size{N(T) \cap N(S)} \le 6n - 17$.
 
 
 \section{Curvature}
+\label{sec:curvature}
 We now consider properties of the uniform (a.k.a.\ isotropic) random walk on the $n$-leaf rSPR graph.
 Recall that the uniform random walk begins at a tree $T$ and moves to a tree uniformly at random from $N(T)$.
 Recall that the coarse uniform random walk curvature between two trees $T$ and $S$ is $\curvature{T, S} := 1 - \frac{W_1(m_T, m_S)}{d(T, S)}$, where $W_{1,n}$ is the mass transport term \eqref{eq:curvatureDef}.
