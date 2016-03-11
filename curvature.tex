@@ -143,7 +143,7 @@ We confirm using simulation that mean access time distributions depend on distan
 These calculations require fast new algorithms for constructing and sampling these graphs, reducing the time required to compute an rSPR graph from $O(m^2n)$-time to $O(mn^3)$, where $m$ is the (often large) number of trees in the graph and $n$ their number of leaves, and reducing the time required to select an SPR neighbor of a tree uniformly at random to $O(n)$ time.
 We then develop a closed form solution to characterize how the number of SPR neighbors of a tree changes after an SPR operation is applied to that tree.
 This gives bounds on the curvature, as well as a flatness-in-the-limit theorem indicating that paths of small topology changes are easy to traverse.
-However, we find that large topology changes (i.e. moving a large subtree) gives pairs of trees with negative curvature.
+However, we find that large topology changes (i.e. moving a large subtree) give pairs of trees with negative curvature.
 Although these pairs of trees with negative curvature do not impede mixing in this simple well-connected space, they may manifest as bottlenecks in the much smaller credible sets induced by phylogenetic posteriors with a likelihood function.
 This work extends our knowledge of the rSPR graph, in particular properties that are relevant for investigation of sampling the rSPR graph.
 \end{abstract}
@@ -285,7 +285,7 @@ The inclusion of $\rho$ allows for rSPR moves which move subtrees to the root of
 	\hspace*{\stretch{2}}
 	\subfigure[\label{fig:neighborhood}]{\includegraphics[width=0.4\textwidth]{figs/neighborhood}}
 	\hspace*{\stretch{1}}
-	\caption{(a) The rSPR graph of $X$-trees with 4 leaves. (b) The neighborhood of an $X$-tree $T$ with 4 leaves, showing connections with $T$ and between neighbors.}
+	\caption{(a) The rSPR graph of $X$-trees with 4 leaves. (b) The neighborhood of a particular $X$-tree $T$ with 4 leaves, showing connections with $T$ and between neighbors.}
 \end{figure}
 
 rSPR operations give rise to a distance measure between $X$-trees: $\dspr{T_1, T_2}$ is the minimum number of rSPR operations required to transform an $X$-tree $T_1$ into $T_2$.
@@ -405,7 +405,7 @@ We implemented this procedure in the C++ program \texttt{dense\_spr\_graph} of t
 The construction procedure reduced the time required to compute the 10,395-vertex 7-taxon rSPR graph from 2,104.68 seconds to 12.71 seconds on an Intel Core 2 Duo E7500 desktop running Ubuntu 14.04.
 Moreover, although we do not study the 135,135-vertex 8-taxon rSPR graph in this paper, our algorithm required only 303.45 seconds to construct it on the same hardware.
 Constructing the 8-taxon rSPR graph using the previous method required 377,395 seconds (more than 4 days), and thus that method is infeasible for constructing larger rSPR tree graphs.
-Thus, we believe our fast graph construction procedure will itself be useful for further studies of rSPR graph subsets similar to~\citep{Whidden2015-yi}, as the algorithm can quickly construct rSPR graphs for any given subset of trees.
+Thus, we believe our fast graph construction procedure will itself be useful for further studies of rSPR graph subsets induced by MCMC credible sets similar to~\citep{Whidden2015-yi}, as the algorithm can quickly construct rSPR graphs for any given subset of trees.
 
 \subsection{Simulating random walks on the rSPR graph.}
 \label{sec:random_walks}
@@ -459,9 +459,12 @@ We thus achieve a new method for computing the neighborhood size:
 
 
 
-In particular, this formulation implies a total ordering of rSPR moves such that every move moving the same subtree $R$ forms a contiguous subsequence.
-We can thus apply the following algorithm to select a neighbor uniformly at random for a tree $T$:
-
+This neighbor sequence implies a total ordering of rSPR moves such that every rSPR move which moves the same subtree $R$ forms a contiguous subsequence.
+We can use this fact to quickly select a neighbor uniformly at random for a tree $T$.
+Instead of directly computing each neighbor of $T$, we count the number of neighbors $\size{N(T,u)}$ in the sequence that can be reached by moving the subtree rooted at each node $u$ of $T$.
+We then use this list of neighbor counts to select the position of a uniformly random neighbor of $T$ in the total ordering and the subtree $R$ corresponding to that position.
+By generating only the neighbors of $T$ induced by moving the subtree $R$ we then quickly identify the specific neighbor of $T$.
+We thus achieve the following algorithm to select a neighbor uniformly at random for a tree $T$:
 
 \vspace{1em}
 \textsc{Select-rSPR-Neighbor($T$)}
@@ -477,6 +480,7 @@ We can thus apply the following algorithm to select a neighbor uniformly at rand
 \item Return the neighbor $S$.
 \end{enumerate}
 
+We now prove that this algorithm is correct and runs in linear time with respect to the number of leaves in the tree.
 
 \begin{lem}
 	\label{lem:select_random_neighbor}
@@ -506,7 +510,7 @@ We thus have the following corollary:
 \end{cor}
 
 We implemented this procedure in the C++ package \texttt{random\_spr\_walk}~\citep{random_spr_walk}.
-We sampled a 200,000-iteration random walk on the 4-leaf rSPR graph and a 50,000-iteration random walk on the 5-leaf rSPR graph.
+We sampled a 200,000-iteration random walk on the 4-leaf rSPR graph and a 50,000-iteration random walk on the 5-leaf rSPR graph.\todo{How many iterations for 6 and 7 leaves? Was this actually 5 and 6 leaves, not 4 and 5 leaves?}
 
 \section{Access times of random walks on the rSPR graph can be understood using distance, degree, and curvature}
 
