@@ -515,6 +515,7 @@ We sampled a 200,000-iteration random walk on the 5-leaf rSPR graph, a 50,000-it
 \section{Access times of random walks on the rSPR graph can be understood using distance, degree, and curvature}
 
 \subsection{Computing curvature values.}
+\label{sec:results:curvature}
 To compute curvature values, we first used \texttt{dense\_spr\_graph} to compute the rSPR graph for four to seven leaves, as discussed in Section~\ref{sec:computing_treespace}.
 We then computed curvatures for given pairs of trees directly, by using linear programming~\citep{Loisel2014-hu} to compute the minimal mass transport $W_1$ using the SAGE \citep{SAGE} front-end to the GLPK~\citep{glpk} solver; code can be found in \citep{gricci} which grew from the code described in \citep{Loisel2014-hu}.
 
@@ -797,11 +798,18 @@ Then $\size{N(T) \cap N(S)} \le 6n - 17$.
 
 \section{Curvature}
 \label{sec:curvature}
-We now consider properties of the uniform (a.k.a.\ isotropic) random walk on the $n$-leaf rSPR graph.
+In this section we apply the rSPR neighborhood properties we proved in Section~\ref{sec:neighborhoods} to derive bounds on curvature.
+In particular, we consider properties of the uniform (a.k.a.\ isotropic) random walk on the $n$-leaf rSPR graph.
+
 Recall that the uniform random walk begins at a tree $T$ and moves to a tree uniformly at random from $N(T)$.
 Recall that the coarse uniform random walk curvature between two trees $T$ and $S$ is $\curvature{T, S} := 1 - \frac{W_1(m_T, m_S)}{d(T, S)}$, where $W_{1,n}$ is the mass transport term \eqref{eq:curvatureDef}.
 For the uniform random walk, $m_T$ is the probability measure assigning a mass of $\frac{1}{\degree{T}}$ to each of $T$'s neighbors.
-Our results follow from the lemmas of Section~\ref{sec:neighborhoods}.
+
+In our first theorem of this section, we show that the curvature between two adjacent trees tends towards 0 as the size of the trees increase but the pruned and regrafted subtree remains fixed.
+To do so, we prove that the mass transport term between adjacent trees $T$ and $S$ is dominated by probability moved between neighbors of $T$ and $S$ that are also adjacent.
+The probability transported between members of these squares (Corollary~\ref{cor:paired_neighbors}) increases more quickly with $n$ than the probability transported between shared neighbor triangles (Lemma~\ref{lem:shared_neighbors}), and outweighs the effect of long distance probability moved between more distant neighbors or due to a difference in the degree of $T$ and $S$.
+
+This flatness-in-the-limit theorem helps explain our empirical results in Section~\ref{sec:results:curvature} showing that the distribution of curvature pairs tends more towards 0 as $n$ increases.
 
 \begin{thm}
 \label{thm:flat_curvature}
@@ -835,7 +843,9 @@ The theorem again follows because $\degree{T_n}$ is quadratic in $n$.
 \end{proof}
 
 
-Next we note a simple and rough bound on the curvature of two trees with respect to their distance, then obtain a tighter bound on the maximum curvature of two adjacent trees.
+Next we note a simple and rough bound on the curvature of two trees with respect to their distance.
+This bound arises naturally in any metric space with integer distances.
+
 
 \begin{lem}
 	\label{lem:curvature_distance_bound}
@@ -848,6 +858,8 @@ Next we note a simple and rough bound on the curvature of two trees with respect
 	The lower bound follows similarly.
 \end{proof}
 
+We now obtain a tighter bound on the maximum curvature between two adjacent trees.
+We do so by considering trees with a maximum intersecting set of neighbors using Lemma~\ref{lem:shared_neighbors}.
 
 \begin{lem}
 	\label{lem:max_adjacent_curvature}
@@ -881,7 +893,8 @@ We thus conjecture the following:
 \end{conj}
 Proving or disproving this conjecture would go a long way toward understanding the effects of relative distance on curvature.
 However, we suspect that this will require a greater understanding of the distribution of tree neighborhoods with respect to one another than is currently known.
-Next, we bound the minimum curvature of two adjacent trees.
+
+Next, we bound the minimum curvature of two adjacent trees by bounding the amount of probability mass that cannot be moved between adjacent neighbors.
 
 \begin{lem}
 \label{lem:curvature_lower_bound}
@@ -907,9 +920,8 @@ Next, we bound the minimum curvature of two adjacent trees.
 	The claim follows from multiplying this value by $-2$.
 \end{proof}
 
-
 We further observe that the limit of our curvature lower bound is $-\frac{2}{7}$.
-Complete enumeration with $n \le 7$ show that no pair of trees have curvature less than $-\frac{2}{5}$ and our bound meets or exceeds this value for $n > 7$.
+Complete enumeration with $n \le 7$ shows that no pair of trees have curvature less than $-\frac{2}{5}$ and our bound meets or exceeds this value for $n > 7$.
 Moreover, the rSPR distance is a metric, so this bounds the curvature for arbitrary pairs of trees (Proposition 19 of~\citep{Ollivier2009-bw}).
 This directly leads to the following Corollary:
 
@@ -920,6 +932,10 @@ This directly leads to the following Corollary:
 Note that this bound is not tight (at least for small $n$) as it is rarely necessary to transport mass the maximum distance between unpaired trees.
 We also note that the lower bounds in this section do not follow from the more general setting described in \citep{Jost2013-ce}.
 However, the pair of trees used in the proof of Lemma~\ref{lem:curvature_lower_bound} will always have negative curvature, for all $n \ge 7$.
+
+\begin{cor}
+For all $n \ge 7$, there exist two adjacent trees $T$ and $S$ with $n$ leaves such that $\curvature{T,S} < 0$
+\end{cor}
 
 We next bound the difference between the coarse and asymptotic curvatures.
 Recall that $\curvature[p]{T,S}$ is the coarse Ricci-Ollivier curvature between trees $T$ and $S$ with respect to the lazy walk that remains at a given tree with probability $1-p$ and moves with probability $p$.
@@ -959,11 +975,10 @@ As we now prove, these two notions of curvature differ only by a small factor in
 	Moreover, no mass can remain at $T$ or $S$ when $\dspr{T,S} > 1$, in which case the curvatures are equal.
 \end{proof}
 
-
-
 Finally, we bound the difference between the curvature of the uniform random walk $\curvature{T,S}$ and that of the Metropolis-Hastings (MH) random walk $\curvature{\MH; T,S}$.
 Recall that this random walk proposes a move from a tree $T$ to a neighbor tree $S$ uniformly at random and then accepts the move according to the Hastings ratio, which in this case is $\min\left(1, \frac{\degree{T}}{\degree{S}}\right)$.
 The mass distribution for the MH random walk thus leaves a portion of mass at the origin tree, proportional to the relative degree difference of its higher degree neighbors.
+In Lemma~\ref{lem:mh_curvature} we bound the effect of this mass on curvature and thereby bound the difference in curvatures of the two random walks.
 Note that the same statement and proof of Lemma~\ref{lem:asymptotic} holds with $\curvature{T,S}$ and $\ric{T,S}$ replaced by the MH curvatures $\curvature{\MH; T,S}$ and $\ric{\MH; T,S}$, respectively.
 
 \begin{lem}
@@ -1016,6 +1031,7 @@ We found that curvature, along with degree and distance, determine the early dyn
 Moreover, we proved that rSPR graph degree changes depend quadratically on the product of the size of the regrafted subtree with its change in depth, as well as that the rSPR graph tends toward flatness with respect to rSPR moves that move asymptotically small subtrees.
 Finally, we proved that the coarse and asymptotic definitions of Ricci-Ollivier curvature are closely related with respect to uniform and Metropolis-Hastings walks on the rSPR graph.
 
+
 In this data-free setting the stationary distribution is, unlike with real data, quite evenly spread over all trees.
 Correspondingly, we found that the influence of curvature is small in this case (Fig.~\ref{fig:short-time-kappa-access}) and that the probability of the target node in the stationary distribution predominantly determines access times for pairs of trees (Fig.~\ref{fig:long-time-kappa-access}).
 However, it is well known that MCMC takes a long time to approximate real phylogenetic posterior distributions even when the Bayesian credible set is small, and in fact our previous work showed significant SPR graph influence on the mixing time for phylogenetic MCMC for credible sets that had tens, hundreds or thousands of trees~\citep{Whidden2015-yi}.
@@ -1029,6 +1045,10 @@ Now that we have established the foundations of using curvature to understand gr
 In particular, the case of unrooted SPR, which is also commonly used in phylogenetic search, is an obvious next step.
 One could also explore random walks on ranked trees~\citep{Song2006-xe} and graphical models of tree space relevant for phylogenetic algorithms such as BEAST \citep{Drummond2012-ek} that infer rooted ``time-trees.''
 Random walks on other discrete structures such as partitions~\citep{Gusfield2002-il} that can be expressed as certain types of trees may also form interesting subjects for future work.
+
+Finally, we conjectured that the maximum curvature for an rSPR graph with $n$ leaves is inversely proportional to the diameter of the graph.
+We suspect that proving or disproving this conjecture will require a new understanding of the effect of multiple rSPR moves in tandem, just as many of our results came from a better understanding of the impact of a single rSPR move.
+Such an understanding may also lead to improved curvature bounds or a means for computing them more efficiently.
 
 
 \section{Acknowledgements}
