@@ -572,14 +572,32 @@ To calculate the empirical distributions of access times we aggregate all access
 \end{table}
 
 \begin{figure*}
+	\includegraphics[width=\textwidth]{figs/access5-distribution.png}
+
+	\caption{\
+        Distribution of rSPR $\MH$ access times for all pairs of 5-taxon trees, grouped by the degree of the trees.
+        Color signifies rSPR distance between the trees, with green, orange, and blue signifying distances of 1, 2, and 3, respectively; the saturation of the color shows coarse curvature $\curvature{\MH; \cdot, \cdot}$, such that increased saturation (i.e.\ darker color) indicates a smaller $\kappa$.
+	}
+	\label{fig:kappa-access-distribution}
+\end{figure*}
+
+\begin{figure*}
 	\hspace*{\stretch{1}}
-	\subfigure[\label{fig:short-time-kappa-access}]{\includegraphics[width=2.3in]{figs/5t-short-time-kappa-access}}
+	\subfigure[\label{fig:6t-short-time-kappa-access}]{\includegraphics[width=2.3in]{figs/6t-short-time-kappa-access}}
 	\hspace*{\stretch{2}}
-	\subfigure[\label{fig:long-time-kappa-access}]{\includegraphics[width=2.3in]{figs/5t-long-time-kappa-access}}
+	\subfigure[\label{fig:7t-short-time-kappa-access}]{\includegraphics[width=2.3in]{figs/7t-short-time-kappa-access}}
+	\hspace*{\stretch{1}}
+
+	\hspace*{\stretch{1}}
+	\subfigure[\label{fig:5t-long-time-kappa-access}]{\includegraphics[width=2.3in]{figs/5t-long-time-kappa-access}}
+	\hspace*{\stretch{2}}
+	\subfigure[\label{fig:7t-short-time-kappa-access}]{\includegraphics[width=2.3in]{figs/6t-long-time-kappa-access}}
 	\hspace*{\stretch{1}}
     \caption{\
-        Distribution of rSPR $\MH$ access times for those pairs of 5-taxon trees with degree 24 that are not simple inclusions of 4-taxon pairs of trees.
-        Color signifies rSPR distance between the trees, with green, orange, and blue signifying distances of 1, 2, and 3, respectively; the saturation of the color shows coarse curvature $\curvature{\MH; \cdot, \cdot}$, such that increased saturation (i.e.\ darker color) indicates a smaller $\kappa$.
+        Distribution of early rSPR $\MH$ access times for those pairs of (a) 6-taxon trees with degree 44 and (b) 7-taxon trees with degree 70.
+        Distribution of later rSPR $\MH$ access times for those pairs of (c) 5-taxon trees with degree 24 and (d) 6-taxon trees with degree 44.
+				In both cases we exclude pairs that are simple inclusions of pairs of trees with a smaller number of taxa.
+				Color signifies rSPR distance between the trees, with green, orange, and blue signifying distances of 1, 2, and 3, respectively; the saturation of the color shows coarse curvature $\curvature{\MH; \cdot, \cdot}$, such that increased saturation (i.e.\ darker color) indicates a smaller $\kappa$.
         }
 	\label{fig:kappa-access}
 \end{figure*}
