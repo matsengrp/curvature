@@ -119,7 +119,7 @@
 %\title{Ricci-Ollivier Curvature of the Rooted Phylogenetic Subtree-Prune-Regraft Graph\thanks{
 	\title{Ricci-Ollivier Curvature of the Rooted Phylogenetic Subtree-Prune-Regraft Graph\tnoteref{t1,t2}}
 
-	\tnotetext[t1]{This work was funded by National Science Foundation award 1223057.} 
+	\tnotetext[t1]{This work was funded by National Science Foundation award 1223057.}
 	\tnotetext[t2]{A preliminary version of this work appeared in the 2016 Proceedings of the Thirteenth Workshop on Analytic Algorithmics and Combinatorics (ANALCO).}
 
 	\author{Chris Whidden\corref{cor1}\fnref{fn1}}
@@ -139,11 +139,11 @@ These methods are known to mix quickly when sampling from the simple uniform dis
 The structure of the graph induced by tree rearrangement operations is an important determinant of the mixing properties of MCMC, motivating study of the underlying \emph{rSPR graph} in greater~detail.
 
 In this paper, we investigate the rSPR graph in a new way: by calculating Ricci-Ollivier curvature with respect to uniform and Metropolis-Hastings random walks.
-We confirm using simulation that mean access time distributions depend on distance, degree, and curvature, showing the relevance of these curvature results to stochastic tree search.
 These calculations require fast new algorithms for constructing and sampling these graphs, reducing the time required to compute an rSPR graph from $O(m^2n)$-time to $O(mn^3)$, where $m$ is the (often large) number of trees in the graph and $n$ their number of leaves, and reducing the time required to select an SPR neighbor of a tree uniformly at random to $O(n)$ time.
 We then develop a closed form solution to characterize how the number of SPR neighbors of a tree changes after an SPR operation is applied to that tree.
 This gives bounds on the curvature, as well as a flatness-in-the-limit theorem indicating that paths of small topology changes are easy to traverse.
 However, we find that large topology changes (i.e. moving a large subtree) give pairs of trees with negative curvature.
+We show using simulation that mean access time distributions depend on distance, degree, and curvature, showing the relevance of these curvature results to stochastic tree search.
 Although these pairs of trees with negative curvature do not impede mixing in this simple well-connected space, they may manifest as bottlenecks in the much smaller credible sets induced by phylogenetic posteriors with a likelihood function.
 This work extends our knowledge of the rSPR graph, in particular properties that are relevant for investigation of sampling the rSPR graph.
 \end{abstract}
@@ -188,9 +188,10 @@ n - 2\ceil{\sqrt{n}} + 1
 We are not aware of any further work investigating properties of the SPR graph, which may be due to its complexity.
 Indeed, even computing the distance between topologies in terms of SPR operations (rooted and unrooted) is NP-hard~\citep{bordewich05,hickey2008sdc}.
 Fortunately, it is fixed-parameter tractable with respect to the distance in the rooted case~\citep{bordewich05} and efficient fixed-parameter algorithms have recently been developed~\citep{whidden2013hybridization,Whidden2015-yi} and begun to allow such investigation.
+%EM You don't want to cite your latest work on uSPR?
 
 Ollivier and colleagues recently pioneered a new approach to calculating Ricci curvature on a general type of metric space, including graphs~\citep{Ollivier2009-bw,Joulin2010-jg}.
-In this framework, local information about the metric space is given by a random walk (rather than a Riemann tensor) such that their notion of curvature formalizes the notion of to what extent random walking brings points together.
+In this framework, local information about the metric space is given by a random walk (rather than a Riemann tensor) such that their notion of curvature formalizes the notion of to what extent random walking brings neighborhoods together.
 Applying the framework to Brownian motion on a manifold returns the classical definition of Ricci curvature.
 Curvature is determined by the ratio of the earth mover's distance~\citep{rubner2000earth} between neighborhoods of a pair of vertices given by a random walk and the distance between the vertices.
 Here the term \emph{random walk} on a space $X$ simply denotes a family of probability measures parameterized by points of $X$ satisfying reasonable assumptions, which includes biased walks such as MCMC.
@@ -277,7 +278,7 @@ $T$ is divided into two subtrees $T_x$ and $T_{p_x}$ containing $x$ and $p_x$, r
 Then the operation adds a new node $p'_x$ to $T_{p_x}$ by subdividing an edge of $T_{p_x}$ and adding a new edge $(x, p'_x)$, making $x$ a child of $p'_x$.
 Finally, $p_x$ is suppressed, joining the two edges on either side of that node.
 See Figure~\ref{fig:spr} for an example.
-The inclusion of $\rho$ allows for rSPR moves which move subtrees to the root of the tree.
+The inclusion of $\rho$ allows for rSPR moves which move subtrees to the root of the tree, however, this definition does not allow arbitrary re-rooting of trees by moving $\rho$.
 
 \begin{figure}
 	\hspace*{\stretch{1}}
@@ -298,7 +299,7 @@ Figure~\ref{fig:4-taxa-treespace} illustrates the rSPR graph of 4-leaf trees.
 To avoid confusion between the two types of graph structures considered here, we refer to vertices of the rSPR graph as \emph{vertices} and vertices of individual trees (i.e.\ leaves and internal nodes) as \emph{nodes}.
 Let $N(T)$ be the set of rSPR neighbors of a tree $T$ (this does not include $T$).
 For example, the tree $T$ with 4 leaves in Figure~\ref{fig:neighborhood} has 10 neighbors.
-We say that the degree of $T$ is $\degree{T}$, that is, the number of trees which can be obtained from $T$ by a single rSPR operation.
+The degree of $T$, i.e.\ the number of trees which can be obtained from $T$ by a single rSPR operation, will be denoted $\degree{T}$.
 We assume that all trees are bifurcating, and thus use degree to refer only to the degree of rSPR graph vertices.
 
 Ricci-Ollivier curvature provides a rigorous yet intuitive formalization of the shape of a metric space with respect to a random walk.
@@ -351,7 +352,7 @@ Note that for the full rSPR graph, $m$ is the rapidly growing function $(2n-3)!!
 In previous work~\citep{Whidden2015-yi}, we constructed (unrooted) SPR graphs from subsets of $m$ high probability trees sampled from phylogenetic posteriors to compare mixing and identify local maxima.
 Although the SPR distance (rooted and unrooted) is NP-hard to compute~\citep{bordewich05,hickey2008sdc}, it is fixed-parameter tractable with respect to the distance in the rooted case~\citep{bordewich05}.
 In particular, one can determine in $\OhOf{n}$-time whether two rooted phylogenetic trees are adjacent in the rSPR graph ($\OhOf{n^2}$-time for unrooted trees) using the algorithms of Whidden et al.~\citep{whidden2009unifying,whidden2010fast, whidden2013hybridization,Whidden2015-yi}.
-We applied this method comparing each of the $m$ trees pairwise to identify adjacencies, requiring a total of $\OhOf{m^2n}$-time ($\OhOf{m^2 n^2}$-time in the unrooted case).
+We previously applied this method comparing each of the $m$ trees pairwise to identify adjacencies, requiring a total of $\OhOf{m^2n}$-time ($\OhOf{m^2 n^2}$-time in the unrooted case).
 However, this method is impractical when applied to construct graphs with 7 or more leaves, due to the rapidly growing $\OhOf{m^2}$ factor.
 
 The key to our efficient algorithm for quickly computing dense rSPR graphs (those containing a significant portion of the full rSPR graph) lies in avoiding the pairwise comparison of non-adjacent trees and thereby shaving off an $\OhOf{m}$ factor.
@@ -387,7 +388,7 @@ The high-level steps are as follows, and we show in Theorem~\ref{thm:construct_g
 	The subgraph of the rSPR graph induced by a set $\mathcal{T}$ of $m$ trees with $n$ leaves can be constructed in $\OhOf{mn^3}$-time.
 \end{thm}
 \begin{proof}
-	The correctness of the procedure follows by induction on the number of trees already processed, $i$, by observing that the procedure has constructed the subgraph of vertices $1, 2,  \ldots i$ and will construct the subgraph of vertices $1, 2, \ldots i+1$.
+	The correctness of the procedure follows by induction on the number of trees already processed, $i$, by observing that given the subgraph of vertices $1, 2,  \ldots i$ the procedure will construct the entire subgraph of vertices $1, 2, \ldots i+1$.
 
 	We implement the graph with an adjacency list representation with integer-labelled vertices that supports $\OhOf{\log n}$ edge insertions and lookups (with e.g. red-black trees~\citep{guibas1978dichromatic}, as the vertex degrees are $\OhOf{n^2}$).
 	As described above, the integer labels are simply the order of the input trees.
@@ -395,7 +396,7 @@ The high-level steps are as follows, and we show in Theorem~\ref{thm:construct_g
 	Adding the $\OhOf{mn^2}$ edges to the graph requires $\OhOf{mn^2 \log n}$-time.
 	Enumerating the neighbors of $T_i$ requires $\OhOf{n^3}$-time for each $T_i$, for a total of $\OhOf{mn^3}$-time.
 	We discuss below, in Section~\ref{sec:random_walks} how to do so efficiently without considering duplicate neighbors.
-	We store the tree to index mappings for current vertices of $G$ in a trie~\citep{fredkin1960trie} using Newick representation.
+	We store the tree to index mappings for current vertices of $G$ in a trie~\citep{fredkin1960trie} using the Newick representation.
 	This requires only $\OhOf{n}$-time for each tree (i.e. a total of $\OhOf{mn^3}$-time) using a standard nodes-and-pointers representation of the tree and assuming integer leaf labels (a simple $\OhOf{mn\log n}$ leaf preprocessing step could be applied to extend this procedure to phylogenetic trees with string labels).
 	Similarly, it takes $\OhOf{n}$-time to determine the index of each of the $\OhOf{mn^2}$ considered neighbors.
 	Therefore the graph can be constructed in $\OhOf{mn^3}$-time, as claimed.
@@ -430,7 +431,7 @@ In particular, where we call the edge connecting the subtree rooted at that node
 \item Moving $R$ to its grandparent edge is the same as moving its aunt to its sibling edge, and
 \item Moving $R$ to its aunt edge is the same as moving its aunt to $R$'s edge.
 \end{enumerate}
-We prove in Lemma~\ref{lem:compute_degree} that this list is exhaustive, that is each other pair of $R$ and destination edge $e$ results in a unique rSPR neighbor.
+We prove in Lemma~\ref{lem:compute_degree} that this list is exhaustive, that is, each other pair of $R$ and destination edge $e$ results in a unique rSPR neighbor.
 We assign $(2n-1-x)-2$ moves to children of the original non-$\rho$ root (lacking both an aunt and a grandparent), and $(2n-1-x)-4$ moves to each other non-root node.
 Let $N(T,u)$ denote the neighbors of $T$ assigned to node $u$, obtained by moving the subtree $R$ rooted at $u$.
 We thus achieve a new method for computing the neighborhood size:
@@ -525,7 +526,7 @@ For example, the pairs
 $\{(((1,2),3),4), ((1,2),(3,4))\}$ and
 $\{(((1,4),2),3), ((1,4),(2,3))\}$
 are the same after relabeling, so their curvatures are the same.
-We thus directly computed curvature values for one representative pair from each such equivalence class, or \emph{tanglegram} \citep{Venkatachalam2010-zh}; the group-theoretic enumeration methods are described in \citep{billey2016trees}, and the SAGE \citep{SAGE} and GAP4 \citep{GAP4} code is at \citep{tangle}.
+We thus directly computed curvature values for one representative pair from each such equivalence class, or \emph{tanglegram} \citep{Venkatachalam2010-zh}; the group-theoretic enumeration methods are described in \citep{Matsen2015-yv} with a closed formula in \citep{billey2016trees}, and the SAGE \citep{SAGE} and GAP4 \citep{GAP4} code is at \citep{tangle}.
 
 \begin{figure*}
 	\hspace*{\stretch{1}}
@@ -541,8 +542,9 @@ We find a wide variation in curvature among tanglegrams (Figure~\ref{fig:rspr-sc
 Curvature values tended to increase with increasing rSPR distance, and their variance decreased with increasing distance.
 Neighboring trees achieved minimum curvature values for a given number of leaves, and we found maximum curvature values between trees at maximum distance or one rSPR move closer than the maximum.
 This suggests that the increased difficulty of moving between trees with a random walk due to distance may be tempered somewhat by larger curvature in the highly connected rSPR~graph.
+%EM Do we want to interpret the degree at all? It shows a nice pattern in the plot, but I don't see any description.
 
-Larger rSPR graphs tended to have smaller curvature values.
+Larger rSPR graphs tended to have pairs of trees with smaller curvature values.
 Indeed, the 7-leaf rSPR graph contained adjacent pairs of trees with negative curvature.
 Such pairs indicate difficult paths for phylogenetic searches, which may be exacerbated by likelihood or branch length constraints.
 
@@ -559,7 +561,7 @@ We applied this work to demonstrate the influence of SPR graph structure on real
 \end{table}
 
 Here, to gain more insight, we used simulation to approximate the entire access time distribution.
-Again we use the insight that the access time for a pair of trees with a simple random walk does not depend on the actual labeling of those trees, but rather only on their relative labeling.
+Again we use the idea that the access time for a pair of trees with a simple random walk does not depend on the actual labeling of those trees, but rather only on their relative labeling.
 Thus rather than enumerate access times between trees, which would have required a tremendous amount of memory and computational power to obtain accurate estimates, we enumerate times between pairs of trees in a tanglegram.
 To calculate the empirical distributions of access times we aggregate all access times for the same tanglegram using our group-theoretic methods \citep{tangle}.
 
@@ -679,11 +681,9 @@ Moving the grey subtree $R$ from its position adjacent to $U$ in tree $T$ to its
 	\label{fig:spr-degree-change}
 \end{figure*}
 
-Pairs of trees that are close in the graph can not achieve these extreme degree differences.
-In our next lemma, we characterize how the degree of a tree changes after an rSPR operation.
+In our next lemma, we characterize how the degree of a tree changes after an rSPR operation, showing that pairs of trees that are close in the graph can not achieve these extreme degree differences.
 We show that the magnitude of the degree change depends solely on the size of the subtree to be moved, the difference between the depths of its original and new locations, and the size of its original and new neighboring subtrees.
-This relation allows us to improve the degree bounds between adjacent trees.
-See Figure~\ref{fig:spr-degree-change} for an illustration.
+This relation allows us to improve the degree bounds between adjacent trees (Figure~\ref{fig:spr-degree-change}).
 
 \begin{lem}
 \label{lem:degree_change}
@@ -714,15 +714,17 @@ Thus the difference in rSPR degree is $2ka - 2kb + 2(i-1) - 2(j-1)$ as claimed.
 \end{proof}
 
 
-Moreover, we can use these ideas to determine the number of rSPR moves that are, in some respects, independent of a given rSPR move.
+Moreover, we can use these ideas to determine the number of rSPR moves that are, in a sense, independent of a given rSPR move.
 That is, for two trees $S$ and $T$ differing by a single rSPR move, we wish to know the number of rSPR moves that are applicable to both trees rather than unique to one of the trees.
-To formalize this concept, consider pairs of trees $T' \in N(T)$ and $S' \in S(T)$ such that $\dspr{T',S'} = 1$.
+To formalize this concept, consider pairs of trees $T' \in N(T)$ and $S' \in N(S)$ such that $\dspr{T',S'} = 1$.
+%EM don't we need to exclude the case of $T' = S$ and $S' = T$?
 The number of such ``squares'' involving two adjacent trees will play a key role in our curvature bounds, as they signify pairs of matched paths that help push the curvature of those trees towards 0.
 
 \begin{cor}
 \label{cor:paired_neighbors}
 Continuing with the setting and notation in Lemma~\ref{lem:degree_change}, at least
 $$\overlap := \deg(T) - 2kb - 2(j-1) = \deg(S) - 2ka - 2(i-1)$$
+%EM "o" trees?
 trees in the neighborhood of $T$ can be paired with $o$ trees in the neighborhood of $S$ such that the pairings are disjoint and $\dspr{T',S'} = 1$ for each $(T',S')$ pair.
 \end{cor}
 \begin{proof}
@@ -731,6 +733,7 @@ For each such $(T',S')$ pair, we can move $R$ in either tree to obtain the other
 \end{proof}
 
 We now use Lemma~\ref{lem:degree_change} to improve the degree change bounds in Lemma~\ref{lem:degree_max_delta} for two adjacent trees.
+%EM this following sentence stands in contrast to the statement about extreme degree changes above. Or am I confused?
 Surprisingly, we found that the degree change between two adjacent trees may be quadratic in $n$, that is of the same order as the degree itself.
 This maximum degree change occurs when a large subtree experiences a large depth change.
 
@@ -822,11 +825,12 @@ Recall that the uniform random walk begins at a tree $T$ and moves to a tree uni
 Recall that the coarse uniform random walk curvature between two trees $T$ and $S$ is $\curvature{T, S} := 1 - \frac{W_1(m_T, m_S)}{d(T, S)}$, where $W_{1,n}$ is the mass transport term \eqref{eq:curvatureDef}.
 For the uniform random walk, $m_T$ is the probability measure assigning a mass of $\frac{1}{\degree{T}}$ to each of $T$'s neighbors.
 
-In our first theorem of this section, we show that the curvature between two adjacent trees tends towards 0 as the size of the trees increase but the pruned and regrafted subtree remains fixed.
+In our first theorem of this section, we show that the curvature between two adjacent trees tends towards 0 as the size of the trees increase but the size of the subtree moved to transition between the two trees remains the same size.
 To do so, we prove that the mass transport term between adjacent trees $T$ and $S$ is dominated by probability moved between neighbors of $T$ and $S$ that are also adjacent.
 The probability transported between members of these squares (Corollary~\ref{cor:paired_neighbors}) increases more quickly with $n$ than the probability transported between shared neighbor triangles (Lemma~\ref{lem:shared_neighbors}), and outweighs the effect of long distance probability moved between more distant neighbors or due to a difference in the degree of $T$ and $S$.
 
 This flatness-in-the-limit theorem helps explain our empirical results in Section~\ref{sec:results:curvature} showing that the distribution of curvature pairs tends more towards 0 as $n$ increases.
+%EM If desired, could we push this statement a little bit by describing the expected size of subtrees between neighbors.
 
 \begin{thm}
 \label{thm:flat_curvature}
@@ -891,11 +895,11 @@ This is minimized when $\degree{T}=\degree{S}$ are as small as possible, that is
 
 The maximum curvature is thus $1 - \frac{\degree{T} - (6n-17)}{\degree{T}} = \frac{6n - 17}{\degree{T}}= \frac{6n-17}{3n^2-13n+14}$.
 \end{proof}
-
+%EM do we actually show that the bound is tight?
 This bound is tight and has been verified computationally for $n \le 7$.
 
 It is more difficult to obtain a closer bound on the maximum curvature of nonadjacent trees.
-Lemma~\ref{lem:curvature_distance_bound} suggests that more distant pairs of trees should have smaller curvatures than close trees as neighborhood effects decrease with respect to the increasing distance.
+Lemma~\ref{lem:curvature_distance_bound} suggests that more distant pairs of trees should have smaller curvatures than close trees, because neighborhood effects decrease with respect to the increasing distance.
 However, our experiments with $n \le 7$ suggest that maximum curvature tends to increase with distance (with respect to a fixed $n$), as a far greater fraction of the neighbors approach each other as the distance increases.
 Indeed, for $5 \le n \le 7$ the maximum curvature is obtained by pairs of trees at one less than the maximum distance.
 Moreover, nearly all of the neighbors of these pairs approach each either.
@@ -920,7 +924,8 @@ Next, we bound the minimum curvature of two adjacent trees by bounding the amoun
 \end{lem}
 \begin{proof}
     In light of Corollary \ref{cor:paired_neighbors}, the optimal mass transport cost is maximized (and therefore curvature minimized) across adjacent trees $T$ and $S$ by a combination of two effects: trees that cannot be paired at distance $1$ and mass that must be moved between unpaired trees due to differing degrees of $T$ and $S$.
-		As we will show, these effects can be optimized simultaneously.
+		As we will show, these effects can be maximized simultaneously.
+%EM Using m is a little confusing here, given how prominently m is used in the early parts of the paper for a different purpose.
     To bound these effects, let $m$ be the maximum (across $T$ and $S$) proportion of mass that cannot be moved between adjacent neighbors of those trees.
     We can bound the mass transport cost from above by $1 + 2m$ because pairs of neighbors of adjacent trees are at most distance 3 apart.
 	This gives a lower bound of $1 - (1 + 2m) / 1) = -2m$ on the curvature.
@@ -938,7 +943,7 @@ Next, we bound the minimum curvature of two adjacent trees by bounding the amoun
 \end{proof}
 
 We further observe that the limit of our curvature lower bound is $-\frac{2}{7}$.
-Complete enumeration with $n \le 7$ shows that no pair of trees have curvature less than $-\frac{2}{5}$ and our bound meets or exceeds this value for $n > 7$.
+Complete enumeration with $n \le 7$ shows that no pair of trees have curvature less than $-\frac{2}{5}$; our bound meets or exceeds this value for $n > 7$.
 Moreover, the rSPR distance is a metric, so this bounds the curvature for arbitrary pairs of trees (Proposition 19 of~\citep{Ollivier2009-bw}).
 This directly leads to the following Corollary:
 
@@ -951,7 +956,7 @@ We also note that the lower bounds in this section do not follow from the more g
 However, the pair of trees used in the proof of Lemma~\ref{lem:curvature_lower_bound} will always have negative curvature, for all $n \ge 7$.
 
 \begin{cor}
-For all $n \ge 7$, there exist two adjacent trees $T$ and $S$ with $n$ leaves such that $\curvature{T,S} < 0$
+For all $n \ge 7$, there exist two adjacent trees $T$ and $S$ with $n$ leaves such that $\curvature{T,S} < 0$.
 \end{cor}
 
 We next bound the difference between the coarse and asymptotic curvatures.
@@ -1009,7 +1014,7 @@ Note that the same statement and proof of Lemma~\ref{lem:asymptotic} holds with 
 \end{align*}
 	$$\curvature{T,S} - 1/6
 	\le \curvature{\MH; T,S}
-	\le \curvature{T,S} + 1/6 .$$ 
+	\le \curvature{T,S} + 1/6 .$$
 \end{lem}
 \begin{proof}
 	We first prove the lower bound.
@@ -1058,7 +1063,7 @@ In those cases the curvature between two trees at either end of a bottleneck wil
 Indeed, in both the setting of challenging real data and in simulation with a nontrivial likelihood function, the stationary distribution takes a long time to achieve, and thus the curvature will have a substantially greater impact on the overall hitting times rather than being a short prelude to waiting for a Poisson process event as it is here (Fig.~\ref{fig:kappa-access}).
 One avenue of exploration will be to follow previous work \citep{Stefankovic2011-hu} by taking a chain where tree topology likelihoods are maximized across branch length, as the classical phylogenetic likelihood \citep{felsenstein1981evolutionary} requires both branch length and topology.
 
-One could extend this work in several directions in addition to adding a nontrivial likelihood function as just described.
+One could extend this work in several other directions.
 Now that we have established the foundations of using curvature to understand graphs relevant for phylogenetic inference, many graph structures remain to be explored.
 In particular, the case of unrooted SPR, which is also commonly used in phylogenetic search, is an obvious next step.
 One could also explore random walks on ranked trees~\citep{Song2006-xe} and graphical models of tree space relevant for phylogenetic algorithms such as BEAST \citep{Drummond2012-ek} that infer rooted ``time-trees.''
