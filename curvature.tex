@@ -541,7 +541,6 @@ We find a wide variation in curvature among tanglegrams (Figure~\ref{fig:rspr-sc
 Curvature values tended to increase with increasing rSPR distance, and their variance decreased with increasing distance.
 Neighboring trees achieved minimum curvature values for a given number of leaves, and we found maximum curvature values between trees at maximum distance or one rSPR move closer than the maximum.
 This suggests that the increased difficulty of moving between trees with a random walk due to distance may be tempered somewhat by larger curvature in the highly connected rSPR~graph.
-%EM Do we want to interpret the degree at all? It shows a nice pattern in the plot, but I don't see any description.
 
 Larger rSPR graphs tended to have pairs of trees with smaller curvature values.
 Indeed, the 7-leaf rSPR graph contained adjacent pairs of trees with negative curvature.
@@ -733,7 +732,6 @@ For each such $(T',S')$ pair, we can move $R$ in either tree to obtain the other
 \end{proof}
 
 We now use Lemma~\ref{lem:degree_change} to improve the degree change bounds in Lemma~\ref{lem:degree_max_delta} for two adjacent trees.
-%EM this following sentence stands in contrast to the statement about extreme degree changes above. Or am I confused?
 Surprisingly, we found that the degree change between two adjacent trees may be quadratic in $n$, that is of the same order as the degree itself.
 This maximum degree change occurs when a large subtree experiences a large depth change.
 
@@ -831,6 +829,7 @@ The probability transported between members of these squares (Corollary~\ref{cor
 
 This flatness-in-the-limit theorem helps explain our empirical results in Section~\ref{sec:results:curvature} showing that the distribution of curvature pairs tends more towards 0 as $n$ increases.
 %EM If desired, could we push this statement a little bit by describing the expected size of subtrees between neighbors.
+%CW TODO: derive percentage of SPRs in a ladder tree that move subtrees with 2 or fewer leaves.
 
 \begin{thm}
 \label{thm:flat_curvature}
