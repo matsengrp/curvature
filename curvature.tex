@@ -187,8 +187,7 @@ n - 2\ceil{\sqrt{n}} + 1
 \end{equation}
 We are not aware of any further work investigating properties of the SPR graph, which may be due to its complexity.
 Indeed, even computing the distance between topologies in terms of SPR operations (rooted and unrooted) is NP-hard~\citep{bordewich05,hickey2008sdc}.
-Fortunately, it is fixed-parameter tractable with respect to the distance in the rooted case~\citep{bordewich05} and efficient fixed-parameter algorithms have recently been developed~\citep{whidden2013hybridization,Whidden2015-yi} and begun to allow such investigation.
-%EM You don't want to cite your latest work on uSPR?
+Fortunately, it is fixed-parameter tractable with respect to the distance in the rooted case~\citep{bordewich05} and unrooted case~\citep{bonet2010complexity} and efficient fixed-parameter algorithms have recently been developed~\citep{Whidden2015-yi,whidden2013hybridization,whidden2016calculating} and begun to allow such investigation.
 
 Ollivier and colleagues recently pioneered a new approach to calculating Ricci curvature on a general type of metric space, including graphs~\citep{Ollivier2009-bw,Joulin2010-jg}.
 In this framework, local information about the metric space is given by a random walk (rather than a Riemann tensor) such that their notion of curvature formalizes the notion of to what extent random walking brings neighborhoods together.
@@ -356,7 +355,7 @@ We previously applied this method comparing each of the $m$ trees pairwise to id
 However, this method is impractical when applied to construct graphs with 7 or more leaves, due to the rapidly growing $\OhOf{m^2}$ factor.
 
 The key to our efficient algorithm for quickly computing dense rSPR graphs (those containing a significant portion of the full rSPR graph) lies in avoiding the pairwise comparison of non-adjacent trees and thereby shaving off an $\OhOf{m}$ factor.
-The input to our algorithm is a set $\mathcal{T}$ of phylogenetic trees in the $\OhOf{n}$-length Newick \citep{wiki:newick} representation of each tree as a string.
+The input to our algorithm is a set $\mathcal{T}$ of phylogenetic trees in the $\OhOf{n}$-length Newick \citep{felsenstein1990newick} representation of each tree as a string.
 These representations are made unique by ordering each tree so that leftmost subtrees contain the smallest alphanumeric label of descendants.
 We construct a mapping from each tree $T_i$ to its order index in this list $i$.
 Begin with an empty graph $G$.
@@ -683,7 +682,9 @@ Moving the grey subtree $R$ from its position adjacent to $U$ in tree $T$ to its
 
 In our next lemma, we characterize how the degree of a tree changes after an rSPR operation, showing that pairs of trees that are close in the graph can not achieve these extreme degree differences.
 We show that the magnitude of the degree change depends solely on the size of the subtree to be moved, the difference between the depths of its original and new locations, and the size of its original and new neighboring subtrees.
-This relation allows us to improve the degree bounds between adjacent trees (Figure~\ref{fig:spr-degree-change}).
+This relation will allow us to improve the degree bounds between adjacent trees.
+See Figure~\ref{fig:spr-degree-change} for an illustration of the lemma.
+
 
 \begin{lem}
 \label{lem:degree_change}
@@ -717,15 +718,13 @@ Thus the difference in rSPR degree is $2ka - 2kb + 2(i-1) - 2(j-1)$ as claimed.
 Moreover, we can use these ideas to determine the number of rSPR moves that are, in a sense, independent of a given rSPR move.
 That is, for two trees $S$ and $T$ differing by a single rSPR move, we wish to know the number of rSPR moves that are applicable to both trees rather than unique to one of the trees.
 To formalize this concept, consider pairs of trees $T' \in N(T)$ and $S' \in N(S)$ such that $\dspr{T',S'} = 1$.
-%EM don't we need to exclude the case of $T' = S$ and $S' = T$?
 The number of such ``squares'' involving two adjacent trees will play a key role in our curvature bounds, as they signify pairs of matched paths that help push the curvature of those trees towards 0.
 
 \begin{cor}
 \label{cor:paired_neighbors}
 Continuing with the setting and notation in Lemma~\ref{lem:degree_change}, at least
 $$\overlap := \deg(T) - 2kb - 2(j-1) = \deg(S) - 2ka - 2(i-1)$$
-%EM "o" trees?
-trees in the neighborhood of $T$ can be paired with $o$ trees in the neighborhood of $S$ such that the pairings are disjoint and $\dspr{T',S'} = 1$ for each $(T',S')$ pair.
+trees in the neighborhood of $T$ can be paired with trees in the neighborhood of $S$ such that the pairings are disjoint and $\dspr{T',S'} = 1$ for each $(T',S')$ pair.
 \end{cor}
 \begin{proof}
 By the same arguments as in the proof of Lemma~\ref{lem:degree_change}, $\overlap$ rSPR moves can be applied to $T$ and $S$ with the same source and target nodes.
@@ -895,7 +894,6 @@ This is minimized when $\degree{T}=\degree{S}$ are as small as possible, that is
 
 The maximum curvature is thus $1 - \frac{\degree{T} - (6n-17)}{\degree{T}} = \frac{6n - 17}{\degree{T}}= \frac{6n-17}{3n^2-13n+14}$.
 \end{proof}
-%EM do we actually show that the bound is tight?
 This bound is tight and has been verified computationally for $n \le 7$.
 
 It is more difficult to obtain a closer bound on the maximum curvature of nonadjacent trees.
@@ -925,10 +923,9 @@ Next, we bound the minimum curvature of two adjacent trees by bounding the amoun
 \begin{proof}
     In light of Corollary \ref{cor:paired_neighbors}, the optimal mass transport cost is maximized (and therefore curvature minimized) across adjacent trees $T$ and $S$ by a combination of two effects: trees that cannot be paired at distance $1$ and mass that must be moved between unpaired trees due to differing degrees of $T$ and $S$.
 		As we will show, these effects can be maximized simultaneously.
-%EM Using m is a little confusing here, given how prominently m is used in the early parts of the paper for a different purpose.
-    To bound these effects, let $m$ be the maximum (across $T$ and $S$) proportion of mass that cannot be moved between adjacent neighbors of those trees.
-    We can bound the mass transport cost from above by $1 + 2m$ because pairs of neighbors of adjacent trees are at most distance 3 apart.
-	This gives a lower bound of $1 - (1 + 2m) / 1) = -2m$ on the curvature.
+    To bound these effects, let $\mu$ be the maximum (across $T$ and $S$) proportion of mass that cannot be moved between adjacent neighbors of those trees.
+    We can bound the mass transport cost from above by $1 + 2\mu$ because pairs of neighbors of adjacent trees are at most distance 3 apart.
+	This gives a lower bound of $1 - (1 + 2\mu) / 1) = -2\mu$ on the curvature.
 
 	By Lemmas~\ref{lem:degree_change} and~\ref{lem:degree_max_delta_adjacent}, the latter effect is maximized when the relative degree change is maximized.
 	By Corollary~\ref{cor:paired_neighbors}, there are at most $\overlap := \degree{T} -2ka - 2(i-1)$ paired trees, bounding the former effect.
@@ -937,7 +934,7 @@ Next, we bound the minimum curvature of two adjacent trees by bounding the amoun
 	$T$ has degree at most $3.5n^2 -15n + 16$.
 	There are thus $2ka + 2(i-1) = 2\left(\ceil{\frac{n-2}{2}}\floor{\frac{n}{2}} +(1-1)\right) \le \frac{1}{2}n^2 - n$ unpaired neighbors, the maximum possible.
 	Moreover, as shown by Lemma~\ref{lem:degree_change} this pair of trees obtains the maximum (absolute and relative) degree change.
-	Thus, the maximum $m$ is:
+	Thus, the maximum $\mu$ is:
 	$$\frac{\frac{1}{2}n^2 - n}{3.5n^2 - 15n + 16}.$$
 	The claim follows from multiplying this value by $-2$.
 \end{proof}
