@@ -879,12 +879,10 @@ Recall that the uniform random walk begins at a tree $T$ and moves to a tree uni
 Recall that the coarse uniform random walk curvature between two trees $T$ and $S$ is $\curvature{T, S} := 1 - \frac{W_1(m_T, m_S)}{d(T, S)}$, where $W_{1,n}$ is the mass transport term \eqref{eq:curvatureDef}.
 For the uniform random walk, $m_T$ is the probability measure assigning a mass of $\frac{1}{\degree{T}}$ to each of $T$'s neighbors.
 
+We showed in Lemmas~\ref{lem:spr_size} and~\ref{lem:spr_size_mean} that most adjacent trees differ by a small subtree, raising the question of what the curvature is between such pairs.
 In our first theorem of this section, we show that the curvature between two adjacent trees tends towards 0 as the size of the trees increase but the size of the subtree moved to transition between the two trees remains the same size.
 To do so, we prove that the mass transport term between adjacent trees $T$ and $S$ is dominated by probability moved between neighbors of $T$ and $S$ that are also adjacent.
 The probability transported between members of these squares (Corollary~\ref{cor:paired_neighbors}) increases more quickly with $n$ than the probability transported between shared neighbor triangles (Lemma~\ref{lem:shared_neighbors}), and outweighs the effect of long distance probability moved between more distant neighbors or due to a difference in the degree of $T$ and $S$.
-
-As we already showed in Lemmas~\ref{lem:spr_size} and~\ref{lem:spr_size_mean}, most adjacent trees differ by a small subtree.
-We next show that curvature is small in such a case for pairs of trees with a sufficiently large number of leaves.
 Thus this ``flatness-in-the-limit'' theorem thus helps explain our empirical results in Section~\ref{sec:results:curvature} showing that the distribution of curvature pairs tends more towards 0 as $n$ increases.
 
 \begin{thm}
