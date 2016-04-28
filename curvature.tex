@@ -435,12 +435,11 @@ We assign $(2n-1-x)-2$ moves to children of the original non-$\rho$ root (lackin
 Let $N(T,u)$ denote the neighbors of $T$ assigned to node $u$, obtained by moving the subtree $R$ rooted at $u$.
 We thus achieve a new method for computing the neighborhood size:
 
-\todo[inline]{Please define x in the text of the following lemma.}
 \begin{lem}
 	\label{lem:compute_degree}
 	For a tree $T$ with $n$ leaves,
 	$$\degree{T} = \sum_{u \in T} \size{N(T,u)},$$
-	for nodes $u$ of $T$, where $N(T,u)$ is as defined above, and:
+	for nodes $u$ of $T$, where $N(T,u)$ is as defined above, $x$ is the number of nodes in the subtree rooted at $u$, and:
 	$$\size{N(T,u)} = \begin{cases}
 		2n - x - 5 &\text{if depth($u$) $ > 1$, } \\
 		2n - x - 3 &\text{if depth($u$) $ = 1$ } \\
