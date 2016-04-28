@@ -19,8 +19,8 @@
 %% shift for todonotes
 %\usepackage[left=0.5in,right=1.5in,top=1in,bottom=1in,marginparwidth=1.25in]{geometry}
 % regular margins
-\usepackage{thmtools}
-\usepackage{thm-restate}
+%\usepackage{thmtools}
+%\usepackage{thm-restate}
 
 \newtheorem{thm}{Theorem}[section]
 \newtheorem{lem}[thm]{Lemma}
@@ -844,19 +844,21 @@ Now, we show that the average size of the moved subtrees is small.
 \begin{lem}
 	Let $T$ be a rooted tree with $n \ge 4$ leaves.
 	Let $N_i(T)$ be the neighbors of $T$ induced by rSPR moves of an $i$-leaf subtree.
-	Then $$\frac{\sum_i i \size{N_i(T)}}{\size{N(T)}} \le \frac{n + 2}{4} .$$
+	Then $$\frac{\sum_i i \size{N_i(T)}}{\size{N(T)}} \le \frac{n + 3}{4} .$$
 	\label{lem:spr_size_mean}
 \end{lem}
 \begin{proof}
 	Again recall our distribution of rSPR moves from a tree in Lemma~\ref{lem:compute_degree}.
-	By similar arguments as in the proof of Lemma~\ref{lem:spr_size}, a ladder tree has the greatest average moved subtree size.
+	By similar arguments as in the proof of Lemma~\ref{lem:spr_size}, a ladder tree has the greatest average moved subtree size (in terms of the number of leaves).
 	There are $n$ subtrees with 1 leaf, and 1 subtree each with $2,3, \ldots n - 1$ leaves.
 	We ignore the root subtree, which does not induce any rSPR moves.
 	By Lemma~\ref{lem:spr_size}, at least half of the rSPR moves involve a 1-leaf subtree.
 	We can bound the distribution of the remaining moves with the (loose) assumption that each other subtree contributes the same number of moves.
-	This bounds the mean moved subtree size from above because each successively larger subtree contributes fewer moves.
-	The mean subtree size is $(2 + n - 2) / 2 = n / 2$.
-	Thus, the average size of a moved subtree is at most the weighted average of $1 / 2 + (n / 2) / 2$ = $n / 4 + 1 / 2$.
+	In particular, we assume that each subtree contributes $2n - 3 - 5$ moves.
+	This underestimates the number of small moved subtrees and overestimates the number of larger moved subtrees.
+	Thus, this estimate bounds the mean moved subtree size from above.
+	The mean subtree size, ignoring small subtrees, is $(3 + (n-2)) / 2 = (n + 1) / 2$.
+	Thus, the average size of a moved subtree over all SPR operations from a given tree is at most the weighted average of $1 / 2 + ((((n + 1) / 2) / 2$ = $(n + 1) / 4 + 1 / 2 = (n + 3) / 4$.
 
 %	The average moved subtree size for a ladder tree is then:
 %	\begin{align}
