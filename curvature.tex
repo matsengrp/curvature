@@ -679,8 +679,8 @@ Moving the grey subtree $R$ from its position adjacent to $U$ in tree $T$ to its
 	\label{fig:spr-degree-change}
 \end{figure*}
 
-These degree bounds apply only to arbitrary trees, and the maximum degree difference occurs between trees that differ by many SPR operations.
-In our next lemma, we characterize how the degree of a tree changes after an rSPR operation.
+The maximum degree difference from Lemma~\ref{lem:degree_max_delta} occurs between trees that differ by many SPR operations.
+In our next lemma, we characterize how the degree of a tree changes after a single rSPR operation.
 This relation will allow us to improve the degree bounds between adjacent trees.
 We show that the magnitude of the degree change depends solely on the size of the subtree to be moved, the difference between the depths of its original and new locations, and the size of its original and new neighboring subtrees.
 See Figure~\ref{fig:spr-degree-change} for an illustration of the lemma.
@@ -788,7 +788,7 @@ This bound is minimized when $\degree{T}$ is minimized, and recall by Lemma~\ref
 \end{proof}
 
 
-In our final lemma of this section, we bound the number of neighbors shared by two adjacent trees.
+In our next lemma of this section, we bound the number of neighbors shared by two adjacent trees.
 The number of such ``triangles'' involving two adjacent trees has a key role in determining whether their curvature is positive, as mass assigned to a shared neighbor may not require a mass transport cost.
 We show that the maximum number of shared neighbors is linear in the number of leaves.
 In other words, only a small proportion of any two neighborhoods are shared and the relative size of shared neighborhoods grows much more slowly than the quadratic scaling of total neighborhood sizes.
@@ -811,7 +811,67 @@ Then $\size{N(T) \cap N(S)} \le 6n - 17$.
 	Note that this bound is tight when, for example, $T$ and $S$ are ladders with a different configuration of 3 leaves at maximum depth.
 \end{proof}
 
+In our final two lemmas of this section, we consider the distribution of trees in a neighborhood with respect to the size of the subtrees moved by SPR moves.
+First, we bound the number of neighbors of a tree that are induced by SPR moves involving a subtree with three or more leaves.
+In particular, we show that the majority of neighbors are induced by small subtree moves (one or two leaves).
+Along with our observation from Lemma~\ref{lem:degree_change} that the magnitude of the degree change induced by an SPR move depends on the subtree size and height change, this implies that most SPR neighbors have a similar degree.
+	We say that a subtree is \emph{small} if it has two leaves or one leaf, and that a \emph{small} SPR move is one that moves a small subtree.
 
+\begin{lem}
+	Let $T$ be a rooted tree with $n \ge 3$ leaves.
+	Let $N_S(T)$ be the neighbors of $T$ induced by small SPR moves. 
+	Then $\frac{\size{N_S(T)}}{\size{N(T)}} > \frac{1}{2}$.
+	\label{lem:spr_size}
+\end{lem}
+\begin{proof}
+	Recall our distribution of rSPR moves from a tree in Lemma~\ref{lem:compute_degree}.
+	Each subtree at a depth $ > 1$ from the root induces $2n - x - 5$ SPR neighbors, where $x$ is the number of nodes in the subtree, while the children of the root induce $2n - x - 3$ neighbors.
+	This implies that the number of small SPR moves is directly proportional to the number of small subtrees, with a possible difference of two moves for a tree where one of the root's children is small.
+	There are thus two extremes for the distribution of rSPR moves induced by small subtrees.
+	A ladder tree has the smallest proportion of small subtrees.
+	One 1-leaf subtree in a ladder tree is a child of the root, but this is counterbalanced by the fact that any other tree has at least one more subtree with 2 leaves.
+	A balanced tree has the greatest proportion of small subtrees.
+	Thus, a balanced tree has the greatest number of small SPR moves.
+
+	We first bound the number of small subtree moves that can be applied to a ladder tree.
+	A ladder tree with $n$ leaves has $n$ 1-leaf subtrees and 1 2-leaf subtree.
+	One of the 1-leaf subtrees is a child of the root.
+	A 2-leaf subtree contains three nodes.
+	Therefore, a ladder tree induces $n (2n - 1 - 5) + 2 + (2n - 3 - 5) = 2n^2 - 4n - 6$ small subtree moves.
+
+	Now, recall that the maximum degree of any tree is less than $4n^2 - 16n + 16$ by Lemma~\ref{lem:degree_extremes}.
+	We then have that $2(2n^2 - 4n - 6) = 4n^2 - 8n - 12 \ge 4n^2 - 8n - 12 + (24 - 8n) = 4n^2 -16n + 16$, for all $n \ge 3$.
+	Therefore more than half of the neighborhood of any tree is induced by small SPR moves.
+\end{proof}
+
+Now, we show that the average size of the moved subtrees is small.
+
+\begin{lem}
+	Let $T$ be a rooted tree with $n \ge 4$ leaves.
+	Let $N_i(T)$ be the neighbors of $T$ induced by SPR moves of an $i$-leaf subtree.
+	Then $$\frac{\sum_i i \size{N_i(T)}}{\size{N(T)}} \le \frac{n + 2}{4} .$$
+	\label{lem:spr_size_mean}
+\end{lem}
+\begin{proof}
+	Again recall our distribution of rSPR moves from a tree in Lemma~\ref{lem:compute_degree}.
+	By similar arguments as in the proof of Lemma~\ref{lem:spr_size}, a ladder tree has the greatest average moved subtree size.
+	There are $n$ subtrees with 1 leaf, and 1 subtree each with $2,3, \ldots n - 1$ leaves.
+	We ignore the root subtree, which does not induce any SPR moves.
+	By Lemma~\ref{lem:spr_size}, at least half of the SPR moves involve a 1-leaf subtree.
+	We can bound the distribution of the remaining moves with the (loose) assumption that each other subtree contributes the same number of moves.
+	This bounds the mean moved subtree size from above because each successively larger subtree contributes fewer moves.
+	The mean subtree size is $(2 + n - 2) / 2 = n / 2$.
+	Thus, the average size of a moved subtree is at most the weighted average of $1 / 2 + (n / 2) / 2$ = $n / 4 + 1 / 2$.
+
+%	The average moved subtree size for a ladder tree is then:
+%	\begin{align}
+%	(n (2n - 1 - 5) + 2) + (2 (2n - 3 - 5)) + \ldots \\
+%	n (2n - 1 - 5) + 2) + 2 (2n - 8) + 3 (2n - 10) + \ldots \\
+%	(2n^2 -6n + 2) + (4n - 16) + 6n - 30 + 8n - 48 + \ldots \\
+%	\le 3n^2 \\
+%\end{align}
+
+\end{proof}
 
 
 \section{Curvature}
@@ -827,9 +887,8 @@ In our first theorem of this section, we show that the curvature between two adj
 To do so, we prove that the mass transport term between adjacent trees $T$ and $S$ is dominated by probability moved between neighbors of $T$ and $S$ that are also adjacent.
 The probability transported between members of these squares (Corollary~\ref{cor:paired_neighbors}) increases more quickly with $n$ than the probability transported between shared neighbor triangles (Lemma~\ref{lem:shared_neighbors}), and outweighs the effect of long distance probability moved between more distant neighbors or due to a difference in the degree of $T$ and $S$.
 
-This flatness-in-the-limit theorem helps explain our empirical results in Section~\ref{sec:results:curvature} showing that the distribution of curvature pairs tends more towards 0 as $n$ increases.
-%EM If desired, could we push this statement a little bit by describing the expected size of subtrees between neighbors.
-%CW TODO: derive percentage of SPRs in a ladder tree that move subtrees with 2 or fewer leaves.
+As we already showed in Lemmas~\ref{lem:spr_size} and~\ref{lem:spr_size_mean}, most adjacent trees differ by a small subtree.
+This flatness-in-the-limit theorem thus helps explain our empirical results in Section~\ref{sec:results:curvature} showing that the distribution of curvature pairs tends more towards 0 as $n$ increases.
 
 \begin{thm}
 \label{thm:flat_curvature}
