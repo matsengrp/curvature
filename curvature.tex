@@ -435,6 +435,7 @@ We assign $(2n-1-x)-2$ moves to children of the original non-$\rho$ root (lackin
 Let $N(T,u)$ denote the neighbors of $T$ assigned to node $u$, obtained by moving the subtree $R$ rooted at $u$.
 We thus achieve a new method for computing the neighborhood size:
 
+\todo[inline]{Please define x in the text of the following lemma.}
 \begin{lem}
 	\label{lem:compute_degree}
 	For a tree $T$ with $n$ leaves,
@@ -811,29 +812,24 @@ Then $\size{N(T) \cap N(S)} \le 6n - 17$.
 	Note that this bound is tight when, for example, $T$ and $S$ are ladders with a different configuration of 3 leaves at maximum depth.
 \end{proof}
 
-In our final two lemmas of this section, we consider the distribution of trees in a neighborhood with respect to the size of the subtrees moved by SPR moves.
-First, we bound the number of neighbors of a tree that are induced by SPR moves involving a subtree with three or more leaves.
-In particular, we show that the majority of neighbors are induced by small subtree moves (one or two leaves).
-Along with our observation from Lemma~\ref{lem:degree_change} that the magnitude of the degree change induced by an SPR move depends on the subtree size and height change, this implies that most SPR neighbors have a similar degree.
+In our final two lemmas of this section, we consider the distribution of sizes of subtrees moved by SPR operations from a given tree.
+First, we bound the number of neighbors of a tree that are induced by SPR operations involving a subtree with three or more leaves.
+In particular, we show that the majority of neighbors are induced by moving small subtrees (one or two leaves).
+Along with our observation from Lemma~\ref{lem:degree_change} that the magnitude of the degree change induced by an SPR operation depends on the subtree size and height change, this implies that most SPR neighbors have a similar degree.
 	We say that a subtree is \emph{small} if it has two leaves or one leaf, and that a \emph{small} SPR move is one that moves a small subtree.
 
 \begin{lem}
 	Let $T$ be a rooted tree with $n \ge 3$ leaves.
-	Let $N_S(T)$ be the neighbors of $T$ induced by small SPR moves. 
+	Let $N_S(T)$ be the neighbors of $T$ induced by small SPR moves.
 	Then $\frac{\size{N_S(T)}}{\size{N(T)}} > \frac{1}{2}$.
 	\label{lem:spr_size}
 \end{lem}
 \begin{proof}
 	Recall our distribution of rSPR moves from a tree in Lemma~\ref{lem:compute_degree}.
-	Each subtree at a depth $ > 1$ from the root induces $2n - x - 5$ SPR neighbors, where $x$ is the number of nodes in the subtree, while the children of the root induce $2n - x - 3$ neighbors.
+	Each subtree at a depth $ > 1$ from the root with $x$ nodes induces $2n - x - 5$ SPR neighbors, while the children of the root induce $2n - x - 3$ neighbors.
 	This implies that the number of small SPR moves is directly proportional to the number of small subtrees, with a possible difference of two moves for a tree where one of the root's children is small.
-	There are thus two extremes for the distribution of rSPR moves induced by small subtrees.
-	A ladder tree has the smallest proportion of small subtrees.
-	One 1-leaf subtree in a ladder tree is a child of the root, but this is counterbalanced by the fact that any other tree has at least one more subtree with 2 leaves.
-	A balanced tree has the greatest proportion of small subtrees.
-	Thus, a balanced tree has the greatest number of small SPR moves.
 
-	We first bound the number of small subtree moves that can be applied to a ladder tree.
+	A ladder tree has the smallest proportion of small subtrees, so we first bound the number of small subtree moves that can be applied to a ladder tree.
 	A ladder tree with $n$ leaves has $n$ 1-leaf subtrees and 1 2-leaf subtree.
 	One of the 1-leaf subtrees is a child of the root.
 	A 2-leaf subtree contains three nodes.
