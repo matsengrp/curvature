@@ -853,7 +853,7 @@ Now, we bound the average size of the moved subtrees.
 	There are $n$ subtrees with 1 leaf, and 1 subtree each with $2,3, \ldots n - 1$ leaves.
 	We ignore the root subtree, which does not induce any rSPR moves.
 	Thinking of the ratio as a weighted average of $i$, we can split the numerator and the denominator of the average into terms with $i \leq 2$ and those with $i > 2$.
-    $N_i(T) \leq 2n - 3 - 5$ for the first set of terms, and $N_i(T) > 2n - 3 - 5$ for the second, so by replacing $N_i(T)$ in each case by $2n-3-5$ we increase the weight for $i \leq 2$ and decrease the weight on $i > 2$.
+    $N_i(T) \leq 2n - 3 - 5$ for the first set of terms, and $N_i(T) > 2n - 3 - 5$ for the second, so by replacing $N_i(T)$ in each case by $2n-3-5$ we decrease the weight for $i \leq 2$ and increase the weight on $i > 2$.
 	Thus, by doing this replacement we obtain a upper bound on the mean moved subtree size.
 	This bound, ignoring small subtrees, is $(3 + (n-2)) / 2 = (n + 1) / 2$.
 	By Lemma~\ref{lem:spr_size}, at least half of the rSPR moves involve a small subtree.
