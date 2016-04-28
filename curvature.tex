@@ -409,7 +409,7 @@ Thus, we believe our fast graph construction procedure will itself be useful for
 
 \subsection{Simulating random walks on the rSPR graph.}
 \label{sec:random_walks}
-The uniform random walk moves from one vertex to one of its neighbors uniformly at random, which makes this walk more likely to sample higher degree vertices.
+The uniform random walk moves from a vertex to one of its neighbors uniformly at random, which makes this walk more likely to sample higher degree vertices.
 In contrast, the Metropolis Hastings (MH) random walk with constant likelihood function proposes a move from a tree $T$ to a neighbor tree $S$ uniformly at random and then accepts the move according to the Hastings ratio, $\min\left(1, \frac{\degree{T}}{\degree{S}}\right)$.
 The MH random walk is guaranteed to sample each tree uniformly at random and is therefore representative of a phylogenetic MCMC program sampling trees under a uniform prior.
 
