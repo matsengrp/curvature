@@ -136,11 +136,11 @@
 \begin{abstract}
 Statistical phylogenetic inference methods use tree rearrangement operations such as subtree-prune-regraft (SPR) to perform Markov chain Monte Carlo (MCMC) across tree topologies.
 These methods are known to mix quickly when sampling from the simple uniform distribution of trees but may become stuck in the local optima of multi-modal posterior distributions for real data induced by non-uniform likelihoods.
-The structure of the graph induced by tree rearrangement operations is an important determinant of the mixing properties of MCMC, motivating study of the underlying \emph{rSPR graph} in greater~detail.
+The structure of the graph induced by tree rearrangement operations is an important determinant of the mixing properties of MCMC, motivating study of the underlying \emph{SPR graph} in greater~detail.
 
-In this paper, we investigate the rSPR graph in a new way: by calculating Ricci-Ollivier curvature with respect to uniform and Metropolis-Hastings random walks.
-These calculations require fast new algorithms for constructing and sampling these graphs, reducing the time required to compute an rSPR graph from $O(m^2n)$-time to $O(mn^3)$, where $m$ is the (often large) number of trees in the graph and $n$ their number of leaves, and reducing the time required to select an SPR neighbor of a tree uniformly at random to $O(n)$ time.
-We then develop a closed form solution to characterize how the number of SPR neighbors of a tree changes after an SPR operation is applied to that tree.
+In this paper, we investigate the SPR graph of rooted trees (rSPR graph) in a new way: by calculating Ricci-Ollivier curvature with respect to uniform and Metropolis-Hastings random walks.
+These calculations require fast new algorithms for constructing and sampling these graphs, reducing the time required to compute an rSPR graph from $O(m^2n)$-time to $O(mn^3)$, where $m$ is the (often large) number of trees in the graph and $n$ their number of leaves, and reducing the time required to select an rSPR neighbor of a tree uniformly at random to $O(n)$ time.
+We then develop a closed form solution to characterize how the number of rSPR neighbors of a tree changes after an rSPR operation is applied to that tree.
 This gives bounds on the curvature, as well as a flatness-in-the-limit theorem indicating that paths of small topology changes are easy to traverse.
 However, we find that large topology changes (i.e. moving a large subtree) give pairs of trees with negative curvature.
 We show using simulation that mean access time distributions depend on distance, degree, and curvature, showing the relevance of these curvature results to stochastic tree search.
@@ -172,7 +172,7 @@ Thus, phylogenetic searches can be viewed as traversing the \emph{SPR graph}: th
 It has become increasingly clear that the structure of the SPR graph plays an important role in determining the accuracy of tree searches.
 Researchers have previously identified slow mixing in MCMC with pathological data~\citep{Mossel2005-ly,Mossel2006-fo,Ronquist2006-fv}.
 On the other hand, fast mixing has been identified with exceptionally well-behaved data~\citep{Stefankovic2011-hu} or with a uniform distribution~\citep{spade2014note}.
-% Probabilists have also approached the problem using related frameworks that are more amenable to proving theorems, both for other sets of moves on trees with a finite number of leaves~\citep{Aldous2000-vg,Diaconis2002-gy} or for SPR and related moves on a continuous tree-like object which formalizes the notion of a tree with infinite leaves~\citep{Evans2006-xh,Athreya2014-de}.
+ Probabilists have also approached the problem using related frameworks that are more amenable to proving theorems, both for other sets of moves on trees with a finite number of leaves~\citep{Aldous2000-vg,Diaconis2002-gy} or for SPR and related moves on a continuous tree-like object which formalizes the notion of a tree with infinite leaves~\citep{Evans2006-xh,Athreya2014-de}.
 Studies on real data~\citep{beiko2006searching, lakner2008efficiency}, however, have identified posteriors which are difficult to sample using MCMC.
 Previously, the lack of sufficient computational tools for examining phylogenetic posteriors in terms of SPR operations made it difficult to determine the cause of these difficulties.
 By developing the first such tools, we recently showed that graph structure has a significant effect on MCMC mixing with MrBayes applied to real data~\citep{Whidden2015-yi}, and that multimodal posteriors are common and separated by ``bottlenecks" of specific classes of SPR moves.
@@ -549,7 +549,7 @@ Such pairs indicate difficult paths for phylogenetic searches, which may be exac
 \subsection{Access time simulation.}
 The access time for a pair of vertices in a graph is the (random) number of iterations required to go from one of the vertices to the other in a random walk~\citep{lovasz1993random}; we were interested in the connection between curvature and access time.
 In previous work, we computed mean access times (MAT) between pairs of trees in  MCMC random walks: the mean number of iterations required to move from one tree to the other.
-We applied this work to demonstrate the influence of SPR graph structure on real MCMC posteriors sampled with MrBayes~\citep{Whidden2015-yi} using \texttt{sprspace}~\citep{sprspace}.
+We applied this work to demonstrate the influence of (unrooted) SPR graph structure on real MCMC posteriors sampled with MrBayes~\citep{Whidden2015-yi} using \texttt{sprspace}~\citep{sprspace}.
 
 \begin{table}
 \centering
@@ -679,7 +679,7 @@ Moving the grey subtree $R$ from its position adjacent to $U$ in tree $T$ to its
 	\label{fig:spr-degree-change}
 \end{figure*}
 
-The maximum degree difference from Lemma~\ref{lem:degree_max_delta} occurs between trees that differ by many SPR operations.
+The maximum degree difference from Lemma~\ref{lem:degree_max_delta} occurs between trees that differ by many rSPR operations.
 In our next lemma, we characterize how the degree of a tree changes after a single rSPR operation.
 This relation will allow us to improve the degree bounds between adjacent trees.
 We show that the magnitude of the degree change depends solely on the size of the subtree to be moved, the difference between the depths of its original and new locations, and the size of its original and new neighboring subtrees.
@@ -811,22 +811,22 @@ Then $\size{N(T) \cap N(S)} \le 6n - 17$.
 	Note that this bound is tight when, for example, $T$ and $S$ are ladders with a different configuration of 3 leaves at maximum depth.
 \end{proof}
 
-In our final two lemmas of this section, we consider the distribution of sizes of subtrees moved by SPR operations from a given tree.
-First, we bound the number of neighbors of a tree that are induced by SPR operations involving a subtree with three or more leaves.
+In our final two lemmas of this section, we consider the distribution of sizes of subtrees moved by rSPR operations from a given tree.
+First, we bound the number of neighbors of a tree that are induced by rSPR operations involving a subtree with three or more leaves.
 In particular, we show that the majority of neighbors are induced by moving small subtrees (one or two leaves).
-Along with our observation from Lemma~\ref{lem:degree_change} that the magnitude of the degree change induced by an SPR operation depends on the subtree size and height change, this implies that most SPR neighbors have a similar degree.
-	We say that a subtree is \emph{small} if it has two leaves or one leaf, and that a \emph{small} SPR move is one that moves a small subtree.
+Along with our observation from Lemma~\ref{lem:degree_change} that the magnitude of the degree change induced by an rSPR operation depends on the subtree size and height change, this implies that most rSPR neighbors have a similar degree.
+	We say that a subtree is \emph{small} if it has two leaves or one leaf, and that a \emph{small} rSPR move is one that moves a small subtree.
 
 \begin{lem}
 	Let $T$ be a rooted tree with $n \ge 3$ leaves.
-	Let $N_S(T)$ be the neighbors of $T$ induced by small SPR moves.
+	Let $N_S(T)$ be the neighbors of $T$ induced by small rSPR moves.
 	Then $\frac{\size{N_S(T)}}{\size{N(T)}} > \frac{1}{2}$.
 	\label{lem:spr_size}
 \end{lem}
 \begin{proof}
 	Recall our distribution of rSPR moves from a tree in Lemma~\ref{lem:compute_degree}.
-	Each subtree at a depth $ > 1$ from the root with $x$ nodes induces $2n - x - 5$ SPR neighbors, while the children of the root induce $2n - x - 3$ neighbors.
-	This implies that the number of small SPR moves is directly proportional to the number of small subtrees, with a possible difference of two moves for a tree where one of the root's children is small.
+	Each subtree at a depth $ > 1$ from the root with $x$ nodes induces $2n - x - 5$ rSPR neighbors, while the children of the root induce $2n - x - 3$ neighbors.
+	This implies that the number of small rSPR moves is directly proportional to the number of small subtrees, with a possible difference of two moves for a tree where one of the root's children is small.
 
 	A ladder tree has the smallest proportion of small subtrees, so we first bound the number of small subtree moves that can be applied to a ladder tree.
 	A ladder tree with $n$ leaves has $n$ 1-leaf subtrees and 1 2-leaf subtree.
@@ -836,14 +836,14 @@ Along with our observation from Lemma~\ref{lem:degree_change} that the magnitude
 
 	Now, recall that the maximum degree of any tree is less than $4n^2 - 16n + 16$ by Lemma~\ref{lem:degree_extremes}.
 	We then have that $2(2n^2 - 4n - 6) = 4n^2 - 8n - 12 \ge 4n^2 - 8n - 12 + (24 - 8n) = 4n^2 -16n + 16$, for all $n \ge 3$.
-	Therefore more than half of the neighborhood of any tree is induced by small SPR moves.
+	Therefore more than half of the neighborhood of any tree is induced by small rSPR moves.
 \end{proof}
 
 Now, we show that the average size of the moved subtrees is small.
 
 \begin{lem}
 	Let $T$ be a rooted tree with $n \ge 4$ leaves.
-	Let $N_i(T)$ be the neighbors of $T$ induced by SPR moves of an $i$-leaf subtree.
+	Let $N_i(T)$ be the neighbors of $T$ induced by rSPR moves of an $i$-leaf subtree.
 	Then $$\frac{\sum_i i \size{N_i(T)}}{\size{N(T)}} \le \frac{n + 2}{4} .$$
 	\label{lem:spr_size_mean}
 \end{lem}
@@ -851,8 +851,8 @@ Now, we show that the average size of the moved subtrees is small.
 	Again recall our distribution of rSPR moves from a tree in Lemma~\ref{lem:compute_degree}.
 	By similar arguments as in the proof of Lemma~\ref{lem:spr_size}, a ladder tree has the greatest average moved subtree size.
 	There are $n$ subtrees with 1 leaf, and 1 subtree each with $2,3, \ldots n - 1$ leaves.
-	We ignore the root subtree, which does not induce any SPR moves.
-	By Lemma~\ref{lem:spr_size}, at least half of the SPR moves involve a 1-leaf subtree.
+	We ignore the root subtree, which does not induce any rSPR moves.
+	By Lemma~\ref{lem:spr_size}, at least half of the rSPR moves involve a 1-leaf subtree.
 	We can bound the distribution of the remaining moves with the (loose) assumption that each other subtree contributes the same number of moves.
 	This bounds the mean moved subtree size from above because each successively larger subtree contributes fewer moves.
 	The mean subtree size is $(2 + n - 2) / 2 = n / 2$.
