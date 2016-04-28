@@ -839,7 +839,7 @@ Along with our observation from Lemma~\ref{lem:degree_change} that the magnitude
 	Therefore more than half of the neighborhood of any tree is induced by small rSPR moves.
 \end{proof}
 
-Now, we show that the average size of the moved subtrees is small.
+Now, we bound the average size of the moved subtrees.
 
 \begin{lem}
 	Let $T$ be a rooted tree with $n \ge 4$ leaves.
@@ -852,7 +852,7 @@ Now, we show that the average size of the moved subtrees is small.
 	By similar arguments as in the proof of Lemma~\ref{lem:spr_size}, a ladder tree has the greatest average moved subtree size (in terms of the number of leaves).
 	There are $n$ subtrees with 1 leaf, and 1 subtree each with $2,3, \ldots n - 1$ leaves.
 	We ignore the root subtree, which does not induce any rSPR moves.
-	By Lemma~\ref{lem:spr_size}, at least half of the rSPR moves involve a 1-leaf subtree.
+	By Lemma~\ref{lem:spr_size}, at least half of the rSPR moves involve a small subtree.
 	We can bound the distribution of the remaining moves with the (loose) assumption that each other subtree contributes the same number of moves.
 	In particular, we assume that each subtree contributes $2n - 3 - 5$ moves.
 	This underestimates the number of small moved subtrees and overestimates the number of larger moved subtrees.
