@@ -1,0 +1,311 @@
+Reviewer 2
+
+Page 1
+
+27: The spelling 'multimodal' seems to be more common than 'multi-modal' (and would be in line with other uses in your paper; e.g. page 3, line 12).
+* corrected
+
+30: The word 'the' seems to be missing before 'study'.
+* corrected
+
+32: The word 'the' seems to be missing before 'Ricci-Ollivier'.
+* corrected
+
+36: Here, I would suggest clarifying the phrase 'and n their number of leaves' a bit. In its current state, it might not be clear from the wording whether each tree has n leaves or whether n is the total number of leaves of all trees.
+* revised to "... and n is the number of leaves in each tree, ..."
+
+44-46: The phrasing 'We show ... showing ...' sounds a bit odd because 'show' is used twice.
+* revised "showing" to "demonstrating"
+
+Page 2
+10: It looks like some kind of connecting phrase is missing between 'particular' and 'properties' (e.g.  'with respect to').
+* we added the suggested connecting phrase
+
+11: The word 'the' seems to be missing before 'investigation'.
+* corrected
+
+52-53: As you start this part of this sentence with 'both', an 'and' seems to be more fitting in 'leaves [12, 13] or for SPR'.
+* corrected
+
+54: Do you rather mean 'an infinite number of leaves' or 'infinitely many leaves' instead of 'infinite leaves'?
+* corrected to "infinitely many leaves"
+
+Page 3
+
+15: A more fitting position of 'still' seems to be between 'is' and 'known'.
+* corrected
+
+18: A word like 'the' or 'its' seems to be missing before 'degree'.
+* corrected to "its".
+
+30: The phrase 'begun to allow' sounds a bit odd. Swapping the verbs ('allowed to begin') might be preferable.
+* The phrase "allowed to begin" would change our intended meaning, so we instead changed this to "... efficient fixed-parameter algorithms have recently been developed [17, 24, 25] that begin to allow such investigations." .
+
+31: It looks like the word 'investigation' is missing the indefinite article or should be in the plural form.
+* corrected, as noted above
+
+33: The word 'the' seems to be missing before 'Ricci'.
+* corrected
+
+47: The word 'the' seems to be missing before 'curvature'.
+* corrected
+
+56: The same problem as on page 1, line 36.
+* corrected to "... each of which has n leaves".
+
+Page 4
+44: In this context, 'linear-time' seems to be more common without a hyphen.
+* corrected
+
+47-52: Both sentences use the phrase 'we found'. Varying the wording a bit would make it sound better.
+* We revised the second sentence with "we found" to begin with "Our results demonstrated that ...".
+
+48: The word 'the' seems to be missing before 'distance'.
+* corrected
+
+Page 5
+
+27: The word 'the' seems to be missing before 'proba-'.
+* corrected
+
+29: The word 'the' seems to be missing before 'knowledge'.
+* corrected
+
+Page 6
+30: Is it really necessary to define the LCA of two or more subtrees as the LCA of their parent nodes (and not as the LCA of the root nodes of the subtrees)? It seems a bit unconventional (also w.r.t. your LCA definition of one or more nodes beforehand).
+* Corrected. We did indeed mean the root nodes of the subtrees by "parent". 
+
+40: Either the word 'the' seems to be missing before 'arbitrary' or it has to be 'arbitrarily' (in which case the 'of' before 'trees' has to be removed).
+* corrected by adding "the".
+
+Page 7
+13: The wording 'we will specialize to that space being a graph' sounds odd. Maybe something
+along the lines of 'we restrict ourselves to ...' is preferable.
+20: It looks like the apostrophe in 'movers' is missing (it should be 'mover's').
+Page 8
+14: It looks like there is too much white space behind 'e.g.'.
+24: In this context, 'previously' seems more appropriate than 'previous'.
+28-33: Both points are possibly related.
+1. In the final sentence of the first paragraph, m is assumed to be (2n-3)!! ('m is the rapidly
+growing function (2n-3)!!'). You continue using m in the second paragraph. Is it an arbitrary
+value not larger than (2n-3)!! (or still equal to the maximum)? I would suggest clarifying the
+transition.
+2. The phrase 'graphs from subsets of m high probability trees' is a bit ambiguous. Does it
+mean that the graphs are constructed from subsets which themselves consist of m trees or are
+the graphs constructed from subsets of the m-element set of high probability trees?47-48: What is the unit of the length of the Newick representation?
+51: To which list does 'in this list' refer to?
+Page 9
+44-45: The statement starts with 'requires only O(n)-time for each tree' (of which there are m).
+Therefore, it is not quite clear (even though not wrong), why the total time of this step is bound by
+the unnecessarily unsharp term 'O(mn3)'.
+Page 10
+42: The wording 'within a subtree' seems a bit imprecise and could be clarified by changing it to
+something along the lines of 'within the subtree to be moved / regrafted'.
+55: The term 'every' seems to be more fitting than 'each' in this context.
+Page 11
+9-12: The wording seems a bit imprecise because the target of a move is not the node itself but the
+node's edge.
+23-25: The case distinction requires that the extra root node ρ has depth -1, the actual root depth 0
+and so on, but this is stated nowhere in the paper.
+33: Probably, the set-difference operator ('\') is supposed to denote the pruning (including the
+merging of the incoming and outgoing edge of the resulting unary node). Unfortunately, this is not
+explained. A short explanation would make this more obvious to the reader.
+Page 12
+15: It looks like that '-th' is missing behind the '|r|' in order to turn it into an ordinal number.
+23: What is the unit of the 'O(n) space'?
+52-55: The significance of this paragraph could be increased by stating the special features,
+properties or outcomes of these runs instead of barely stating that you have performed them.
+Page 13
+32: Which graph is 'the rSPR graph ... as discussed in Section 3.1'? The complete one with (2n-3)!!
+trees? This is not quite clear since section 3.1 also considers other values for m.
+33: It is stated that the curvature is computed for 'given pairs of trees', but who / what gives these
+pairs? The wording is a bit odd here.55: The word 'tempered' is slightly ambiguous, because it can have the meaning 'to moderate' as
+well as 'to harden'.
+Page 14
+56-: The connection between a smaller κ and a right-shift of the access time distribution is difficult
+to see as differences in the saturation are hardly noticable.
+Page 15
+Plots of Figure 5:
+1. It is very hard to extract any information from the plots, because the plots (as soon as there
+are a few more lines) quickly get congested due to overlaps and hardly (or not at all) visible
+differences in saturation.
+2. Adding axis labels (and not just explaining them in the figure caption) could help the
+readability of the plots.
+3. It might be a bit counterintuitive to associate smaller κ values with an increased saturation.
+4. Furthermore, the print version of articles in this journal usually come with monochrome
+images, (then) making it basically impossible to distinguish the lines by colour and
+saturation.
+Page 16
+Plots of Figure 6:
+1. Except for the axis labels, the plots have the similar problems as those of Figure 5.
+2. Plots (c) and (d) are especially problematic w.r.t. overlaps.
+3. Adding brightness (blue vs. light blue) as another distinctive feature (besides saturation) can
+also hamper the readability (when the differences are as small as they are here).
+45-56:
+1. Which cases (of the four cases (a) – (d)) are meant with 'In both cases'?
+2. What is the rationale (and meaning) behind '[excluding] pairs that are simple inclusions of
+pairs of trees with a smaller number of taxa'?
+Page 17
+12-15: Adding hyphens (e.g. 'distance-1 pairs') might increase the readability.
+15-23: The traceability / comprehensibility of the statements would strongly benefit from improving
+the readability of the plots in Figure 5 and 6.
+53: It looks like there is too much white space behind 'w.l.o.g.'.
+Page 18
+Proof of (i):The proof only works when the '+14' in the numerator is not reduced to '+12' (which is also not
+necessary, because bounding the sum of the logarithms in the denominator is sufficient.
+Proof of (ii):
+There seems to be a small error in the format. The penultimate equality is not aligned with the other
+equal and less-than signs.
+42-43: The statement 'The maximum degree difference from Lemma 5.2. occurs between trees that
+differ by many rSPR operations.' is (in this generality) not correct or at least misleading. Consider
+the rSPR graph for X-trees with four leaves from Figure 3(a). The ladder tree and the balanced tree
+have the maximum degree difference but are only separated by a single rSPR move while there are
+other tree pairs separated by two moves (which, in this context / example, should be considered as
+many).
+Page 19
+39:
+1. There seems to be an inconsistency between the definition of internal edges and their
+number stated in this line. On page 5, internal edges are defined as those that do not contact
+a leaf or ρ. Then, a 'rooted tree with k leaves' cannot have 2(k-1) internal edges as stated here
+(because this is the number of all edges (also those leading to leaves), disregarding the extra
+root edge). So, either the definition of 'internal edge' has to be adopted or the word 'internal'
+has to be dropped here.
+2. The white space after 'edges' is missing.
+Page 20
+9-19: While Corollary 5.4 appears correct, the given justification seems to be a bit problematic.
+Based on the definition of γ and the excluded (subtracted) moves, it appears that these γ moves still
+include some which move R. For example, from the set of all possible moves for T (deg(T)), only
+some moves into R (2kb, case (ii)) and some moves of R's parent subtree (2(j-1), case (iv)) are
+excluded.
+However, it is then stated that these moves 'can be applied to T and S with the same source and
+target nodes'. The minor (but arguable) problem concerns the part 'same source nodes': When are
+they the same? Is the parent node of R the same although its position differs in T and S? If not, then
+not all γ moves can be applied with the same source nodes. The bigger problem is created by the
+fact that moves moving R with the same target node eliminate the only difference between T and S
+and, thus, the difference between the obtained neighbours is zero (not one).
+Overall, it seems to be a bit more complicated to describe how the desired (T',S') pairs can be
+obtained.
+14: The phrase 'the pairings are disjoint' might need some more explanation as 'disjoint' might get
+interpreted in several ways (e.g. no tree is allowed to occur in more than one pairing vs. the pairings
+are pairwise distinct).
+37: The word 'and' seems to be missing before 'then' .
+Lemma 5.5:
+1. Concerning the proof of (i): it might be helpful to elaborate on why a case distinction is
+necessary (Why is it necessary to increase j? Why are the subcases of (not) moving theadditional leaf necessary?) in order to clarify the line of argument.
+2. Concerning statement (ii): Is there a particular reason why the quotient is bounded for n ≥ 4?
+The overall lemma assumes n ≥ 3, which would also lead to a nice bound (0.8).
+Page 21
+49:
+1. The meaning of the function L(.) can be guessed from the context without too much effort,
+but providing a short definition / explanation would help avoiding any misconceptions.
+2. Does this equality really hold between the restricted versions of T and S , which differ only in
+R and, thus, should still be different after restricting them to X \ L(Q)?
+51-53: Using U as a subtree while it also denotes a whole tree in the neighbourhood of T and S just
+a few lines before can be slightly confusing.
+Page 22
+30-32: The statement on the proportionality of small moves and small subtrees seems to be a bit
+troubled.
+1. For example, if both children of the root are not small, each small subtree with one leaf
+contributes 2n-6 moves, while each small subtree with two leaves contributes 2n-8 moves.
+So, what is the factor of proportionality?
+2. In the phrase 'where one of the root's children is small', is the intended meaning exactly one
+or at least one? Assuming, e.g., 2n-6 as the factor of proportionality (coming from (the
+majority of) the leaves), the statement does not hold in general (neither for exactly nor for at
+least). Consider, e.g., a tree with a leaf as the only small child of the root and at least three
+small subtrees with two leaves (for the case exactly) respectively the balanced tree with four
+leaves (for the case at least).
+36: Writing 'one 2-leaf subtree' instead of '1 2-leaf subtree' appears more readable (and is more
+consistent with the previous use of numerals).
+38-42:
+1. Since Lemma 5.7 shall hold for n ≥ 3, the stated number of small moves (2n2-4n-6) is not
+correct for all intended n. The reason is that for the ladder tree with three leaves, the small
+subtree with two leaves is also a child of the root and, thus, contributes 2n-3-3 (not 2n-3-5)
+moves. Hence, a case distinction seems to be necessary here and for the inequality in the
+subsequent paragraph (lines 40-42)
+2. The chain of (in)equalities in lines 40-42 does not run through, because adding (24-8n) leads
+to the n-free term '+12' (not '+16'). But this can be 'repaired' through the necessary case
+distinction n = 3 vs. n ≥ 4).
+45+55: Stating the explanation of the size '(in terms of the number of leaves)' directly in line 45
+possibly avoids some confusion (which can occur when reading Lemma 5.8 while having the
+typical notion of size in mind).
+54-55: The statement 'a ladder tree has the greatest average moved subtree size' does not seem to
+hold for all n ≥ 4. For n = 4, the ladder tree has an average moved subtree size of 1, while it is 4/3
+for the balanced tree. Similarly, the balanced tree has a larger one for n = 8 (1.55 vs. 1.39).
+This might pose a problem to the proof because it based on the idea that the ladder tree leads to themaximum.
+56: Similar to line 36, 'one leaf' and 'one subtree' appear more readable / consistent.
+Page 23
+11-13: The vertical bars denoting the size of N i (T) are missing at all three occurrences.
+11-20:
+1. It is stated that |N i (T)| ≤ 2n-3-5 for i ≤ 2, but in a ladder tree is, e.g., |N 1 (T)| = (n-1)(2n-1-5) +
+(2n-1-3) > 2n-3-5.
+2. Also, it is stated that |N i (T)| > 2n-3-5 for i > 2, but in a ladder tree is, e.g., |N i (T)| = 1 * 2n-
+(2i-1)-5 < 2n-3-5 for 2 ≤ i ≤ n-2.
+3. Therefore, also the statements on decreasing / increasing the actual values to the bound 2n-
+3-5 are the wrong way round. Possibly, this can be fixed by swapping the inequality signs.
+4. Is it actually obvious enough that setting all |N i (T)| to 2n-3-5 leads to an upper for the
+quotient representing the average moved subtree size? A short explanation might make this
+point clearer.
+5. In the last sentence of the proof, the weighted average uses a proportion of 1⁄2 for both small
+and large subtree (which is okay), but why is the average moved subtree size of small
+substrees assumed to be one? Shouldn't the one small subtree with two leaves (which always
+exists) make it slightly larger than one?
+32: Is there are special reason for (re)defining the mass transport term W 1,n ?
+37: The verb 'increase' misses the third-person singular s (as it refers to 'the size of the trees').
+45: Only one of the two occurrences of 'thus' is needed.
+Page 24
+14: Adding a short explanation why the number of unmatched trees is in O(kn) might help the
+reader understanding the argument at this point better.
+19: The innermost pair of parentheses around 'O(n)' is not necessary.
+30: Replacing the word 'a' before 'distance' by 'at' or 'of' conveys the meaning better.
+31: The equality sign in the equation might be less fitting than a <, because it is previously (line 25)
+stated that S n has a strictly larger neighbourhood.
+46-47: Shortly explaining how the bounds for the distance between neighbours of T and S lead to
+bounds for W 1 (m T ,m S ) could make it easier for the reader to grasp the idea how the proof works.
+Page 25
+29: Possibly it should be 'each other' instead of 'each either'.40-41: The actual meaning of the phrase 'a greater understanding of the distribution of tree
+neighborhoods with respect to one another' is not very clear (especially due to the underlined part).
+Page 26
+10: A short remark on how the term '1 + μ' is actually derived would make this passage easier /
+faster to comprehend
+14: Following Corollary 5.4 it should be 'at least γ' and not 'at most γ' paired trees (and, otherwise,
+the argumentation is not sensible at this point).
+19: The rationale for bounding the degree by using the maximum possible absolute difference
+(irrespective of the actual move) seems a bit unclear. Currently, it does not look like the line of
+argument leads to the maximum μ: using the maximum degree of T (instead of the actual,
+potentially smaller, value) does not result in the maximum μ because it leads to an unnecessarily
+large denominator.
+20:
+1. The last inequality ('≤ 1⁄2n2-n') holds only if n is even. For odd n, 1⁄2 has to be added to the
+upper bound (which is then also okay for the even case). In the end, this change also affects
+the curvature bound.
+2. It looks like the factors 'k' and 'a' are swapped after inserting their values. While this would
+not be wrong, it is a potential source of confusion.
+39-40: Providing a proof or at least a clear rationale for the statement 'the pair of trees used in the
+proof of Lemma 6.5 will always have negative curvature, for all n ≥ 7' would lend more weight to
+it.
+Page 27
+35: The upper bound does not seem to follow as analogously to the lower bound as it is stated.
+Using the inequality stated in line 32 and proceeding analogously to the lower bound leads to
+κ p (T , S )
+2
+⩽ ...⩽ κ (T , S)+
+p
+p∗max (∣ N (T )∣ , ∣ N (S )∣)
+where the factor p in the denominator causes a problem, because simply dropping it (in order to
+arrive at the bound from the lemma) bounds the value in the wrong direction (as it is at most 1).
+Page 28
+11-12: According to Lemma 5.5, the quotient of degrees for two adjacent trees is at least 5/6 only
+for n ≥ 4, but there is no such assumption in Lemma 6.9 or its proof.
+14-18: Using W 1 (T,S) (resp. W' 1 (T,S)) is slightly imprecise as T and S are the trees and not the
+probability densities.
+26: Within the min-term of the last case, w is the argument of all four probability densities.
+Probably, two of them should have z as their argument.29-33: Using W 1 (resp. W' 1 ) without the arguments for the values of the Wasserstein distance is
+slightly imprecise.
+50: The word 'the' seems to be missing before 'understanding'.
+55: The statement 'rSPR graph degree changes depend quadratically on the product of the size of the
+regrafted subtree with its change in depth' seems a bit mixed up, because (according to the proven
+lemma) the changes depend linearly on the product (which in turn is quadratic in the number of
+leaves).
+Page 29
+13-17: The same problem as on page 17, lines 15-23.
+29: Changing 'achieve' to 'to be achieved' seems a bit more readable.
