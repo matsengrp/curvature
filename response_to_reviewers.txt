@@ -114,101 +114,164 @@ Page 9
 * This is O(n)-time for each neighbor tree, of which there are O(mn^2), for a total of O(mn^3)-time. We added the word neighbor to clarify.  
 
 Page 10
-42: The wording 'within a subtree' seems a bit imprecise and could be clarified by changing it to
-something along the lines of 'within the subtree to be moved / regrafted'.
+
+42: The wording 'within a subtree' seems a bit imprecise and could be clarified by changing it to something along the lines of 'within the subtree to be moved / regrafted'.
+* revised to "within the subtree to be moved".
+
 55: The term 'every' seems to be more fitting than 'each' in this context.
+* corrected
+
 Page 11
-9-12: The wording seems a bit imprecise because the target of a move is not the node itself but the
-node's edge.
-23-25: The case distinction requires that the extra root node ρ has depth -1, the actual root depth 0
-and so on, but this is stated nowhere in the paper.
-33: Probably, the set-difference operator ('\') is supposed to denote the pruning (including the
-merging of the incoming and outgoing edge of the resulting unary node). Unfortunately, this is not
-explained. A short explanation would make this more obvious to the reader.
+
+9-12: The wording seems a bit imprecise because the target of a move is not the node itself but the node's edge.
+* The wording was indeed confusing. We are assigning moves for counting
+	purposes to one possible source node, not specifying a move to any
+	given node. We added the sentence "To do so, we assign each of the
+	neighbors to one node of the tree, such that any given neighbor can be
+	obtained by moving the subtree rooted at its assigned node." We then
+	changed each mention of assigning moves to assigning neighbors.
+
+23-25: The case distinction requires that the extra root node ρ has depth -1, the actual root depth 0 and so on, but this is stated nowhere in the paper.
+* We added a sentence defining the depth of the rho node to be -1 to the
+	preliminaries: "The depth of \rho is considered to be -1, the depth of
+	the original root is 0, and the depth of each other node is given by
+	its distance from the original root.
+
+33: Probably, the set-difference operator ('\') is supposed to denote the pruning (including the merging of the incoming and outgoing edge of the resulting unary node). Unfortunately, this is not explained. A short explanation would make this more obvious to the reader.
+* We have added an explanation here: "This implies that both T \U = S \U
+	and T \V = S \V by the definition of an rSPR operation, where \ here
+	indicates removing the subtree and its parent edge and then replacing
+	its former parent node and both adjacent edges with a single edge."
+
 Page 12
+
 15: It looks like that '-th' is missing behind the '|r|' in order to turn it into an ordinal number.
+* corrected
+
 23: What is the unit of the 'O(n) space'?
-52-55: The significance of this paragraph could be increased by stating the special features,
-properties or outcomes of these runs instead of barely stating that you have performed them.
+* bits of memory, as is standard for the Big-O notation with respect to space.
+
+52-55: The significance of this paragraph could be increased by stating the special features, properties or outcomes of these runs instead of barely stating that you have performed them.
+* The runs are analyzed in the next section. To avoid confusion we moved
+	the description of the runs to the Access time simulation section and
+	simply say "We used this procedure to sample random walks on varying
+	size rSPR graphs for our analysis in the next section" here.
+
 Page 13
-32: Which graph is 'the rSPR graph ... as discussed in Section 3.1'? The complete one with (2n-3)!!
-trees? This is not quite clear since section 3.1 also considers other values for m.
-33: It is stated that the curvature is computed for 'given pairs of trees', but who / what gives these
-pairs? The wording is a bit odd here.55: The word 'tempered' is slightly ambiguous, because it can have the meaning 'to moderate' as
-well as 'to harden'.
+32: Which graph is 'the rSPR graph ... as discussed in Section 3.1'? The complete one with (2n-3)!!  trees? This is not quite clear since section 3.1 also considers other values for m.
+* This refers to the complete graph. We revised our use of m as
+	described above, to limit this type of confusion. In addition we added
+	the word full ("full rSPR graph") to this sentence.
+
+33: It is stated that the curvature is computed for 'given pairs of trees', but who / what gives these pairs? The wording is a bit odd here.
+* This is explained in the next paragraph. We could not compute
+	curvatures for all pairs of trees directly, but instead compute
+	curvatures for each tanglegram. The procedure described here is to
+	used to compute the curvature of any given pair of trees.
+
+55: The word 'tempered' is slightly ambiguous, because it can have the meaning 'to moderate' as well as 'to harden'.
+* revised to "reduced"
+
+****TODO FIGURES START*****
+
 Page 14
-56-: The connection between a smaller κ and a right-shift of the access time distribution is difficult
-to see as differences in the saturation are hardly noticable.
+
+56-: The connection between a smaller κ and a right-shift of the access time distribution is difficult to see as differences in the saturation are hardly noticable.
+
 Page 15
+
 Plots of Figure 5:
-1. It is very hard to extract any information from the plots, because the plots (as soon as there
-are a few more lines) quickly get congested due to overlaps and hardly (or not at all) visible
-differences in saturation.
-2. Adding axis labels (and not just explaining them in the figure caption) could help the
-readability of the plots.
+1. It is very hard to extract any information from the plots, because the plots (as soon as there are a few more lines) quickly get congested due to overlaps and hardly (or not at all) visible differences in saturation.
+
+2. Adding axis labels (and not just explaining them in the figure caption) could help the readability of the plots.
+
 3. It might be a bit counterintuitive to associate smaller κ values with an increased saturation.
-4. Furthermore, the print version of articles in this journal usually come with monochrome
-images, (then) making it basically impossible to distinguish the lines by colour and
-saturation.
+
+4. Furthermore, the print version of articles in this journal usually come with monochrome images, (then) making it basically impossible to distinguish the lines by colour and saturation.
+
 Page 16
 Plots of Figure 6:
 1. Except for the axis labels, the plots have the similar problems as those of Figure 5.
 2. Plots (c) and (d) are especially problematic w.r.t. overlaps.
 3. Adding brightness (blue vs. light blue) as another distinctive feature (besides saturation) can
 also hamper the readability (when the differences are as small as they are here).
+
+****TODO FIGURES END*****
+
 45-56:
+
 1. Which cases (of the four cases (a) – (d)) are meant with 'In both cases'?
-2. What is the rationale (and meaning) behind '[excluding] pairs that are simple inclusions of
-pairs of trees with a smaller number of taxa'?
+* This referred to both of the cases mentioned in text (early and later
+	access times). We revised the phrase to "these plots" to avoid
+	confusion.
+
+2. What is the rationale (and meaning) behind '[excluding] pairs that are simple inclusions of pairs of trees with a smaller number of taxa'?
+* These plots demonstrate the effect of curvature on access times when variables such as degree are controlled. Tree pairs that are inclusions of pairs of trees with a smaller number of taxa have largely unchanged access times to the smaller trees and clutter the figure.
+	A pair of trees that both contain leaves 1 and 2 as siblings are an
+	example of inclusions of the pair of trees obtained by merging those siblings into a single leaf and relabeling the leaves.
+
+
 Page 17
+
 12-15: Adding hyphens (e.g. 'distance-1 pairs') might increase the readability.
-15-23: The traceability / comprehensibility of the statements would strongly benefit from improving
-the readability of the plots in Figure 5 and 6.
+* We have made the suggested change
+
+15-23: The traceability / comprehensibility of the statements would strongly benefit from improving the readability of the plots in Figure 5 and 6.
+* TODO
+
 53: It looks like there is too much white space behind 'w.l.o.g.'.
+* corrected
+
 Page 18
-Proof of (i):The proof only works when the '+14' in the numerator is not reduced to '+12' (which is also not
-necessary, because bounding the sum of the logarithms in the denominator is sufficient.
+
+Proof of (i):The proof only works when the '+14' in the numerator is not reduced to '+12' (which is also not necessary, because bounding the sum of the logarithms in the denominator is sufficient.
+* TODO: Do you see a problem here Erick? Reducing the numerator from 14
+	to 12 is valid. Maybe he is confused by the last step, where I borrow
+	from the reduced -n in the denominator to reduce the 20 to 18?
+
 Proof of (ii):
-There seems to be a small error in the format. The penultimate equality is not aligned with the other
-equal and less-than signs.
-42-43: The statement 'The maximum degree difference from Lemma 5.2. occurs between trees that
-differ by many rSPR operations.' is (in this generality) not correct or at least misleading. Consider
-the rSPR graph for X-trees with four leaves from Figure 3(a). The ladder tree and the balanced tree
-have the maximum degree difference but are only separated by a single rSPR move while there are
-other tree pairs separated by two moves (which, in this context / example, should be considered as
-many).
+There seems to be a small error in the format. The penultimate equality is not aligned with the other equal and less-than signs.
+* corrected
+
+42-43: The statement 'The maximum degree difference from Lemma 5.2. occurs between trees that differ by many rSPR operations.' is (in this generality) not correct or at least misleading. Consider the rSPR graph for X-trees with four leaves from Figure 3(a). The ladder tree and the balanced tree have the maximum degree difference but are only separated by a single rSPR move while there are other tree pairs separated by two moves (which, in this context / example, should be considered as many).
+* revised to "may occur". Our intent here is simply to lead up to our
+	improved bounds for adjacent trees.
+
 Page 19
+
 39:
-1. There seems to be an inconsistency between the definition of internal edges and their
-number stated in this line. On page 5, internal edges are defined as those that do not contact
-a leaf or ρ. Then, a 'rooted tree with k leaves' cannot have 2(k-1) internal edges as stated here
-(because this is the number of all edges (also those leading to leaves), disregarding the extra
-root edge). So, either the definition of 'internal edge' has to be adopted or the word 'internal'
-has to be dropped here.
+1. There seems to be an inconsistency between the definition of internal edges and their number stated in this line. On page 5, internal edges are defined as those that do not contact a leaf or ρ. Then, a 'rooted tree with k leaves' cannot have 2(k-1) internal edges as stated here (because this is the number of all edges (also those leading to leaves), disregarding the extra root edge). So, either the definition of 'internal edge' has to be adopted or the word 'internal' has to be dropped here.
+* We have dropped the word "internal" here.
+
+
 2. The white space after 'edges' is missing.
+* corrected
+
 Page 20
-9-19: While Corollary 5.4 appears correct, the given justification seems to be a bit problematic.
-Based on the definition of γ and the excluded (subtracted) moves, it appears that these γ moves still
-include some which move R. For example, from the set of all possible moves for T (deg(T)), only
-some moves into R (2kb, case (ii)) and some moves of R's parent subtree (2(j-1), case (iv)) are
-excluded.
-However, it is then stated that these moves 'can be applied to T and S with the same source and
-target nodes'. The minor (but arguable) problem concerns the part 'same source nodes': When are
-they the same? Is the parent node of R the same although its position differs in T and S? If not, then
-not all γ moves can be applied with the same source nodes. The bigger problem is created by the
-fact that moves moving R with the same target node eliminate the only difference between T and S
-and, thus, the difference between the obtained neighbours is zero (not one).
-Overall, it seems to be a bit more complicated to describe how the desired (T',S') pairs can be
-obtained.
-14: The phrase 'the pairings are disjoint' might need some more explanation as 'disjoint' might get
-interpreted in several ways (e.g. no tree is allowed to occur in more than one pairing vs. the pairings
-are pairwise distinct).
+
+9-19: While Corollary 5.4 appears correct, the given justification seems to be a bit problematic.  Based on the definition of γ and the excluded (subtracted) moves, it appears that these γ moves still include some which move R. For example, from the set of all possible moves for T (deg(T)), only some moves into R (2kb, case (ii)) and some moves of R's parent subtree (2(j-1), case (iv)) are excluded.  However, it is then stated that these moves 'can be applied to T and S with the same source and target nodes'. The minor (but arguable) problem concerns the part 'same source nodes': When are they the same? Is the parent node of R the same although its position differs in T and S? If not, then not all γ moves can be applied with the same source nodes. The bigger problem is created by the fact that moves moving R with the same target node eliminate the only difference between T and S and, thus, the difference between the obtained neighbours is zero (not one).  Overall, it seems to be a bit more complicated to describe how the desired (T',S') pairs can be obtained.
+* revised the first part with "We consider the parent node of R in both T and S to be the same source node for this purpose.". 
+* TODO: We can either change the distance bound here to <= 0 or subtract
+	out the distance 0 pairs. Check which is better after completing the
+	other revisions.
+
+14: The phrase 'the pairings are disjoint' might need some more explanation as 'disjoint' might get interpreted in several ways (e.g. no tree is allowed to occur in more than one pairing vs. the pairings are pairwise distinct).
+* revised to note "...  each neighbor of T is paired
+with a single neighbor of S, and vice versa. Note that a tree may be a
+neighbor of both T and S and thus involved in two different pairings."
+
 37: The word 'and' seems to be missing before 'then' .
+* corrected
+
 Lemma 5.5:
 1. Concerning the proof of (i): it might be helpful to elaborate on why a case distinction is
-necessary (Why is it necessary to increase j? Why are the subcases of (not) moving theadditional leaf necessary?) in order to clarify the line of argument.
+necessary (Why is it necessary to increase j? Why are the subcases of (not) moving the additional leaf necessary?) in order to clarify the line of argument.
+* TODO
+
 2. Concerning statement (ii): Is there a particular reason why the quotient is bounded for n ≥ 4?
 The overall lemma assumes n ≥ 3, which would also lead to a nice bound (0.8).
+* 
+
 Page 21
 49:
 1. The meaning of the function L(.) can be guessed from the context without too much effort,
