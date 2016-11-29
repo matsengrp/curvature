@@ -303,11 +303,11 @@ The degree of $T$, i.e.\ the number of trees which can be obtained from $T$ by a
 We assume that all trees are bifurcating, and thus use degree to refer only to the degree of rSPR graph vertices.
 
 Ricci-Ollivier curvature provides a rigorous yet intuitive formalization of the shape of a metric space with respect to a random walk.
-For the purposes of this paper, we will specialize to that space being a graph equipped with the shortest-path distance.
+For the purposes of this paper, we restrict ourselves to graphs equipped with a shortest-path distance.
 For a more rigorous presentation in the more general setting of a Polish metric space, see~\citep{Ollivier2009-bw} or the survey~\citep{Ollivier2010-ao}.
 
 Let $m_x$ and $m_y$ be the probability densities of the position of a specified random walk after one step of the random walk, starting at points $x$ and $y$ of a graph $G = (V,E)$, respectively.
-The transportation distance~\citep{Villani2003-wv} (equivalently Wasserstein distance, or ``earth movers distance''~\citep{rubner2000earth}) between $m_x$ and $m_y$ is the minimum amount of ``work'' required to move $m_x$ to $m_y$ along edges of the graph, that is
+The transportation distance~\citep{Villani2003-wv} (equivalently Wasserstein distance, or ``earth mover's distance''~\citep{rubner2000earth}) between $m_x$ and $m_y$ is the minimum amount of ``work'' required to move $m_x$ to $m_y$ along edges of the graph, that is
 \vspace{-0.5em}
 \begin{equation}
 W_1(m_x, m_y) := \min_{\xi \in \Pi(m_x, m_y)} \sum_{\{z,w\} \subset V} d(z,w) \xi(z,w),
@@ -336,7 +336,7 @@ The asymptotic Ricci-Ollivier curvature of $x$ and $y$ is then:
 \label{eq:asympCurvatureDef}
 \end{equation}
 As above for $\kappa$, we use $\ric{x, y}$ as shorthand for $\ric{m; x, y}$ when $m$ is the uniform lazy random walk, and $\ric{\MH; x, y}$ when $m$ is the Metropolis-Hastings random walk sampling the uniform distribution (Section~\ref{sec:random_walks}).
-This definition of curvature is invariant of $p$ for small $p$~\citep{Loisel2014-hu} and can be used to avoid parity problems on graphs where the uniform random walk is periodic without choosing a specific laziness parameter (e.g. Ollivier often considered $\curvature[\frac{1}{2}]{x,y}$ for this purpose).
+This definition of curvature is invariant of $p$ for small $p$~\citep{Loisel2014-hu} and can be used to avoid parity problems on graphs where the uniform random walk is periodic without choosing a specific laziness parameter (e.g.~Ollivier often considered $\curvature[\frac{1}{2}]{x,y}$ for this purpose).
 As we prove in Lemma~\ref{lem:asymptotic}, the notions of coarse and asymptotic curvature differ only by a small factor bounded by $\frac{2}{\max(\degree{x}, \degree{y})}$ between adjacent vertices and are equal for nonadjacent vertices.
 
 \section{Efficient algorithms for computing and sampling rSPR graphs}
@@ -345,20 +345,20 @@ As we prove in Lemma~\ref{lem:asymptotic}, the notions of coarse and asymptotic 
 \label{sec:computing_treespace}
 
 It is necessary to have an efficient method of constructing the full rSPR graph for a fixed number of leaves in order to study it.
-The previous best algorithm for this problem requires $\OhOf{m^2 n}$ time, where $m$ is the number of trees in the graph and $n$ the number of leaves~\citep{Whidden2015-yi}.
+The previously best algorithm for this problem requires $\OhOf{m^2 n}$ time, where $m$ is the number of trees in the graph and $n$ the number of leaves~\citep{Whidden2015-yi}.
 Here we reduce that time to $\OhOf{mn^3}$.
-Note that for the full rSPR graph, $m$ is the rapidly growing function $(2n-3)!!$, that is, $3 \cdot 5 \cdot \ldots \cdot (2n-3)$, and this is therefore a significant improvement in practice, as we demonstrate below.
+Note that for the full rSPR graph, the value of $m$ is given by the rapidly growing function $(2n-3)!!$, that is, $3 \cdot 5 \cdot \ldots \cdot (2n-3)$, and this is therefore a significant improvement in practice, as we demonstrate below.
 
-In previous work~\citep{Whidden2015-yi}, we constructed (unrooted) SPR graphs from subsets of $m$ high probability trees sampled from phylogenetic posteriors to compare mixing and identify local maxima.
+In previous work~\citep{Whidden2015-yi}, we constructed (unrooted) SPR graphs from subsets of high probability trees sampled from phylogenetic posteriors to compare mixing and identify local maxima.
 Although the SPR distance (rooted and unrooted) is NP-hard to compute~\citep{bordewich05,hickey2008sdc}, it is fixed-parameter tractable with respect to the distance in the rooted case~\citep{bordewich05}.
 In particular, one can determine in $\OhOf{n}$-time whether two rooted phylogenetic trees are adjacent in the rSPR graph ($\OhOf{n^2}$-time for unrooted trees) using the algorithms of Whidden et al.~\citep{whidden2009unifying,whidden2010fast, whidden2013hybridization,Whidden2015-yi}.
-We previously applied this method comparing each of the $m$ trees pairwise to identify adjacencies, requiring a total of $\OhOf{m^2n}$-time ($\OhOf{m^2 n^2}$-time in the unrooted case).
+We previously applied this method comparing each of the $m$ trees in a given graph pairwise to identify adjacencies, requiring a total of $\OhOf{m^2n}$-time ($\OhOf{m^2 n^2}$-time in the unrooted case).
 However, this method is impractical when applied to construct graphs with 7 or more leaves, due to the rapidly growing $\OhOf{m^2}$ factor.
 
 The key to our efficient algorithm for quickly computing dense rSPR graphs (those containing a significant portion of the full rSPR graph) lies in avoiding the pairwise comparison of non-adjacent trees and thereby shaving off an $\OhOf{m}$ factor.
-The input to our algorithm is a set $\mathcal{T}$ of phylogenetic trees in the $\OhOf{n}$-length Newick \citep{felsenstein1990newick} representation of each tree as a string.
+The input to our algorithm is a set $\mathcal{T}$ of phylogenetic trees in the $\OhOf{n}$-length Newick \citep{felsenstein1990newick} representation of each tree as a string (assuming integer labels and bounded reasonable values of $n$, see~\citep{whidden2016efficiently}). 
 These representations are made unique by ordering each tree so that leftmost subtrees contain the smallest alphanumeric label of descendants.
-We construct a mapping from each tree $T_i$ to its order index in this list $i$.
+We construct a mapping from each tree $T_i$ to its order index in this ordering i$i$.
 Begin with an empty graph $G$.
 For each tree $T_i$, we first add a vertex $i$ to the graph and then use Corollary~\ref{cor:enumerate_neighbors} below to enumerate the $\OhOf{n^2}$ neighbors of $T_i$ in the rSPR graph in $\OhOf{n^3}$-time.
 This efficient enumeration procedure is the key step required to achieve our desired running time of $\OhOf{mn^3}$.
@@ -390,14 +390,14 @@ The high-level steps are as follows, and we show in Theorem~\ref{thm:construct_g
 \begin{proof}
 	The correctness of the procedure follows by induction on the number of trees already processed, $i$, by observing that given the subgraph of vertices $1, 2,  \ldots i$ the procedure will construct the entire subgraph of vertices $1, 2, \ldots i+1$.
 
-	We implement the graph with an adjacency list representation with integer-labelled vertices that supports $\OhOf{\log n}$ edge insertions and lookups (with e.g. red-black trees~\citep{guibas1978dichromatic}, as the vertex degrees are $\OhOf{n^2}$).
+	We implement the graph with an adjacency list representation with integer-labelled vertices that supports $\OhOf{\log n}$ edge insertions and lookups (with e.g.~red-black trees~\citep{guibas1978dichromatic}, as the vertex degrees are $\OhOf{n^2}$).
 	As described above, the integer labels are simply the order of the input trees.
 	Adding the vertices to the graph requires $\OhOf{m}$-time, as they are added in ascending order to the end of the vertex list, which can be stored as a fixed-size array.
 	Adding the $\OhOf{mn^2}$ edges to the graph requires $\OhOf{mn^2 \log n}$-time.
 	Enumerating the neighbors of $T_i$ requires $\OhOf{n^3}$-time for each $T_i$, for a total of $\OhOf{mn^3}$-time.
 	We discuss below, in Section~\ref{sec:random_walks} how to do so efficiently without considering duplicate neighbors.
 	We store the tree to index mappings for current vertices of $G$ in a trie~\citep{fredkin1960trie} using the Newick representation.
-	This requires only $\OhOf{n}$-time for each tree (i.e. a total of $\OhOf{mn^3}$-time) using a standard nodes-and-pointers representation of the tree and assuming integer leaf labels (a simple $\OhOf{mn\log n}$ leaf preprocessing step could be applied to extend this procedure to phylogenetic trees with string labels).
+	This requires only $\OhOf{n}$-time for each neighbor tree (i.e. a total of $\OhOf{mn^3}$-time) using a standard nodes-and-pointers representation of the tree and assuming integer leaf labels (a simple $\OhOf{mn\log n}$ leaf preprocessing step could be applied to extend this procedure to phylogenetic trees with string labels).
 	Similarly, it takes $\OhOf{n}$-time to determine the index of each of the $\OhOf{mn^2}$ considered neighbors.
 	Therefore the graph can be constructed in $\OhOf{mn^3}$-time, as claimed.
 \end{proof}

@@ -72,6 +72,7 @@ Page 5
 * corrected
 
 Page 6
+
 30: Is it really necessary to define the LCA of two or more subtrees as the LCA of their parent nodes (and not as the LCA of the root nodes of the subtrees)? It seems a bit unconventional (also w.r.t. your LCA definition of one or more nodes beforehand).
 * Corrected. We did indeed mean the root nodes of the subtrees by "parent". 
 
@@ -79,25 +80,39 @@ Page 6
 * corrected by adding "the".
 
 Page 7
-13: The wording 'we will specialize to that space being a graph' sounds odd. Maybe something
-along the lines of 'we restrict ourselves to ...' is preferable.
+
+13: The wording 'we will specialize to that space being a graph' sounds odd. Maybe something along the lines of 'we restrict ourselves to ...' is preferable.
+* revised to "... we restrict ourselves to graphs equipped with a shortest-path distance."
+
 20: It looks like the apostrophe in 'movers' is missing (it should be 'mover's').
+* corrected
+
 Page 8
+
 14: It looks like there is too much white space behind 'e.g.'.
+* corrected
+
 24: In this context, 'previously' seems more appropriate than 'previous'.
+* corrected
+
 28-33: Both points are possibly related.
-1. In the final sentence of the first paragraph, m is assumed to be (2n-3)!! ('m is the rapidly
-growing function (2n-3)!!'). You continue using m in the second paragraph. Is it an arbitrary
-value not larger than (2n-3)!! (or still equal to the maximum)? I would suggest clarifying the
-transition.
-2. The phrase 'graphs from subsets of m high probability trees' is a bit ambiguous. Does it
-mean that the graphs are constructed from subsets which themselves consist of m trees or are
-the graphs constructed from subsets of the m-element set of high probability trees?47-48: What is the unit of the length of the Newick representation?
+
+1. In the final sentence of the first paragraph, m is assumed to be (2n-3)!! ('m is the rapidly growing function (2n-3)!!'). You continue using m in the second paragraph. Is it an arbitrary value not larger than (2n-3)!! (or still equal to the maximum)? I would suggest clarifying the transition.
+* As stated in the second sentence of the first paragraph, $m$ is the number of trees in the graph. This is (2n-3)!! for the full rSPR graph, as noted in that final sentence. In the second paragraph, $m$ still refers to the number of trees in the graphs in question, which is upper bounded by (2n-3)!! as you note. We have revised these sentences to limit confusion and address your next point. We now note that, for the full rSPR graph, the value of $m$ is given by $(2n-3)!! in the first paragraph. We removed the redundant reference to $m$ in the first sentence of the second paragraph. 
+
+2. The phrase 'graphs from subsets of m high probability trees' is a bit ambiguous. Does it mean that the graphs are constructed from subsets which themselves consist of m trees or are the graphs constructed from subsets of the m-element set of high probability trees?
+* The subsets consist of m trees. As noted above, m is simply the number of trees in a given graph and not a fixed value. We removed the redundant reference to m here.
+
+47-48: What is the unit of the length of the Newick representation?
+* The unit of the length is the number of characters in the string (equivalently wrt big O, the size in bytes). We realized in a follow up paper that, although the length of a Newick string is typically assumed to be linear, this does require some (reasonable) assumptions. We now indicate so here and cite the preprint of that paper. 
+
 51: To which list does 'in this list' refer to?
+* This statement refers to the order of the tree in the specified ordering. We revised "in this list" to "in this ordering" to prevent confusion.
+
 Page 9
-44-45: The statement starts with 'requires only O(n)-time for each tree' (of which there are m).
-Therefore, it is not quite clear (even though not wrong), why the total time of this step is bound by
-the unnecessarily unsharp term 'O(mn3)'.
+44-45: The statement starts with 'requires only O(n)-time for each tree' (of which there are m).  Therefore, it is not quite clear (even though not wrong), why the total time of this step is bound by the unnecessarily unsharp term 'O(mn^3)'.
+* This is O(n)-time for each neighbor tree, of which there are O(mn^2), for a total of O(mn^3)-time. We added the word neighbor to clarify.  
+
 Page 10
 42: The wording 'within a subtree' seems a bit imprecise and could be clarified by changing it to
 something along the lines of 'within the subtree to be moved / regrafted'.
