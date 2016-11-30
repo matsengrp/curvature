@@ -270,120 +270,165 @@ necessary (Why is it necessary to increase j? Why are the subcases of (not) movi
 
 2. Concerning statement (ii): Is there a particular reason why the quotient is bounded for n ≥ 4?
 The overall lemma assumes n ≥ 3, which would also lead to a nice bound (0.8).
-* 
+* 5/6 is closer to the limit of 6/7 than it is to 4/5 so this gives a
+	closer bound at the small cost of excluding the trivial 3-leaf tree graph.
 
 Page 21
+
 49:
-1. The meaning of the function L(.) can be guessed from the context without too much effort,
-but providing a short definition / explanation would help avoiding any misconceptions.
-2. Does this equality really hold between the restricted versions of T and S , which differ only in
-R and, thus, should still be different after restricting them to X \ L(Q)?
-51-53: Using U as a subtree while it also denotes a whole tree in the neighbourhood of T and S just
-a few lines before can be slightly confusing.
+
+1. The meaning of the function L(.) can be guessed from the context without too much effort, but providing a short definition / explanation would help avoiding any misconceptions.
+* We added "... , where L(Q) is the label set of Q, ..." to the sentence.
+
+2. Does this equality really hold between the restricted versions of T and S , which differ only in R and, thus, should still be different after restricting them to X \ L(Q)?
+* Yes, because of the triangle formed by T, S, and U, as we state in the
+	proof. T and U differ by Q but not R so S is reached from U by moving Q in such a way that displaces R from its original position.
+
+51-53: Using U as a subtree while it also denotes a whole tree in the neighbourhood of T and S just a few lines before can be slightly confusing.
+* Indeed, thanks. We changed the second use of U to V and u' to v'.
+
 Page 22
-30-32: The statement on the proportionality of small moves and small subtrees seems to be a bit
-troubled.
-1. For example, if both children of the root are not small, each small subtree with one leaf
-contributes 2n-6 moves, while each small subtree with two leaves contributes 2n-8 moves.
+
+30-32: The statement on the proportionality of small moves and small subtrees seems to be a bit troubled.
+
+1. For example, if both children of the root are not small, each small subtree with one leaf contributes 2n-6 moves, while each small subtree with two leaves contributes 2n-8 moves.
 So, what is the factor of proportionality?
-2. In the phrase 'where one of the root's children is small', is the intended meaning exactly one
-or at least one? Assuming, e.g., 2n-6 as the factor of proportionality (coming from (the
-majority of) the leaves), the statement does not hold in general (neither for exactly nor for at
-least). Consider, e.g., a tree with a leaf as the only small child of the root and at least three
-small subtrees with two leaves (for the case exactly) respectively the balanced tree with four
-leaves (for the case at least).
-36: Writing 'one 2-leaf subtree' instead of '1 2-leaf subtree' appears more readable (and is more
-consistent with the previous use of numerals).
+* TODO
+
+2. In the phrase 'where one of the root's children is small', is the intended meaning exactly one or at least one? Assuming, e.g., 2n-6 as the factor of proportionality (coming from (the majority of) the leaves), the statement does not hold in general (neither for exactly nor for at least). Consider, e.g., a tree with a leaf as the only small child of the root and at least three small subtrees with two leaves (for the case exactly) respectively the balanced tree with four leaves (for the case at least).
+* TODO
+
+36: Writing 'one 2-leaf subtree' instead of '1 2-leaf subtree' appears more readable (and is more consistent with the previous use of numerals).
+* We have made the suggested change.
+
 38-42:
-1. Since Lemma 5.7 shall hold for n ≥ 3, the stated number of small moves (2n2-4n-6) is not
-correct for all intended n. The reason is that for the ladder tree with three leaves, the small
-subtree with two leaves is also a child of the root and, thus, contributes 2n-3-3 (not 2n-3-5)
-moves. Hence, a case distinction seems to be necessary here and for the inequality in the
-subsequent paragraph (lines 40-42)
-2. The chain of (in)equalities in lines 40-42 does not run through, because adding (24-8n) leads
-to the n-free term '+12' (not '+16'). But this can be 'repaired' through the necessary case
-distinction n = 3 vs. n ≥ 4).
-45+55: Stating the explanation of the size '(in terms of the number of leaves)' directly in line 45
-possibly avoids some confusion (which can occur when reading Lemma 5.8 while having the
-typical notion of size in mind).
-54-55: The statement 'a ladder tree has the greatest average moved subtree size' does not seem to
-hold for all n ≥ 4. For n = 4, the ladder tree has an average moved subtree size of 1, while it is 4/3
-for the balanced tree. Similarly, the balanced tree has a larger one for n = 8 (1.55 vs. 1.39).
-This might pose a problem to the proof because it based on the idea that the ladder tree leads to themaximum.
+
+1. Since Lemma 5.7 shall hold for n ≥ 3, the stated number of small moves (2n2-4n-6) is not correct for all intended n. The reason is that for the ladder tree with three leaves, the small subtree with two leaves is also a child of the root and, thus, contributes 2n-3-3 (not 2n-3-5) moves. Hence, a case distinction seems to be necessary here and for the inequality in the subsequent paragraph (lines 40-42)
+* TODO
+
+2. The chain of (in)equalities in lines 40-42 does not run through, because adding (24-8n) leads to the n-free term '+12' (not '+16'). But this can be 'repaired' through the necessary case distinction n = 3 vs. n ≥ 4).
+* TODO
+
+45+55: Stating the explanation of the size '(in terms of the number of leaves)' directly in line 45 possibly avoids some confusion (which can occur when reading Lemma 5.8 while having the typical notion of size in mind).
+* we added the statement to line 45.
+
+54-55: The statement 'a ladder tree has the greatest average moved subtree size' does not seem to hold for all n ≥ 4. For n = 4, the ladder tree has an average moved subtree size of 1, while it is 4/3 for the balanced tree. Similarly, the balanced tree has a larger one for n = 8 (1.55 vs. 1.39).  This might pose a problem to the proof because it based on the idea that the ladder tree leads to themaximum.
+* TODO
+
 56: Similar to line 36, 'one leaf' and 'one subtree' appear more readable / consistent.
+* We have made the suggested change.
+
 Page 23
+
 11-13: The vertical bars denoting the size of N i (T) are missing at all three occurrences.
+* corrected
+
 11-20:
-1. It is stated that |N i (T)| ≤ 2n-3-5 for i ≤ 2, but in a ladder tree is, e.g., |N 1 (T)| = (n-1)(2n-1-5) +
-(2n-1-3) > 2n-3-5.
-2. Also, it is stated that |N i (T)| > 2n-3-5 for i > 2, but in a ladder tree is, e.g., |N i (T)| = 1 * 2n-
-(2i-1)-5 < 2n-3-5 for 2 ≤ i ≤ n-2.
-3. Therefore, also the statements on decreasing / increasing the actual values to the bound 2n-
-3-5 are the wrong way round. Possibly, this can be fixed by swapping the inequality signs.
-4. Is it actually obvious enough that setting all |N i (T)| to 2n-3-5 leads to an upper for the
-quotient representing the average moved subtree size? A short explanation might make this
-point clearer.
-5. In the last sentence of the proof, the weighted average uses a proportion of 1⁄2 for both small
-and large subtree (which is okay), but why is the average moved subtree size of small
-substrees assumed to be one? Shouldn't the one small subtree with two leaves (which always
-exists) make it slightly larger than one?
-32: Is there are special reason for (re)defining the mass transport term W 1,n ?
+
+1. It is stated that |N_i(T)| ≤ 2n-3-5 for i ≤ 2, but in a ladder tree is, e.g., |N_1(T)| = (n-1)(2n-1-5) + (2n-1-3) > 2n-3-5.
+* TODO
+
+2. Also, it is stated that |N_i(T)| > 2n-3-5 for i > 2, but in a ladder tree is, e.g., |N i (T)| = 1 * 2n- (2i-1)-5 < 2n-3-5 for 2 ≤ i ≤ n-2.
+* TODO
+
+3. Therefore, also the statements on decreasing / increasing the actual values to the bound 2n-3-5 are the wrong way round. Possibly, this can be fixed by swapping the inequality signs.
+* TODO
+
+4. Is it actually obvious enough that setting all |N_i (T)| to 2n-3-5 leads to an upper for the quotient representing the average moved subtree size? A short explanation might make this point clearer.
+* TODO
+
+5. In the last sentence of the proof, the weighted average uses a proportion of 1⁄2 for both small and large subtree (which is okay), but why is the average moved subtree size of small substrees assumed to be one? Shouldn't the one small subtree with two leaves (which always exists) make it slightly larger than one?
+* TODO
+
+32: Is there are special reason for (re)defining the mass transport term
+W_{1,n} ?
+* W_{1,n} is used in Theorem 6.1 to distinguish between the sequential
+	mass transport terms, but this this one should just be W_1. Corrected.  
+
 37: The verb 'increase' misses the third-person singular s (as it refers to 'the size of the trees').
+* Corrected.
+
 45: Only one of the two occurrences of 'thus' is needed.
+* We removed the second occurence of "thus".
+
 Page 24
-14: Adding a short explanation why the number of unmatched trees is in O(kn) might help the
-reader understanding the argument at this point better.
+
+14: Adding a short explanation why the number of unmatched trees is in O(kn) might help the reader understanding the argument at this point better.
+* We added the short explanation "There are O(kn) trees unmatched by
+	this pairing, because b and a (in the nomenclature of Corollary 5.4)
+	are bounded by n."
+
 19: The innermost pair of parentheses around 'O(n)' is not necessary.
+* Corrected.
+
 30: Replacing the word 'a' before 'distance' by 'at' or 'of' conveys the meaning better.
-31: The equality sign in the equation might be less fitting than a <, because it is previously (line 25)
-stated that S n has a strictly larger neighbourhood.
-46-47: Shortly explaining how the bounds for the distance between neighbours of T and S lead to
-bounds for W 1 (m T ,m S ) could make it easier for the reader to grasp the idea how the proof works.
+* Replaced with "of".
+
+31: The equality sign in the equation might be less fitting than a <, because it is previously (line 25) stated that S_n has a strictly larger neighbourhood.
+* It is counterintuitive at first glance, but the equal sign is correct
+	because T_n and S_n differ by an O(kn) factor.
+
+46-47: Shortly explaining how the bounds for the distance between neighbours of T and S lead to bounds for W_1 (m_T ,m_S ) could make it easier for the reader to grasp the idea how the proof works.
+* TODO
+
 Page 25
-29: Possibly it should be 'each other' instead of 'each either'.40-41: The actual meaning of the phrase 'a greater understanding of the distribution of tree
-neighborhoods with respect to one another' is not very clear (especially due to the underlined part).
+29: Possibly it should be 'each other' instead of 'each either'.
+* corrected
+
+40-41: The actual meaning of the phrase 'a greater understanding of the distribution of tree neighborhoods with respect to one another' is not very clear (especially due to the underlined part).
+* TODO
+
 Page 26
-10: A short remark on how the term '1 + μ' is actually derived would make this passage easier /
-faster to comprehend
-14: Following Corollary 5.4 it should be 'at least γ' and not 'at most γ' paired trees (and, otherwise,
-the argumentation is not sensible at this point).
-19: The rationale for bounding the degree by using the maximum possible absolute difference
-(irrespective of the actual move) seems a bit unclear. Currently, it does not look like the line of
-argument leads to the maximum μ: using the maximum degree of T (instead of the actual,
-potentially smaller, value) does not result in the maximum μ because it leads to an unnecessarily
-large denominator.
+
+10: A short remark on how the term '1 + μ' is actually derived would make this passage easier / faster to comprehend
+* TODO
+
+14: Following Corollary 5.4 it should be 'at least γ' and not 'at most γ' paired trees (and, otherwise, the argumentation is not sensible at this point).
+* Corrected.
+
+19: The rationale for bounding the degree by using the maximum possible absolute difference (irrespective of the actual move) seems a bit unclear. Currently, it does not look like the line of argument leads to the maximum μ: using the maximum degree of T (instead of the actual, potentially smaller, value) does not result in the maximum μ because it leads to an unnecessarily large denominator.
+* TODO
+
 20:
-1. The last inequality ('≤ 1⁄2n2-n') holds only if n is even. For odd n, 1⁄2 has to be added to the
-upper bound (which is then also okay for the even case). In the end, this change also affects
-the curvature bound.
-2. It looks like the factors 'k' and 'a' are swapped after inserting their values. While this would
-not be wrong, it is a potential source of confusion.
-39-40: Providing a proof or at least a clear rationale for the statement 'the pair of trees used in the
-proof of Lemma 6.5 will always have negative curvature, for all n ≥ 7' would lend more weight to
-it.
+
+1. The last inequality ('≤ 1⁄2n2-n') holds only if n is even. For odd n, 1⁄2 has to be added to the upper bound (which is then also okay for the even case). In the end, this change also affects the curvature bound.
+* TODO
+
+2. It looks like the factors 'k' and 'a' are swapped after inserting their values. While this would not be wrong, it is a potential source of confusion.
+* TODO
+
+39-40: Providing a proof or at least a clear rationale for the statement 'the pair of trees used in the proof of Lemma 6.5 will always have negative curvature, for all n ≥ 7' would lend more weight to it.
+* TODO
+
 Page 27
-35: The upper bound does not seem to follow as analogously to the lower bound as it is stated.
-Using the inequality stated in line 32 and proceeding analogously to the lower bound leads to
-κ p (T , S )
-2
-⩽ ...⩽ κ (T , S)+
-p
-p∗max (∣ N (T )∣ , ∣ N (S )∣)
-where the factor p in the denominator causes a problem, because simply dropping it (in order to
-arrive at the bound from the lemma) bounds the value in the wrong direction (as it is at most 1).
+
+35: The upper bound does not seem to follow as analogously to the lower bound as it is stated.  Using the inequality stated in line 32 and proceeding analogously to the lower bound leads to κ p (T , S ) 2 ⩽ ...⩽ κ (T , S)+ p p∗max (∣ N (T )∣ , ∣ N (S )∣) where the factor p in the denominator causes a problem, because simply dropping it (in order to arrive at the bound from the lemma) bounds the value in the wrong direction (as it is at most 1).
+* TODO (needs checking from the PDF)
+
 Page 28
-11-12: According to Lemma 5.5, the quotient of degrees for two adjacent trees is at least 5/6 only
-for n ≥ 4, but there is no such assumption in Lemma 6.9 or its proof.
-14-18: Using W 1 (T,S) (resp. W' 1 (T,S)) is slightly imprecise as T and S are the trees and not the
-probability densities.
-26: Within the min-term of the last case, w is the argument of all four probability densities.
-Probably, two of them should have z as their argument.29-33: Using W 1 (resp. W' 1 ) without the arguments for the values of the Wasserstein distance is
-slightly imprecise.
+
+11-12: According to Lemma 5.5, the quotient of degrees for two adjacent trees is at least 5/6 only for n ≥ 4, but there is no such assumption in Lemma 6.9 or its proof.
+* TODO, add assumption
+
+14-18: Using W 1 (T,S) (resp. W' 1 (T,S)) is slightly imprecise as T and S are the trees and not the probability densities.
+* TODO
+
+26: Within the min-term of the last case, w is the argument of all four probability densities.  Probably, two of them should have z as their argument.
+* TODO
+
+29-33: Using W 1 (resp. W' 1 ) without the arguments for the values of the Wasserstein distance is slightly imprecise.
+* TODO
+
 50: The word 'the' seems to be missing before 'understanding'.
-55: The statement 'rSPR graph degree changes depend quadratically on the product of the size of the
-regrafted subtree with its change in depth' seems a bit mixed up, because (according to the proven
-lemma) the changes depend linearly on the product (which in turn is quadratic in the number of
-leaves).
+* Corrected.
+
+55: The statement 'rSPR graph degree changes depend quadratically on the product of the size of the regrafted subtree with its change in depth' seems a bit mixed up, because (according to the proven lemma) the changes depend linearly on the product (which in turn is quadratic in the number of leaves).
+* TODO
+
 Page 29
+
 13-17: The same problem as on page 17, lines 15-23.
+* TODO (address the plots)
+
 29: Changing 'achieve' to 'to be achieved' seems a bit more readable.
+* Corrected

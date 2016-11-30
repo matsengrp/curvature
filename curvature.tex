@@ -806,8 +806,8 @@ Then $\size{N(T) \cap N(S)} \le 6n - 17$.
 	$T$ and $S$ differ by one rSPR move that moves a subtree $R$.
 	Pick a neighbor $U \in N(T) \cap N(S)$ of both $T$ and $S$ (this intersection is not empty: $T$ and $S$ are different, so $R$ contains at most $n-2$ of the leaves, thus there must be at least one other tree $U$ obtained by moving $R$ in $T$ and $S$).
 	Then either (i) $T$ and $U$ differ in the location of $R$, or (ii) $T$ and $U$ differ in the location of another subtree $Q$.
-	In the latter case, $T|(X \setminus L(Q)) = S|(X \setminus L(Q))$ because $T$ and $S$ differ only in the location of $R$ and $\dspr{T,U} = \dspr{S,U} = 1$.
-	Then leaves $r' \in R$, $q' \in Q$, and $u' \in U$, for some subtree $U$, form a triple of $T$ and a different triple in $S$.
+	In the latter case, $T|(X \setminus L(Q)) = S|(X \setminus L(Q))$, where $L(Q)$ is the label set of $Q$, because $T$ and $S$ differ only in the location of $R$ and $\dspr{T,U} = \dspr{S,U} = 1$.
+	Then leaves $r' \in R$, $q' \in Q$, and $v' \in V$, for some subtree $V$, form a triple of $T$ and a different triple in $S$.
 	This incompatible triple can be resolved in at most $6n - 17$ ways, the maximum of which is reached when $Q$, $U$, and $R$ are themselves a ``triple'' of subtrees.
 	By Lemma~\ref{lem:compute_degree}, each of the subtrees is assigned to at most $2n-6$ unique moves.
 	Moreover, one additional overlapping move also moves one of the subtrees (that of the aunt of the LCA of the three subtrees).
@@ -833,7 +833,7 @@ Along with our observation from Lemma~\ref{lem:degree_change} that the magnitude
 	This implies that the number of small rSPR moves is directly proportional to the number of small subtrees, with a possible difference of two moves for a tree where one of the root's children is small.
 
 	A ladder tree has the smallest proportion of small subtrees, so we first bound the number of small subtree moves that can be applied to a ladder tree.
-	A ladder tree with $n$ leaves has $n$ 1-leaf subtrees and 1 2-leaf subtree.
+	A ladder tree with $n$ leaves has $n$ 1-leaf subtrees and one 2-leaf subtree.
 	One of the 1-leaf subtrees is a child of the root.
 	A 2-leaf subtree contains three nodes.
 	Therefore, a ladder tree induces $n (2n - 1 - 5) + 2 + (2n - 3 - 5) = 2n^2 - 4n - 6$ small subtree moves.
@@ -843,7 +843,7 @@ Along with our observation from Lemma~\ref{lem:degree_change} that the magnitude
 	Therefore more than half of the neighborhood of any tree is induced by small rSPR moves.
 \end{proof}
 
-Now, we bound the average size of the moved subtrees.
+Now, we bound the average size of the moved subtrees (in terms of the number of leaves).
 
 \begin{lem}
 	Let $T$ be a rooted tree with $n \ge 4$ leaves.
@@ -854,10 +854,10 @@ Now, we bound the average size of the moved subtrees.
 \begin{proof}
 	Again recall our distribution of rSPR moves from a tree in Lemma~\ref{lem:compute_degree}.
 	By similar arguments as in the proof of Lemma~\ref{lem:spr_size}, a ladder tree has the greatest average moved subtree size (in terms of the number of leaves).
-	There are $n$ subtrees with 1 leaf, and 1 subtree each with $2,3, \ldots n - 1$ leaves.
+	There are $n$ subtrees with one leaf, and one subtree each with $2,3, \ldots n - 1$ leaves.
 	We ignore the root subtree, which does not induce any rSPR moves.
 	Thinking of the ratio as a weighted average of $i$, we can split the numerator and the denominator of the average into terms with $i \leq 2$ and those with $i > 2$.
-    $N_i(T) \leq 2n - 3 - 5$ for the first set of terms, and $N_i(T) > 2n - 3 - 5$ for the second, so by replacing $N_i(T)$ in each case by $2n-3-5$ we decrease the weight for $i \leq 2$ and increase the weight on $i > 2$.
+    $\size{N_i(T)} \leq 2n - 3 - 5$ for the first set of terms, and $\size{N_i(T)} > 2n - 3 - 5$ for the second, so by replacing $\size{N_i(T)}$ in each case by $2n-3-5$ we decrease the weight for $i \leq 2$ and increase the weight on $i > 2$.
 	Thus, by doing this replacement we obtain a upper bound on the mean moved subtree size.
 	This bound, ignoring small subtrees, is $(3 + (n-2)) / 2 = (n + 1) / 2$.
 	By Lemma~\ref{lem:spr_size}, at least half of the rSPR moves involve a small subtree.
@@ -880,14 +880,14 @@ In this section we apply the rSPR neighborhood properties we proved in Section~\
 In particular, we consider properties of the uniform (a.k.a.\ isotropic) random walk on the $n$-leaf rSPR graph.
 
 Recall that the uniform random walk begins at a tree $T$ and moves to a tree uniformly at random from $N(T)$.
-Recall that the coarse uniform random walk curvature between two trees $T$ and $S$ is $\curvature{T, S} := 1 - \frac{W_1(m_T, m_S)}{d(T, S)}$, where $W_{1,n}$ is the mass transport term \eqref{eq:curvatureDef}.
+Recall that the coarse uniform random walk curvature between two trees $T$ and $S$ is $\curvature{T, S} := 1 - \frac{W_1(m_T, m_S)}{d(T, S)}$, where $W_1$ is the mass transport term \eqref{eq:curvatureDef}.
 For the uniform random walk, $m_T$ is the probability measure assigning a mass of $\frac{1}{\degree{T}}$ to each of $T$'s neighbors.
 
 We showed in Lemmas~\ref{lem:spr_size} and~\ref{lem:spr_size_mean} that most adjacent trees differ by a small subtree, raising the question of what the curvature is between such pairs.
-In our first theorem of this section, we show that the curvature between two adjacent trees tends towards 0 as the size of the trees increase but the size of the subtree moved to transition between the two trees remains the same size.
+In our first theorem of this section, we show that the curvature between two adjacent trees tends towards 0 as the size of the trees increases but the size of the subtree moved to transition between the two trees remains the same size.
 To do so, we prove that the mass transport term between adjacent trees $T$ and $S$ is dominated by probability moved between neighbors of $T$ and $S$ that are also adjacent.
 The probability transported between members of these squares (Corollary~\ref{cor:paired_neighbors}) increases more quickly with $n$ than the probability transported between shared neighbor triangles (Lemma~\ref{lem:shared_neighbors}), and outweighs the effect of long distance probability moved between more distant neighbors or due to a difference in the degree of $T$ and $S$.
-Thus this ``flatness-in-the-limit'' theorem thus helps explain our empirical results in Section~\ref{sec:results:curvature} showing that the distribution of curvature pairs tends more towards 0 as $n$ increases.
+Thus this ``flatness-in-the-limit'' theorem helps explain our empirical results in Section~\ref{sec:results:curvature} showing that the distribution of curvature pairs tends more towards 0 as $n$ increases.
 
 \begin{thm}
 \label{thm:flat_curvature}
@@ -902,11 +902,12 @@ To start we demonstrate the theorem in the case that $T_n$ and $S_n$ have the sa
 First we claim that $W_{1,n}$ is bounded above by $(\degree{T_n}+\OhOf{kn})/\degree{T_n}$ by exhibiting a mass transport program satisfying that bound.
 Let $(T'_n, S'_n)$ be any of the $\overlap$ pairs of neighbors of $(T_n, S_n)$ which are one rSPR move apart as per Corollary~\ref{cor:paired_neighbors}.
 We pair these trees in the mass transport.
-There are $\OhOf{kn}$ trees unmatched by this pairing, and we can pair each of them arbitrarily with another tree of distance at most 3.
+There are $\OhOf{kn}$ trees unmatched by this pairing, because $b$ and $a$ (in the nomenclature of Corollary~\ref{cor:paired_neighbors}) are bounded by $n$.
+We can pair each of the unmatched trees arbitrarily with another tree of distance at most 3.
 Thus, $W_{1,n}$ is bounded above by $(\degree{T_n} + \OhOf{kn}) / \degree{T_n}$.
 
 A lower bound is also available because we can't do better than distance 1 for all trees except for shared neighbors, of which there are $\OhOf{n}$ by Lemma~\ref{lem:shared_neighbors}.
-By ignoring these trees we get a lower bound of $(\degree{T_n} - (\OhOf{n}))/\degree{T_n}$ for $W_{1,n}$.
+By ignoring these trees we get a lower bound of $(\degree{T_n} - \OhOf{n})/\degree{T_n}$ for $W_{1,n}$.
 
 The desired control of $W_{1,n}$ is thus obtained because $\degree{T_n}$ is quadratic in $n$.
 
@@ -914,7 +915,7 @@ Now we prove the theorem when the number of neighbors differ.
 Assume without loss of generality that $\degree{T_n} < \degree{S_n}$.
 By Lemma~\ref{lem:degree_change}, $\degree{S_n} - \degree{T_n} = 2(k(a-b) + i - j)$, where each of $\{a,b,i,j\}$ is less than $n$.
 Thus, $\degree{S_n} - \degree{T_n} = \OhOf{kn}$.
-We again pair neighbor $T'_n$ of $T$ with neighbor $S'_n$ of $S$ such that $\dspr{T'_n, S'_n}=1$ but, as $\degree{T_n} < \degree{S_n}$ we can only account for at most $\degree{T_n} / \degree{S_n}$ of the mass directly and may have to move the $(\degree{S_n} - \degree{T_n}) / \degree{S_n}$ remainder to trees a distance at most 3.
+We again pair neighbor $T'_n$ of $T$ with neighbor $S'_n$ of $S$ such that $\dspr{T'_n, S'_n}=1$ but, as $\degree{T_n} < \degree{S_n}$ we can only account for at most $\degree{T_n} / \degree{S_n}$ of the mass directly and may have to move the $(\degree{S_n} - \degree{T_n}) / \degree{S_n}$ remainder to trees of distance at most 3.
 Thus, $W_{1,n}$ is bounded above by $(\degree{T_n} + \OhOf{kn}) / \degree{S_n} = (\degree{S_n} + \OhOf{kn}) / \degree{S_n}$.
 We again bound $W_{1,n}$ from below with $(\degree{T_n} - \OhOf{n}) / \degree{T_n}$ by ignoring the mass in common neighbors of $T_n$ and $S_n$.
 The theorem again follows because $\degree{T_n}$ is quadratic in $n$.
@@ -958,7 +959,7 @@ It is more difficult to obtain a closer bound on the maximum curvature of nonadj
 Lemma~\ref{lem:curvature_distance_bound} suggests that more distant pairs of trees should have smaller curvatures than close trees, because neighborhood effects decrease with respect to the increasing distance.
 However, our experiments with $n \le 7$ suggest that maximum curvature tends to increase with distance (with respect to a fixed $n$), as a far greater fraction of the neighbors approach each other as the distance increases.
 Indeed, for $5 \le n \le 7$ the maximum curvature is obtained by pairs of trees at one less than the maximum distance.
-Moreover, nearly all of the neighbors of these pairs approach each either.
+Moreover, nearly all of the neighbors of these pairs approach each other.
 We thus conjecture the following:
 \begin{conj}
 	Let $k_n$ be the maximum curvature between two trees with $n$-leaves.
@@ -986,7 +987,7 @@ Next, we bound the minimum curvature of two adjacent trees by bounding the amoun
 	This gives a lower bound of $1 - (1 + 2\mu) / 1) = -2\mu$ on the curvature.
 
 	By Lemmas~\ref{lem:degree_change} and~\ref{lem:degree_max_delta_adjacent}, the latter effect is maximized when the relative degree change is maximized.
-	By Corollary~\ref{cor:paired_neighbors}, there are at most $\overlap := \degree{T} -2ka - 2(i-1)$ paired trees, bounding the former effect.
+	By Corollary~\ref{cor:paired_neighbors}, there are at least $\overlap := \degree{T} -2ka - 2(i-1)$ paired trees, bounding the former effect.
 	We now construct a pair of trees that maximizes both effects.
 	Let $S$ be the ladder tree with degree $3n^2 - 13n + 14$ and $T$ be the adjacent tree constructed by moving the lower $\floor{\frac{n}{2}}$ leaves of $S$ to the root.
 	$T$ has degree at most $3.5n^2 -15n + 16$.
@@ -1102,7 +1103,7 @@ Note that the same statement and proof of Lemma~\ref{lem:asymptotic} holds with 
 
 
 \section{Conclusion and future work}
-In summary, we have gone beyond graph diameter and vertex degree to substantially advance understanding of the phylogenetic rSPR graph.
+In summary, we have gone beyond graph diameter and vertex degree to substantially advance the understanding of the phylogenetic rSPR graph.
 We did so by developing the first theoretical and computational frameworks to bound and compute Ricci-Ollivier curvature of the rSPR graph.
 We found that curvature, along with degree and distance, determine the early dynamics of hitting times for random walks.
 Moreover, we proved that rSPR graph degree changes depend quadratically on the product of the size of the regrafted subtree with its change in depth.
@@ -1115,7 +1116,7 @@ Correspondingly, we found that the influence of curvature is small in this case 
 However, it is well known that MCMC takes a long time to approximate real phylogenetic posterior distributions even when the Bayesian credible set is small, and in fact our previous work showed significant SPR graph influence on the mixing time for phylogenetic MCMC for credible sets that had tens, hundreds or thousands of trees~\citep{Whidden2015-yi}.
 Thus, our next step will be to investigate curvature of MCMC with nontrivial likelihood functions, which will reduce the posterior distribution to a more realistic effective size, and in certain cases will lead to significant ``bottlenecks'' like those we have observed in real data.
 In those cases the curvature between two trees at either end of a bottleneck will describe how difficult it is to traverse the bottleneck.
-Indeed, in both the setting of challenging real data and in simulation with a nontrivial likelihood function, the stationary distribution takes a long time to achieve, and thus the curvature will have a substantially greater impact on the overall hitting times rather than being a short prelude to waiting for a Poisson process event as it is here (Fig.~\ref{fig:kappa-access}).
+Indeed, in both the setting of challenging real data and in simulation with a nontrivial likelihood function, the stationary distribution takes a long time to be achieved, and thus the curvature will have a substantially greater impact on the overall hitting times rather than being a short prelude to waiting for a Poisson process event as it is here (Fig.~\ref{fig:kappa-access}).
 One avenue of exploration will be to follow previous work \citep{Stefankovic2011-hu} by taking a chain where tree topology likelihoods are maximized across branch length, as the classical phylogenetic likelihood \citep{felsenstein1981evolutionary} requires both branch length and topology.
 
 One could extend this work in several other directions.
