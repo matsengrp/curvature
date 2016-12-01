@@ -404,9 +404,9 @@ The high-level steps are as follows, and we show in Theorem~\ref{thm:construct_g
 \end{proof}
 
 We implemented this procedure in the C++ program \texttt{dense\_spr\_graph} of the software package \texttt{spr\_neighbors}~\citep{spr_neighbors}, which outputs an edge list format graph suitable for input to other software.
-The construction procedure reduced the time required to compute the 10,395-vertex 7-taxon rSPR graph from 2,104.68 seconds to 12.71 seconds on an Intel Core 2 Duo E7500 desktop running Ubuntu 14.04.
-Moreover, although we do not study the 135,135-vertex 8-taxon rSPR graph in this paper, our algorithm required only 303.45 seconds to construct it on the same hardware.
-Constructing the 8-taxon rSPR graph using the previous method required 377,395 seconds (more than 4 days), and thus that method is infeasible for constructing larger rSPR tree graphs.
+The construction procedure reduced the time required to compute the 10,395-vertex 7-leaf rSPR graph from 2,104.68 seconds to 12.71 seconds on an Intel Core 2 Duo E7500 desktop running Ubuntu 14.04.
+Moreover, although we do not study the 135,135-vertex 8-leaf rSPR graph in this paper, our algorithm required only 303.45 seconds to construct it on the same hardware.
+Constructing the 8-leaf rSPR graph using the previous method required 377,395 seconds (more than 4 days), and thus that method is infeasible for constructing larger rSPR tree graphs.
 Thus, we believe our fast graph construction procedure will itself be useful for further studies of rSPR graph subsets induced by MCMC credible sets similar to~\citep{Whidden2015-yi}, as the algorithm can quickly construct rSPR graphs for any given subset of trees.
 
 \subsection{Simulating random walks on the rSPR graph.}
@@ -532,9 +532,9 @@ We thus directly computed curvature values for one representative pair from each
 
 \begin{figure*}
 	\hspace*{\stretch{1}}
-	\subfigure[6 taxa]{\includegraphics[width=2.3in]{figs/rspr-upmh-scatter6}}
+	\subfigure[6 leaves]{\includegraphics[width=2.3in]{figs/rspr-upmh-scatter6}}
 	\hspace*{\stretch{2}}
-	\subfigure[7 taxa]{\includegraphics[width=2.3in]{figs/rspr-upmh-scatter7}}
+	\subfigure[7 leaves]{\includegraphics[width=2.3in]{figs/rspr-upmh-scatter7}}
 	\hspace*{\stretch{1}}
     \caption{Scatter plot of $\curvature{\MH; T_1,T_2}$ values versus $\dspr{T_1,T_2}$ for the rSPR graph. Color displays the average degree of $T_1$ and $T_2$. Distance values randomly perturbed (``jittered'') a small amount to avoid superimposed points.}
 	\label{fig:rspr-scatter}
@@ -556,7 +556,7 @@ We applied this work to demonstrate the influence of (unrooted) SPR graph struct
 
 \begin{table}
 \centering
-\caption{p-values for ordinary least squares linear multiple regression of rSPR mean access time against degree and distance (two-tailed $t$-test of regression coefficient). The p-values for 7 taxa are smaller than the machine precision used to calculate them.}
+\caption{p-values for ordinary least squares linear multiple regression of rSPR mean access time against degree and distance (two-tailed $t$-test of regression coefficient). The p-values for 7 leaves are smaller than the machine precision used to calculate them.}
 \csvautotabular{tables/mean-access.csv}
 \label{tab:regressionMAT}
 \end{table}
@@ -579,7 +579,7 @@ To calculate the empirical distributions of access times we aggregate all access
 	\includegraphics[width=\textwidth]{figs/access5-distribution.png}
 
 	\caption{\
-        Distribution of rSPR $\MH$ access times (x-axis) for all pairs of 5-taxon trees, grouped by the degree of the trees.
+        Distribution of rSPR $\MH$ access times (x-axis) for all pairs of 5-leaf trees, grouped by the degree of the trees.
 				Color signifies rSPR distance between the trees, with green, orange, and blue signifying distances of 1, 2, and 3, respectively; the saturation of the color shows coarse curvature $\curvature{\MH; \cdot, \cdot}$, such that increased saturation (i.e.\ darker color) indicates a smaller $\kappa$.
 	}
 	\label{fig:kappa-access-distribution}
@@ -598,9 +598,9 @@ To calculate the empirical distributions of access times we aggregate all access
 	\subfigure[\label{fig:6t-long-time-kappa-access}]{\includegraphics[width=2.3in]{figs/6t-long-time-kappa-access}}
 	\hspace*{\stretch{1}}
     \caption{\
-        Distribution of early rSPR $\MH$ access times for those pairs of (a) 6-taxon trees with degree 44 and (b) 7-taxon trees with degree 70.
-        Distribution of later rSPR $\MH$ access times for those pairs of (c) 5-taxon trees with degree 24 and (d) 6-taxon trees with degree 44.
-				To limit clutter, these plots exclude pairs that are simple inclusions of pairs of trees with a smaller number of taxa (e.g. pairs of trees that both contain leaves 1 and 2 as siblings) as their access times distributions do not change substantially.
+        Distribution of early rSPR $\MH$ access times for those pairs of (a) 6-leaf trees with degree 44 and (b) 7-leaf trees with degree 70.
+        Distribution of later rSPR $\MH$ access times for those pairs of (c) 5-leaf trees with degree 24 and (d) 6-leaf trees with degree 44.
+				To limit clutter, these plots exclude pairs that are simple inclusions of pairs of trees with a smaller number of leaves (e.g. pairs of trees that both contain leaves 1 and 2 as siblings) as their access times distributions do not change substantially.
         Color signifies rSPR distance between the trees, with green, orange, blue, and light blue signifying distances of 1, 2, 3, and 4, respectively; the saturation of the color shows coarse curvature $\curvature{\MH; \cdot, \cdot}$, such that increased saturation (i.e.\ darker color) indicates a smaller $\kappa$.
         }
 	\label{fig:kappa-access}
@@ -888,13 +888,13 @@ For the uniform random walk, $m_T$ is the probability measure assigning a mass o
 We showed in Lemmas~\ref{lem:spr_size} and~\ref{lem:spr_size_mean} that most adjacent trees differ by a small subtree, raising the question of what the curvature is between such pairs.
 In our first theorem of this section, we show that the curvature between two adjacent trees tends towards 0 as the size of the trees increases but the size of the subtree moved to transition between the two trees remains the same size.
 To do so, we prove that the mass transport term between adjacent trees $T$ and $S$ is dominated by probability moved between neighbors of $T$ and $S$ that are also adjacent.
-The probability transported between members of these squares (Corollary~\ref{cor:paired_neighbors}) increases more quickly with $n$ than the probability transported between shared neighbor triangles (Lemma~\ref{lem:shared_neighbors}), and outweighs the effect of long distance probability moved between more distant neighbors or due to a difference in the degree of $T$ and $S$.
+The probability transported between members of these squares (Corollary~\ref{cor:paired_neighbors}) increases more quickly with the number of leaves $n$ than the probability transported between shared neighbor triangles (Lemma~\ref{lem:shared_neighbors}), and outweighs the effect of long distance probability moved between more distant neighbors or due to a difference in the degree of $T$ and $S$.
 Thus this ``flatness-in-the-limit'' theorem helps explain our empirical results in Section~\ref{sec:results:curvature} showing that the distribution of curvature pairs tends more towards 0 as $n$ increases.
 
 \begin{thm}
 \label{thm:flat_curvature}
 Fix a positive integer $k$ and let $R$ be a tree with $k$ leaves.
-Let $\{T_n \mid n > k\}$ be a sequence of trees all containing $R$, and let $\{S_n \mid n > k\}$ be the same sequence $T_n$ but with $R$ cut off and attached at a different location.
+Let $\{T_n \mid n > k\}$ be a sequence of trees with $n$ leaves all containing $R$, and let $\{S_n \mid n > k\}$ be the same sequence $T_n$ but with $R$ cut off and attached at a different location.
 Then $\lim_{n \rightarrow \infty} \curvature{T_n,S_n} = 0$ for the uniform random walk on the rSPR graph.
 \end{thm}
 \begin{proof}
