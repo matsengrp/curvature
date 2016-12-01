@@ -357,7 +357,7 @@ We previously applied this method comparing each of the $m$ trees in a given gra
 However, this method is impractical when applied to construct graphs with 7 or more leaves, due to the rapidly growing $\OhOf{m^2}$ factor.
 
 The key to our efficient algorithm for quickly computing dense rSPR graphs (those containing a significant portion of the full rSPR graph) lies in avoiding the pairwise comparison of non-adjacent trees and thereby shaving off an $\OhOf{m}$ factor.
-The input to our algorithm is a set $\mathcal{T}$ of phylogenetic trees in the $\OhOf{n}$-length Newick \citep{felsenstein1990newick} representation of each tree as a string of characters (assuming integer labels and bounded reasonable values of $n$, see~\citep{whidden2016efficiently}). 
+The input to our algorithm is a set $\mathcal{T}$ of phylogenetic trees in the $\OhOf{n}$-length Newick \citep{felsenstein1990newick} representation of each tree as a string of characters (assuming integer labels and bounded reasonable values of $n$, see~\citep{whidden2016efficiently}).
 These representations are made unique by ordering each tree so that leftmost subtrees contain the smallest alphanumeric label of descendants.
 We construct a mapping from each tree $T_i$ to its order index in this ordering i$i$.
 Begin with an empty graph $G$.
@@ -520,15 +520,16 @@ We used this procedure to sample random walks on varying size rSPR graphs four o
 \subsection{Computing curvature values.}
 \label{sec:results:curvature}
 To compute curvature values, we first used \texttt{dense\_spr\_graph} to compute the full rSPR graph for four to seven leaves, as discussed in Section~\ref{sec:computing_treespace}.
-We then computed curvatures for given pairs of trees directly, by using linear programming~\citep{Loisel2014-hu} to compute the minimal mass transport $W_1$ using the SAGE \citep{SAGE} front-end to the GLPK~\citep{glpk} solver; code can be found in \citep{gricci} which grew from the code described in \citep{Loisel2014-hu}.
+We then computed curvatures for pairs of trees directly, by using linear programming~\citep{Loisel2014-hu} to compute the minimal mass transport $W_1$ using the SAGE \citep{SAGE} front-end to the GLPK~\citep{glpk} solver; code can be found in \citep{gricci} which grew from the code described in \citep{Loisel2014-hu}.
+Specifically, we did this calculation for all representative pairs of trees as described next.
 
-This would have required an enormous amount of computation to directly compute curvatures for the $((2n-3)!!)^2$ pairs of trees with $n$ leaves, even for the small values of $n$ we consider here.
+To directly compute curvatures for all $((2n-3)!!)^2$ pairs of trees with $n$ leaves would have required an enormous amount of computation, even for the small values of $n$ we consider here.
 We instead exploited the fact that pairs of trees which are equivalent modulo label renumbering are symmetric in the rSPR graph and therefore guaranteed to have the same curvature.
 For example, the pairs
 $\{(((1,2),3),4), ((1,2),(3,4))\}$ and
 $\{(((1,4),2),3), ((1,4),(2,3))\}$
 are the same after relabeling, so their curvatures are the same.
-We thus directly computed curvature values for one representative pair from each such equivalence class, or \emph{tanglegram} \citep{Venkatachalam2010-zh}; the group-theoretic enumeration methods are described in \citep{Matsen2015-yv} with a closed formula in \citep{billey2016trees}, and the SAGE \citep{SAGE} and GAP4 \citep{GAP4} code is at \citep{tangle}.
+We thus directly computed curvature values for one representative pair from each such equivalence class, or \emph{tanglegram} \citep{Venkatachalam2010-zh}; the group-theoretic enumeration methods are described in \citep{Matsen2016-cv} with a closed formula in \citep{Billey2017-ci}, and the SAGE \citep{SAGE} and GAP4 \citep{GAP4} code is at \citep{tangle}.
 
 \begin{figure*}
 	\hspace*{\stretch{1}}
