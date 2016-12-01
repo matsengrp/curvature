@@ -139,13 +139,14 @@ These methods are known to mix quickly when sampling from the simple uniform dis
 The structure of the graph induced by tree rearrangement operations is an important determinant of the mixing properties of MCMC, motivating the study of the underlying \emph{SPR graph} in greater~detail.
 
 In this paper, we investigate the SPR graph of rooted trees (rSPR graph) in a new way: by calculating the Ricci-Ollivier curvature with respect to uniform and Metropolis-Hastings random walks.
-These calculations require fast new algorithms for constructing and sampling these graphs, reducing the time required to compute an rSPR graph from $O(m^2n)$-time to $O(mn^3)$, where $m$ is the (often large) number of trees in the graph and $n$ is the number of leaves in each tree, and reducing the time required to select an rSPR neighbor of a tree uniformly at random to $O(n)$ time.
+These calculations require fast new algorithms.
+Wereduce the time required to compute an rSPR graph from $O(m^2n)$-time to $O(mn^3)$, where $m$ is the (often large) number of trees in the graph and $n$ is the number of leaves in each tree, and we reduce the time required to select an rSPR neighbor of a tree uniformly at random to $O(n)$ time.
 We then develop a closed form solution to characterize how the number of rSPR neighbors of a tree changes after an rSPR operation is applied to that tree.
 This gives bounds on the curvature, as well as a flatness-in-the-limit theorem indicating that paths of small topology changes are easy to traverse.
 However, we find that large topology changes (i.e. moving a large subtree) give pairs of trees with negative curvature.
-We show using simulation that mean access time distributions depend on distance, degree, and curvature, demonstrating the relevance of these curvature results to stochastic tree search.
-Although these pairs of trees with negative curvature do not impede mixing in this simple well-connected space, they may manifest as bottlenecks in the much smaller credible sets induced by phylogenetic posteriors with a likelihood function.
-This work extends our knowledge of the rSPR graph, in particular with respect to properties that are relevant for the investigation of sampling the rSPR graph.
+We show using simulation that mean access time distributions depend on distance, degree, and curvature, demonstrating the relevance of these results to stochastic tree search.
+%Although these pairs of trees with negative curvature do not impede mixing in this simple well-connected space, they may manifest as bottlenecks in the much smaller credible sets induced by phylogenetic posteriors with a likelihood function.
+%This work extends our knowledge of the rSPR graph, in particular with respect to properties that are relevant for the investigation of sampling the rSPR graph.
 \end{abstract}
 
 \begin{keyword}
