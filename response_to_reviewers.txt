@@ -244,10 +244,7 @@ Page 17
 Page 18
 
 Proof of (i):The proof only works when the '+14' in the numerator is not reduced to '+12' (which is also not necessary, because bounding the sum of the logarithms in the denominator is sufficient.
-* TODO: Do you see a problem here Erick? Reducing the numerator from 14
-	to 12 is valid. Maybe he is confused by the last step, where I borrow
-	from the reduced -n in the denominator to reduce the 20 to 18?
-**** EM: I'm a little confused by the very last step. Don't we want the 18 to be a 16?
+* We corrected the mistake.
 
 Proof of (ii):
 There seems to be a small error in the format. The penultimate equality is not aligned with the other equal and less-than signs.

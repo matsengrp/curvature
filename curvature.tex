@@ -656,12 +656,12 @@ We can apply Lemma~\ref{lem:degree_extremes} to bound the ratio and difference o
 	To prove (i), we simply note from Lemma~\ref{lem:degree_extremes} that the ladder tree achieves the minimum degree, and the balanced tree achieves the maximum degree:
 	\begin{align*}
 		\frac{\degree{T}}{\degree{S}} \ge\ &\frac{3n^2 - 13n + 14}{4(n-2)^2 - 2 \sum_{m=1}^{n-2} \floor{\log_2(m+1)}} \\
-		\ge\ &\frac{3n^2 - 13n + 12}{4(n-2)^2 - 2(n-2)} \\
-		= \ &\frac{3n^2 - 13n + 12}{4n^2 - 16n + 16 - 2(n-2)} \\
-		= \ &\frac{3n^2 - 13n + 12}{4n^2 - 18n + 20} \\
-		\ge\ &\frac{3n^2 - 13n + 12}{4n^2 - 17\frac{1}{3}n + 18} &\forall n \ge 3, \\
+		\ge\ &\frac{3n^2 - 13n + 14}{4(n-2)^2 - 2(n-2)} \\
+		= \ &\frac{3n^2 - 13n + 14}{4n^2 - 16n + 16 - 2(n-2)} \\
+		= \ &\frac{3n^2 - 13n + 14}{4n^2 - 18n + 20} \\
+		\ge\ &\frac{3n^2 - 13n + 14}{4n^2 - 17\frac{1}{3}n + 18\frac{2}{3}} &\forall n \ge 3, \\
 	\end{align*}
-	which is greater than 3/4 when $n \ge 3$.
+	which is at least 3/4 when $n \ge 3$.
     Similarly for (ii):
 	\begin{align*}
 		{\Delta}N &= \degree{S} - \degree{T} \\
