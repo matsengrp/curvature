@@ -180,10 +180,7 @@ Page 13
 	the word full ("full rSPR graph") to this sentence.
 
 33: It is stated that the curvature is computed for 'given pairs of trees', but who / what gives these pairs? The wording is a bit odd here.
-* As we now clarify with revised wording, this is explained in the next paragraph. We could not compute
-	curvatures for all pairs of trees directly, but instead compute
-	curvatures for each tanglegram. The procedure described here is to
-	used to compute the curvature of any given pair of trees.
+* As we now clarify with revised wording, this is explained in the next paragraph. We could not compute curvatures for all pairs of trees directly, but instead compute curvatures for each tanglegram. The procedure described here is to used to compute the curvature of any given pair of trees.
 
 55: The word 'tempered' is slightly ambiguous, because it can have the meaning 'to moderate' as well as 'to harden'.
 * Revised to "reduced".
@@ -222,12 +219,7 @@ also hamper the readability (when the differences are as small as they are here)
 	confusion.
 
 2. What is the rationale (and meaning) behind '[excluding] pairs that are simple inclusions of pairs of trees with a smaller number of taxa'?
-* These plots demonstrate the effect of curvature on access times when variables such as degree are controlled. Tree pairs that are inclusions of pairs of trees with a smaller number of taxa have largely unchanged access times to the smaller trees and clutter the figure.
-	A pair of trees that both contain leaves 1 and 2 as siblings are an
-	example of inclusions of the pair of trees obtained by merging those siblings into a single leaf and relabeling the leaves.
-
-**** EM We need to revise the text including your response rather than just respond.
-
+* These plots demonstrate the effect of curvature on access times when variables such as degree are controlled. Tree pairs that are inclusions of pairs of trees with a smaller number of taxa have largely unchanged access times to the smaller trees and clutter the figure.  A pair of trees that both contain leaves 1 and 2 as siblings are an example of inclusions of the pair of trees obtained by merging those siblings into a single leaf and relabeling the leaves. We rephrased this sentence to state "To limit clutter, these plots exclude pairs that are simple inclusions of pairs of trees with a smaller number of leaves (e.g. pairs of trees that both contain leaves 1 and 2 as siblings) as their access times distributions do not change substantially."
 
 Page 17
 
@@ -273,22 +265,17 @@ Page 20
 	other revisions. The argument I added after Corollary 6.6 that the Lemma 6.5 pairs of trees have negative curvature needs to be checked. Lemma 6.5 might need to take a change here in to account.
 
 14: The phrase 'the pairings are disjoint' might need some more explanation as 'disjoint' might get interpreted in several ways (e.g. no tree is allowed to occur in more than one pairing vs. the pairings are pairwise distinct).
-* Revised to note "...  each neighbor of T is paired
-with a single neighbor of S, and vice versa. Note that a tree may be a
-neighbor of both T and S and thus involved in two different pairings."
+* Revised to note "...  each neighbor of T is paired with a single neighbor of S, and vice versa. Note that a tree may be a neighbor of both T and S and thus involved in two different pairings."
 
 37: The word 'and' seems to be missing before 'then' .
 * Corrected.
 
 Lemma 5.5:
-1. Concerning the proof of (i): it might be helpful to elaborate on why a case distinction is
-necessary (Why is it necessary to increase j? Why are the subcases of (not) moving the additional leaf necessary?) in order to clarify the line of argument.
+1. Concerning the proof of (i): it might be helpful to elaborate on why a case distinction is necessary (Why is it necessary to increase j? Why are the subcases of (not) moving the additional leaf necessary?) in order to clarify the line of argument.
 * We have revised the sentence introducing the cases to state "There are two cases, depending on whether the subtree of k leaves is moved to the root (thereby introducing a new level to the tree) or not.
 
-2. Concerning statement (ii): Is there a particular reason why the quotient is bounded for n ≥ 4?
-The overall lemma assumes n ≥ 3, which would also lead to a nice bound (0.8).
-* 5/6 is closer to the limit of 6/7 than it is to 4/5 so this gives a
-	closer bound at the small cost of excluding the trivial 3-leaf tree graph.
+2. Concerning statement (ii): Is there a particular reason why the quotient is bounded for n ≥ 4? The overall lemma assumes n ≥ 3, which would also lead to a nice bound (0.8).
+* 5/6 is closer to the limit of 6/7 than it is to 4/5 so this gives a closer bound at the small cost of excluding the trivial 3-leaf tree graph.
 
 Page 21
 
@@ -298,9 +285,7 @@ Page 21
 * We added "... , where L(Q) is the label set of Q, ..." to the sentence.
 
 2. Does this equality really hold between the restricted versions of T and S , which differ only in R and, thus, should still be different after restricting them to X \ L(Q)?
-* Yes, because of the triangle formed by T, S, and U, as we state in the
-	proof. T and U differ by Q but not R so S is reached from U by moving Q in such a way that displaces R from its original position.
-**** EM: perhaps worth throwing an extra hint in?
+* Yes, because of the triangle formed by T, S, and U, as we state in the proof. T and U differ by Q but not R so S is reached from U by moving Q in such a way that displaces R from its original position. We now state: In the latter case, S is reached from U by moving Q in a manner that displaces T from its original position, because T and S differ only in the location of R and d_SPR(T, U ) = d_SPR(S, U ) = 1. Thus, T |(X \ L(Q)) = S|(X \ L(Q)), where L(Q) is the label set of Q."
 
 51-53: Using U as a subtree while it also denotes a whole tree in the neighbourhood of T and S just a few lines before can be slightly confusing.
 * Indeed, thanks. We changed the second use of U to V and u' to v'.
@@ -358,8 +343,7 @@ Page 23
 
 32: Is there are special reason for (re)defining the mass transport term
 W_{1,n} ?
-* W_{1,n} is used in Theorem 6.1 to distinguish between the sequential
-	mass transport terms, but this this one should just be W_1. Corrected.
+* W_{1,n} is used in Theorem 6.1 to distinguish between the sequential mass transport terms, but this this one should just be W_1. Corrected.
 
 37: The verb 'increase' misses the third-person singular s (as it refers to 'the size of the trees').
 * Corrected.
@@ -370,9 +354,7 @@ W_{1,n} ?
 Page 24
 
 14: Adding a short explanation why the number of unmatched trees is in O(kn) might help the reader understanding the argument at this point better.
-* We added the short explanation "There are O(kn) trees unmatched by
-	this pairing, because b and a (in the nomenclature of Corollary 5.4)
-	are bounded by n."
+* We added the short explanation "There are O(kn) trees unmatched by this pairing, because b and a (in the nomenclature of Corollary 5.4) are bounded by n."
 
 19: The innermost pair of parentheses around 'O(n)' is not necessary.
 * Corrected.
