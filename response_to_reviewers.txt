@@ -226,6 +226,8 @@ also hamper the readability (when the differences are as small as they are here)
 	A pair of trees that both contain leaves 1 and 2 as siblings are an
 	example of inclusions of the pair of trees obtained by merging those siblings into a single leaf and relabeling the leaves.
 
+**** EM We need to revise the text including your response rather than just respond.
+
 
 Page 17
 
@@ -234,6 +236,7 @@ Page 17
 
 15-23: The traceability / comprehensibility of the statements would strongly benefit from improving the readability of the plots in Figure 5 and 6.
 * TODO
+*** EM Perhaps we can respond by just saying that all of the statements regarding the influence of curvature are confirmed by the regression analysis.
 
 53: It looks like there is too much white space behind 'w.l.o.g.'.
 * Corrected.
@@ -244,6 +247,7 @@ Proof of (i):The proof only works when the '+14' in the numerator is not reduced
 * TODO: Do you see a problem here Erick? Reducing the numerator from 14
 	to 12 is valid. Maybe he is confused by the last step, where I borrow
 	from the reduced -n in the denominator to reduce the 20 to 18?
+**** EM: I'm a little confused by the very last step. Don't we want the 18 to be a 16?
 
 Proof of (ii):
 There seems to be a small error in the format. The penultimate equality is not aligned with the other equal and less-than signs.
@@ -299,6 +303,7 @@ Page 21
 2. Does this equality really hold between the restricted versions of T and S , which differ only in R and, thus, should still be different after restricting them to X \ L(Q)?
 * Yes, because of the triangle formed by T, S, and U, as we state in the
 	proof. T and U differ by Q but not R so S is reached from U by moving Q in such a way that displaces R from its original position.
+**** EM: perhaps worth throwing an extra hint in?
 
 51-53: Using U as a subtree while it also denotes a whole tree in the neighbourhood of T and S just a few lines before can be slightly confusing.
 * Indeed, thanks. We changed the second use of U to V and u' to v'.
@@ -320,10 +325,10 @@ So, what is the factor of proportionality?
 38-42:
 
 1. Since Lemma 5.7 shall hold for n ≥ 3, the stated number of small moves (2n^2-4n-6) is not correct for all intended n. The reason is that for the ladder tree with three leaves, the small subtree with two leaves is also a child of the root and, thus, contributes 2n-3-3 (not 2n-3-5) moves. Hence, a case distinction seems to be necessary here and for the inequality in the subsequent paragraph (lines 40-42)
-* To keep the lemma and proof simple (and because the n=3 tree space is trivial) we changed the assumption to n > 3, matching the subsequent lemmas.
+* Thank you for pointing this out. To keep the lemma and proof simple (and because the n=3 tree space is trivial) we changed the assumption to n > 3, matching the subsequent lemmas.
 
 2. The chain of (in)equalities in lines 40-42 does not run through, because adding (24-8n) leads to the n-free term '+12' (not '+16'). But this can be 'repaired' through the necessary case distinction n = 3 vs. n ≥ 4).
-* See our response above.
+* As described above we restrict to n>3.
 
 45+55: Stating the explanation of the size '(in terms of the number of leaves)' directly in line 45 possibly avoids some confusion (which can occur when reading Lemma 5.8 while having the typical notion of size in mind).
 * We added the statement to line 45.
@@ -331,7 +336,7 @@ So, what is the factor of proportionality?
 54-55: The statement 'a ladder tree has the greatest average moved subtree size' does not seem to hold for all n ≥ 4. For n = 4, the ladder tree has an average moved subtree size of 1, while it is 4/3 for the balanced tree. Similarly, the balanced tree has a larger one for n = 8 (1.55 vs. 1.39).  This might pose a problem to the proof because it based on the idea that the ladder tree leads to themaximum.
 * There appears to be some confusion on what constitutes a moved subtree here.  From our distribution of rSPR moves, the balanced tree with n = 4 leaves does not move any subtrees of size 2. There are moves of such trees that are equivalent to moves of leaves which appears to be the source of the confusion. As such, the average moved subtree size for n = 8 is 1.4 for the ladder tree and approximately 1.379 (160/116) for the balanced tree. We have added the following explanation to make this more clear to the reader:
 
-"Now, we bound the average size of the moved subtrees (in terms of the number of leaves) from rSPR moves according to our distribution. Note that this average ignores some possible moves that are equivalent to moves of smaller subtrees. For example, from the balanced tree with 4 leaves, we do not consider 22moves of the root’s 2-leaf child subtrees because they are equivalent to moves of the leaves, as explained by our distribution."
+"Now, we bound the average size of the moved subtrees (in terms of the number of leaves) from rSPR moves according to our distribution. Note that this average ignores some possible moves that are equivalent to moves of smaller subtrees. For example, from the balanced tree with 4 leaves, we do not consider moves of the root’s 2-leaf child subtrees because they are equivalent to moves of the leaves, as explained by our distribution."
 
 56: Similar to line 36, 'one leaf' and 'one subtree' appear more readable / consistent.
 * We have made the suggested change.
