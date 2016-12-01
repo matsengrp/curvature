@@ -755,7 +755,7 @@ This maximum degree change occurs when a large subtree experiences a large depth
 	This value is maximized by making $L$ the root and minimizing $b$, namely by setting $b=0$.
 	The resulting equation $2(ka + i - j)$ is similarly maximized by setting $i=1$ (which allows us to increase $a$) and then maximally balancing the terms in the product $ka$ as follows.
 
-	There are two cases, depending on whether the subtree of $k$ leaves is moved to the root or not.
+	There are two cases, depending on whether the subtree of $k$ leaves is moved to the root (thereby introducing a new level to the tree) or not.
     If not, then we set $j=1$ and split the remaining $n-b-i-j = n-2$ leaves between $k$ and $a$ in as balanced a way as possible, giving (i).
 	Note that this corresponds to moving the bottom subtree of $\floor{\frac{n-2}{2}}$ or $\ceil{\frac{n-2}{2}}$ leaves in a ladder tree to the root-most leaf of the tree.
 
@@ -822,7 +822,7 @@ Along with our observation from Lemma~\ref{lem:degree_change} that the magnitude
 	We say that a subtree is \emph{small} if it has two leaves or one leaf, and that a \emph{small} rSPR move is one that moves a small subtree.
 
 \begin{lem}
-	Let $T$ be a rooted tree with $n \ge 3$ leaves.
+	Let $T$ be a rooted tree with $n \ge 4$ leaves.
 	Let $N_S(T)$ be the neighbors of $T$ induced by small rSPR moves.
 	Then $\frac{\size{N_S(T)}}{\size{N(T)}} > \frac{1}{2}$.
 	\label{lem:spr_size}
@@ -830,7 +830,8 @@ Along with our observation from Lemma~\ref{lem:degree_change} that the magnitude
 \begin{proof}
 	Recall our distribution of rSPR moves from a tree in Lemma~\ref{lem:compute_degree}.
 	Each subtree at a depth $ > 1$ from the root with $x$ nodes induces $2n - x - 5$ rSPR neighbors, while the children of the root induce $2n - x - 3$ neighbors.
-	This implies that the number of small rSPR moves is directly proportional to the number of small subtrees, with a possible difference of two moves for a tree where one of the root's children is small.
+	Moreover, every tree has $n$ 1-leaf subtrees.
+	This implies that the number of small rSPR moves is determined by the number of small subtrees, with a possible difference of two moves for a tree where one of the root's children is small.
 
 	A ladder tree has the smallest proportion of small subtrees, so we first bound the number of small subtree moves that can be applied to a ladder tree.
 	A ladder tree with $n$ leaves has $n$ 1-leaf subtrees and one 2-leaf subtree.
@@ -843,7 +844,7 @@ Along with our observation from Lemma~\ref{lem:degree_change} that the magnitude
 	Therefore more than half of the neighborhood of any tree is induced by small rSPR moves.
 \end{proof}
 
-Now, we bound the average size of the moved subtrees (in terms of the number of leaves).
+Now, we bound the average size of the moved subtrees (in terms of the number of leaves) from rSPR moves according to our distribution. Note that this average ignores some possible moves that are equivalent to moves of smaller subtrees. For example, from the balanced tree with 4 leaves, we do not consider moves of the root's 2-leaf child subtrees because they are equivalent to moves of the leaves, as explained by our distribution.
 
 \begin{lem}
 	Let $T$ be a rooted tree with $n \ge 4$ leaves.
@@ -856,10 +857,11 @@ Now, we bound the average size of the moved subtrees (in terms of the number of 
 	By similar arguments as in the proof of Lemma~\ref{lem:spr_size}, a ladder tree has the greatest average moved subtree size (in terms of the number of leaves).
 	There are $n$ subtrees with one leaf, and one subtree each with $2,3, \ldots n - 1$ leaves.
 	We ignore the root subtree, which does not induce any rSPR moves.
-	Thinking of the ratio as a weighted average of $i$, we can split the numerator and the denominator of the average into terms with $i \leq 2$ and those with $i > 2$.
-    $\size{N_i(T)} \leq 2n - 3 - 5$ for the first set of terms, and $\size{N_i(T)} > 2n - 3 - 5$ for the second, so by replacing $\size{N_i(T)}$ in each case by $2n-3-5$ we decrease the weight for $i \leq 2$ and increase the weight on $i > 2$.
-	Thus, by doing this replacement we obtain a upper bound on the mean moved subtree size.
-	This bound, ignoring small subtrees, is $(3 + (n-2)) / 2 = (n + 1) / 2$.
+	Thinking of the ratio as a weighted average of $i$, we can split the numerator and the denominator of the average into terms for each subtree contributing to the values for $i \leq 2$ and those with $i > 2$.
+    The contribution to $\size{N_i(T)}$ is $\geq 2n - 3 - 5$ for the first set of terms, and the contribution to $\size{N_i(T)} < 2n - 3 - 5$ for the second.
+		By replacing the contribution to $\size{N_i(T)}$ in each case by $2n-3-5$ we decrease the weight for $i \leq 2$ and increase the weight on $i > 2$.
+		Note that this replacement does not modify the $i = 2$ term (which was already exactly $2n - 3 - 5$ and decreases the weight of only the smallest terms (which must already be below the average size of the moved subtrees), so this provides an upper bound on the mean moved subtree size.
+	The bound for large subtrees only is $(3 + (n-2)) / 2 = (n + 1) / 2$.
 	By Lemma~\ref{lem:spr_size}, at least half of the rSPR moves involve a small subtree.
 	Thus, the average size of a moved subtree over all SPR operations from a given tree is at most the weighted average of $1 / 2 + ((n + 1) / 2) / 2$ = $(n + 1) / 4 + 1 / 2 = (n + 3) / 4$.
 
@@ -933,8 +935,10 @@ This bound arises naturally in any metric space with integer distances.
 \end{lem}
 \begin{proof}
 	Observe that the distance between neighbors of $T$ and $S$ is bounded between $\dspr{T,S} - 2$ and $\dspr{T,S} + 2$.
+	Then, any mass transported between a probability distribution $m_T$ on neighbors of $T$ and $m_S$ on neighbors of $S$ is transported a distance at least $\dspr{T,S} - 2$.
+	This implies that the mass transport cost $W_1(m_T,m_S)$ is at least $\dspr{T,S} - 2$, for any $m_T$ and $m_S$.
 	For the curvature upper bound, we then have $\curvature{T,S} \le 1 - \frac{\dspr{T,S} - 2}{\dspr{T,S}} = \frac{2}{\dspr{T,S}}$.
-	The lower bound follows similarly.
+	The lower bound follows similarly by using the maximum distance of $\dspr{T,S} + 2$ .
 \end{proof}
 
 We now obtain a tighter bound on the maximum curvature between two adjacent trees.
@@ -970,20 +974,22 @@ We thus conjecture the following:
 	\end{enumerate}
 \end{conj}
 Proving or disproving this conjecture would go a long way toward understanding the effects of relative distance on curvature.
-However, we suspect that this will require a greater understanding of the distribution of tree neighborhoods with respect to one another than is currently known.
+However, we suspect that this will require a greater understanding of the distribution of pairwise distances between tree neighborhoods than is currently known.
 
 Next, we bound the minimum curvature of two adjacent trees by bounding the amount of probability mass that cannot be moved between adjacent neighbors.
 
 \begin{lem}
 \label{lem:curvature_lower_bound}
 	The curvature between adjacent trees with $n$ leaves is at least
-	$$\frac{-n^2 + 2n}{3.5n^2 - 15n + 16}.$$
+	$$\frac{-n^2 + 2n + 1}{3.5n^2 - 15n + 16}.$$
 \end{lem}
 \begin{proof}
     In light of Corollary \ref{cor:paired_neighbors}, the optimal mass transport cost is maximized (and therefore curvature minimized) across adjacent trees $T$ and $S$ by a combination of two effects: trees that cannot be paired at distance $1$ and mass that must be moved between unpaired trees due to differing degrees of $T$ and $S$.
 		As we will show, these effects can be maximized simultaneously.
     To bound these effects, let $\mu$ be the maximum (across $T$ and $S$) proportion of mass that cannot be moved between adjacent neighbors of those trees.
-    We can bound the mass transport cost from above by $1 + 2\mu$ because pairs of neighbors of adjacent trees are at most distance 3 apart.
+		Pairs of neighbors of adjacent trees are at most distance 3 apart, so $\mu$ of the mass is moved a distance at most 3.
+		The remaining $1-\mu$ of the mass is moved between adjacent trees.
+		Thus, we can bound the mass transport cost from above by $3\mu + 1(1-\mu) = 1 + 2\mu$.
 	This gives a lower bound of $1 - (1 + 2\mu) / 1) = -2\mu$ on the curvature.
 
 	By Lemmas~\ref{lem:degree_change} and~\ref{lem:degree_max_delta_adjacent}, the latter effect is maximized when the relative degree change is maximized.
@@ -991,10 +997,11 @@ Next, we bound the minimum curvature of two adjacent trees by bounding the amoun
 	We now construct a pair of trees that maximizes both effects.
 	Let $S$ be the ladder tree with degree $3n^2 - 13n + 14$ and $T$ be the adjacent tree constructed by moving the lower $\floor{\frac{n}{2}}$ leaves of $S$ to the root.
 	$T$ has degree at most $3.5n^2 -15n + 16$.
-	There are thus $2ka + 2(i-1) = 2\left(\ceil{\frac{n-2}{2}}\floor{\frac{n}{2}} +(1-1)\right) \le \frac{1}{2}n^2 - n$ unpaired neighbors, the maximum possible.
+	There are thus $2ka + 2(i-1) = 2\left(\floor{\frac{n}{2}}\ceil{\frac{n-2}{2}} +(1-1)\right) \le \frac{1}{2}n^2 - n + \frac{1}{2}$ unpaired neighbors, the maximum possible.
 	Moreover, as shown by Lemma~\ref{lem:degree_change} this pair of trees obtains the maximum (absolute and relative) degree change.
 	Thus, the maximum $\mu$ is:
-	$$\frac{\frac{1}{2}n^2 - n}{3.5n^2 - 15n + 16}.$$
+	$$\frac{\frac{1}{2}n^2 - n + \frac{1}{2}}{3.5n^2 - 15n + 16}.$$
+	Note that any pair of trees with a smaller degree change will necessarily reduce the numerator by at least the same amount as the denominator, allowing us to use the degree of $T$ here rather than assuming the minimum degree of $S$.
 	The claim follows from multiplying this value by $-2$.
 \end{proof}
 
@@ -1010,6 +1017,7 @@ This directly leads to the following Corollary:
 Note that this bound is not tight (at least for small $n$) as it is rarely necessary to transport mass the maximum distance between unpaired trees.
 We also note that the lower bounds in this section do not follow from the more general setting described in \citep{Jost2013-ce}.
 However, the pair of trees used in the proof of Lemma~\ref{lem:curvature_lower_bound} will always have negative curvature, for all $n \ge 7$.
+This follows by assuming that each of the unpaired trees is moved the minimum distance of one, that is the curvature for this pair of trees falls between $-\mu$ and $-2\mu$.
 
 \begin{cor}
 For all $n \ge 7$, there exist two adjacent trees $T$ and $S$ with $n$ leaves such that $\curvature{T,S} < 0$.
@@ -1046,9 +1054,9 @@ As we now prove, these two notions of curvature differ only by a small factor in
 
 	For the upper bound, we observe that $W_1'(T,S) \ge$
 	\begin{align*}
-		p &W_1(T,S) + (1-p) \, \dspr{T,S} - \frac{2}{\max(\degree{T}, \degree{S})},
+		p &W_1(T,S) + (1-p) \, \dspr{T,S} - \frac{2p}{\max(\degree{T}, \degree{S})},
 	\end{align*}
-	as at most $1 / \max(\degree{T},\degree{S})$ of the mass can remain at each of $T$ and $S$, paired with the lazy remainder.
+	as at most $p / \max(\degree{T},\degree{S})$ of the mass can remain at each of $T$ and $S$, paired with the lazy remainder.
 	The upper bound then follows analogously to the lower bound.
 	Moreover, no mass can remain at $T$ or $S$ when $\dspr{T,S} > 1$, in which case the curvatures are equal.
 \end{proof}
@@ -1061,7 +1069,7 @@ Note that the same statement and proof of Lemma~\ref{lem:asymptotic} holds with 
 
 \begin{lem}
 	\label{lem:mh_curvature}
-	Let $T$ and $S$ be trees with $n$ leaves. Then:
+	Let $T$ and $S$ be trees with $n \ge 4$ leaves. Then:
 	\begin{align*}
 	\curvature{T,S} - \frac{1}{3\dspr{T,S}}
 	&\le \curvature{\MH; T,S} \\
@@ -1077,20 +1085,19 @@ Note that the same statement and proof of Lemma~\ref{lem:asymptotic} holds with 
 	By Lemma~\ref{lem:degree_max_delta_adjacent}, the quotient of degrees for two adjacent trees $\ge \frac{5}{6}$.
 	Thus, the Hastings ratio is always $\ge \frac{5}{6}$.
 	This implies that at most $\frac{1}{6}$ of the mass remains at tree $T$ in the mass distribution.
-	Let $W_1(T,S)$ be the cost of an optimal mass transport for the uniform random walk from $T$ to $S$, and $W_1'(T,S)$ the cost for the MH random walk.
-	Moreover, let $m_T(z)$ and $m_S(w)$ be the mass assigned for the uniform random walk and $m'_T(z)$ and $m'_S(w)$ be the mass assigned for the MH random walk, for each vertex $z \in N(T)$ and $w \in N(S)$.
-	We construct an upper bound on $W_1'(T,S)$ by moving mass according to $W_1$ where possible, and moving the remainder either from $T$ to $S$, from $T$ to a neighbor of $S$, or from a neighbor of $T$ to $S$.
-	That is, for each $W_1$ assignment $\xi(z,w)$, we send $\xi'(z,w) = \xi(z,w) \min\left(\frac{m'_T(z)}{m_T(z)}, \frac{m'_S(w)}{m_S(w)}\right)$ of the mass from $z$ to $w$.
+	Let $m_T(z)$ and $m_S(w)$ be the mass assigned for the uniform random walk and $m'_T(z)$ and $m'_S(w)$ be the mass assigned for the MH random walk, for each vertex $z \in N(T)$ and $w \in N(S)$.
+	We construct an upper bound on $W_1(m'_T,m'_S)$ by moving mass according to $W_1(m_T,m_S)$ where possible, and moving the remainder either from $T$ to $S$, from $T$ to a neighbor of $S$, or from a neighbor of $T$ to $S$.
+	That is, for each $W_1(m_T,m_S)$ assignment $\xi(z,w)$, we send $\xi'(z,w) = \xi(z,w) \min\left(\frac{m'_T(z)}{m_T(z)}, \frac{m'_S(w)}{m_S(w)}\right)$ of the mass from $z$ to $w$.
 	The remaining $\xi(z,w) - \xi'(z,w)$ of the mass is moved from $T$ to $S$, $T$ to $w$, and $z$ to $S$ in the respective proportions
 	$\xi(z,w) \max\left(\frac{m'_T(z)}{m_T(z)}, \frac{m'_S(w)}{m_S(w)}\right) - \xi'(z,w)$,
 	$\xi(z,w) \min\left(0, \frac{m'_T(z)}{m_T(z)} - \frac{m'_S(w)}{m_S(w)}\right)$, and,
-	$\xi(z,w) \min\left(0, \frac{m'_S(w)}{m_S(w)} - \frac{m'_T(w)}{m_T(w)}\right)$.
-	The maximum possible mass that is not moved according to $W_1$ is $\frac{1}{6}$.
+	$\xi(z,w) \min\left(0, \frac{m'_S(w)}{m_S(w)} - \frac{m'_T(z)}{m_T(z)}\right)$.
+	The maximum possible mass that is not moved according to $W_1(m_T,m_S)$ is $\frac{1}{6}$.
 	Moreover, the affected mass must be moved through at most two additional trees.
-	Then, $W_1' \le W_1 + \frac{2}{6}$.
+	Then, $W_1(m'_T,m'_S) \le W_1(m_T,m_S) + \frac{2}{6}$.
 	We now have:
 	\begin{align*}
-		\curvature{\MH; T,S} & \ge 1 - \frac{W_1 + \frac{1}{3}}{\dspr{T,S}} \\
+		\curvature{\MH; T,S} & \ge 1 - \frac{W_1(m_T,m_S) + \frac{1}{3}}{\dspr{T,S}} \\
 		& \ge \curvature{T,S} - \frac{1}{3\dspr{T,S}}.
 	\end{align*}
 
@@ -1106,7 +1113,8 @@ Note that the same statement and proof of Lemma~\ref{lem:asymptotic} holds with 
 In summary, we have gone beyond graph diameter and vertex degree to substantially advance the understanding of the phylogenetic rSPR graph.
 We did so by developing the first theoretical and computational frameworks to bound and compute Ricci-Ollivier curvature of the rSPR graph.
 We found that curvature, along with degree and distance, determine the early dynamics of hitting times for random walks.
-Moreover, we proved that rSPR graph degree changes depend quadratically on the product of the size of the regrafted subtree with its change in depth.
+Moreover, we proved that rSPR graph degree changes depend on the product of the size of the regrafted subtree with its change in depth.
+This product is quadratic in the number of leaves in the trees, the same order as the degree.
 As a result of this dependence, some areas of the rSPR graph are locally negatively curved but the graph tends toward flatness with respect to the majority of rSPR moves which move small subtrees.
 Finally, we proved that the coarse and asymptotic definitions of Ricci-Ollivier curvature are closely related with respect to uniform and Metropolis-Hastings walks on the rSPR graph.
 
