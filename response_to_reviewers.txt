@@ -6,7 +6,7 @@ We are especially grateful to Reviewer 2, who has offered the most detailed and 
 Reviewer 1
 
 I think that the abstract is too long and should be three-time shorter.
-* TODO, any comments Erick?
+* The abstract is now substantially shorter. We have cut it down as much as we felt possible without losing clarity.
 
 There are several occurrence of the word “taxon” or “taxa” while there is no definition: I guessed it was the leaves, and maybe the authors want to replace every occurrence.
 * replaced each occurrence of taxon or taxa with leaf or leaves.
@@ -185,18 +185,21 @@ Page 13
 55: The word 'tempered' is slightly ambiguous, because it can have the meaning 'to moderate' as well as 'to harden'.
 * Revised to "reduced".
 
-****TODO FIGURES START*****
-
 Page 14
 
 56-: The connection between a smaller κ and a right-shift of the access time distribution is difficult to see as differences in the saturation are hardly noticable.
 
 Page 15
 
+* General response to the following figure-related comments:
+* Thank you for the comments and we agree that it is difficult to parse out the various dimensions shown here. However, we are faced with a rather difficult visualization problem that has many variables: access time, count, degrees, and curvature. After quite a bit of effort, this was the best that we could do. To make it possible for people such as this reviewer to dig a little more deeply into the data, we have now linked to an archived version of the exact data points used to make the plots, in their five-dimensional overlapping glory. We also note that the statements regarding the influence of curvature are confirmed by the regression analysis.
+
 Plots of Figure 5:
 1. It is very hard to extract any information from the plots, because the plots (as soon as there are a few more lines) quickly get congested due to overlaps and hardly (or not at all) visible differences in saturation.
 
 2. Adding axis labels (and not just explaining them in the figure caption) could help the readability of the plots.
+
+**** TODO: Chris, could you add these axis labels with the same fonts?
 
 3. It might be a bit counterintuitive to associate smaller κ values with an increased saturation.
 
@@ -208,8 +211,6 @@ Plots of Figure 6:
 2. Plots (c) and (d) are especially problematic w.r.t. overlaps.
 3. Adding brightness (blue vs. light blue) as another distinctive feature (besides saturation) can
 also hamper the readability (when the differences are as small as they are here).
-
-****TODO FIGURES END*****
 
 45-56:
 
@@ -227,8 +228,7 @@ Page 17
 * We have made the suggested change
 
 15-23: The traceability / comprehensibility of the statements would strongly benefit from improving the readability of the plots in Figure 5 and 6.
-* TODO
-*** EM Perhaps we can respond by just saying that all of the statements regarding the influence of curvature are confirmed by the regression analysis.
+* See above, also noting that Tables 1 and 2 confirm several of the statements made in a very readable form.
 
 53: It looks like there is too much white space behind 'w.l.o.g.'.
 * Corrected.
@@ -426,7 +426,7 @@ Page 28
 Page 29
 
 13-17: The same problem as on page 17, lines 15-23.
-* TODO (address the plots)
+* Addressed above.
 
 29: Changing 'achieve' to 'to be achieved' seems a bit more readable.
 * Corrected
