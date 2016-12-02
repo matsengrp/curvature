@@ -738,8 +738,13 @@ Note that a tree may be a neighbor of both $T$ and $S$ and thus involved in two 
 \end{cor}
 \begin{proof}
 By the same arguments as in the proof of Lemma~\ref{lem:degree_change}, $\overlap$ rSPR moves can be applied to $T$ and $S$ with the same source and target nodes.
-For each such $(T',S')$ pair, we can move $R$ in either tree to obtain the other member of the pair.
 We consider the parent node of $R$ in both $T$ and $S$ to be the same source node for this purpose.
+For each such $(T',S')$ pair, there are two cases, depending on whether $T'$ differs from $T$ by $R$ or another subtree.
+If $T'$ and $T$ differ by a different subtree, then we can move $R$ in $T'$ or $S'$ to obtain the other member of the pair.
+Thus, $\dspr{T',S'} = 1$.
+If $T'$ and $T$ differ by $R$, however, then $T' = S'$.
+Consider the set of such pairs $(T'_1, S'_1), (T'_2, S'_2), \ldots, (T'_p, S'_p)$.
+Each tree of the pairs can be obtained from the others by moving $R$, so we simply pair $T'_1$ with $S'_2$, $T'_2$ with $S'_3$ and so on, finally pairing $T'_p$ with $S'_1$.
 \end{proof}
 
 We now use Lemma~\ref{lem:degree_change} to improve the degree change bounds in Lemma~\ref{lem:degree_max_delta} for two adjacent trees.
@@ -801,6 +806,7 @@ This bound is minimized when $\degree{T}$ is minimized, and recall by Lemma~\ref
 
 In our next lemma of this section, we bound the number of neighbors shared by two adjacent trees.
 The number of such ``triangles'' involving two adjacent trees has a key role in determining whether their curvature is positive, as mass assigned to a shared neighbor may not require a mass transport cost.
+Note that these shared neighbors are exactly the trees from the second case of Corollary~\ref{cor:paired_neighbors} and an optimal mass transport pairing will pair mass at these trees.
 We show that the maximum number of shared neighbors is linear in the number of leaves.
 In other words, only a small proportion of any two neighborhoods are shared and the relative size of shared neighborhoods grows much more slowly than the quadratic scaling of total neighborhood sizes.
 

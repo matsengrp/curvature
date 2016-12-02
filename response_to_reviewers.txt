@@ -215,9 +215,7 @@ also hamper the readability (when the differences are as small as they are here)
 45-56:
 
 1. Which cases (of the four cases (a) – (d)) are meant with 'In both cases'?
-* This referred to both of the cases mentioned in text (early and later
-	access times). We revised the phrase to "these plots" to avoid
-	confusion.
+* This referred to both of the cases mentioned in text (early and later access times). We revised the phrase to "these plots" to avoid confusion.
 
 2. What is the rationale (and meaning) behind '[excluding] pairs that are simple inclusions of pairs of trees with a smaller number of taxa'?
 * These plots demonstrate the effect of curvature on access times when variables such as degree are controlled. Tree pairs that are inclusions of pairs of trees with a smaller number of taxa have largely unchanged access times to the smaller trees and clutter the figure.  A pair of trees that both contain leaves 1 and 2 as siblings are an example of inclusions of the pair of trees obtained by merging those siblings into a single leaf and relabeling the leaves. We rephrased this sentence to state "To limit clutter, these plots exclude pairs that are simple inclusions of pairs of trees with a smaller number of leaves (e.g. pairs of trees that both contain leaves 1 and 2 as siblings) as their access times distributions do not change substantially."
@@ -259,10 +257,8 @@ Page 19
 Page 20
 
 9-19: While Corollary 5.4 appears correct, the given justification seems to be a bit problematic.  Based on the definition of γ and the excluded (subtracted) moves, it appears that these γ moves still include some which move R. For example, from the set of all possible moves for T (deg(T)), only some moves into R (2kb, case (ii)) and some moves of R's parent subtree (2(j-1), case (iv)) are excluded.  However, it is then stated that these moves 'can be applied to T and S with the same source and target nodes'. The minor (but arguable) problem concerns the part 'same source nodes': When are they the same? Is the parent node of R the same although its position differs in T and S? If not, then not all γ moves can be applied with the same source nodes. The bigger problem is created by the fact that moves moving R with the same target node eliminate the only difference between T and S and, thus, the difference between the obtained neighbours is zero (not one).  Overall, it seems to be a bit more complicated to describe how the desired (T',S') pairs can be obtained.
-* Revised the first part with "We consider the parent node of R in both T and S to be the same source node for this purpose.".
-* TODO: We can either change the distance bound here to <= 0 or subtract
-	out the distance 0 pairs. Check which is better after completing the
-	other revisions. The argument I added after Corollary 6.6 that the Lemma 6.5 pairs of trees have negative curvature needs to be checked. Lemma 6.5 might need to take a change here in to account.
+* We revised the first part with "We consider the parent node of R in both T and S to be the same source node for this purpose.".
+* For the second part, we revised the proof of Corollary 5.4 to pair the set of shared neighbors with each other such that each pair of trees is at distance 1 rather than distance 0. As no optimal mass transport pairing would do this, we also added the following note before Lemma 5.6: "Note that these shared neighbors are exactly the trees from the second case of Corollary 5.4 and an optimal mass transport pairing will pair mass at these trees".
 
 14: The phrase 'the pairings are disjoint' might need some more explanation as 'disjoint' might get interpreted in several ways (e.g. no tree is allowed to occur in more than one pairing vs. the pairings are pairwise distinct).
 * Revised to note "...  each neighbor of T is paired with a single neighbor of S, and vice versa. Note that a tree may be a neighbor of both T and S and thus involved in two different pairings."
