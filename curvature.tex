@@ -135,14 +135,15 @@
 
 \begin{abstract}
 Statistical phylogenetic inference methods use tree rearrangement operations such as subtree-prune-regraft (SPR) to perform Markov chain Monte Carlo (MCMC) across tree topologies.
-These methods are known to mix quickly when sampling from the simple uniform distribution of trees but may become stuck in the local optima of multimodal posterior distributions for real data induced by non-uniform likelihoods.
+These methods may become stuck in the local optima of multimodal posterior distributions for real data induced by non-uniform likelihoods.
 The structure of the graph induced by tree rearrangement operations is an important determinant of the mixing properties of MCMC, motivating the study of the underlying \emph{SPR graph} in greater~detail.
 
 In this paper, we investigate the SPR graph of rooted trees (rSPR graph) in a new way: by calculating the Ricci-Ollivier curvature with respect to uniform and Metropolis-Hastings random walks.
-These calculations require fast new algorithms.
-Wereduce the time required to compute an rSPR graph from $O(m^2n)$-time to $O(mn^3)$, where $m$ is the (often large) number of trees in the graph and $n$ is the number of leaves in each tree, and we reduce the time required to select an rSPR neighbor of a tree uniformly at random to $O(n)$ time.
-We then develop a closed form solution to characterize how the number of rSPR neighbors of a tree changes after an rSPR operation is applied to that tree.
-This gives bounds on the curvature, as well as a flatness-in-the-limit theorem indicating that paths of small topology changes are easy to traverse.
+This value quantifies the degree to which a pair of random walkers from specified points move towards each other; negative curvature means that they move away from one another on average, while positive curvature means that they move towards each other.
+In order to calculate this curvature, we develop fast new algorithms for rSPR graph computation.
+% We reduce the time required to compute an rSPR graph from $O(m^2n)$-time to $O(mn^3)$, where $m$ is the (often large) number of trees in the graph and $n$ is the number of leaves in each tree, and we reduce the time required to select an rSPR neighbor of a tree uniformly at random to $O(n)$ time.
+We then develop formulas characterizing how the number of rSPR neighbors of a tree changes after an rSPR operation is applied to that tree.
+These give bounds on the curvature, as well as a flatness-in-the-limit theorem indicating that paths of small topology changes are easy to traverse.
 However, we find that large topology changes (i.e. moving a large subtree) give pairs of trees with negative curvature.
 We show using simulation that mean access time distributions depend on distance, degree, and curvature, demonstrating the relevance of these results to stochastic tree search.
 %Although these pairs of trees with negative curvature do not impede mixing in this simple well-connected space, they may manifest as bottlenecks in the much smaller credible sets induced by phylogenetic posteriors with a likelihood function.
@@ -809,7 +810,7 @@ Then $\size{N(T) \cap N(S)} \le 6n - 17$.
 	Pick a neighbor $U \in N(T) \cap N(S)$ of both $T$ and $S$ (this intersection is not empty: $T$ and $S$ are different, so $R$ contains at most $n-2$ of the leaves, thus there must be at least one other tree $U$ obtained by moving $R$ in $T$ and $S$).
 	Then either (i) $T$ and $U$ differ in the location of $R$, or (ii) $T$ and $U$ differ in the location of another subtree $Q$.
 	In the latter case, $S$ is reached from $U$ by moving $Q$ in a manner that displaces $T$ from its original position, because $T$ and $S$ differ only in the location of $R$ and $\dspr{T,U} = \dspr{S,U} = 1$.
-	Thus, $T|(X \setminus L(Q)) = S|(X \setminus L(Q))$, where $L(Q)$ is the label set of $Q$. 
+	Thus, $T|(X \setminus L(Q)) = S|(X \setminus L(Q))$, where $L(Q)$ is the label set of $Q$.
 	Then leaves $r' \in R$, $q' \in Q$, and $v' \in V$, for some subtree $V$, form a triple of $T$ and a different triple in $S$.
 	This incompatible triple can be resolved in at most $6n - 17$ ways, the maximum of which is reached when $Q$, $U$, and $R$ are themselves a ``triple'' of subtrees.
 	By Lemma~\ref{lem:compute_degree}, each of the subtrees is assigned to at most $2n-6$ unique moves.
