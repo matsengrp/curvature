@@ -363,7 +363,7 @@ However, this method is impractical when applied to construct graphs with 7 or m
 The key to our efficient algorithm for quickly computing dense rSPR graphs (those containing a significant portion of the full rSPR graph) lies in avoiding the pairwise comparison of non-adjacent trees and thereby shaving off an $\OhOf{m}$ factor.
 The input to our algorithm is a set $\mathcal{T}$ of phylogenetic trees in the $\OhOf{n}$-length Newick \citep{felsenstein1990newick} representation of each tree as a string of characters (assuming integer labels and bounded reasonable values of $n$, see~\citep{whidden2016efficiently}).
 These representations are made unique by ordering each tree so that leftmost subtrees contain the smallest alphanumeric label of descendants.
-We construct a mapping from each tree $T_i$ to its order index in this ordering i$i$.
+We construct a mapping from each tree $T_i$ to its order index in this ordering $i$.
 Begin with an empty graph $G$.
 For each tree $T_i$, we first add a vertex $i$ to the graph and then use Corollary~\ref{cor:enumerate_neighbors} below to enumerate the $\OhOf{n^2}$ neighbors of $T_i$ in the rSPR graph in $\OhOf{n^3}$-time.
 This efficient enumeration procedure is the key step required to achieve our desired running time of $\OhOf{mn^3}$.
@@ -425,6 +425,7 @@ To eliminate an $\OhOf{n^2}$ factor, we developed a deterministic ordering of rS
 Given such an order, a uniform neighbor can be selected by its index in $\OhOf{n}$ time.
 We note that the recursive formula of Song~\citep{Song2003-gf} for the degree of a tree does not group rSPR moves that move a particular subtree, and thus would still require $\OhOf{n^2}$ time to select a specific rSPR neighbor by index.
 
+%EM "distribution" here and below seems strange to me because we aren't always sampling. Wouldn't "enumeration" work?
 We consider the distribution of rSPR moves in terms of the number of nodes contained within the subtree to be moved.
 Recall that a tree with $n$ leaves has $2n-1$ total nodes (ignoring the artificial $\rho$ node).
 Given a subtree $R$ with $x$ nodes, observe that there are $2n-1 - x$ possible locations to regraft $R$.
@@ -737,6 +738,7 @@ trees in the neighborhood of $T$ can be paired with trees in the neighborhood of
 Note that a tree may be a neighbor of both $T$ and $S$ and thus involved in two different pairings.
 \end{cor}
 \begin{proof}
+%EM Unlike you and the reviewer, I can't figure out what source and target mean here-- are they defined?
 By the same arguments as in the proof of Lemma~\ref{lem:degree_change}, $\overlap$ rSPR moves can be applied to $T$ and $S$ with the same source and target nodes.
 We consider the parent node of $R$ in both $T$ and $S$ to be the same source node for this purpose.
 For each such $(T',S')$ pair, there are two cases, depending on whether $T'$ differs from $T$ by $R$ or another subtree.
@@ -819,6 +821,7 @@ Then $\size{N(T) \cap N(S)} \le 6n - 17$.
 	$T$ and $S$ differ by one rSPR move that moves a subtree $R$.
 	Pick a neighbor $U \in N(T) \cap N(S)$ of both $T$ and $S$ (this intersection is not empty: $T$ and $S$ are different, so $R$ contains at most $n-2$ of the leaves, thus there must be at least one other tree $U$ obtained by moving $R$ in $T$ and $S$).
 	Then either (i) $T$ and $U$ differ in the location of $R$, or (ii) $T$ and $U$ differ in the location of another subtree $Q$.
+    %EM Don't you mean displaces $R$ from its original position?
 	In the latter case, $S$ is reached from $U$ by moving $Q$ in a manner that displaces $T$ from its original position, because $T$ and $S$ differ only in the location of $R$ and $\dspr{T,U} = \dspr{S,U} = 1$.
 	Thus, $T|(X \setminus L(Q)) = S|(X \setminus L(Q))$, where $L(Q)$ is the label set of $Q$.
 	Then leaves $r' \in R$, $q' \in Q$, and $v' \in V$, for some subtree $V$, form a triple of $T$ and a different triple in $S$.
@@ -858,7 +861,9 @@ Along with our observation from Lemma~\ref{lem:degree_change} that the magnitude
 	Therefore more than half of the neighborhood of any tree is induced by small rSPR moves.
 \end{proof}
 
-Now, we bound the average size of the moved subtrees (in terms of the number of leaves) from rSPR moves according to our distribution. Note that this average ignores some possible moves that are equivalent to moves of smaller subtrees. For example, from the balanced tree with 4 leaves, we do not consider moves of the root's 2-leaf child subtrees because they are equivalent to moves of the leaves, as explained by our distribution.
+Now, we bound the average size of the moved subtrees (in terms of the number of leaves) from rSPR moves according to our distribution.
+Note that this average ignores some possible moves that are equivalent to moves of smaller subtrees.
+For example, from the balanced tree with 4 leaves, we do not consider moves of the root's 2-leaf child subtrees because they are equivalent to moves of the leaves, as explained by our distribution.
 
 \begin{lem}
 	Let $T$ be a rooted tree with $n \ge 4$ leaves.
@@ -873,8 +878,8 @@ Now, we bound the average size of the moved subtrees (in terms of the number of 
 	We ignore the root subtree, which does not induce any rSPR moves.
 	Thinking of the ratio as a weighted average of $i$, we can split the numerator and the denominator of the average into terms for each subtree contributing to the values for $i \leq 2$ and those with $i > 2$.
     The contribution to $\size{N_i(T)}$ is $\geq 2n - 3 - 5$ for the first set of terms, and the contribution to $\size{N_i(T)} < 2n - 3 - 5$ for the second.
-		By replacing the contribution to $\size{N_i(T)}$ in each case by $2n-3-5$ we decrease the weight for $i \leq 2$ and increase the weight on $i > 2$.
-		Note that this replacement does not modify the $i = 2$ term (which was already exactly $2n - 3 - 5$ and decreases the weight of only the smallest terms (which must already be below the average size of the moved subtrees), so this provides an upper bound on the mean moved subtree size.
+	By replacing the contribution to $\size{N_i(T)}$ in each case by $2n-3-5$ we decrease the weight for $i \leq 2$ and increase the weight on $i > 2$.
+	Note that this replacement does not modify the $i = 2$ term (which was already exactly $2n - 3 - 5$ and decreases the weight of only the smallest terms (which must already be below the average size of the moved subtrees), so this provides an upper bound on the mean moved subtree size.
 	The bound for large subtrees only is $(3 + (n-2)) / 2 = (n + 1) / 2$.
 	By Lemma~\ref{lem:spr_size}, at least half of the rSPR moves involve a small subtree.
 	Thus, the average size of a moved subtree over all SPR operations from a given tree is at most the weighted average of $1 / 2 + ((n + 1) / 2) / 2$ = $(n + 1) / 4 + 1 / 2 = (n + 3) / 4$.
@@ -918,6 +923,7 @@ To start we demonstrate the theorem in the case that $T_n$ and $S_n$ have the sa
 First we claim that $W_{1,n}$ is bounded above by $(\degree{T_n}+\OhOf{kn})/\degree{T_n}$ by exhibiting a mass transport program satisfying that bound.
 Let $(T'_n, S'_n)$ be any of the $\overlap$ pairs of neighbors of $(T_n, S_n)$ which are one rSPR move apart as per Corollary~\ref{cor:paired_neighbors}.
 We pair these trees in the mass transport.
+%EM Sorry, I don't see b and a in cor:paired_neighbors.
 There are $\OhOf{kn}$ trees unmatched by this pairing, because $b$ and $a$ (in the nomenclature of Corollary~\ref{cor:paired_neighbors}) are bounded by $n$.
 We can pair each of the unmatched trees arbitrarily with another tree of distance at most 3.
 Thus, $W_{1,n}$ is bounded above by $(\degree{T_n} + \OhOf{kn}) / \degree{T_n}$.
@@ -1031,7 +1037,7 @@ This directly leads to the following Corollary:
 Note that this bound is not tight (at least for small $n$) as it is rarely necessary to transport mass the maximum distance between unpaired trees.
 We also note that the lower bounds in this section do not follow from the more general setting described in \citep{Jost2013-ce}.
 However, the pair of trees used in the proof of Lemma~\ref{lem:curvature_lower_bound} will always have negative curvature, for all $n \ge 7$.
-This follows by assuming that each of the unpaired trees is moved the minimum distance of one, that is the curvature for this pair of trees falls between $-\mu$ and $-2\mu$.
+This follows by assuming that each of the unpaired trees is moved the minimum distance of one, that is, the curvature for this pair of trees falls between $-\mu$ and $-2\mu$.
 
 \begin{cor}
 For all $n \ge 7$, there exist two adjacent trees $T$ and $S$ with $n$ leaves such that $\curvature{T,S} < 0$.

@@ -1,6 +1,6 @@
 We thank the reviewers for their suggestions.
 
-We are especially grateful to Reviewer 2, who has offered the most detailed and constructive review we may have ever received.
+We are especially grateful to Reviewer 2, who may have offered the most detailed and constructive review we have ever received.
 
 
 Reviewer 1
@@ -217,8 +217,11 @@ also hamper the readability (when the differences are as small as they are here)
 1. Which cases (of the four cases (a) – (d)) are meant with 'In both cases'?
 * This referred to both of the cases mentioned in text (early and later access times). We revised the phrase to "these plots" to avoid confusion.
 
+
+**** TODO: EM modified the below, though you can probably do better. Note that the text hasn't been modified accordingly yet.
+
 2. What is the rationale (and meaning) behind '[excluding] pairs that are simple inclusions of pairs of trees with a smaller number of taxa'?
-* These plots demonstrate the effect of curvature on access times when variables such as degree are controlled. Tree pairs that are inclusions of pairs of trees with a smaller number of taxa have largely unchanged access times to the smaller trees and clutter the figure.  A pair of trees that both contain leaves 1 and 2 as siblings are an example of inclusions of the pair of trees obtained by merging those siblings into a single leaf and relabeling the leaves. We rephrased this sentence to state "To limit clutter, these plots exclude pairs that are simple inclusions of pairs of trees with a smaller number of leaves (e.g. pairs of trees that both contain leaves 1 and 2 as siblings) as their access times distributions do not change substantially."
+* These plots demonstrate the effect of curvature on access times when variables such as degree are controlled. Tree pairs that are inclusions of pairs of trees with a smaller number of taxa have largely unchanged access times to the smaller trees and clutter the figure.  For example, a pair of trees that both contain leaves 1 and 2 as siblings have very similar characteristics as the pair obtained by merging each sibling pair into a single leaf and relabeling the leaves. We rephrased this sentence to state "To limit clutter, these plots exclude pairs that result from modifying pairs of trees with a smaller number of leaves by replacing a given leaf with a given subtree (e.g.\ we exclude pairs of trees that both contain leaves 1 and 2 as siblings) as their access times distributions do not change substantially."
 
 Page 17
 
@@ -281,6 +284,7 @@ Page 21
 * We added "... , where L(Q) is the label set of Q, ..." to the sentence.
 
 2. Does this equality really hold between the restricted versions of T and S , which differ only in R and, thus, should still be different after restricting them to X \ L(Q)?
+***** TODO this needs to get updated if the text is.
 * Yes, because of the triangle formed by T, S, and U, as we state in the proof. T and U differ by Q but not R so S is reached from U by moving Q in such a way that displaces R from its original position. We now state: In the latter case, S is reached from U by moving Q in a manner that displaces T from its original position, because T and S differ only in the location of R and d_SPR(T, U ) = d_SPR(S, U ) = 1. Thus, T |(X \ L(Q)) = S|(X \ L(Q)), where L(Q) is the label set of Q."
 
 51-53: Using U as a subtree while it also denotes a whole tree in the neighbourhood of T and S just a few lines before can be slightly confusing.
@@ -312,7 +316,7 @@ So, what is the factor of proportionality?
 * We added the statement to line 45.
 
 54-55: The statement 'a ladder tree has the greatest average moved subtree size' does not seem to hold for all n ≥ 4. For n = 4, the ladder tree has an average moved subtree size of 1, while it is 4/3 for the balanced tree. Similarly, the balanced tree has a larger one for n = 8 (1.55 vs. 1.39).  This might pose a problem to the proof because it based on the idea that the ladder tree leads to themaximum.
-* There appears to be some confusion on what constitutes a moved subtree here.  From our distribution of rSPR moves, the balanced tree with n = 4 leaves does not move any subtrees of size 2. There are moves of such trees that are equivalent to moves of leaves which appears to be the source of the confusion. As such, the average moved subtree size for n = 8 is 1.4 for the ladder tree and approximately 1.379 (160/116) for the balanced tree. We have added the following explanation to make this more clear to the reader:
+* We should have been more clear on what constitutes a moved subtree here.  From our distribution of rSPR moves, the balanced tree with n = 4 leaves does not move any subtrees of size 2. There are moves of such trees that are equivalent to moves of leaves which appears to be the source of the confusion. As such, the average moved subtree size for n = 8 is 1.4 for the ladder tree and approximately 1.379 (160/116) for the balanced tree. We have added the following explanation to make this more clear to the reader:
 
 "Now, we bound the average size of the moved subtrees (in terms of the number of leaves) from rSPR moves according to our distribution. Note that this average ignores some possible moves that are equivalent to moves of smaller subtrees. For example, from the balanced tree with 4 leaves, we do not consider moves of the root’s 2-leaf child subtrees because they are equivalent to moves of the leaves, as explained by our distribution."
 
@@ -426,3 +430,6 @@ Page 29
 
 29: Changing 'achieve' to 'to be achieved' seems a bit more readable.
 * Corrected
+
+
+* Again, thank you very much!
