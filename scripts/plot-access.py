@@ -96,6 +96,8 @@ for (t1_deg, t2_deg, dist), group in catted.groupby(['t1_deg','t2_deg', 'dist'])
         sub_d = access[access['tangle'] == idx]
         if args.maxtime:
             sub_d = sub_d[sub_d['time'] < args.maxtime]
+        d_axs.set_xlabel('access time')
+        d_axs.set_ylabel('count')
         d_axs[i][j].plot(sub_d['time'], sub_d['count'],
                          color=m.cmap(kappa), label=kappa)
         # d_axs[i][j].legend()

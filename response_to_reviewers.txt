@@ -9,7 +9,7 @@ I think that the abstract is too long and should be three-time shorter.
 * The abstract is now substantially shorter. We have cut it down as much as we felt possible without losing clarity.
 
 There are several occurrence of the word “taxon” or “taxa” while there is no definition: I guessed it was the leaves, and maybe the authors want to replace every occurrence.
-* replaced each occurrence of taxon or taxa with leaf or leaves.
+* We replaced each occurrence of taxon or taxa with leaf or leaves.
 
 Section 6 and Th 6.1 – in the paragraphs before Th 6.1 and most importantly in Th 6.1, it would be good to say that n is the number of leaves (even if n is always the number of leaves in the article). In particular, the fact that S_n and T_n both have n leaves should appear in the Th.
 * We have made the suggested change.
