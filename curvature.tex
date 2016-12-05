@@ -582,7 +582,7 @@ To calculate the empirical distributions of access times we aggregate all access
 \end{table}
 
 \begin{figure*}
-	\includegraphics[width=\textwidth]{figs/access5-distribution.png}
+	\includegraphics[width=\textwidth]{figs/access5-distribution-alabels.png}
 
 	\caption{\
         Distribution of rSPR $\MH$ access times (x-axis) for all pairs of 5-leaf trees, grouped by the degree of the trees.
@@ -607,7 +607,7 @@ To calculate the empirical distributions of access times we aggregate all access
     \caption{\
         Distribution of early rSPR $\MH$ access times for those pairs of (a) 6-leaf trees with degree 44 and (b) 7-leaf trees with degree 70.
         Distribution of later rSPR $\MH$ access times for those pairs of (c) 5-leaf trees with degree 24 and (d) 6-leaf trees with degree 44.
-				To limit clutter, these plots exclude pairs that are simple inclusions of pairs of trees with a smaller number of leaves (e.g. pairs of trees that both contain leaves 1 and 2 as siblings) as their access times distributions do not change substantially.
+				To limit clutter, these plots exclude pairs that result from modifying pairs of trees with a smaller number of leaves by replacing a given leaf with a given subtree (e.g\ we exclude pairs of trees that both contain leaves 1 and 2 as siblings) as their access time distributions do not change substantially.
         Color signifies rSPR distance between the trees, with green, orange, blue, and light blue signifying distances of 1, 2, 3, and 4, respectively; the saturation of the color shows coarse curvature $\curvature{\MH; \cdot, \cdot}$, such that increased saturation (i.e.\ darker color) indicates a smaller $\kappa$.
 				See online version for color figures; data tables available at \protect\url{https://github.com/matsengrp/curvature/blob/master/prefigs/figure-5-6ab-data.zip}.
         }
@@ -822,7 +822,7 @@ Then $\size{N(T) \cap N(S)} \le 6n - 17$.
 	Pick a neighbor $U \in N(T) \cap N(S)$ of both $T$ and $S$ (this intersection is not empty: $T$ and $S$ are different, so $R$ contains at most $n-2$ of the leaves, thus there must be at least one other tree $U$ obtained by moving $R$ in $T$ and $S$).
 	Then either (i) $T$ and $U$ differ in the location of $R$, or (ii) $T$ and $U$ differ in the location of another subtree $Q$.
     %EM Don't you mean displaces $R$ from its original position?
-	In the latter case, $S$ is reached from $U$ by moving $Q$ in a manner that displaces $T$ from its original position, because $T$ and $S$ differ only in the location of $R$ and $\dspr{T,U} = \dspr{S,U} = 1$.
+	In the latter case, $S$ is reached from $U$ by moving $Q$ in a manner that displaces $R$ from its original position, because $T$ and $S$ differ only in the location of $R$ and $\dspr{T,U} = \dspr{S,U} = 1$.
 	Thus, $T|(X \setminus L(Q)) = S|(X \setminus L(Q))$, where $L(Q)$ is the label set of $Q$.
 	Then leaves $r' \in R$, $q' \in Q$, and $v' \in V$, for some subtree $V$, form a triple of $T$ and a different triple in $S$.
 	This incompatible triple can be resolved in at most $6n - 17$ ways, the maximum of which is reached when $Q$, $U$, and $R$ are themselves a ``triple'' of subtrees.

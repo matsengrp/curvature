@@ -198,8 +198,7 @@ Plots of Figure 5:
 1. It is very hard to extract any information from the plots, because the plots (as soon as there are a few more lines) quickly get congested due to overlaps and hardly (or not at all) visible differences in saturation.
 
 2. Adding axis labels (and not just explaining them in the figure caption) could help the readability of the plots.
-
-**** TODO: Chris, could you add these axis labels with the same fonts?
+* We added axis labels to the plots.
 
 3. It might be a bit counterintuitive to associate smaller κ values with an increased saturation.
 
@@ -217,8 +216,6 @@ also hamper the readability (when the differences are as small as they are here)
 1. Which cases (of the four cases (a) – (d)) are meant with 'In both cases'?
 * This referred to both of the cases mentioned in text (early and later access times). We revised the phrase to "these plots" to avoid confusion.
 
-
-**** TODO: EM modified the below, though you can probably do better. Note that the text hasn't been modified accordingly yet.
 
 2. What is the rationale (and meaning) behind '[excluding] pairs that are simple inclusions of pairs of trees with a smaller number of taxa'?
 * These plots demonstrate the effect of curvature on access times when variables such as degree are controlled. Tree pairs that are inclusions of pairs of trees with a smaller number of taxa have largely unchanged access times to the smaller trees and clutter the figure.  For example, a pair of trees that both contain leaves 1 and 2 as siblings have very similar characteristics as the pair obtained by merging each sibling pair into a single leaf and relabeling the leaves. We rephrased this sentence to state "To limit clutter, these plots exclude pairs that result from modifying pairs of trees with a smaller number of leaves by replacing a given leaf with a given subtree (e.g.\ we exclude pairs of trees that both contain leaves 1 and 2 as siblings) as their access times distributions do not change substantially."
@@ -284,7 +281,6 @@ Page 21
 * We added "... , where L(Q) is the label set of Q, ..." to the sentence.
 
 2. Does this equality really hold between the restricted versions of T and S , which differ only in R and, thus, should still be different after restricting them to X \ L(Q)?
-***** TODO this needs to get updated if the text is.
 * Yes, because of the triangle formed by T, S, and U, as we state in the proof. T and U differ by Q but not R so S is reached from U by moving Q in such a way that displaces R from its original position. We now state: In the latter case, S is reached from U by moving Q in a manner that displaces T from its original position, because T and S differ only in the location of R and d_SPR(T, U ) = d_SPR(S, U ) = 1. Thus, T |(X \ L(Q)) = S|(X \ L(Q)), where L(Q) is the label set of Q."
 
 51-53: Using U as a subtree while it also denotes a whole tree in the neighbourhood of T and S just a few lines before can be slightly confusing.
