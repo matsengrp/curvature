@@ -475,6 +475,7 @@ By generating only the neighbors of $T$ induced by moving the subtree $R$ we the
 We thus achieve the following algorithm to select a neighbor uniformly at random for a tree $T$:
 
 \vspace{1em}
+\begin{samepage}
 \textsc{Select-rSPR-Neighbor($T$)}
 \begin{enumerate}[label={\arabic*}.]
 	\item	Compute the degree of $T$, $\degree{T}$ using Lemma~\ref{lem:compute_degree}.
@@ -487,6 +488,7 @@ We thus achieve the following algorithm to select a neighbor uniformly at random
 	\end{enumerate}
 \item Return the neighbor $S$.
 \end{enumerate}
+\end{samepage}
 
 We now prove that this algorithm is correct and runs in linear time with respect to the number of leaves in the tree.
 
