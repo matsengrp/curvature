@@ -397,7 +397,7 @@ Page 26
 Page 27
 
 35: The upper bound does not seem to follow as analogously to the lower bound as it is stated.  Using the inequality stated in line 32 and proceeding analogously to the lower bound leads to κ p (T , S ) 2 ⩽ ...⩽ κ (T , S)+ p p∗max (∣ N (T )∣ , ∣ N (S )∣) where the factor p in the denominator causes a problem, because simply dropping it (in order to arrive at the bound from the lemma) bounds the value in the wrong direction (as it is at most 1).
-* Indeed, the stated observation was incorrect by a p factor in the numerator, because a fraction of p (the amount of mass that is moved) divided by the number of neighbors is the amount of mass that is moved from e.g. T to S and can therefore be matched with the lazy portion that remains at s. We have corrected the error.
+* Indeed, the stated observation was incorrect by a p factor in the numerator, because a fraction of p (the amount of mass that is moved) divided by the number of neighbors is the amount of mass that is moved from e.g. T to S and can therefore be matched with the lazy portion that remains at S. We have corrected the error.
 
 Page 28
 
