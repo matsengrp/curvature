@@ -140,24 +140,13 @@ Page 10
 Page 11
 
 9-12: The wording seems a bit imprecise because the target of a move is not the node itself but the node's edge.
-* The wording was indeed confusing. We are assigning moves for counting
-	purposes to one possible source node, not specifying a move to any
-	given node. We added the sentence "To do so, we assign each of the
-	neighbors to one node of the tree, such that any given neighbor can be
-	obtained by moving the subtree rooted at its assigned node." We then
-	changed each mention of assigning moves to assigning neighbors.
+* The wording was indeed confusing. We are assigning moves for counting purposes to one possible source node, not specifying a move to any given node. We added the sentence "To do so, we assign each of the neighbors to one node of the tree, such that any given neighbor can be obtained by moving the subtree rooted at its assigned node." We then changed each mention of assigning moves to assigning neighbors.
 
 23-25: The case distinction requires that the extra root node ρ has depth -1, the actual root depth 0 and so on, but this is stated nowhere in the paper.
-* We added a sentence defining the depth of the rho node to be -1 to the
-	preliminaries: "The depth of \rho is considered to be -1, the depth of
-	the original root is 0, and the depth of each other node is given by
-	its distance from the original root.
+* We added a sentence defining the depth of the rho node to be -1 to the preliminaries: "The depth of \rho is considered to be -1, the depth of the original root is 0, and the depth of each other node is given by its distance from the original root.
 
 33: Probably, the set-difference operator ('\') is supposed to denote the pruning (including the merging of the incoming and outgoing edge of the resulting unary node). Unfortunately, this is not explained. A short explanation would make this more obvious to the reader.
-* We have added an explanation here: "This implies that both T \U = S \U
-	and T \V = S \V by the definition of an rSPR operation, where \ here
-	indicates removing the subtree and its parent edge and then replacing
-	its former parent node and both adjacent edges with a single edge."
+* We have added an explanation here: "This implies that both T \U = S \U and T \V = S \V by the definition of an rSPR operation, where \ here indicates removing the subtree and its parent edge and then replacing its former parent node and both adjacent edges with a single edge."
 
 Page 12
 
@@ -168,16 +157,11 @@ Page 12
 * Bits of memory, as is standard for the Big-O notation with respect to space.
 
 52-55: The significance of this paragraph could be increased by stating the special features, properties or outcomes of these runs instead of barely stating that you have performed them.
-* The runs are analyzed in the next section. To avoid confusion we moved
-	the description of the runs to the Access time simulation section and
-	simply say "We used this procedure to sample random walks on varying
-	size rSPR graphs for our analysis in the next section" here.
+* The runs are analyzed in the next section. To avoid confusion we moved the description of the runs to the Access time simulation section and simply say "We used this procedure to sample random walks on varying size rSPR graphs for our analysis in the next section" here.
 
 Page 13
 32: Which graph is 'the rSPR graph ... as discussed in Section 3.1'? The complete one with (2n-3)!!  trees? This is not quite clear since section 3.1 also considers other values for m.
-* This refers to the complete graph. We revised our use of m as
-	described above, to limit this type of confusion. In addition we added
-	the word full ("full rSPR graph") to this sentence.
+* This refers to the complete graph. We revised our use of m as described above, to limit this type of confusion. In addition we added the word full ("full rSPR graph") to this sentence.
 
 33: It is stated that the curvature is computed for 'given pairs of trees', but who / what gives these pairs? The wording is a bit odd here.
 * As we now clarify with revised wording, this is explained in the next paragraph. We could not compute curvatures for all pairs of trees directly, but instead compute curvatures for each tanglegram. The procedure described here is to used to compute the curvature of any given pair of trees.
