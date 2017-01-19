@@ -1,4 +1,4 @@
-We again thank Reviewer 2 for their detailed suggestions that have greatly improved the paper.
+We again thank Reviewer 2 for their remarkably detailed suggestions; these have greatly improved the paper.
 
 
 Anonymous comments from Referee #2:
@@ -14,10 +14,11 @@ The correction is fine, but in the new last sentence on page 12, 'four' should p
 Page 16, lines 45-46 [page 16, lines 43-46]:
 The added explanation is helpful. However, I am not sure whether it is obvious enough that the "access times distributions do not change substantially" through the exclusions. Maybe this also requires some proof and a more precise statement of the effect (compared to just saying "substantial").
 * We apologize for the misunderstanding. This figure is simply meant to visually demonstrate the effect of curvature on access times when all other variables are held constant. The excluded pairs have much smaller access times than those shown but which are not substantially different (visually) from those of the trees from which they can be obtained via replacement. We were not claiming that the excluded trees have the same access times as the included trees, and, as such there is nothing to prove here. As the replaced trees have a smaller number of leaves (and therefore much smaller access times) the effect is a messy plot with multiple curves that essentially includes the results of trees with 3 to say 7 leaves (for (b)). Each individual curve shows a similar influence from curvature.
-* We revised these sentences to say: "To limit clutter, these plots exclude the relatively small number of pairs that result from modifying pairs of trees with a smaller number of leaves by replacing a given leaf with a given subtree (e.g we exclude pairs of trees that both contain leaves 1 and 2 as siblings). Such pairs of trees have much lower access times that are visually identical to the pairs from which they can be obtained via replacement. The net effect is that a distinct curve would appear for each smaller number of leaves. Each individual curve would show a similar influence from curvature"
+* We revised these sentences to say: "To limit clutter, these plots exclude the pairs that result from modifying pairs of trees with a smaller number of leaves by replacing a given leaf with a given subtree (e.g\ we exclude pairs of trees that both contain leaves 1 and 2 as siblings). These additional curves show a similar influence from curvature."
 
 Page 20, Lemma 5.5, point 1 [page 20, Lemma 5.5]:
 Unfortunately, the revised sentence introducing the cases is not much more helpful than its predecessor (for me). The main source of confusion is this: "we do not need to exclude the target branch from k and a, gaining an additional leaf to balance the product ka at the cost of increasing j" (from the case where the subtree is moved to the root). Probably I am missing a point somewhere, but I cannot make much sense of this sentence. Exclude the target branch from k and a? Gaining an additional leaf - where / how?
+EM-- I think this makes sense, but the wording "then the j leaves of the new neighbor subtree V cannot be part of k or a" could be made a little more clear IMHO. k and a aren't sets-- you are saying that they are not part of the sets enumerated by k and a. Alternatively you could have an explanatory sentence at the beginning describing what you mean by membership in k and a, and leave things how they are.
 * At this point in the proof, we are balancing the number of leaves between the values k and a to maximize the degree change. If we do not move the subtree to the root, then the j leaves of the new neighbor subtree V cannot be part of k or a. If we do move the subtree to the root then the new neighbor subtree V is actually the entire tree barring the moved subtree R, so we can include those leaves when balancing k and a at the cost of increasing j.
 * We have revised these two paragraphs of the proof to state:
 
@@ -27,7 +28,7 @@ If the subtree of k leaves is moved to the root, then the new neighbor subtree V
 
 Page 22, lines 30-32, point 2 [page 22, lines 49-50]:
 I think that the last part of the sentence "with a possible difference of two moves for a tree where one of the root's children is small" does still not fit perfectly. T can still have two small children at the root node (resulting in the balanced tree with four leaves) and then there is a difference of four moves from the 'general' case (= no small root children). Maybe a wording along the lines "with a possible difference of two moves per small child of the root" covers (all) the different cases better.
-* We adopted the suggested wording.
+* We adopted the suggested wording, thanks.
 
 Page 22, lines 38-42, point 2 [page23, lines 10-11]:
 The restriction to n > 3, however, does not remove the arithmetical error. '4n^2-8n-12 + (24-8n)' is still not '4n^2-16n+16' but '4n^2-16n+12'. So, you would probably need to add the term '(28-8n)' and say 'n>=4' at the end of the sentence to fix this.
@@ -40,7 +41,7 @@ The added explanations makes it much clearer. However, is it 'fair' to change th
 * We revised the lemma to state: "Let T be a rooted tree with >= 4 leaves. Let N_i(T) be the neighbors of T induced by rSPR moves of an i-leaf subtree, where the moved subtree is defined according to our distribution of rSPR moves."
 * In the proof of the lemma we now say "Recall from the proof of Lemma 5.7 that a ladder tree has the smallest proportion of small subtrees. This implies that a ladder tree has the greatest average moved subtree size (in terms of the number of leaves) with respect to our distribution."
 * In the conclusion of the proof we now say "Thus, the average size of a moved subtree over all rSPR operations from our distribution on a given tree is at most the weighted average of ..."
-* Following the proof we finally say "Further, note that our distribution does not necessarily minimize the moved subtree size among equivalent moves. It may be interesting future work to improve our bound by explicitly minimizing the moved subtree size in such a manner."
+* Following the proof we finally say "Further, note that our distribution does not necessarily minimize the moved subtree size among equivalent moves. It may be interesting in future work to improve our bound by explicitly minimizing the moved subtree size in such a manner."
 
 Page 23, line 32 [page 24, line 9]:
 While this occurrence is fixed, I would strongly suggest stating (in the proof of Theorem 6.1) that 'W_{1,n}' is the short form for the mass transport term when considering T_n and S_n (if I figure it now correctly, which took far too long).
