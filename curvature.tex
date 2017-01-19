@@ -493,7 +493,7 @@ We now prove that this algorithm is correct and runs in linear time with respect
 
 \begin{lem}
 	\label{lem:select_random_neighbor}
-	An rSPR neighbor of a tree $T$ can be chosen uniformly at random in $\OhOf{n}$-time using $\OhOf{n}$ space.
+	An rSPR neighbor of a tree $T$ can be chosen uniformly at random in $\OhOf{n}$-time using $\OhOf{n}$ space (in bits).
 \end{lem}
 \begin{proof}
 	We apply the above procedure.
@@ -519,7 +519,7 @@ We thus have the following corollary:
 \end{cor}
 
 We implemented this procedure in the C++ package \texttt{random\_spr\_walk}~\citep{random_spr_walk}.
-We used this procedure to sample random walks on varying size rSPR graphs four our analysis in the next section.
+We used this procedure to sample random walks on varying size rSPR graphs for our analysis in the next section.
 
 \section{Access times of random walks on the rSPR graph can be understood using distance, degree, and curvature}
 
@@ -608,7 +608,7 @@ To calculate the empirical distributions of access times we aggregate all access
     \caption{\
         Distribution of early rSPR $\MH$ access times for those pairs of (a) 6-leaf trees with degree 44 and (b) 7-leaf trees with degree 70.
         Distribution of later rSPR $\MH$ access times for those pairs of (c) 5-leaf trees with degree 24 and (d) 6-leaf trees with degree 44.
-				To limit clutter, these plots exclude pairs that result from modifying pairs of trees with a smaller number of leaves by replacing a given leaf with a given subtree (e.g\ we exclude pairs of trees that both contain leaves 1 and 2 as siblings) as their access time distributions do not change substantially.
+				To limit clutter, these plots exclude the relatively small number of pairs that result from modifying pairs of trees with a smaller number of leaves by replacing a given leaf with a given subtree (e.g\ we exclude pairs of trees that both contain leaves 1 and 2 as siblings). Such pairs of trees have much lower access times that are visually identical to the pairs from which they can be obtained via replacement. The net effect is that a distinct curve would appear for each smaller number of leaves. Each individual curve would show a similar influence from curvature.
         Color signifies rSPR distance between the trees, with green, orange, blue, and light blue signifying distances of 1, 2, 3, and 4, respectively; the saturation of the color shows coarse curvature $\curvature{\MH; \cdot, \cdot}$, such that increased saturation (i.e.\ darker color) indicates a smaller $\kappa$.
 				See online version for color figures; data tables available at \protect\url{https://github.com/matsengrp/curvature/blob/master/prefigs/figure-5-6ab-data.zip}.
         }
@@ -771,10 +771,10 @@ This maximum degree change occurs when a large subtree experiences a large depth
 	The resulting equation $2(ka + i - j)$ is similarly maximized by setting $i=1$ (which allows us to increase $a$) and then maximally balancing the terms in the product $ka$ as follows.
 
 	There are two cases, depending on whether the subtree of $k$ leaves is moved to the root (thereby introducing a new level to the tree) or not.
-    If not, then we set $j=1$ and split the remaining $n-b-i-j = n-2$ leaves between $k$ and $a$ in as balanced a way as possible, giving (i).
+    If not, then the $j$ leaves of the new neighbor subtree $V$ cannot be part of $k$ or $a$. We thus set $j=1$ and split the remaining $n-b-i-j = n-2$ leaves between $k$ and $a$ in as balanced a way as possible, giving (i).
 	Note that this corresponds to moving the bottom subtree of $\floor{\frac{n-2}{2}}$ or $\ceil{\frac{n-2}{2}}$ leaves in a ladder tree to the root-most leaf of the tree.
 
-	If the subtree of $k$ leaves is moved to the root, then we do not need to exclude the target branch from $k$ and $a$, gaining an additional leaf to balance the product $ka$ at the cost of increasing $j$.
+	If the subtree of $k$ leaves is moved to the root, then the new neighbor subtree $V$ is the entire tree excluding $R$ itself. We can thus include the root-most leaf of the tree in $a$. In this case, we gain an additional leaf over the previous case to balance the product $ka$ at the cost of increasing $j$.
 	This corresponds to moving the bottom subtree of $\floor{\frac{n}{2}}$ or $\ceil{\frac{n}{2}}$ leaves in a ladder tree to the root.
 	Namely, we have $2(ka + 1 - j)$, where $j = n - k = a + 1$.
 	Let ${\Delta}N = \degree{S} - \degree{T}$.
@@ -849,7 +849,7 @@ Along with our observation from Lemma~\ref{lem:degree_change} that the magnitude
 	Recall our distribution of rSPR moves from a tree in Lemma~\ref{lem:compute_degree}.
 	Each subtree at a depth $ > 1$ from the root with $x$ nodes induces $2n - x - 5$ rSPR neighbors, while the children of the root induce $2n - x - 3$ neighbors.
 	Moreover, every tree has $n$ 1-leaf subtrees.
-	This implies that the number of small rSPR moves is determined by the number of small subtrees, with a possible difference of two moves for a tree where one of the root's children is small.
+	This implies that the number of small rSPR moves is determined by the number of small subtrees, with a possible difference of two moves per small child of the root.
 
 	A ladder tree has the smallest proportion of small subtrees, so we first bound the number of small subtree moves that can be applied to a ladder tree.
 	A ladder tree with $n$ leaves has $n$ 1-leaf subtrees and one 2-leaf subtree.
@@ -858,23 +858,25 @@ Along with our observation from Lemma~\ref{lem:degree_change} that the magnitude
 	Therefore, a ladder tree induces $n (2n - 1 - 5) + 2 + (2n - 3 - 5) = 2n^2 - 4n - 6$ small subtree moves.
 
 	Now, recall that the maximum degree of any tree is less than $4n^2 - 16n + 16$ by Lemma~\ref{lem:degree_extremes}.
-	We then have that $2(2n^2 - 4n - 6) = 4n^2 - 8n - 12 \ge 4n^2 - 8n - 12 + (24 - 8n) = 4n^2 -16n + 16$, for all $n \ge 3$.
+	We then have that $2(2n^2 - 4n - 6) = 4n^2 - 8n - 12 \ge 4n^2 - 8n - 12 + (28 - 8n) = 4n^2 -16n + 16$, for all $n \ge 4$.
 	Therefore more than half of the neighborhood of any tree is induced by small rSPR moves.
 \end{proof}
 
 Now, we bound the average size of the moved subtrees (in terms of the number of leaves) from rSPR moves according to our distribution.
 Note that this average ignores some possible moves that are equivalent to moves of smaller subtrees.
+This occurs because multiple NNI moves may lead to the same tree, as described previously, and each equivalent move may involve a subtree with a different number of leaves.
+Our distribution includes only one of these equivalent moves.
 For example, from the balanced tree with 4 leaves, we do not consider moves of the root's 2-leaf child subtrees because they are equivalent to moves of the leaves, as explained by our distribution.
 
 \begin{lem}
 	Let $T$ be a rooted tree with $n \ge 4$ leaves.
-	Let $N_i(T)$ be the neighbors of $T$ induced by rSPR moves of an $i$-leaf subtree.
+	Let $N_i(T)$ be the neighbors of $T$ induced by rSPR moves of an $i$-leaf subtree, where the moved subtree is defined according to our distribution of rSPR moves.
 	Then $$\frac{\sum_i i \size{N_i(T)}}{\size{N(T)}} \le \frac{n + 3}{4} .$$
 	\label{lem:spr_size_mean}
 \end{lem}
 \begin{proof}
 	Again recall our distribution of rSPR moves from a tree in Lemma~\ref{lem:compute_degree}.
-	By similar arguments as in the proof of Lemma~\ref{lem:spr_size}, a ladder tree has the greatest average moved subtree size (in terms of the number of leaves).
+	Recall from the proof of Lemma~\ref{lem:spr_size} that a ladder tree has the smallest proportion of small subtrees. This implies that a ladder tree has the greatest average moved subtree size (in terms of the number of leaves) with respect to our distribution.
 	There are $n$ subtrees with one leaf, and one subtree each with $2,3, \ldots n - 1$ leaves.
 	We ignore the root subtree, which does not induce any rSPR moves.
 	Thinking of the ratio as a weighted average of $i$, we can split the numerator and the denominator of the average into terms for each subtree contributing to the values for $i \leq 2$ and those with $i > 2$.
@@ -883,7 +885,7 @@ For example, from the balanced tree with 4 leaves, we do not consider moves of t
 	Note that this replacement does not modify the $i = 2$ term (which was already exactly $2n - 3 - 5$ and decreases the weight of only the smallest terms (which must already be below the average size of the moved subtrees), so this provides an upper bound on the mean moved subtree size.
 	The bound for large subtrees only is $(3 + (n-2)) / 2 = (n + 1) / 2$.
 	By Lemma~\ref{lem:spr_size}, at least half of the rSPR moves involve a small subtree.
-	Thus, the average size of a moved subtree over all SPR operations from a given tree is at most the weighted average of $1 / 2 + ((n + 1) / 2) / 2$ = $(n + 1) / 4 + 1 / 2 = (n + 3) / 4$.
+	Thus, the average size of a moved subtree over all SPR operations from our distribution on a given tree is at most the weighted average of $1 / 2 + ((n + 1) / 2) / 2$ = $(n + 1) / 4 + 1 / 2 = (n + 3) / 4$.
 
 %	The average moved subtree size for a ladder tree is then:
 %	\begin{align}
@@ -894,6 +896,9 @@ For example, from the balanced tree with 4 leaves, we do not consider moves of t
 %\end{align}
 
 \end{proof}
+
+Further, note that our distribution does not necessarily minimize the moved subtree size among equivalent moves.
+It may be interesting future work to improve our bound by explicitly minimizing the moved subtree size in such a manner.
 
 
 \section{Curvature}
@@ -918,7 +923,7 @@ Let $\{T_n \mid n > k\}$ be a sequence of trees with $n$ leaves all containing $
 Then $\lim_{n \rightarrow \infty} \curvature{T_n,S_n} = 0$ for the uniform random walk on the rSPR graph.
 \end{thm}
 \begin{proof}
-Because $d(T_n, S_n) = 1$, we will prove the theorem by showing that the mass transport term $W_{1,n}$ sits between two bounds, each of which has limit 1 as $n$ goes to infinity.
+	Let $W_{1,n}$ be the mass transport term with respect to $T_n$ and $S_n$, that is $W_1(m_{T_n}, m_{S_n})$. Because $d(T_n, S_n) = 1$, we will prove the theorem by showing that the mass transport term $W_{1,n}$ sits between two bounds, each of which has limit 1 as $n$ goes to infinity.
 
 To start we demonstrate the theorem in the case that $T_n$ and $S_n$ have the same number of neighbors.
 First we claim that $W_{1,n}$ is bounded above by $(\degree{T_n}+\OhOf{kn})/\degree{T_n}$ by exhibiting a mass transport program satisfying that bound.
