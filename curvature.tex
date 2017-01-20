@@ -779,7 +779,7 @@ There are two cases, depending on whether $R$ is moved to the root (thereby intr
 If not, then the $j$ leaves of the new neighbor subtree $V$ cannot contribute to increasing $k$ or $a$. We thus set $j=1$ and split the remaining $n-b-i-j = n-2$ leaves between $R$ and $A$ in as balanced a way as possible, maximizing the product $ka$ and giving (i).
 Note that this corresponds to moving the bottom subtree of $\floor{\frac{n-2}{2}}$ or $\ceil{\frac{n-2}{2}}$ leaves in a ladder tree to the root-most leaf of the tree.
 
-If $R$ is moved to the root, then the new neighbor subtree $V$ is the entire tree excluding $R$ itself. The root-most leaf of the tree is on the path from $U$ to $L$ in $S$ and thus a child of $A$, despite also being a child of $L$ in $T$. In this case, we have an additional leaf over the previous case that can be added to $R$ or lengthen $A$, increasing the product $ka$ at the cost of increasing $j$.
+If $R$ is moved to the root, then the new neighbor subtree $V$ is the entire tree excluding $R$ itself. The root-most leaf of the tree is on the path from $U$ to $L_2$ in $S$ and thus a child of $A$, despite also being a child of $L_1$ in $T$. In this case, we have an additional leaf over the previous case that can be added to $R$ or lengthen $A$, increasing the product $ka$ at the cost of increasing $j$.
 This corresponds to moving the bottom subtree of $\floor{\frac{n}{2}}$ or $\ceil{\frac{n}{2}}$ leaves in a ladder tree to the root.
 Namely, we have $2(ka + 1 - j)$, where $j = n - k = a + 1$.
 Let ${\Delta}N = \degree{S} - \degree{T}$.
