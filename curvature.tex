@@ -608,7 +608,7 @@ To calculate the empirical distributions of access times we aggregate all access
     \caption{\
         Distribution of early rSPR $\MH$ access times for those pairs of (a) 6-leaf trees with degree 44 and (b) 7-leaf trees with degree 70.
         Distribution of later rSPR $\MH$ access times for those pairs of (c) 5-leaf trees with degree 24 and (d) 6-leaf trees with degree 44.
-				To limit clutter, these plots exclude the pairs that result from modifying pairs of trees with a smaller number of leaves by replacing a given leaf with a given subtree (e.g\ we exclude pairs of trees that both contain leaves 1 and 2 as siblings). These additional curves show a similar influence from curvature.
+				To limit clutter, these plots exclude the pairs that result from modifying pairs of trees with a smaller number of leaves by replacing a given leaf with a given subtree (e.g\ we exclude pairs of trees that both contain leaves 1 and 2 as siblings). The additional curves induced by the excluded pairs show a similar influence from curvature.
         Color signifies rSPR distance between the trees, with green, orange, blue, and light blue signifying distances of 1, 2, 3, and 4, respectively; the saturation of the color shows coarse curvature $\curvature{\MH; \cdot, \cdot}$, such that increased saturation (i.e.\ darker color) indicates a smaller $\kappa$.
 				See online version for color figures; data tables available at \protect\url{https://github.com/matsengrp/curvature/blob/master/prefigs/figure-5-6ab-data.zip}.
         }
@@ -700,9 +700,10 @@ See Figure~\ref{fig:spr-degree-change} for an illustration of the lemma.
 \begin{lem}
 \label{lem:degree_change}
 Let $T$ and $S$ be trees such that $S$ can be obtained from $T$ by moving a subtree $R$ with $k$ leaves from its position adjacent to subtree $U$ to a location adjacent to subtree $V$.
-Let $L$ be the $\lca{U,V}$ in $T$.
-Let $a$ be the number of intermediate nodes on the path from the parent of $R$ to $L$ in $T$, excluding endpoints.
-Similarly, let $b$ be the number of intermediate nodes on the path from $V$ to $L$ in $T$, excluding endpoints.
+Let $L_1$ be the $\lca{U,V}$ in $T$.
+	Let $L_2$ be the $\lca{U,V}$ in $S$ (typically $L_1 = L_2$).
+Let $a$ be the number of intermediate nodes on the path from $U$ to $L_2$ in $S$, excluding endpoints.
+Similarly, let $b$ be the number of intermediate nodes on the path from $V$ to $L_1$ in $T$, excluding endpoints.
 Let $i$ be the number of leaves in $U$ and $j$ be the number of leaves in $V$, excluding any leaves of $R$.
 Then the degrees of $T$ and $S$ differ by:
 $$2\left(k(a-b) + i - j\right).$$
@@ -710,8 +711,8 @@ $$2\left(k(a-b) + i - j\right).$$
 \end{lem}
 \begin{proof}
 The set of permissible rSPR moves changes in four different ways due to the movement of $R$:
-(i) subtrees that include nodes on the path from $U$ to $L$ may now be moved into $R$ and its newly introduced parent node,
-(ii) subtrees that include nodes on the path from $V$ to $L$ may no longer be moved into $R$ and its parent node,
+(i) subtrees that include nodes on the path from $U$ to $L_2$ may now be moved into $R$ and its newly introduced parent node,
+(ii) subtrees that include nodes on the path from $V$ to $L_1$ may no longer be moved into $R$ and its parent node,
 (iii) $R$'s parent subtree may now be moved into $U$, and
 (iv) $R$'s parent subtree may no longer be moved into $V$.
 No additional moves are introduced or blocked by the original rSPR operation on $R$.
@@ -765,20 +766,24 @@ This maximum degree change occurs when a large subtree experiences a large depth
 	\end{enumerate}
 \end{lem}
 \begin{proof}
-	We first prove (i).
-	By Lemma~\ref{lem:degree_change}, $\degree{S} - \degree{T} = 2(k(a-b) + i - j)$.
-	This value is maximized by making $L$ the root and minimizing $b$, namely by setting $b=0$.
-	The resulting equation $2(ka + i - j)$ is similarly maximized by setting $i=1$ (which allows us to increase $a$) and then maximally balancing the terms in the product $ka$ as follows.
+We first prove (i).
+By Lemma~\ref{lem:degree_change}, $\degree{S} - \degree{T} = 2(k(a-b) + i - j)$.
+Recall that $k$ is the number of leaves in the moved subtree $R$, $i$ is the number of leaves in $R$'s neighbor $U$ and $j$ is the number of leaves in $R$'s new neighbor $V$ after the SPR move.
+The length of the path from $U$'s root to the least common ancestor $L_2$ of $U$ and $V$ in $S$ is $a$, while $b$ is the length of the path from $V$'s root to the least common ancestor $L_1$ of $U$ and $V$ in $T$.
+Call the former path $A$.
 
-	There are two cases, depending on whether the subtree of $k$ leaves is moved to the root (thereby introducing a new level to the tree) or not.
-    If not, then the $j$ leaves of the new neighbor subtree $V$ cannot be part of $k$ or $a$. We thus set $j=1$ and split the remaining $n-b-i-j = n-2$ leaves between $k$ and $a$ in as balanced a way as possible, giving (i).
-	Note that this corresponds to moving the bottom subtree of $\floor{\frac{n-2}{2}}$ or $\ceil{\frac{n-2}{2}}$ leaves in a ladder tree to the root-most leaf of the tree.
+The degree change is maximized by making $L_1$ the root of T and thereby minimizing $b$, namely setting $b=0$.
+The resulting equation $2(ka + i - j)$ is similarly maximized by including only one leaf in $V$, setting $i=1$. We then maximally balance the terms in the product $ka$ by adding as many leaves as possible to either $R$ or as children of the path $A$. Each new leaf of $R$ increases $k$ by 1 and each new child of $A$ lengthens the path and increases $a$ by 1.
 
-	If the subtree of $k$ leaves is moved to the root, then the new neighbor subtree $V$ is the entire tree excluding $R$ itself. We can thus include the root-most leaf of the tree in $a$. In this case, we gain an additional leaf over the previous case to balance the product $ka$ at the cost of increasing $j$.
-	This corresponds to moving the bottom subtree of $\floor{\frac{n}{2}}$ or $\ceil{\frac{n}{2}}$ leaves in a ladder tree to the root.
-	Namely, we have $2(ka + 1 - j)$, where $j = n - k = a + 1$.
-	Let ${\Delta}N = \degree{S} - \degree{T}$.
-	If we move the additional leaf, we have:
+There are two cases, depending on whether $R$ is moved to the root (thereby introducing a new level to the tree) or not.
+If not, then the $j$ leaves of the new neighbor subtree $V$ cannot contribute to increasing $k$ or $a$. We thus set $j=1$ and split the remaining $n-b-i-j = n-2$ leaves between $R$ and $A$ in as balanced a way as possible, maximizing the product $ka$ and giving (i).
+Note that this corresponds to moving the bottom subtree of $\floor{\frac{n-2}{2}}$ or $\ceil{\frac{n-2}{2}}$ leaves in a ladder tree to the root-most leaf of the tree.
+
+If $R$ is moved to the root, then the new neighbor subtree $V$ is the entire tree excluding $R$ itself. The root-most leaf of the tree is on the path from $U$ to $L$ in $S$ and thus a child of $A$, despite also being a child of $L$ in $T$. In this case, we have an additional leaf over the previous case that can be added to $R$ or lengthen $A$, increasing the product $ka$ at the cost of increasing $j$.
+This corresponds to moving the bottom subtree of $\floor{\frac{n}{2}}$ or $\ceil{\frac{n}{2}}$ leaves in a ladder tree to the root.
+Namely, we have $2(ka + 1 - j)$, where $j = n - k = a + 1$.
+Let ${\Delta}N = \degree{S} - \degree{T}$.
+If we move the additional leaf, we have:
 	\begin{align*}
 		{\Delta}N &\le 2\left(\ceilXXL{\frac{n}{2}}\floorV{\frac{n-2}{2}}  + 1 - \left(\floorV{\frac{n-2}{2}} + 1\right)\right) \\
 		&= 2\floorV{\frac{n-2}{2}}\ceilV{\frac{n-2}{2}},
